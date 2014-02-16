@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>2F4A8BF7-467A-4D2E-900A-A54813ACE946</string>
+	<key>IDESourceControlProjectName</key>
+	<string>PluginEditorPrototype</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>D5B6F429-18AC-4F32-94F8-C6F405BA4650</key>
+		<string>ssh://bitbucket.org/robenkleene/prototypes.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Web Console/Prototypes/PluginEditorPrototype/PluginEditorPrototype.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>D5B6F429-18AC-4F32-94F8-C6F405BA4650</key>
+		<string>../../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://bitbucket.org/robenkleene/prototypes.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D5B6F429-18AC-4F32-94F8-C6F405BA4650</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D5B6F429-18AC-4F32-94F8-C6F405BA4650</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Prototypes</string>
+		</dict>
+	</array>
+</dict>
+</plist>
