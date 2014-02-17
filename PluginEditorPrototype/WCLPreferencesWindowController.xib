@@ -21,9 +21,31 @@
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
             </view>
+            <toolbar key="toolbar" implicitIdentifier="BC9A3B76-3EEB-4600-8CCA-3F0E9763DE27" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="EKS-Nz-sXk">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="3BFDC5EE-F15D-454E-AD0D-36CA9F7265F9" label="Environment" paletteLabel="Environment" image="NSPreferencesGeneral" id="1IL-9e-w1q">
+                        <connections>
+                            <action selector="switchView:" target="-2" id="PLA-x7-hQ0"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="E2574EF6-8D5B-4529-BE7C-E1FE00FF3FCB" label="Plugins" paletteLabel="Plugins" tag="1" image="NSApplicationIcon" id="Zyw-Ec-deS">
+                        <connections>
+                            <action selector="switchView:" target="-2" id="zO8-ql-GfJ"/>
+                        </connections>
+                    </toolbarItem>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="1IL-9e-w1q"/>
+                    <toolbarItem reference="Zyw-Ec-deS"/>
+                </defaultToolbarItems>
+            </toolbar>
             <connections>
                 <outlet property="delegate" destination="-2" id="4"/>
             </connections>
         </window>
     </objects>
+    <resources>
+        <image name="NSApplicationIcon" width="128" height="128"/>
+        <image name="NSPreferencesGeneral" width="32" height="32"/>
+    </resources>
 </document>
