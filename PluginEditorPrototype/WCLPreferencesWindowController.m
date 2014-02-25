@@ -11,6 +11,8 @@
 #import "WCLEnvironmentViewController.h"
 #import "WCLPluginViewController.h"
 
+
+
 #define kEnvironmentViewTag 0
 #define kPluginViewTag 1
 #warning Replace above with enums
@@ -58,7 +60,6 @@
 -(void)awakeFromNib
 {
     self.viewController = [[self class] viewControllerForTag:self.tag];
-
     [[[self window] contentView] setWantsLayer:YES];
 }
 
@@ -70,6 +71,24 @@
     NSViewController *viewController = [[self class] viewControllerForTag:tag];
 
     [self setViewController:viewController animated:YES];
+}
+
+#warning Debug Code
++ (void)logSubviewsOfView:(NSView *)view
+{
+    NSArray *subviews = [view subviews];
+
+    if ([subviews count] == 0) return;
+    
+    for (NSView *aView in subviews) {
+        
+        // Do what you want to do with the subview
+        NSLog(@"%@ frame %@", aView, NSStringFromRect([aView frame]));
+        
+        // List the subviews of subview
+        [self logSubviewsOfView:aView];
+    }
+
 }
 
 - (BOOL)validateToolbarItem:(NSToolbarItem *)item
@@ -86,6 +105,9 @@
 
 - (void)setViewController:(NSViewController *)viewController animated:(BOOL)animated;
 {
+    
+    [[self class] logSubviewsOfView:self.window.contentView];
+    
     NSView *oldView = _viewController.view;
     NSView *view = viewController.view;
     NSRect frame = [self newFrameForNewContentView:viewController.view];
@@ -102,11 +124,13 @@
             [[[[self window] contentView] animator] addSubview:view];
         }
 
+        [[self class] setupConstraintsForView:view inView:[[self window] contentView]];
+        
         [[[self window] animator] setFrame:frame display:YES];
         _viewController = viewController;
         self.tag = [[self class] tagForViewController:viewController];
         [NSAnimationContext endGrouping];
-        NSLog(@"_viewController.subviews = %@",[_viewController.view subviews]);
+//        [self.window makeFirstResponder:_viewController];
     } else {
 #warning Clean up the duplicate code here
         if ([oldView superview]) {
@@ -114,14 +138,33 @@
         } else {
             [[[self window] contentView] addSubview:view];
         }
-        
-        
 
+        [[self class] setupConstraintsForView:view inView:[[self window] contentView]];
+        
         [[self window] setFrame:frame display:YES];
         _viewController = viewController;
         self.tag = [[self class] tagForViewController:viewController];
+        
+        
+//        [self.window makeFirstResponder:_viewController];
     }
 }
+
++ (void)setupConstraintsForView:(NSView *)insertedView inView:(NSView *)containerView {
+    [insertedView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[insertedView]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:NSDictionaryOfVariableBindings(insertedView)]];
+    [containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[insertedView]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:NSDictionaryOfVariableBindings(insertedView)]];
+    
+//    [containeView layoutIfNeeded];
+}
+
 
 - (NSRect)newFrameForNewContentView:(NSView *)view {
     NSRect viewFrame = [[self window] frameRectForContentRect:[view frame]];
