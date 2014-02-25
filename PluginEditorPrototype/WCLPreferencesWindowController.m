@@ -12,7 +12,6 @@
 #import "WCLPluginViewController.h"
 
 
-
 #define kEnvironmentViewTag 0
 #define kPluginViewTag 1
 #warning Replace above with enums
@@ -31,6 +30,8 @@
 + (NSViewController *)viewControllerForTag:(NSInteger)tag;
 + (NSInteger)tagForViewController:(NSViewController *)viewController;
 - (void)setViewController:(NSViewController *)viewController animated:(BOOL)animated;
++ (void)setupConstraintsForView:(NSView *)insertedView inView:(NSView *)containerView;
++ (NSRect)newFrameForNewContentView:(NSView *)view inWindow:(NSWindow *)window;
 @property (nonatomic, assign) NSInteger tag;
 @property (nonatomic, strong) NSViewController *viewController;
 @end
@@ -49,14 +50,6 @@
     return self;
 }
 
-//- (void)windowDidLoad
-//{
-//    [super windowDidLoad];
-//    
-//    NSLog(@"Loaded");
-//    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-//}
-
 -(void)awakeFromNib
 {
     self.viewController = [[self class] viewControllerForTag:self.tag];
@@ -71,24 +64,6 @@
     NSViewController *viewController = [[self class] viewControllerForTag:tag];
 
     [self setViewController:viewController animated:YES];
-}
-
-#warning Debug Code
-+ (void)logSubviewsOfView:(NSView *)view
-{
-    NSArray *subviews = [view subviews];
-
-    if ([subviews count] == 0) return;
-    
-    for (NSView *aView in subviews) {
-        
-        // Do what you want to do with the subview
-        NSLog(@"%@ frame %@", aView, NSStringFromRect([aView frame]));
-        
-        // List the subviews of subview
-        [self logSubviewsOfView:aView];
-    }
-
 }
 
 - (BOOL)validateToolbarItem:(NSToolbarItem *)item
@@ -112,70 +87,52 @@
 
 - (void)setViewController:(NSViewController *)viewController animated:(BOOL)animated;
 {
-    
-//    [[self class] logSubviewsOfView:self.window.contentView];
-    
-    NSView *oldView = _viewController.view;
-    NSView *view = viewController.view;
-    NSRect frame = [self newFrameForNewContentView:viewController.view];
-
-    if (animated) {
-
-        [NSAnimationContext beginGrouping];
-#warning Revisit this, this is probably a dated implementation
-        // Call the animator instead of the view / window directly
-
+    void (^switchViewBlock)(NSWindow *window, NSView *contentView) = ^void(NSWindow *window, NSView *contentView) {
+        NSView *oldView = _viewController.view;
+        NSView *view = viewController.view;
+        NSRect frame = [[self class] newFrameForNewContentView:viewController.view inWindow:self.window];
         if ([oldView superview]) {
-        [[[[self window] contentView] animator] replaceSubview:oldView with:view];
+            [[[[self window] contentView] animator] replaceSubview:oldView with:view];
         } else {
             [[[[self window] contentView] animator] addSubview:view];
         }
-
+        
         [[self class] setupConstraintsForView:view inView:[[self window] contentView]];
         
         [[[self window] animator] setFrame:frame display:YES];
         _viewController = viewController;
         _tag = [[self class] tagForViewController:viewController];
+    };
+    
+    if (animated) {
+        [NSAnimationContext beginGrouping];
+        switchViewBlock([self.window animator], [self.window.contentView animator]);
         [NSAnimationContext endGrouping];
-//        [self.window makeFirstResponder:_viewController];
     } else {
-#warning Clean up the duplicate code here
-        if ([oldView superview]) {
-            [[[self window] contentView] replaceSubview:oldView with:view];
-        } else {
-            [[[self window] contentView] addSubview:view];
-        }
-
-        [[self class] setupConstraintsForView:view inView:[[self window] contentView]];
-        
-        [[self window] setFrame:frame display:YES];
-        _viewController = viewController;
-        _tag = [[self class] tagForViewController:viewController];
-        
-        
-//        [self.window makeFirstResponder:_viewController];
+        switchViewBlock(self.window, [self.window.contentView animator]);
     }
 }
 
-+ (void)setupConstraintsForView:(NSView *)insertedView inView:(NSView *)containerView {
++ (void)setupConstraintsForView:(NSView *)insertedView inView:(NSView *)containerView
+{
     [insertedView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-    [containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[insertedView]|"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:NSDictionaryOfVariableBindings(insertedView)]];
-    [containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[insertedView]|"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:NSDictionaryOfVariableBindings(insertedView)]];
-    
-//    [containeView layoutIfNeeded];
+    NSDictionary *insertedViewVariableBindingsDictionary = NSDictionaryOfVariableBindings(insertedView);
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[insertedView]|"
+                                                                             options:0
+                                                                             metrics:nil
+                                                                               views:insertedViewVariableBindingsDictionary];
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[insertedView]|"
+                                                                           options:0
+                                                                           metrics:nil
+                                                                             views:NSDictionaryOfVariableBindings(insertedView)];
+    [containerView addConstraints:horizontalConstraints];
+    [containerView addConstraints:verticalConstraints];
 }
 
-
-- (NSRect)newFrameForNewContentView:(NSView *)view {
-    NSRect viewFrame = [[self window] frameRectForContentRect:[view frame]];
-    NSRect windowFrame = [[self window] frame];
++ (NSRect)newFrameForNewContentView:(NSView *)view inWindow:(NSWindow *)window
+{
+    NSRect viewFrame = [window frameRectForContentRect:[view frame]];
+    NSRect windowFrame = [window frame];
     NSSize viewSize = viewFrame.size;
     NSSize windowSize = windowFrame.size;
     
@@ -184,7 +141,6 @@
     
     return windowFrame;
 }
-
 
 #pragma mark - NSViewController Mappings
 
