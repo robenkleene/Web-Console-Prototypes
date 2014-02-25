@@ -15,17 +15,23 @@
 #define kPluginViewControllerNibName @"WCLPluginViewController"
 
 @interface WCLPreferencesWindowController ()
+#pragma mark NSToolbar
 - (IBAction)switchView:(id)sender;
-+ (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)preferencePane;
+#pragma mark Properties
+@property (nonatomic, assign) WCLPreferencePane preferencePane;
+- (void)setPreferencePane:(WCLPreferencePane)preferencePane animated:(BOOL)animated;
+@property (nonatomic, strong) NSViewController *viewController;
 - (void)setViewController:(NSViewController *)viewController animated:(BOOL)animated;
-+ (NSInteger)preferencePaneForViewController:(NSViewController *)viewController;
 + (void)setupConstraintsForView:(NSView *)insertedView inView:(NSView *)containerView;
 + (NSRect)newFrameForNewContentView:(NSView *)view inWindow:(NSWindow *)window;
-@property (nonatomic, assign) WCLPreferencePane preferencePane;
-@property (nonatomic, strong) NSViewController *viewController;
+#pragma mark NSViewController Mappings
++ (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)preferencePane;
++ (NSInteger)preferencePaneForViewController:(NSViewController *)viewController;
 @end
 
 @implementation WCLPreferencesWindowController
+
+#pragma mark Life Cycle
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -50,9 +56,7 @@
 - (IBAction)switchView:(id)sender
 {
     WCLPreferencePane preferencePane = (WCLPreferencePane)[sender tag];
-    NSViewController *viewController = [[self class] viewControllerForPreferencePane:preferencePane ];
-
-    [self setViewController:viewController animated:YES];
+    [self setPreferencePane:preferencePane animated:YES];
 }
 
 - (BOOL)validateToolbarItem:(NSToolbarItem *)item
@@ -64,9 +68,14 @@
 
 - (void)setPreferencePane:(WCLPreferencePane)preferencePane
 {
+    [self setPreferencePane:preferencePane animated:NO];
+}
+
+- (void)setPreferencePane:(WCLPreferencePane)preferencePane animated:(BOOL)animated
+{
     NSViewController *viewController = [[self class] viewControllerForPreferencePane:preferencePane];
     
-    [self setViewController:viewController animated:NO];
+    [self setViewController:viewController animated:animated];
 }
 
 - (void)setViewController:(NSViewController *)viewController
@@ -76,10 +85,11 @@
 
 - (void)setViewController:(NSViewController *)viewController animated:(BOOL)animated;
 {
+    NSView *oldView = _viewController.view;
+    NSView *view = viewController.view;
+    NSRect frame = [[self class] newFrameForNewContentView:viewController.view inWindow:self.window];
+
     void (^switchViewBlock)(NSWindow *window, NSView *contentView) = ^void(NSWindow *window, NSView *contentView) {
-        NSView *oldView = _viewController.view;
-        NSView *view = viewController.view;
-        NSRect frame = [[self class] newFrameForNewContentView:viewController.view inWindow:self.window];
         if ([oldView superview]) {
             [[[[self window] contentView] animator] replaceSubview:oldView with:view];
         } else {
