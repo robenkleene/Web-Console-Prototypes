@@ -18,7 +18,7 @@
 		4567DB6518B03A7A00CBBD29 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB6418B03A7A00CBBD29 /* XCTest.framework */; };
 		4567DB6618B03A7A00CBBD29 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB4218B03A7A00CBBD29 /* Cocoa.framework */; };
 		4567DB6E18B03A7A00CBBD29 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB6C18B03A7A00CBBD29 /* InfoPlist.strings */; };
-		4567DB7018B03A7A00CBBD29 /* PluginEditorPrototypeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB6F18B03A7A00CBBD29 /* PluginEditorPrototypeTests.m */; };
+		4567DB7018B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB6F18B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m */; };
 		4567DB7C18B044B700CBBD29 /* WCLPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB7A18B044B700CBBD29 /* WCLPreferencesWindowController.m */; };
 		4567DB7D18B044B700CBBD29 /* WCLPreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB7B18B044B700CBBD29 /* WCLPreferencesWindowController.xib */; };
 		4567DB8918B1C08800CBBD29 /* WCLPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB8818B1C08800CBBD29 /* WCLPlugin.m */; };
@@ -58,7 +58,7 @@
 		4567DB6418B03A7A00CBBD29 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		4567DB6B18B03A7A00CBBD29 /* PluginEditorPrototypeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PluginEditorPrototypeTests-Info.plist"; sourceTree = "<group>"; };
 		4567DB6D18B03A7A00CBBD29 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		4567DB6F18B03A7A00CBBD29 /* PluginEditorPrototypeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PluginEditorPrototypeTests.m; sourceTree = "<group>"; };
+		4567DB6F18B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WCLPreferencesWindowControllerTests.m; sourceTree = "<group>"; };
 		4567DB7918B044B700CBBD29 /* WCLPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPreferencesWindowController.h; sourceTree = "<group>"; };
 		4567DB7A18B044B700CBBD29 /* WCLPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPreferencesWindowController.m; sourceTree = "<group>"; };
 		4567DB7B18B044B700CBBD29 /* WCLPreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WCLPreferencesWindowController.xib; sourceTree = "<group>"; };
@@ -171,7 +171,7 @@
 		4567DB6918B03A7A00CBBD29 /* PluginEditorPrototypeTests */ = {
 			isa = PBXGroup;
 			children = (
-				4567DB6F18B03A7A00CBBD29 /* PluginEditorPrototypeTests.m */,
+				4567DB6F18B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m */,
 				4567DB6A18B03A7A00CBBD29 /* Supporting Files */,
 			);
 			path = PluginEditorPrototypeTests;
@@ -301,7 +301,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4567DB7018B03A7A00CBBD29 /* PluginEditorPrototypeTests.m in Sources */,
+				4567DB7018B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

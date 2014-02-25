@@ -98,6 +98,13 @@
 
 #pragma mark - Properties
 
+- (void)setTag:(NSInteger)tag
+{
+    NSViewController *viewController = [[self class] viewControllerForTag:tag];
+    
+    [self setViewController:viewController animated:NO];
+}
+
 - (void)setViewController:(NSViewController *)viewController
 {
     [self setViewController:viewController animated:NO];
@@ -106,7 +113,7 @@
 - (void)setViewController:(NSViewController *)viewController animated:(BOOL)animated;
 {
     
-    [[self class] logSubviewsOfView:self.window.contentView];
+//    [[self class] logSubviewsOfView:self.window.contentView];
     
     NSView *oldView = _viewController.view;
     NSView *view = viewController.view;
@@ -128,7 +135,7 @@
         
         [[[self window] animator] setFrame:frame display:YES];
         _viewController = viewController;
-        self.tag = [[self class] tagForViewController:viewController];
+        _tag = [[self class] tagForViewController:viewController];
         [NSAnimationContext endGrouping];
 //        [self.window makeFirstResponder:_viewController];
     } else {
@@ -143,7 +150,7 @@
         
         [[self window] setFrame:frame display:YES];
         _viewController = viewController;
-        self.tag = [[self class] tagForViewController:viewController];
+        _tag = [[self class] tagForViewController:viewController];
         
         
 //        [self.window makeFirstResponder:_viewController];
