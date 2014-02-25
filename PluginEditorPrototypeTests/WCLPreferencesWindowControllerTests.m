@@ -30,6 +30,7 @@
 @interface WCLPreferencesWindowControllerTests : XCTestCase
 @property (nonatomic, strong, readonly) WCLAppDelegate *appDelegate;
 @property (nonatomic, strong, readonly) WCLPreferencesWindowController *preferencesWindowController;
+@property (nonatomic, assign) NSInteger tag;
 @end
 
 @implementation WCLPreferencesWindowControllerTests
@@ -42,13 +43,18 @@
 
     [self.appDelegate showPreferencesWindow:nil];
     XCTAssertTrue([self.preferencesWindowController.window isVisible], @"The WCLPreferncesWindowController's NSWindow should be visible");
+    // TODO Add assert that the first preferences equals the stored preference
+    self.tag = self.preferencesWindowController.tag;
+    self.preferencesWindowController.tag = 0; // Always start with the first preference view visible
 }
 
 - (void)tearDown
 {
     [self.appDelegate.preferencesWindowController.window performClose:nil];
     XCTAssertFalse([self.preferencesWindowController.window isVisible], @"The WCLPreferncesWindowController's NSWindow should not visible");
-
+    // TODO Add assert that the stored preference equals the stored preference
+    self.preferencesWindowController.tag = self.tag; // Restore the users preference
+    
     [super tearDown];
 }
 
@@ -76,7 +82,6 @@
     NSView *firstSubview = firstSubviews[0];
     XCTAssertEqualObjects(firstSubview, firstViewController.view, @"The first subview should equal the first NSViewController's NSView.");
     
-
     self.preferencesWindowController.tag++;
     
     NSInteger secondTag = self.preferencesWindowController.tag;
@@ -91,12 +96,19 @@
     XCTAssertNotEqualObjects([firstViewController class], [secondViewController class], @"The first NSViewController should not equal the second NSViewController.");
 }
 
-- (void)testSwitchingPreferencesViews
+- (void)testSwitchingPreferencesViewsHaveCorrectFrames
 {
+    NSViewController *firstViewController = self.preferencesWindowController.viewController;
+    NSRect firstFrame = firstViewController.view.frame;
     
+    // Switch to another view and back again, then test that the frames are equal
+    self.preferencesWindowController.tag++;
+    self.preferencesWindowController.tag--;
+
+    NSViewController *secondViewController = self.preferencesWindowController.viewController;
+    NSRect secondFrame = secondViewController.view.frame;
     
-    
-//    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    XCTAssertTrue([NSStringFromRect(firstFrame) isEqualToString:NSStringFromRect(secondFrame)], @"The first frame should equal the second frame.");
 }
 
 @end
