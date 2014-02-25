@@ -19,18 +19,14 @@
 @end
 
 @interface WCLPreferencesWindowController ()
-- (IBAction)switchView:(id)sender;
-+ (NSViewController *)viewControllerForTag:(NSInteger)tag;
-+ (NSInteger)tagForViewController:(NSViewController *)viewController;
-- (void)setViewController:(NSViewController *)viewController animated:(BOOL)animated;
-@property (nonatomic, assign) NSInteger tag;
+@property (nonatomic, assign) NSInteger preferencePane;
 @property (nonatomic, strong) NSViewController *viewController;
 @end
 
 @interface WCLPreferencesWindowControllerTests : XCTestCase
 @property (nonatomic, strong, readonly) WCLAppDelegate *appDelegate;
 @property (nonatomic, strong, readonly) WCLPreferencesWindowController *preferencesWindowController;
-@property (nonatomic, assign) NSInteger tag;
+@property (nonatomic, assign) WCLPreferencePane preferencePane;
 @end
 
 @implementation WCLPreferencesWindowControllerTests
@@ -44,8 +40,8 @@
     [self.appDelegate showPreferencesWindow:nil];
     XCTAssertTrue([self.preferencesWindowController.window isVisible], @"The WCLPreferncesWindowController's NSWindow should be visible");
     // TODO Add assert that the first preferences equals the stored preference
-    self.tag = self.preferencesWindowController.tag;
-    self.preferencesWindowController.tag = 0; // Always start with the first preference view visible
+    self.preferencePane = self.preferencesWindowController.preferencePane;
+    self.preferencesWindowController.preferencePane = 0; // Always start with the first preference view visible
 }
 
 - (void)tearDown
@@ -53,7 +49,7 @@
     [self.appDelegate.preferencesWindowController.window performClose:nil];
     XCTAssertFalse([self.preferencesWindowController.window isVisible], @"The WCLPreferncesWindowController's NSWindow should not visible");
     // TODO Add assert that the stored preference equals the stored preference
-    self.preferencesWindowController.tag = self.tag; // Restore the users preference
+    self.preferencesWindowController.preferencePane = self.preferencePane; // Restore the users preference
     
     [super tearDown];
 }
@@ -72,19 +68,19 @@
 
 #pragma mark - Tests
 
-- (void)testSwitchingPreferencesViewsByTag
+- (void)testSwitchingPreferencesViewsByPreferencePane
 {
     
-    NSInteger firstTag = self.preferencesWindowController.tag;
+    WCLPreferencePane firstPreferencePane = self.preferencesWindowController.preferencePane;
     NSViewController *firstViewController = self.preferencesWindowController.viewController;
     NSArray *firstSubviews = [self.preferencesWindowController.window.contentView subviews];
     XCTAssertEqual([firstSubviews count], (NSUInteger)1, @"The WCLPreferencesViewController's contentView should have one subview");
     NSView *firstSubview = firstSubviews[0];
     XCTAssertEqualObjects(firstSubview, firstViewController.view, @"The first subview should equal the first NSViewController's NSView.");
     
-    self.preferencesWindowController.tag++;
+    self.preferencesWindowController.preferencePane++;
     
-    NSInteger secondTag = self.preferencesWindowController.tag;
+    WCLPreferencePane secondPreferencePane = self.preferencesWindowController.preferencePane;
     NSViewController *secondViewController = self.preferencesWindowController.viewController;
     NSArray *secondSubviews = [self.preferencesWindowController.window.contentView subviews];
     XCTAssertEqual([secondSubviews count], (NSUInteger)1, @"The WCLPreferencesViewController's contentView should have one subview");
@@ -92,7 +88,7 @@
     XCTAssertEqualObjects(secondSubview, secondViewController.view, @"The second subview should equal the second NSViewController's NSView.");
     
     XCTAssertNotEqualObjects(firstSubview, secondSubview, @"The first subview should not equal the second subview.");
-    XCTAssertNotEqual(firstTag, secondTag, @"The first tag should not equal the second tag.");
+    XCTAssertNotEqual(firstPreferencePane, secondPreferencePane, @"The first WCLPreferencePane should not equal the second WCLPreferencePane.");
     XCTAssertNotEqualObjects([firstViewController class], [secondViewController class], @"The first NSViewController should not equal the second NSViewController.");
 }
 
@@ -102,8 +98,8 @@
     NSRect firstFrame = firstViewController.view.frame;
     
     // Switch to another view and back again, then test that the frames are equal
-    self.preferencesWindowController.tag++;
-    self.preferencesWindowController.tag--;
+    self.preferencesWindowController.preferencePane++;
+    self.preferencesWindowController.preferencePane--;
 
     NSViewController *secondViewController = self.preferencesWindowController.viewController;
     NSRect secondFrame = secondViewController.view.frame;

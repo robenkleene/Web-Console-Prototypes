@@ -11,28 +11,17 @@
 #import "WCLEnvironmentViewController.h"
 #import "WCLPluginViewController.h"
 
-
-#define kEnvironmentViewTag 0
-#define kPluginViewTag 1
-#warning Replace above with enums
-//enum	// popup tag choices
-//{
-//	kProjectView = 0,
-//	kClientView = 1,
-//};
-
-
 #define kEnvironmentViewControllerNibName @"WCLEnvironmentViewController"
 #define kPluginViewControllerNibName @"WCLPluginViewController"
 
 @interface WCLPreferencesWindowController ()
 - (IBAction)switchView:(id)sender;
-+ (NSViewController *)viewControllerForTag:(NSInteger)tag;
-+ (NSInteger)tagForViewController:(NSViewController *)viewController;
++ (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)preferencePane;
 - (void)setViewController:(NSViewController *)viewController animated:(BOOL)animated;
++ (NSInteger)preferencePaneForViewController:(NSViewController *)viewController;
 + (void)setupConstraintsForView:(NSView *)insertedView inView:(NSView *)containerView;
 + (NSRect)newFrameForNewContentView:(NSView *)view inWindow:(NSWindow *)window;
-@property (nonatomic, assign) NSInteger tag;
+@property (nonatomic, assign) WCLPreferencePane preferencePane;
 @property (nonatomic, strong) NSViewController *viewController;
 @end
 
@@ -45,14 +34,14 @@
         // Initialization code here.
 
 #warning This should be retrieved from storing the currently selected preference tab
-        _tag = 0;
+        _preferencePane = 0;
     }
     return self;
 }
 
 -(void)awakeFromNib
 {
-    self.viewController = [[self class] viewControllerForTag:self.tag];
+    self.viewController = [[self class] viewControllerForPreferencePane:self.preferencePane];
     [[[self window] contentView] setWantsLayer:YES];
 }
 
@@ -60,22 +49,22 @@
 
 - (IBAction)switchView:(id)sender
 {
-    NSInteger tag = [sender tag];
-    NSViewController *viewController = [[self class] viewControllerForTag:tag];
+    WCLPreferencePane preferencePane = (WCLPreferencePane)[sender tag];
+    NSViewController *viewController = [[self class] viewControllerForPreferencePane:preferencePane ];
 
     [self setViewController:viewController animated:YES];
 }
 
 - (BOOL)validateToolbarItem:(NSToolbarItem *)item
 {
-    return [item tag] != self.tag;
+    return [item tag] != self.preferencePane;
 }
 
 #pragma mark - Properties
 
-- (void)setTag:(NSInteger)tag
+- (void)setPreferencePane:(WCLPreferencePane)preferencePane
 {
-    NSViewController *viewController = [[self class] viewControllerForTag:tag];
+    NSViewController *viewController = [[self class] viewControllerForPreferencePane:preferencePane];
     
     [self setViewController:viewController animated:NO];
 }
@@ -101,7 +90,7 @@
         
         [[[self window] animator] setFrame:frame display:YES];
         _viewController = viewController;
-        _tag = [[self class] tagForViewController:viewController];
+        _preferencePane = [[self class] preferencePaneForViewController:viewController];
     };
     
     if (animated) {
@@ -144,31 +133,31 @@
 
 #pragma mark - NSViewController Mappings
 
-+ (NSViewController *)viewControllerForTag:(NSInteger)tag
++ (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)prefencePane
 {
     NSViewController *viewController;
     
-    switch (tag) {
-        case kEnvironmentViewTag:
+    switch (prefencePane) {
+        case WCLPreferencePaneEnvironment:
             viewController = [[WCLEnvironmentViewController alloc] initWithNibName:kEnvironmentViewControllerNibName bundle:nil];
             break;
-        case kPluginViewTag:
+        case WCLPreferencePanePlugins:
             viewController = [[WCLPluginViewController alloc] initWithNibName:kPluginViewControllerNibName bundle:nil];
             break;
         default:
-            NSAssert(NO, @"No NSViewController for tag. %li", (long)tag);
+            NSAssert(NO, @"No NSViewController for WCLPreferencePane. %li", (long)prefencePane);
             break;
     }
     
     return viewController;
 }
 
-+ (NSInteger)tagForViewController:(NSViewController *)viewController
++ (NSInteger)preferencePaneForViewController:(NSViewController *)viewController
 {
-    if ([viewController isKindOfClass:[WCLEnvironmentViewController class]]) return kEnvironmentViewTag;
-    if ([viewController isKindOfClass:[WCLPluginViewController class]]) return kPluginViewTag;
+    if ([viewController isKindOfClass:[WCLEnvironmentViewController class]]) return WCLPreferencePaneEnvironment;
+    if ([viewController isKindOfClass:[WCLPluginViewController class]]) return WCLPreferencePanePlugins;
 
-    NSAssert(NO, @"No tag for NSViewController. %@", viewController);
+    NSAssert(NO, @"No WCLPreferencePane for NSViewController. %@", viewController);
     return -1;
 }
 
