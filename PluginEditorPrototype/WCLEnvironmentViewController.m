@@ -10,6 +10,7 @@
 
 @interface WCLEnvironmentViewController () <NSTableViewDelegate>
 @property (weak) IBOutlet NSTableView *tableView;
+@property (weak) IBOutlet NSArrayController *arrayController;
 @end
 
 @implementation WCLEnvironmentViewController
@@ -39,6 +40,35 @@
 //    
 //    return YES;
 //}
+
+#pragma mark - IBActions
+
+- (IBAction)addEnvironmentVariable:(id)sender
+{
+    NSWindow *window = [self.tableView window];
+    BOOL success = [window makeFirstResponder:window];
+    if(!success) return; // First responder did not resign
+
+    NSMutableDictionary *environmentVariableDictionary = [self.arrayController newObject];
+    
+    environmentVariableDictionary[@"name"] = @"test name";
+    environmentVariableDictionary[@"value"] = @"test value";
+    NSLog(@"environmentVariableDictionary = %@", environmentVariableDictionary);
+
+    [self.arrayController addObject:environmentVariableDictionary];
+
+    [self.arrayController rearrangeObjects];
+    
+//    NSUInteger row = [[self.arrayController arrangedObjects] indexOfObjectIdenticalTo:environmentVariableDictionary];
+    NSUInteger row = [[self.arrayController arrangedObjects] indexOfObject:environmentVariableDictionary];
+    
+    NSLog(@"self.arrayController arrangedObjects = %@", [self.arrayController arrangedObjects]);
+    
+    
+    NSAssert(row != NSNotFound, @"The environment variable dictionary should be in the NSArrayController's arranged objects.");
+    
+    [self.tableView editColumn:0 row:row withEvent:nil select:YES];
+}
 
 #pragma mark - NSTableViewDelegate
 

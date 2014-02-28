@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WCLEnvironmentViewController">
             <connections>
+                <outlet property="arrayController" destination="u9V-fQ-Dg4" id="GKa-83-Kr3"/>
                 <outlet property="tableView" destination="OTI-DZ-LbL" id="U6o-Dy-GiY"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
@@ -94,10 +95,10 @@
                             <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DnB-Nm-AUC">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
+                                <connections>
+                                    <action selector="addEnvironmentVariable:" target="-2" id="7V0-BZ-bsi"/>
+                                </connections>
                             </buttonCell>
-                            <connections>
-                                <action selector="add:" target="u9V-fQ-Dg4" id="bNx-hl-XUG"/>
-                            </connections>
                         </button>
                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M3m-r5-0mC">
                             <rect key="frame" x="31" y="-1" width="32" height="23"/>
@@ -125,17 +126,21 @@
                 <constraint firstAttribute="trailing" secondItem="zRm-B9-Vf6" secondAttribute="trailing" constant="20" id="mY8-jM-NFf"/>
                 <constraint firstItem="zRm-B9-Vf6" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="zCL-Qp-3UK"/>
             </constraints>
-        </customView>
-        <arrayController id="u9V-fQ-Dg4" userLabel="environmentVariables">
             <connections>
-                <binding destination="pNV-FA-JwB" name="contentArray" keyPath="values.environmentVariables" id="jzI-NB-DAx">
+                <outlet property="arrayController" destination="u9V-fQ-Dg4" id="BnF-d1-Lp9"/>
+                <outlet property="tableView" destination="OTI-DZ-LbL" id="Nbo-v6-JZf"/>
+            </connections>
+        </customView>
+        <arrayController id="u9V-fQ-Dg4">
+            <connections>
+                <binding destination="3DR-rg-Zep" name="contentArray" keyPath="values.environmentVariables" id="ZOf-eN-t6j">
                     <dictionary key="options">
                         <bool key="NSHandlesContentAsCompoundValue" value="YES"/>
                     </dictionary>
                 </binding>
             </connections>
         </arrayController>
-        <userDefaultsController representsSharedInstance="YES" id="pNV-FA-JwB"/>
+        <userDefaultsController representsSharedInstance="YES" id="3DR-rg-Zep"/>
     </objects>
     <resources>
         <image name="NSAddTemplate" width="8" height="8"/>
