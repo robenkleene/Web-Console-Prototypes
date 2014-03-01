@@ -60,14 +60,15 @@
     [self.arrayController rearrangeObjects];
     
 //    NSUInteger row = [[self.arrayController arrangedObjects] indexOfObjectIdenticalTo:environmentVariableDictionary];
-    NSUInteger row = [[self.arrayController arrangedObjects] indexOfObject:environmentVariableDictionary];
+    NSUInteger rowIndex = [[self.arrayController arrangedObjects] indexOfObject:environmentVariableDictionary];
     
     NSLog(@"self.arrayController arrangedObjects = %@", [self.arrayController arrangedObjects]);
     
     
-    NSAssert(row != NSNotFound, @"The environment variable dictionary should be in the NSArrayController's arranged objects.");
+    NSAssert(rowIndex != NSNotFound, @"The environment variable dictionary should be in the NSArrayController's arranged objects.");
     
-    [self.tableView editColumn:0 row:row withEvent:nil select:YES];
+    [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
+    [self.tableView editColumn:0 row:rowIndex withEvent:nil select:YES];
 }
 
 #pragma mark - NSTableViewDelegate
@@ -77,5 +78,15 @@
     NSLog(@"Got here");
 }
 
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+{
+    NSLog(@"aNotification = %@", aNotification);
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
+{
+    NSLog(@"rowIndex = %li", (long)rowIndex);
+    return YES;
+}
 
 @end
