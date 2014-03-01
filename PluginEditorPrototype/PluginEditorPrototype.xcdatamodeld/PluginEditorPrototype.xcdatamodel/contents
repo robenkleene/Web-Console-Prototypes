@@ -7,6 +7,6 @@
         <attribute name="type" attributeType="String" defaultValueString="Built-In" syncable="YES"/>
     </entity>
     <elements>
-        <element name="WCLPlugin" positionX="-1953" positionY="-630" width="128" height="103"/>
+        <element name="WCLPlugin" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>
