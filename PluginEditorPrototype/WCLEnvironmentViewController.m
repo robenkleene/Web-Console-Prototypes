@@ -8,6 +8,12 @@
 
 #import "WCLEnvironmentViewController.h"
 
+NSString * const WCLEnvironmentVariableNameKey = @"name";
+NSString * const WCLEnvironmentVariableValueKey = @"value";
+
+#define kEnvironmentVariableDefaultName @"VARIABLE"
+#define kEnvironmentVariableDefaultValue @"VALUE"
+
 @interface WCLEnvironmentViewController ()
 @property (weak) IBOutlet NSTableView *tableView;
 @property (weak) IBOutlet NSArrayController *arrayController;
@@ -26,8 +32,8 @@
 
     NSMutableDictionary *environmentVariableDictionary = [self.arrayController newObject];
     
-    environmentVariableDictionary[@"name"] = @"test name";
-    environmentVariableDictionary[@"value"] = @"test value";
+    environmentVariableDictionary[WCLEnvironmentVariableNameKey] = kEnvironmentVariableDefaultName;
+    environmentVariableDictionary[WCLEnvironmentVariableValueKey] = kEnvironmentVariableDefaultValue;
 
     [self.arrayController addObject:environmentVariableDictionary];
     
