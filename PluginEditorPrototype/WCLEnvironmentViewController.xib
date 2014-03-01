@@ -65,9 +65,6 @@
                                         </connections>
                                     </tableColumn>
                                 </tableColumns>
-                                <connections>
-                                    <outlet property="delegate" destination="-2" id="bb6-VP-Hua"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>

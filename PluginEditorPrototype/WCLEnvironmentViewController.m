@@ -8,38 +8,13 @@
 
 #import "WCLEnvironmentViewController.h"
 
-@interface WCLEnvironmentViewController () <NSTableViewDelegate>
+@interface WCLEnvironmentViewController ()
 @property (weak) IBOutlet NSTableView *tableView;
 @property (weak) IBOutlet NSArrayController *arrayController;
+- (IBAction)addEnvironmentVariable:(id)sender;
 @end
 
 @implementation WCLEnvironmentViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Initialization code here.
-    }
-    return self;
-}
-
-- (void)loadView
-{
-    [super loadView];
-
-//    [[resultsTableView window] makeFirstResponder:resultsTableView];
-    NSLog(@"self.tableView = %@", self.tableView);
-}
-
-//- (BOOL)becomeFirstResponder
-//{
-//    NSLog(@"Got here");
-//    
-//    [[self.view window] makeFirstResponder:self.tableView];
-//    
-//    return YES;
-//}
 
 #pragma mark - IBActions
 
@@ -53,40 +28,14 @@
     
     environmentVariableDictionary[@"name"] = @"test name";
     environmentVariableDictionary[@"value"] = @"test value";
-    NSLog(@"environmentVariableDictionary = %@", environmentVariableDictionary);
 
     [self.arrayController addObject:environmentVariableDictionary];
-
-    [self.arrayController rearrangeObjects];
     
-//    NSUInteger row = [[self.arrayController arrangedObjects] indexOfObjectIdenticalTo:environmentVariableDictionary];
     NSUInteger rowIndex = [[self.arrayController arrangedObjects] indexOfObject:environmentVariableDictionary];
-    
-    NSLog(@"self.arrayController arrangedObjects = %@", [self.arrayController arrangedObjects]);
-    
-    
+
     NSAssert(rowIndex != NSNotFound, @"The environment variable dictionary should be in the NSArrayController's arranged objects.");
-    
+
     [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
     [self.tableView editColumn:0 row:rowIndex withEvent:nil select:YES];
 }
-
-#pragma mark - NSTableViewDelegate
-
-- (void)tableView:(NSTableView *)tableView didAddRowView:(NSTableRowView *)rowView forRow:(NSInteger)row
-{
-    NSLog(@"Got here");
-}
-
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
-{
-    NSLog(@"aNotification = %@", aNotification);
-}
-
-- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
-{
-    NSLog(@"rowIndex = %li", (long)rowIndex);
-    return YES;
-}
-
 @end
