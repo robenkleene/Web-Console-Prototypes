@@ -8,9 +8,6 @@
 
 #import "WCLEnvironmentViewController.h"
 
-NSString * const WCLEnvironmentVariableNameKey = @"name";
-NSString * const WCLEnvironmentVariableValueKey = @"value";
-
 #define kEnvironmentVariableDefaultKey @"VARIABLE"
 #define kEnvironmentVariableDefaultValue @"VALUE"
 
