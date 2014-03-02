@@ -8,8 +8,6 @@
 
 #import "WCLPluginViewController.h"
 
-#define kArrayControllerSelectionKeyPath @"selection"
-
 @interface WCLPluginNameTextField : NSTextField
 @end
 
@@ -19,22 +17,16 @@
 }
 @end
 
-
 @interface WCLPluginViewController ()
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (weak) IBOutlet NSArrayController *arrayController;
 @property (weak) IBOutlet NSTableView *tableView;
-//@property (nonatomic, strong) id selection;
 - (IBAction)saveAction:(id)sender;
 @end
 
-
-
 @implementation WCLPluginViewController
-
-static void *WCLPluginViewControllerContext;
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize managedObjectModel = _managedObjectModel;
@@ -57,65 +49,6 @@ static void *WCLPluginViewControllerContext;
     [[self.view window] makeFirstResponder:self.tableView];
     return YES;
 }
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (context != &WCLPluginViewControllerContext) {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-        return;
-    }
-
-    if ([keyPath isEqualToString:kArrayControllerSelectionKeyPath]) {
-//        id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
-//        id newValue = [change objectForKey:NSKeyValueChangeNewKey];
-//
-//        NSLog(@"oldValue = %@", oldValue);
-//        NSLog(@"newValue = %@", newValue);
-
-        NSError *error;
-        NSLog(@"saving");
-        if (![[self managedObjectContext] save:&error]) {
-            NSAssert(NO, @"Error saving.");
-        }
-        NSLog(@"observeValueForKeyPath: [self.arrayController selection]  = %@", [self.arrayController selection]);
-
-        NSLog(@"[[self.arrayController selection] name] = %@", [[self.arrayController selection] valueForKey:@"name"]);
-    }
-}
-
-//- (void)setSelection:(id)selection
-//{
-//    if (_selection == selection) return;
-//
-//    if (_selection) {
-//        for (NSString *keyPath in kObservedSelectionKeyPaths) {
-//            
-//        }
-//    }
-//}
-
-- (NSArrayController *)arrayController
-{
-    return _arrayController;
-}
-
-- (void)setArrayController:(NSArrayController *)arrayController
-{
-    if (_arrayController != arrayController) {
-        _arrayController = arrayController;
-        [_arrayController addObserver:self forKeyPath:kArrayControllerSelectionKeyPath options:NSKeyValueObservingOptionNew context:&WCLPluginViewControllerContext];
-
-//        [_arrayController addObserver:self forKeyPath:kArrayControllerSelectionKeyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:&WCLPluginViewControllerContext];
-    }
-}
-
-- (void)dealloc
-{
-    if (_arrayController) {
-        [_arrayController removeObserver:self forKeyPath:kArrayControllerSelectionKeyPath context:&WCLPluginViewControllerContext];
-    }
-}
-
 
 #warning Code for save confirmation
 //-(void)remove:(id)sender {
