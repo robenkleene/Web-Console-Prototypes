@@ -7,7 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WCLEnvironmentViewController">
             <connections>
-                <outlet property="arrayController" destination="u9V-fQ-Dg4" id="GKa-83-Kr3"/>
+                <outlet property="dictionaryController" destination="u5e-ay-6eS" id="zdV-Cl-uJN"/>
                 <outlet property="tableView" destination="OTI-DZ-LbL" id="U6o-Dy-GiY"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
@@ -45,11 +45,7 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <connections>
-                                            <binding destination="u9V-fQ-Dg4" name="value" keyPath="arrangedObjects.name" id="Lvl-x2-xnh">
-                                                <dictionary key="options">
-                                                    <bool key="NSCreatesSortDescriptor" value="NO"/>
-                                                </dictionary>
-                                            </binding>
+                                            <binding destination="u5e-ay-6eS" name="value" keyPath="arrangedObjects.key" id="og9-Ym-Awk"/>
                                         </connections>
                                     </tableColumn>
                                     <tableColumn width="316" minWidth="40" maxWidth="1000" id="2NJ-UA-f0M">
@@ -65,12 +61,12 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <connections>
-                                            <binding destination="u9V-fQ-Dg4" name="value" keyPath="arrangedObjects.value" id="xCe-tQ-PAf"/>
+                                            <binding destination="u5e-ay-6eS" name="value" keyPath="arrangedObjects.value" id="FlU-3W-bBT"/>
                                         </connections>
                                     </tableColumn>
                                 </tableColumns>
                                 <connections>
-                                    <binding destination="u9V-fQ-Dg4" name="selectionIndexes" keyPath="selectionIndexes" id="hzz-9g-R53"/>
+                                    <binding destination="u5e-ay-6eS" name="selectionIndexes" keyPath="selectionIndexes" id="utv-Ty-Y2I"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -101,7 +97,7 @@
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
-                                <action selector="addEnvironmentVariable:" target="-2" id="lnL-Jc-Xcj"/>
+                                <action selector="addEnvironmentVariable:" target="-2" id="PtL-YE-Y3h"/>
                             </connections>
                         </button>
                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M3m-r5-0mC">
@@ -112,7 +108,7 @@
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
-                                <action selector="remove:" target="u9V-fQ-Dg4" id="th8-Ji-INN"/>
+                                <action selector="remove:" target="u5e-ay-6eS" id="Sz6-Wo-o57"/>
                             </connections>
                         </button>
                     </subviews>
@@ -131,19 +127,14 @@
                 <constraint firstItem="zRm-B9-Vf6" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="zCL-Qp-3UK"/>
             </constraints>
             <connections>
-                <outlet property="arrayController" destination="u9V-fQ-Dg4" id="BnF-d1-Lp9"/>
                 <outlet property="tableView" destination="OTI-DZ-LbL" id="Nbo-v6-JZf"/>
             </connections>
         </customView>
-        <arrayController preservesSelection="NO" id="u9V-fQ-Dg4">
+        <dictionaryController objectClassName="_NSControllerKeyValuePair" id="u5e-ay-6eS">
             <connections>
-                <binding destination="3DR-rg-Zep" name="contentArray" keyPath="values.environmentVariables" id="xPV-Xb-jya">
-                    <dictionary key="options">
-                        <bool key="NSHandlesContentAsCompoundValue" value="YES"/>
-                    </dictionary>
-                </binding>
+                <binding destination="3DR-rg-Zep" name="contentDictionary" keyPath="values.environmentDictionary" id="6FP-uz-tqb"/>
             </connections>
-        </arrayController>
+        </dictionaryController>
         <userDefaultsController representsSharedInstance="YES" id="3DR-rg-Zep"/>
     </objects>
     <resources>
