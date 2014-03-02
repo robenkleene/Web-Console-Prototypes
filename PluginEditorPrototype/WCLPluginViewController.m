@@ -53,6 +53,8 @@ static void *WCLPluginViewControllerContext;
 
         NSLog(@"oldValue = %@", oldValue);
         NSLog(@"newValue = %@", newValue);
+
+        NSLog(@"observeValueForKeyPath: [self.arrayController selectedObjects]  = %@", [self.arrayController selectedObjects]);
     }
 }
 

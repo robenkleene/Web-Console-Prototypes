@@ -45,7 +45,11 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <connections>
-                                            <binding destination="u9V-fQ-Dg4" name="value" keyPath="arrangedObjects.name" id="7v6-BH-dP2"/>
+                                            <binding destination="u9V-fQ-Dg4" name="value" keyPath="arrangedObjects.name" id="Lvl-x2-xnh">
+                                                <dictionary key="options">
+                                                    <bool key="NSCreatesSortDescriptor" value="NO"/>
+                                                </dictionary>
+                                            </binding>
                                         </connections>
                                     </tableColumn>
                                     <tableColumn width="316" minWidth="40" maxWidth="1000" id="2NJ-UA-f0M">
@@ -66,7 +70,7 @@
                                     </tableColumn>
                                 </tableColumns>
                                 <connections>
-                                    <binding destination="u9V-fQ-Dg4" name="selectionIndexes" keyPath="selectionIndexes" id="fYK-o3-NzQ"/>
+                                    <binding destination="u9V-fQ-Dg4" name="selectionIndexes" keyPath="selectionIndexes" id="hzz-9g-R53"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -95,10 +99,10 @@
                             <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DnB-Nm-AUC">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
-                                <connections>
-                                    <action selector="addEnvironmentVariable:" target="-2" id="7V0-BZ-bsi"/>
-                                </connections>
                             </buttonCell>
+                            <connections>
+                                <action selector="addEnvironmentVariable:" target="-2" id="lnL-Jc-Xcj"/>
+                            </connections>
                         </button>
                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M3m-r5-0mC">
                             <rect key="frame" x="31" y="0.0" width="32" height="23"/>
@@ -131,9 +135,9 @@
                 <outlet property="tableView" destination="OTI-DZ-LbL" id="Nbo-v6-JZf"/>
             </connections>
         </customView>
-        <arrayController id="u9V-fQ-Dg4">
+        <arrayController preservesSelection="NO" id="u9V-fQ-Dg4">
             <connections>
-                <binding destination="3DR-rg-Zep" name="contentArray" keyPath="values.environmentVariables" id="ZOf-eN-t6j">
+                <binding destination="3DR-rg-Zep" name="contentArray" keyPath="values.environmentVariables" id="xPV-Xb-jya">
                     <dictionary key="options">
                         <bool key="NSHandlesContentAsCompoundValue" value="YES"/>
                     </dictionary>
