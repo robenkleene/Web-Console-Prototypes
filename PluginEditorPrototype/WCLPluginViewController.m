@@ -9,7 +9,6 @@
 #import "WCLPluginViewController.h"
 
 #define kArrayControllerSelectionKeyPath @"selection"
-//#define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"fileExtensions", @"type", nil]
 
 @interface WCLPluginNameTextField : NSTextField
 @end
@@ -21,7 +20,7 @@
 @end
 
 
-@interface WCLPluginViewController () <NSTextFieldDelegate>
+@interface WCLPluginViewController ()
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -57,11 +56,6 @@ static void *WCLPluginViewControllerContext;
 {
     [[self.view window] makeFirstResponder:self.tableView];
     return YES;
-}
-
-- (void)awakeFromNib
-{
-    NSLog(@"got here");
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -122,28 +116,6 @@ static void *WCLPluginViewControllerContext;
     }
 }
 
-#pragma mark - NSTextFieldDelegate
-
-- (IBAction)sentAction:(id)sender
-{
-    NSLog(@"sent");
-}
-
-- (void)controlTextDidBeginEditing:(NSNotification *)aNotification
-{
-    NSLog(@"aNotification = %@", aNotification);
-}
-
-- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor
-{
-    NSLog(@"delegate");
-    return YES;
-}
-
-- (void)textDidBeginEditing:(NSNotification *)aNotification
-{
-    NSLog(@"aNotification = %@", aNotification);
-}
 
 #warning Code for save confirmation
 //-(void)remove:(id)sender {

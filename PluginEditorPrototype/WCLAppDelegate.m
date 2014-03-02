@@ -21,7 +21,6 @@
 
 - (IBAction)showPreferencesWindow:(id)sender
 {
-    NSLog(@"showing %@", self.preferencesWindowController);
     [self.preferencesWindowController showWindow:self];
 }
 

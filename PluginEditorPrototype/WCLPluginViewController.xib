@@ -59,7 +59,6 @@
                                                         </textFieldCell>
                                                         <connections>
                                                             <binding destination="L66-AX-u2D" name="value" keyPath="objectValue.name" id="Mv5-me-dvg"/>
-                                                            <outlet property="delegate" destination="-2" id="pKU-i4-p5a"/>
                                                         </connections>
                                                     </textField>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="anp-09-f78">
