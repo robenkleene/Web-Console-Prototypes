@@ -32,6 +32,12 @@
     [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
 }
 
+- (BOOL)becomeFirstResponder
+{
+    [[self.view window] makeFirstResponder:self.tableView];
+    return YES;
+}
+
 - (NSDictionaryController *)dictionaryController
 {
     return _dictionaryController;

@@ -25,8 +25,10 @@
 + (void)setupConstraintsForView:(NSView *)insertedView inView:(NSView *)containerView;
 + (NSRect)newFrameForNewContentView:(NSView *)view inWindow:(NSWindow *)window;
 #pragma mark NSViewController Mappings
-+ (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)preferencePane;
+- (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)prefencePane;
 + (NSInteger)preferencePaneForViewController:(NSViewController *)viewController;
+@property (nonatomic, strong) WCLEnvironmentViewController *environmentViewController;
+@property (nonatomic, strong) WCLPluginViewController *pluginViewController;
 @end
 
 @implementation WCLPreferencesWindowController
@@ -47,7 +49,7 @@
 
 -(void)awakeFromNib
 {
-    self.viewController = [[self class] viewControllerForPreferencePane:self.preferencePane];
+    self.viewController = [self viewControllerForPreferencePane:self.preferencePane];
     [[[self window] contentView] setWantsLayer:YES];
 }
 
@@ -73,7 +75,7 @@
 
 - (void)setPreferencePane:(WCLPreferencePane)preferencePane animated:(BOOL)animated
 {
-    NSViewController *viewController = [[self class] viewControllerForPreferencePane:preferencePane];
+    NSViewController *viewController = [self viewControllerForPreferencePane:preferencePane];
     
     [self setViewController:viewController animated:animated];
 }
@@ -101,6 +103,8 @@
         [[[self window] animator] setFrame:frame display:YES];
         _viewController = viewController;
         _preferencePane = [[self class] preferencePaneForViewController:viewController];
+
+        [self.window makeFirstResponder:viewController];
     };
     
     if (animated) {
@@ -143,16 +147,16 @@
 
 #pragma mark - NSViewController Mappings
 
-+ (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)prefencePane
+- (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)prefencePane
 {
     NSViewController *viewController;
     
     switch (prefencePane) {
         case WCLPreferencePaneEnvironment:
-            viewController = [[WCLEnvironmentViewController alloc] initWithNibName:kEnvironmentViewControllerNibName bundle:nil];
+            viewController = self.environmentViewController;
             break;
         case WCLPreferencePanePlugins:
-            viewController = [[WCLPluginViewController alloc] initWithNibName:kPluginViewControllerNibName bundle:nil];
+            viewController = self.pluginViewController;
             break;
         default:
             NSAssert(NO, @"No NSViewController for WCLPreferencePane. %li", (long)prefencePane);
@@ -160,6 +164,24 @@
     }
     
     return viewController;
+}
+
+- (WCLEnvironmentViewController *)environmentViewController
+{
+    if (_environmentViewController) return _environmentViewController;
+    
+    _environmentViewController = [[WCLEnvironmentViewController alloc] initWithNibName:kEnvironmentViewControllerNibName bundle:nil];
+    
+    return _environmentViewController;
+}
+
+- (WCLPluginViewController *)pluginViewController
+{
+    if (_pluginViewController) return _pluginViewController;
+    
+    _pluginViewController = [[WCLPluginViewController alloc] initWithNibName:kPluginViewControllerNibName bundle:nil];
+    
+    return _pluginViewController;
 }
 
 + (NSInteger)preferencePaneForViewController:(NSViewController *)viewController

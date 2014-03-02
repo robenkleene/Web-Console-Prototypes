@@ -49,16 +49,17 @@
                                                 <rect key="frame" x="1" y="1" width="145" height="34"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uc2-b6-cYe">
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uc2-b6-cYe" customClass="WCLPluginNameTextField">
                                                         <rect key="frame" x="0.0" y="17" width="145" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="7PV-wn-DSB">
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Table View Cell" id="7PV-wn-DSB">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <connections>
                                                             <binding destination="L66-AX-u2D" name="value" keyPath="objectValue.name" id="Mv5-me-dvg"/>
+                                                            <outlet property="delegate" destination="-2" id="pKU-i4-p5a"/>
                                                         </connections>
                                                     </textField>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="anp-09-f78">
@@ -176,6 +177,7 @@
                             </textFieldCell>
                             <connections>
                                 <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.command" id="c0R-E8-khN"/>
+                                <outlet property="nextKeyView" destination="eIf-fm-ZJw" id="4gh-Z1-DuR"/>
                             </connections>
                         </textField>
                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QBo-qN-ZcP">

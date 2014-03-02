@@ -9,13 +9,25 @@
 #import "WCLPluginViewController.h"
 
 #define kArrayControllerSelectionKeyPath @"selection"
+//#define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"fileExtensions", @"type", nil]
 
-@interface WCLPluginViewController ()
+@interface WCLPluginNameTextField : NSTextField
+@end
+
+@implementation WCLPluginNameTextField
+- (void)mouseDown:(NSEvent *)theEvent {
+    // Intercept the mouse down event so the whole text field contents becomes selected instead of inserting a cursor.
+}
+@end
+
+
+@interface WCLPluginViewController () <NSTextFieldDelegate>
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (weak) IBOutlet NSArrayController *arrayController;
 @property (weak) IBOutlet NSTableView *tableView;
+//@property (nonatomic, strong) id selection;
 - (IBAction)saveAction:(id)sender;
 @end
 
@@ -41,6 +53,16 @@ static void *WCLPluginViewControllerContext;
     [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
 }
 
+- (BOOL)becomeFirstResponder
+{
+    [[self.view window] makeFirstResponder:self.tableView];
+    return YES;
+}
+
+- (void)awakeFromNib
+{
+    NSLog(@"got here");
+}
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -50,15 +72,33 @@ static void *WCLPluginViewControllerContext;
     }
 
     if ([keyPath isEqualToString:kArrayControllerSelectionKeyPath]) {
-        id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
-        id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+//        id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
+//        id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+//
+//        NSLog(@"oldValue = %@", oldValue);
+//        NSLog(@"newValue = %@", newValue);
 
-        NSLog(@"oldValue = %@", oldValue);
-        NSLog(@"newValue = %@", newValue);
+        NSError *error;
+        NSLog(@"saving");
+        if (![[self managedObjectContext] save:&error]) {
+            NSAssert(NO, @"Error saving.");
+        }
+        NSLog(@"observeValueForKeyPath: [self.arrayController selection]  = %@", [self.arrayController selection]);
 
-        NSLog(@"observeValueForKeyPath: [self.arrayController selectedObjects]  = %@", [self.arrayController selectedObjects]);
+        NSLog(@"[[self.arrayController selection] name] = %@", [[self.arrayController selection] valueForKey:@"name"]);
     }
 }
+
+//- (void)setSelection:(id)selection
+//{
+//    if (_selection == selection) return;
+//
+//    if (_selection) {
+//        for (NSString *keyPath in kObservedSelectionKeyPaths) {
+//            
+//        }
+//    }
+//}
 
 - (NSArrayController *)arrayController
 {
@@ -69,7 +109,9 @@ static void *WCLPluginViewControllerContext;
 {
     if (_arrayController != arrayController) {
         _arrayController = arrayController;
-        [_arrayController addObserver:self forKeyPath:kArrayControllerSelectionKeyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:&WCLPluginViewControllerContext];
+        [_arrayController addObserver:self forKeyPath:kArrayControllerSelectionKeyPath options:NSKeyValueObservingOptionNew context:&WCLPluginViewControllerContext];
+
+//        [_arrayController addObserver:self forKeyPath:kArrayControllerSelectionKeyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:&WCLPluginViewControllerContext];
     }
 }
 
@@ -78,6 +120,29 @@ static void *WCLPluginViewControllerContext;
     if (_arrayController) {
         [_arrayController removeObserver:self forKeyPath:kArrayControllerSelectionKeyPath context:&WCLPluginViewControllerContext];
     }
+}
+
+#pragma mark - NSTextFieldDelegate
+
+- (IBAction)sentAction:(id)sender
+{
+    NSLog(@"sent");
+}
+
+- (void)controlTextDidBeginEditing:(NSNotification *)aNotification
+{
+    NSLog(@"aNotification = %@", aNotification);
+}
+
+- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor
+{
+    NSLog(@"delegate");
+    return YES;
+}
+
+- (void)textDidBeginEditing:(NSNotification *)aNotification
+{
+    NSLog(@"aNotification = %@", aNotification);
 }
 
 #warning Code for save confirmation
