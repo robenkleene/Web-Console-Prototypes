@@ -15,6 +15,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (weak) IBOutlet NSArrayController *arrayController;
+@property (weak) IBOutlet NSTableView *tableView;
 - (IBAction)saveAction:(id)sender;
 @end
 
@@ -31,14 +32,15 @@ static void *WCLPluginViewControllerContext;
 
 @synthesize arrayController = _arrayController;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (IBAction)addPlugin:(id)sender
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Initialization code here.
-    }
-    return self;
+    id newObject = [self.arrayController newObject];
+    [self.arrayController addObject:newObject];
+    // Simple re-implement of NSDictionaryController add because using the add: method doesn't set the table view's selection right away.
+
+    [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
 }
+
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {

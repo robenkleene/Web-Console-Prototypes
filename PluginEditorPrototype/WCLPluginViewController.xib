@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="WCLPluginViewController">
             <connections>
                 <outlet property="arrayController" destination="wNa-Wq-zbh" id="nwO-Ht-u7v"/>
+                <outlet property="tableView" destination="lLh-WI-Io6" id="nNC-9n-4hn"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
         </customObject>
@@ -17,14 +18,14 @@
             <rect key="frame" x="0.0" y="0.0" width="550" height="272"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="36" horizontalPageScroll="10" verticalLineScroll="36" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oa6-vp-8OW">
+                <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oa6-vp-8OW">
                     <rect key="frame" x="20" y="44" width="150" height="208"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="IJA-um-SgK">
                         <rect key="frame" x="1" y="17" width="148" height="190"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="34" rowSizeStyle="automatic" headerView="Qah-PF-O27" viewBased="YES" id="lLh-WI-Io6">
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="Qah-PF-O27" viewBased="YES" id="lLh-WI-Io6">
                                 <rect key="frame" x="0.0" y="0.0" width="148" height="190"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -95,7 +96,7 @@
                         <rect key="frame" x="1" y="191" width="0.0" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="37" horizontal="NO" id="qXv-9C-DtM">
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="qXv-9C-DtM">
                         <rect key="frame" x="224" y="17" width="15" height="102"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -116,7 +117,7 @@
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
-                                <action selector="add:" target="wNa-Wq-zbh" id="OHN-nt-dHm"/>
+                                <action selector="addPlugin:" target="-2" id="BbX-ff-wTJ"/>
                             </connections>
                         </button>
                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VBP-Nd-hWc">
