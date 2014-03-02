@@ -8,19 +8,28 @@
 
 #import "WCLPluginViewController.h"
 
+#define kArrayControllerSelectionKeyPath @"selection"
+
 @interface WCLPluginViewController ()
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (weak) IBOutlet NSArrayController *arrayController;
 - (IBAction)saveAction:(id)sender;
 @end
 
+
+
 @implementation WCLPluginViewController
+
+static void *WCLPluginViewControllerContext;
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize managedObjectContext = _managedObjectContext;
 
+
+@synthesize arrayController = _arrayController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,6 +40,69 @@
     return self;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context != &WCLPluginViewControllerContext) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        return;
+    }
+
+    if ([keyPath isEqualToString:kArrayControllerSelectionKeyPath]) {
+        id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
+        id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+
+        NSLog(@"oldValue = %@", oldValue);
+        NSLog(@"newValue = %@", newValue);
+    }
+}
+
+- (NSArrayController *)arrayController
+{
+    return _arrayController;
+}
+
+- (void)setArrayController:(NSArrayController *)arrayController
+{
+    if (_arrayController != arrayController) {
+        _arrayController = arrayController;
+        [_arrayController addObserver:self forKeyPath:kArrayControllerSelectionKeyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:&WCLPluginViewControllerContext];
+    }
+}
+
+- (void)dealloc
+{
+    if (_arrayController) {
+        [_arrayController removeObserver:self forKeyPath:kArrayControllerSelectionKeyPath context:&WCLPluginViewControllerContext];
+    }
+}
+
+#warning Code for save confirmation
+//-(void)remove:(id)sender {
+//    NSAlert *alert = [[NSAlert alloc] init];
+//    [alert addButtonWithTitle:@"Delete"];
+//    [alert addButtonWithTitle:@"Cancel"];
+//    [alert setMessageText:@"Do you really want to delete this scary bug?"];
+//    [alert setInformativeText:@"Deleting a scary bug cannot be undone."];
+//    [alert setAlertStyle:NSWarningAlertStyle];
+//    [alert setDelegate:self];
+//    [alert respondsToSelector:@selector(doRemove)];
+//    [alert beginSheetModalForWindow:[[NSApplication sharedApplication] mainWindow] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+//}
+//
+//-(void)alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+//    if (returnCode ==  NSAlertFirstButtonReturn) {
+//        // We want to remove the saved image along with the bug
+//        Bug *bug = [[self selectedObjects] objectAtIndex:0];
+//        NSString *name = [bug valueForKey:@"name"];
+//        if (!([name isEqualToString:@"Centipede"] || [name isEqualToString:@"Potato Bug"] || [name isEqualToString:@"Wolf Spider"] || [name isEqualToString:@"Lady Bug"])) {
+//            NSError *error = nil;
+//            NSFileManager *manager = [[NSFileManager alloc] init];
+//            [manager removeItemAtURL:[NSURL URLWithString:bug.imagePath] error:&error];
+//            
+//        }
+//        [super remove:self];
+//    }
+//}
 
 
 #pragma mark - Core Data Stack

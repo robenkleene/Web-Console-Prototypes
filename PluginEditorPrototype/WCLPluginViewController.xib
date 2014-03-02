@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WCLPluginViewController">
             <connections>
+                <outlet property="arrayController" destination="wNa-Wq-zbh" id="nwO-Ht-u7v"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
         </customObject>
@@ -50,7 +51,7 @@
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uc2-b6-cYe">
                                                         <rect key="frame" x="0.0" y="17" width="145" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="7PV-wn-DSB">
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="7PV-wn-DSB">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -81,6 +82,7 @@
                                 </tableColumns>
                                 <connections>
                                     <binding destination="wNa-Wq-zbh" name="content" keyPath="arrangedObjects" id="isw-iD-kI5"/>
+                                    <binding destination="wNa-Wq-zbh" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="isw-iD-kI5" id="Zxt-jk-BQD"/>
                                 </connections>
                             </tableView>
                         </subviews>

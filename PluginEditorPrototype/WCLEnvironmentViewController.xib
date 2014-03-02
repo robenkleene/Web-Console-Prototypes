@@ -65,6 +65,9 @@
                                         </connections>
                                     </tableColumn>
                                 </tableColumns>
+                                <connections>
+                                    <binding destination="u9V-fQ-Dg4" name="selectionIndexes" keyPath="selectionIndexes" id="fYK-o3-NzQ"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
