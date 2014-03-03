@@ -129,6 +129,7 @@
                             </buttonCell>
                             <connections>
                                 <action selector="removePlugin:" target="-2" id="IQC-lP-Kde"/>
+                                <binding destination="wNa-Wq-zbh" name="enabled" keyPath="canRemove" id="ntm-i7-Fz1"/>
                             </connections>
                         </button>
                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JP6-iH-pRY">

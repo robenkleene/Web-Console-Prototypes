@@ -109,6 +109,7 @@
                             </buttonCell>
                             <connections>
                                 <action selector="remove:" target="u5e-ay-6eS" id="Sz6-Wo-o57"/>
+                                <binding destination="u5e-ay-6eS" name="enabled" keyPath="canRemove" id="rDF-ro-j3J"/>
                             </connections>
                         </button>
                     </subviews>
