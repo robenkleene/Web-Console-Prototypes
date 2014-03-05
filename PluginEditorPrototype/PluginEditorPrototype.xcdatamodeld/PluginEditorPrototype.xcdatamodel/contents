@@ -2,7 +2,7 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="12F45" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="WCLPlugin" representedClassName="WCLPlugin" syncable="YES">
         <attribute name="command" optional="YES" attributeType="String" defaultValueString="script.sh" syncable="YES"/>
-        <attribute name="fileExtensions" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="fileExtensionsData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" attributeType="String" defaultValueString="New Plugin" syncable="YES"/>
         <attribute name="type" attributeType="String" defaultValueString="Built-In" syncable="YES"/>
     </entity>

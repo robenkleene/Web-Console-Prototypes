@@ -12,8 +12,8 @@
 
 @interface WCLPlugin : NSManagedObject
 
+@property (nonatomic, strong) NSArray * fileExtensions;
 @property (nonatomic, retain) NSString * command;
-@property (nonatomic, retain) NSData * fileExtensions;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * type;
 

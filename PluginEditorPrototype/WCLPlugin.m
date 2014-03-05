@@ -10,15 +10,29 @@
 
 #define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"fileExtensions", @"type", nil]
 
+@interface WCLPlugin ()
+@property (nonatomic, retain) NSData * fileExtensionsData;
+@end
+
 @implementation WCLPlugin
 
 static void *WCLPlugiContext;
 
 
 @dynamic command;
-@dynamic fileExtensions;
+@dynamic fileExtensionsData;
 @dynamic name;
 @dynamic type;
+
+- (void)setFileExtensions:(NSArray *)fileExtensions
+{
+    self.fileExtensionsData = [NSKeyedArchiver archivedDataWithRootObject:fileExtensions];
+}
+
+- (NSArray *)fileExtensions
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:self.fileExtensionsData];
+}
 
 - (void)awakeFromFetch
 {
