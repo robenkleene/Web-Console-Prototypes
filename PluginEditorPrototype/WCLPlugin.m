@@ -31,6 +31,8 @@ static void *WCLPlugiContext;
 
 - (NSArray *)fileExtensions
 {
+    if (!self.fileExtensionsData) return nil;
+    
     return [NSKeyedUnarchiver unarchiveObjectWithData:self.fileExtensionsData];
 }
 
