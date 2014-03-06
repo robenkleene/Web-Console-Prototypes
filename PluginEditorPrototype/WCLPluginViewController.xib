@@ -234,11 +234,12 @@
                 <constraint firstItem="Oa6-vp-8OW" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="yZF-8A-0Iu"/>
             </constraints>
         </customView>
-        <arrayController mode="entity" entityName="WCLPlugin" automaticallyPreparesContent="YES" id="wNa-Wq-zbh">
+        <arrayController objectClassName="WCLPlugin" automaticallyPreparesContent="YES" id="wNa-Wq-zbh" customClass="WCLPluginArrayController">
             <connections>
-                <binding destination="-2" name="managedObjectContext" keyPath="managedObjectContext" id="ZL9-jA-uHt"/>
+                <binding destination="bad-zK-ts1" name="contentArray" keyPath="plugins" id="5xy-On-ahh"/>
             </connections>
         </arrayController>
+        <customObject id="bad-zK-ts1" customClass="WCLSharedPluginManagerController"/>
     </objects>
     <resources>
         <image name="NSActionTemplate" width="15" height="15"/>
