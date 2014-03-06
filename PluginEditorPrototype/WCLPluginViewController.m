@@ -23,11 +23,23 @@
 }
 @end
 
+
+@interface WCLPluginArrayController : NSArrayController
+@end
+
+@implementation WCLPluginArrayController
+- (id)newObject
+{
+    return [[WCLPluginManager sharedPluginManager] newPlugin];
+}
+@end
+
+
+
 @interface WCLPluginViewController ()
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (weak) IBOutlet NSArrayController *arrayController;
 @property (weak) IBOutlet NSTableView *tableView;
-
 @end
 
 @implementation WCLPluginViewController

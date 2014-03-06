@@ -7,10 +7,12 @@
 //
 
 #import "WCLPluginManager.h"
+#import "WCLPlugin.h"
 
 @interface WCLPluginManager ()
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+
 - (IBAction)saveAction:(id)sender;
 @end
 
@@ -19,6 +21,7 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize managedObjectContext = _managedObjectContext;
+@synthesize plugins = _plugins;
 
 + (id)sharedPluginManager
 {
@@ -27,6 +30,32 @@
     
     dispatch_once(&pred, ^{ pluginManager = [[self alloc] init]; });
     return pluginManager;
+}
+
+- (WCLPlugin *)newPlugin
+{
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin" inManagedObjectContext:self.managedObjectContext];
+    WCLPlugin *plugin = [[WCLPlugin alloc] initWithEntity:entity insertIntoManagedObjectContext:self.managedObjectContext];
+    return plugin;
+}
+
+- (NSMutableArray *)plugins
+{
+    if (_plugins) return _plugins;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+
+    NSError *error;
+    NSArray *plugins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+
+    NSAssert(!error, @"Error executing fetch request. %@ %@", fetchRequest, error);
+    
+    _plugins = [plugins mutableCopy];
+
+    return _plugins;
 }
 
 #pragma mark - Core Data Stack
