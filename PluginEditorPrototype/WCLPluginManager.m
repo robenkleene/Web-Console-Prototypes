@@ -12,7 +12,7 @@
 @interface WCLPluginManager ()
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-
+@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 - (IBAction)saveAction:(id)sender;
 @end
 
@@ -36,7 +36,25 @@
 {
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin" inManagedObjectContext:self.managedObjectContext];
     WCLPlugin *plugin = [[WCLPlugin alloc] initWithEntity:entity insertIntoManagedObjectContext:self.managedObjectContext];
+
+    NSError *error;
+    NSLog(@"saving after adding plugin %@", plugin);
+    if (![[self managedObjectContext] save:&error]) {
+        NSAssert(NO, @"Error saving.");
+    }
+    
     return plugin;
+}
+
+- (void)deletePlugin:(WCLPlugin *)plugin
+{
+    [self.managedObjectContext deleteObject:plugin];
+
+    NSError *error;
+    NSLog(@"saving after removing plugin %@", plugin);
+    if (![[self managedObjectContext] save:&error]) {
+        NSAssert(NO, @"Error saving.");
+    }
 }
 
 - (NSMutableArray *)plugins

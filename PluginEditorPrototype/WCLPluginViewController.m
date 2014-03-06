@@ -35,9 +35,7 @@
 @end
 
 
-
 @interface WCLPluginViewController ()
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (weak) IBOutlet NSArrayController *arrayController;
 @property (weak) IBOutlet NSTableView *tableView;
 @end
@@ -46,24 +44,12 @@
 
 @synthesize arrayController = _arrayController;
 
-- (NSManagedObjectContext *)managedObjectContext
-{
-    return [[WCLPluginManager sharedPluginManager] managedObjectContext];
-}
-
 - (IBAction)addPlugin:(id)sender
 {
     id newObject = [self.arrayController newObject];
     [self.arrayController addObject:newObject];
-    // Simple re-implement of NSDictionaryController add because using the add: method doesn't set the table view's selection right away.
-
+    // Simple re-implement of NSDictionaryController add because using the add: method waits for the next run loop before updating the table view.
     [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
-
-    NSError *error;
-    NSLog(@"saving after adding plugin %@", newObject);
-    if (![[self managedObjectContext] save:&error]) {
-        NSAssert(NO, @"Error saving.");
-    }
 }
 
 - (BOOL)becomeFirstResponder
@@ -95,12 +81,6 @@
     if (returnCode != NSAlertFirstButtonReturn) return;
 
     [self.arrayController remove:nil];
-
-    NSError *error;
-    NSLog(@"saving after removing plugin %@", [self.arrayController selection]);
-    if (![[self managedObjectContext] save:&error]) {
-        NSAssert(NO, @"Error saving.");
-    }
 }
 
 
