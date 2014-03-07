@@ -15,7 +15,7 @@
 #warning Move this somewhere where it's accessible to whole app
 #define kAppName (NSString *)[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]
 #define kPlugInExtension @"wcplugin"
-#define kPluginSelectionNameKey @"name"
+#define kPluginNameKey @"name"
 
 @implementation WCLPluginNameTextField
 - (void)mouseDown:(NSEvent *)theEvent {
@@ -36,18 +36,20 @@
 
 
 @interface WCLPluginViewController ()
-@property (weak) IBOutlet NSArrayController *arrayController;
+@property (weak) IBOutlet WCLPluginArrayController *pluginArrayController;
 @property (weak) IBOutlet NSTableView *tableView;
 @end
 
 @implementation WCLPluginViewController
 
-@synthesize arrayController = _arrayController;
+@synthesize pluginArrayController = _pluginArrayController;
 
 - (IBAction)addPlugin:(id)sender
 {
-    id newObject = [self.arrayController newObject];
-    [self.arrayController addObject:newObject];
+    id newObject = [self.pluginArrayController newObject];
+    [self.pluginArrayController addObject:newObject];
+    [self.pluginArrayController rearrangeObjects];
+
     // Simple re-implement of NSDictionaryController add because using the add: method waits for the next run loop before updating the table view.
     [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
 }
@@ -61,7 +63,7 @@
 
 - (IBAction)removePlugin:(id)sender
 {
-    NSString *pluginName = [[self.arrayController selection] valueForKey:kPluginSelectionNameKey];
+    NSString *pluginName = [[self.pluginArrayController selection] valueForKey:kPluginNameKey];
     
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Move to Trash"];
@@ -80,8 +82,25 @@
 {
     if (returnCode != NSAlertFirstButtonReturn) return;
 
-    [self.arrayController remove:nil];
+    [self.pluginArrayController remove:nil];
 }
 
+#pragma mark - Properties
 
+- (WCLPluginArrayController *)pluginArrayController
+{
+    return _pluginArrayController;
+}
+
+- (void)setPluginArrayController:(WCLPluginArrayController *)pluginArrayController
+{
+    if (_pluginArrayController == pluginArrayController) return;
+    
+    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:kPluginNameKey
+                                                                       ascending:YES
+                                                                        selector:@selector(localizedCaseInsensitiveCompare:)];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:nameSortDescriptor, nil];
+    [pluginArrayController setSortDescriptors:sortDescriptors];
+    _pluginArrayController = pluginArrayController;
+}
 @end

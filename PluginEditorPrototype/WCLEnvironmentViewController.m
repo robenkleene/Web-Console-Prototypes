@@ -38,6 +38,8 @@
     return YES;
 }
 
+#pragma mark - Properties
+
 - (NSDictionaryController *)dictionaryController
 {
     return _dictionaryController;
@@ -45,11 +47,11 @@
 
 - (void)setDictionaryController:(NSDictionaryController *)dictionaryController
 {
-    if (_dictionaryController != dictionaryController) {
-        [dictionaryController setInitialKey:kEnvironmentVariableDefaultKey];
-        [dictionaryController setInitialKey:kEnvironmentVariableDefaultValue];
-        _dictionaryController = dictionaryController;
-    }
+    if (_dictionaryController == dictionaryController) return;
+    
+    [dictionaryController setInitialKey:kEnvironmentVariableDefaultKey];
+    [dictionaryController setInitialKey:kEnvironmentVariableDefaultValue];
+    _dictionaryController = dictionaryController;
 }
 
 @end

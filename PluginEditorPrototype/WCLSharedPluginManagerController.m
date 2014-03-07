@@ -105,14 +105,16 @@
 
 #pragma mark - Optional Key-Value Coding To-Many Relationship Compliance
 
-- (void)replaceObjectInPluginsAtIndex:(NSUInteger)index withObject:(id)anObject
-{
-    [self.mutablePlugins replaceObjectAtIndex:index withObject:anObject];
-}
+// Don't implement these to avoid implementing delete for them.
 
-- (void)replacePluginsAtIndexes:(NSIndexSet *)indexes withPlugins:(NSArray *)pluginArray
-{
-    [self.mutablePlugins replaceObjectsAtIndexes:indexes withObjects:pluginArray];
-}
+//- (void)replaceObjectInPluginsAtIndex:(NSUInteger)index withObject:(id)anObject
+//{
+//    [self.mutablePlugins replaceObjectAtIndex:index withObject:anObject];
+//}
+//
+//- (void)replacePluginsAtIndexes:(NSIndexSet *)indexes withPlugins:(NSArray *)pluginArray
+//{
+//    [self.mutablePlugins replaceObjectsAtIndexes:indexes withObjects:pluginArray];
+//}
 
 @end

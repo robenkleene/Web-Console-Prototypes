@@ -7,7 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WCLPluginViewController">
             <connections>
-                <outlet property="arrayController" destination="wNa-Wq-zbh" id="nwO-Ht-u7v"/>
+                <outlet property="pluginArrayController" destination="wNa-Wq-zbh" id="LX3-m4-dpg"/>
                 <outlet property="tableView" destination="lLh-WI-Io6" id="nNC-9n-4hn"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
