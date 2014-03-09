@@ -11,6 +11,9 @@
 #define kEnvironmentVariableDefaultKey @"VARIABLE"
 #define kEnvironmentVariableDefaultValue @"VALUE"
 
+
+#pragma mark - WCLEnvironmentView
+
 @interface WCLEnvironmentView : NSView
 @end
 
@@ -52,6 +55,48 @@
 
 @end
 
+
+#pragma mark - WCLEnvironmentVariableFormatter
+
+@interface WCLEnvironmentVariableFormatter : NSFormatter
+@end
+
+@implementation WCLEnvironmentVariableFormatter
+
+- (NSString *)stringForObjectValue:(id)obj
+{
+    if ([obj isKindOfClass:[NSString class]]) {
+        return obj;
+    }
+
+    return nil;
+}
+
+- (BOOL)getObjectValue:(out __autoreleasing id *)obj forString:(NSString *)string errorDescription:(out NSString *__autoreleasing *)error
+{
+    *obj = string;
+    
+    return YES;
+}
+
+- (BOOL)isPartialStringValid:(NSString *)partialString newEditingString:(NSString *__autoreleasing *)newString errorDescription:(NSString *__autoreleasing *)error
+{
+    NSMutableCharacterSet *allowedCharacterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"_"];
+    [allowedCharacterSet formUnionWithCharacterSet:[NSCharacterSet alphanumericCharacterSet]];
+    
+    NSCharacterSet *disallowedCharacterSet = [allowedCharacterSet invertedSet];
+
+    NSRange disallowedRange = [partialString rangeOfCharacterFromSet:disallowedCharacterSet];
+    BOOL foundDisallowedCharacter = !(NSNotFound == disallowedRange.location);
+    
+    return !foundDisallowedCharacter;
+}
+
+@end
+
+
+
+#pragma mark - WCLEnvironmentViewController
 
 @interface WCLEnvironmentViewController ()
 @property (weak) IBOutlet NSTableView *tableView;

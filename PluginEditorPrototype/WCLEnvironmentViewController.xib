@@ -42,6 +42,9 @@
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <outlet property="formatter" destination="LNF-Rc-0bA" id="yo7-i9-M9U"/>
+                                            </connections>
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <connections>
@@ -149,6 +152,7 @@
             </connections>
         </dictionaryController>
         <userDefaultsController representsSharedInstance="YES" id="3DR-rg-Zep"/>
+        <customFormatter id="LNF-Rc-0bA" customClass="WCLEnvironmentVariableFormatter"/>
     </objects>
     <resources>
         <image name="NSAddTemplate" width="8" height="8"/>
