@@ -14,7 +14,7 @@
 #define kEnvironmentViewControllerNibName @"WCLEnvironmentViewController"
 #define kPluginViewControllerNibName @"WCLPluginViewController"
 
-@interface WCLPreferencesWindowController ()
+@interface WCLPreferencesWindowController () <NSWindowDelegate>
 #pragma mark NSToolbar
 - (IBAction)switchView:(id)sender;
 #pragma mark Properties
@@ -47,11 +47,12 @@
     return self;
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
     self.viewController = [self viewControllerForPreferencePane:self.preferencePane];
     [[[self window] contentView] setWantsLayer:YES];
 }
+
 
 #pragma mark - NSToolbar
 
