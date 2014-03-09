@@ -68,8 +68,8 @@
 - (NSArray *)plugins
 {
 #warning I think what I really want to do is call will change object for key on this property, but for now, just pass the mutable version so it's observable.
-    return [NSArray arrayWithArray:self.mutablePlugins];
-//    return self.mutablePlugins;
+//    return [NSArray arrayWithArray:self.mutablePlugins];
+    return self.mutablePlugins;
 }
 
 - (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index

@@ -45,7 +45,11 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <connections>
-                                            <binding destination="u5e-ay-6eS" name="value" keyPath="arrangedObjects.key" id="og9-Ym-Awk"/>
+                                            <binding destination="u5e-ay-6eS" name="value" keyPath="arrangedObjects.key" id="cA4-0b-lKF">
+                                                <dictionary key="options">
+                                                    <bool key="NSValidatesImmediately" value="YES"/>
+                                                </dictionary>
+                                            </binding>
                                         </connections>
                                     </tableColumn>
                                     <tableColumn width="316" minWidth="40" maxWidth="1000" id="2NJ-UA-f0M">
@@ -61,7 +65,11 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <connections>
-                                            <binding destination="u5e-ay-6eS" name="value" keyPath="arrangedObjects.value" id="FlU-3W-bBT"/>
+                                            <binding destination="u5e-ay-6eS" name="value" keyPath="arrangedObjects.value" id="zfh-qh-1Qa">
+                                                <dictionary key="options">
+                                                    <bool key="NSValidatesImmediately" value="YES"/>
+                                                </dictionary>
+                                            </binding>
                                         </connections>
                                     </tableColumn>
                                 </tableColumns>

@@ -59,7 +59,6 @@
                                                         </textFieldCell>
                                                         <connections>
                                                             <binding destination="L66-AX-u2D" name="value" keyPath="objectValue.name" id="Mv5-me-dvg"/>
-                                                            <outlet property="delegate" destination="-2" id="FSs-Bp-hid"/>
                                                         </connections>
                                                     </textField>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="anp-09-f78">
@@ -85,7 +84,6 @@
                                 <connections>
                                     <binding destination="wNa-Wq-zbh" name="content" keyPath="arrangedObjects" id="isw-iD-kI5"/>
                                     <binding destination="wNa-Wq-zbh" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="isw-iD-kI5" id="Zxt-jk-BQD"/>
-                                    <outlet property="delegate" destination="-2" id="JVD-qi-Mal"/>
                                 </connections>
                             </tableView>
                         </subviews>
