@@ -12,6 +12,8 @@
 
 @interface WCLPlugin ()
 @property (nonatomic, retain) NSData * fileExtensionsData;
++ (BOOL)isValidName:(NSString *)name;
++ (BOOL)nameIsUnique:(NSString *)name;
 @end
 
 @implementation WCLPlugin
@@ -24,6 +26,8 @@ static void *WCLPlugiContext;
 @dynamic name;
 @dynamic type;
 
+#pragma mark - Properties
+
 - (void)setFileExtensions:(NSArray *)fileExtensions
 {
     self.fileExtensionsData = [NSKeyedArchiver archivedDataWithRootObject:fileExtensions];
@@ -35,6 +39,52 @@ static void *WCLPlugiContext;
     
     return [NSKeyedUnarchiver unarchiveObjectWithData:self.fileExtensionsData];
 }
+
+- (BOOL)validateName:(id *)ioValue error:(NSError * __autoreleasing *)outError
+{
+    NSString *name;
+    if ([*ioValue isKindOfClass:[NSString class]]) {
+        name = *ioValue;
+    }
+
+    BOOL valid = [WCLPlugin isValidName:name];
+    if (!valid && outError) {
+        NSString *errorMessage = @"The plugin name must be unique, and can only contain alphanumeric characters, spaces, hyphens and underscores.";
+        NSString *errorString = NSLocalizedString(errorMessage, @"Invalid plugin name error.");
+
+        NSDictionary *userInfoDict = @{NSLocalizedDescriptionKey: errorString};
+        *outError = [[NSError alloc] initWithDomain:kErrorDomain
+                                               code:kErrorCodeInvalidePluginName
+                                           userInfo:userInfoDict];
+    }
+
+    return valid;
+}
+
++ (BOOL)isValidName:(NSString *)name
+{
+    return name && [WCLPlugin nameContainsOnlyValidCharacters:name] && [WCLPlugin nameIsUnique:name];
+}
+
++ (BOOL)nameContainsOnlyValidCharacters:(NSString *)name
+{
+    NSMutableCharacterSet *allowedCharacterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"_- "];
+    [allowedCharacterSet formUnionWithCharacterSet:[NSCharacterSet alphanumericCharacterSet]];
+    
+    NSCharacterSet *disallowedCharacterSet = [allowedCharacterSet invertedSet];
+    
+    NSRange disallowedRange = [name rangeOfCharacterFromSet:disallowedCharacterSet];
+    BOOL foundDisallowedCharacter = !(NSNotFound == disallowedRange.location);
+    
+    return !foundDisallowedCharacter;
+}
+
++ (BOOL)nameIsUnique:(NSString *)name
+{
+    return YES;
+}
+
+#pragma mark - Saving
 
 - (void)awakeFromFetch
 {

@@ -52,13 +52,18 @@
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uc2-b6-cYe" customClass="WCLPluginNameTextField">
                                                         <rect key="frame" x="0.0" y="17" width="145" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Table View Cell" id="7PV-wn-DSB">
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" id="7PV-wn-DSB">
+                                                            <customFormatter key="formatter" id="0sC-4N-3HP" customClass="WCLPluginNameFormatter"/>
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <connections>
-                                                            <binding destination="L66-AX-u2D" name="value" keyPath="objectValue.name" id="Mv5-me-dvg"/>
+                                                            <binding destination="L66-AX-u2D" name="value" keyPath="objectValue.name" id="Bqy-p3-6Ji">
+                                                                <dictionary key="options">
+                                                                    <bool key="NSValidatesImmediately" value="YES"/>
+                                                                </dictionary>
+                                                            </binding>
                                                         </connections>
                                                     </textField>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="anp-09-f78">
@@ -84,6 +89,7 @@
                                 <connections>
                                     <binding destination="wNa-Wq-zbh" name="content" keyPath="arrangedObjects" id="isw-iD-kI5"/>
                                     <binding destination="wNa-Wq-zbh" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="isw-iD-kI5" id="Zxt-jk-BQD"/>
+                                    <outlet property="delegate" destination="-2" id="wsG-PP-yrC"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -236,7 +242,7 @@
         </customView>
         <arrayController objectClassName="WCLPlugin" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="wNa-Wq-zbh" customClass="WCLPluginArrayController">
             <connections>
-                <binding destination="bad-zK-ts1" name="contentArray" keyPath="plugins" id="5xy-On-ahh"/>
+                <binding destination="bad-zK-ts1" name="contentArray" keyPath="plugins" id="MYr-Be-RA7"/>
             </connections>
         </arrayController>
         <customObject id="bad-zK-ts1" customClass="WCLSharedPluginManagerController"/>

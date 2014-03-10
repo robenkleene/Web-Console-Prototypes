@@ -9,11 +9,7 @@
 
 #import "WCLPluginViewController.h"
 #import "WCLPluginManager.h"
-
-#warning Move this somewhere where it's accessible to whole app
-#define kAppName (NSString *)[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]
-#define kPlugInExtension @"wcplugin"
-#define kPluginNameKey @"name"
+#import "WCLPlugin.h"
 
 #pragma mark - WCLPluginNameTextField
 
@@ -27,6 +23,38 @@
 }
 
 @end
+
+
+#pragma mark - WCLPluginNameFormatter
+
+@interface WCLPluginNameFormatter : NSFormatter
+@end
+
+@implementation WCLPluginNameFormatter
+
+- (NSString *)stringForObjectValue:(id)obj
+{
+    if ([obj isKindOfClass:[NSString class]]) {
+        return obj;
+    }
+    
+    return nil;
+}
+
+- (BOOL)getObjectValue:(out __autoreleasing id *)obj forString:(NSString *)string errorDescription:(out NSString *__autoreleasing *)error
+{
+    *obj = string;
+    
+    return YES;
+}
+
+- (BOOL)isPartialStringValid:(NSString *)partialString newEditingString:(NSString *__autoreleasing *)newString errorDescription:(NSString *__autoreleasing *)error
+{
+    return [WCLPlugin nameContainsOnlyValidCharacters:partialString];
+}
+
+@end
+
 
 
 #pragma mark - WCLPluginArrayController
@@ -54,7 +82,7 @@
 
 #pragma mark - WCLPluginViewController
 
-@interface WCLPluginViewController ()
+@interface WCLPluginViewController () <NSTableViewDelegate>
 @property (weak) IBOutlet WCLPluginArrayController *pluginArrayController;
 @property (weak) IBOutlet NSTableView *tableView;
 - (IBAction)addPlugin:(id)sender;

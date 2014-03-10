@@ -144,11 +144,7 @@
         </customView>
         <dictionaryController objectClassName="_NSControllerKeyValuePair" id="u5e-ay-6eS">
             <connections>
-                <binding destination="3DR-rg-Zep" name="contentDictionary" keyPath="values.environmentDictionary" id="Eb3-fk-bCJ">
-                    <dictionary key="options">
-                        <bool key="NSValidatesImmediately" value="YES"/>
-                    </dictionary>
-                </binding>
+                <binding destination="3DR-rg-Zep" name="contentDictionary" keyPath="values.environmentDictionary" id="fxC-kV-rp6"/>
             </connections>
         </dictionaryController>
         <userDefaultsController representsSharedInstance="YES" id="3DR-rg-Zep"/>

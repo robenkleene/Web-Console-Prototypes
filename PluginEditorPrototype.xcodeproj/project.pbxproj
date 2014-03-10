@@ -72,6 +72,7 @@
 		4567DB9218B26E5800CBBD29 /* WCLEnvironmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLEnvironmentViewController.h; sourceTree = "<group>"; };
 		4567DB9318B26E5800CBBD29 /* WCLEnvironmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLEnvironmentViewController.m; sourceTree = "<group>"; };
 		4567DB9418B26E5800CBBD29 /* WCLEnvironmentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WCLEnvironmentViewController.xib; sourceTree = "<group>"; };
+		456FAD7018CD03CF001B9067 /* WCLWebConsoleConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLWebConsoleConstants.h; sourceTree = "<group>"; };
 		45D21F0518C6CFD4001AFE36 /* WCLPluginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPluginManager.h; sourceTree = "<group>"; };
 		45D21F0618C6CFD4001AFE36 /* WCLPluginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginManager.m; sourceTree = "<group>"; };
 		45D21F0818C80932001AFE36 /* WCLSharedPluginManagerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLSharedPluginManagerController.h; sourceTree = "<group>"; };
@@ -141,6 +142,7 @@
 		4567DB4818B03A7A00CBBD29 /* PluginEditorPrototype */ = {
 			isa = PBXGroup;
 			children = (
+				456FAD7018CD03CF001B9067 /* WCLWebConsoleConstants.h */,
 				4567DB5418B03A7A00CBBD29 /* WCLAppDelegate.h */,
 				4567DB5518B03A7A00CBBD29 /* WCLAppDelegate.m */,
 				4567DB5718B03A7A00CBBD29 /* MainMenu.xib */,
