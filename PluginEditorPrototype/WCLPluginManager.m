@@ -8,11 +8,13 @@
 
 #import "WCLPluginManager.h"
 #import "WCLPlugin.h"
+#import "WCLPluginValidationHelper.h"
 
 @interface WCLPluginManager ()
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) NSMutableDictionary *nameToPluginDictionary;
 - (IBAction)saveAction:(id)sender;
 @end
 
@@ -21,7 +23,6 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize managedObjectContext = _managedObjectContext;
-@synthesize plugins = _plugins;
 
 + (id)sharedPluginManager
 {
@@ -37,11 +38,17 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin" inManagedObjectContext:self.managedObjectContext];
     WCLPlugin *plugin = [[WCLPlugin alloc] initWithEntity:entity insertIntoManagedObjectContext:self.managedObjectContext];
 
+    plugin.name = [WCLPluginValidationHelper uniquePluginNameFromName:plugin.name];
+    
     NSError *error;
     NSLog(@"saving after adding plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving.");
     }
+
+    // Adding the plugin to the dictionary must happen after saving, otherwise name validation will fail
+    // because this plugin in the dictionary will cause the name to no longer be unique.
+    self.nameToPluginDictionary[plugin.name] = plugin;
     
     return plugin;
 }
@@ -57,23 +64,37 @@
     }
 }
 
-- (NSMutableArray *)plugins
+- (NSMutableDictionary *)nameToPluginDictionary
 {
-    if (_plugins) return _plugins;
-    
+    if (_nameToPluginDictionary) {
+        return _nameToPluginDictionary;
+    }
+
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
-
+    
     NSError *error;
     NSArray *plugins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-
     NSAssert(!error, @"Error executing fetch request. %@ %@", fetchRequest, error);
     
-    _plugins = [plugins mutableCopy];
+    _nameToPluginDictionary = [NSMutableDictionary dictionary];
+    for (WCLPlugin *plugin in plugins) {
+        _nameToPluginDictionary[plugin.name] = plugin;
+    }
 
-    return _plugins;
+    return _nameToPluginDictionary;
+}
+
+- (NSArray *)plugins
+{
+    return [self.nameToPluginDictionary allValues];
+}
+
+- (WCLPlugin *)pluginWithName:(NSString *)name
+{
+    return self.nameToPluginDictionary[name];
 }
 
 #pragma mark - Core Data Stack

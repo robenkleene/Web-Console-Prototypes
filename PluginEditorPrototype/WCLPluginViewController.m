@@ -9,7 +9,8 @@
 
 #import "WCLPluginViewController.h"
 #import "WCLPluginManager.h"
-#import "WCLPlugin.h"
+
+#import "WCLPluginValidationHelper.h"
 
 #pragma mark - WCLPluginNameTextField
 
@@ -50,7 +51,7 @@
 
 - (BOOL)isPartialStringValid:(NSString *)partialString newEditingString:(NSString *__autoreleasing *)newString errorDescription:(NSString *__autoreleasing *)error
 {
-    return [WCLPlugin nameContainsOnlyValidCharacters:partialString];
+    return [WCLPluginValidationHelper nameContainsOnlyValidCharacters:partialString];
 }
 
 @end

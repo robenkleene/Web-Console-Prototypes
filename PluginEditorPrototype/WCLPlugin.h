@@ -16,6 +16,4 @@
 @property (nonatomic, retain) NSString * command;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * type;
-
-+ (BOOL)nameContainsOnlyValidCharacters:(NSString *)name;
 @end

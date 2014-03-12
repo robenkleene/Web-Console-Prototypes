@@ -28,6 +28,7 @@
 		4567DB9618B26E5800CBBD29 /* WCLEnvironmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB9418B26E5800CBBD29 /* WCLEnvironmentViewController.xib */; };
 		45D21F0718C6CFD4001AFE36 /* WCLPluginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D21F0618C6CFD4001AFE36 /* WCLPluginManager.m */; };
 		45D21F0A18C80932001AFE36 /* WCLSharedPluginManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D21F0918C80932001AFE36 /* WCLSharedPluginManagerController.m */; };
+		45F892E818CFD84A00B89515 /* WCLPluginValidationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892E718CFD84A00B89515 /* WCLPluginValidationHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,8 @@
 		45D21F0618C6CFD4001AFE36 /* WCLPluginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginManager.m; sourceTree = "<group>"; };
 		45D21F0818C80932001AFE36 /* WCLSharedPluginManagerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLSharedPluginManagerController.h; sourceTree = "<group>"; };
 		45D21F0918C80932001AFE36 /* WCLSharedPluginManagerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLSharedPluginManagerController.m; sourceTree = "<group>"; };
+		45F892E618CFD84A00B89515 /* WCLPluginValidationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPluginValidationHelper.h; sourceTree = "<group>"; };
+		45F892E718CFD84A00B89515 /* WCLPluginValidationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginValidationHelper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +153,8 @@
 				4567DB5A18B03A7A00CBBD29 /* PluginEditorPrototype.xcdatamodeld */,
 				4567DB8718B1C08800CBBD29 /* WCLPlugin.h */,
 				4567DB8818B1C08800CBBD29 /* WCLPlugin.m */,
+				45F892E618CFD84A00B89515 /* WCLPluginValidationHelper.h */,
+				45F892E718CFD84A00B89515 /* WCLPluginValidationHelper.m */,
 				4567DB7918B044B700CBBD29 /* WCLPreferencesWindowController.h */,
 				4567DB7A18B044B700CBBD29 /* WCLPreferencesWindowController.m */,
 				4567DB7B18B044B700CBBD29 /* WCLPreferencesWindowController.xib */,
@@ -305,6 +310,7 @@
 				4567DB5C18B03A7A00CBBD29 /* PluginEditorPrototype.xcdatamodeld in Sources */,
 				4567DB8918B1C08800CBBD29 /* WCLPlugin.m in Sources */,
 				4567DB7C18B044B700CBBD29 /* WCLPreferencesWindowController.m in Sources */,
+				45F892E818CFD84A00B89515 /* WCLPluginValidationHelper.m in Sources */,
 				45D21F0718C6CFD4001AFE36 /* WCLPluginManager.m in Sources */,
 				4567DB9018B26DD000CBBD29 /* WCLPluginViewController.m in Sources */,
 				4567DB4F18B03A7A00CBBD29 /* main.m in Sources */,

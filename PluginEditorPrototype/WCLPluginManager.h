@@ -14,5 +14,6 @@
 + (id)sharedPluginManager;
 - (WCLPlugin *)newPlugin;
 - (void)deletePlugin:(WCLPlugin *)plugin;
-@property (readonly, strong, nonatomic) NSMutableArray *plugins;
+- (NSArray *)plugins;
+- (WCLPlugin *)pluginWithName:(NSString *)name;
 @end

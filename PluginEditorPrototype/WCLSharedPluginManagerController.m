@@ -11,11 +11,12 @@
 #import "WCLPluginManager.h"
 
 @interface WCLSharedPluginManagerController ()
-@property (nonatomic, strong, readonly) NSMutableArray *mutablePlugins;
+@property (nonatomic, strong, readonly) NSMutableArray *plugins;
 @end
 
 @implementation WCLSharedPluginManagerController
 
+@synthesize plugins = _plugins;
 
 #pragma mark - Interface Builder Compatible Singleton
 
@@ -56,46 +57,43 @@
 }
 
 
-#pragma mark - Properties
-
-- (NSMutableArray *)mutablePlugins
-{
-    return [[WCLPluginManager sharedPluginManager] plugins];
-}
-
 #pragma mark - Required Key-Value Coding To-Many Relationship Compliance
 
-- (NSArray *)plugins
+- (NSMutableArray *)plugins
 {
-#warning I think what I really want to do is call will change object for key on this property, but for now, just pass the mutable version so it's observable.
-//    return [NSArray arrayWithArray:self.mutablePlugins];
-    return self.mutablePlugins;
+    if (_plugins) {
+        return _plugins;
+    }
+    
+    _plugins = [[[WCLPluginManager sharedPluginManager] plugins] mutableCopy];
+    
+    return _plugins;
 }
 
 - (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index
 {
-    [self.mutablePlugins insertObject:plugin atIndex:index];
+    [self.plugins insertObject:plugin atIndex:index];
 }
 
 - (void)insertPlugins:(NSArray *)pluginsArray atIndexes:(NSIndexSet *)indexes
 {
-    [self.mutablePlugins insertObjects:pluginsArray atIndexes:indexes];
+    [self.plugins insertObjects:pluginsArray atIndexes:indexes];
 }
 
 - (void)removeObjectFromPluginsAtIndex:(NSUInteger)index
 {
-    WCLPlugin *pluginToDelete = [self.mutablePlugins objectAtIndex:index];
+    WCLPlugin *pluginToDelete = [self.plugins objectAtIndex:index];
     
-    [self.mutablePlugins removeObjectAtIndex:index];
+    [self.plugins removeObjectAtIndex:index];
 
     [[WCLPluginManager sharedPluginManager] deletePlugin:pluginToDelete];
 }
 
 - (void)removePluginsAtIndexes:(NSIndexSet *)indexes
 {
-    NSArray *objectsToDelete = [self.mutablePlugins objectsAtIndexes:indexes];
+    NSArray *objectsToDelete = [self.plugins objectsAtIndexes:indexes];
     
-    [self.mutablePlugins removeObjectsAtIndexes:indexes];
+    [self.plugins removeObjectsAtIndexes:indexes];
 
     for (WCLPlugin *aPlugin in objectsToDelete) {
         [[WCLPluginManager sharedPluginManager] deletePlugin:aPlugin];

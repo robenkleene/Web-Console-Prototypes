@@ -7,13 +7,12 @@
 //
 
 #import "WCLPlugin.h"
+#import "WCLPluginValidationHelper.h"
 
 #define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"fileExtensions", @"type", nil]
 
 @interface WCLPlugin ()
 @property (nonatomic, retain) NSData * fileExtensionsData;
-+ (BOOL)isValidName:(NSString *)name;
-+ (BOOL)nameIsUnique:(NSString *)name;
 @end
 
 @implementation WCLPlugin
@@ -47,7 +46,7 @@ static void *WCLPlugiContext;
         name = *ioValue;
     }
 
-    BOOL valid = [WCLPlugin isValidName:name];
+    BOOL valid = [WCLPluginValidationHelper isValidName:name];
     if (!valid && outError) {
         NSString *errorMessage = @"The plugin name must be unique, and can only contain alphanumeric characters, spaces, hyphens and underscores.";
         NSString *errorString = NSLocalizedString(errorMessage, @"Invalid plugin name error.");
@@ -61,28 +60,7 @@ static void *WCLPlugiContext;
     return valid;
 }
 
-+ (BOOL)isValidName:(NSString *)name
-{
-    return name && [WCLPlugin nameContainsOnlyValidCharacters:name] && [WCLPlugin nameIsUnique:name];
-}
 
-+ (BOOL)nameContainsOnlyValidCharacters:(NSString *)name
-{
-    NSMutableCharacterSet *allowedCharacterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"_- "];
-    [allowedCharacterSet formUnionWithCharacterSet:[NSCharacterSet alphanumericCharacterSet]];
-    
-    NSCharacterSet *disallowedCharacterSet = [allowedCharacterSet invertedSet];
-    
-    NSRange disallowedRange = [name rangeOfCharacterFromSet:disallowedCharacterSet];
-    BOOL foundDisallowedCharacter = !(NSNotFound == disallowedRange.location);
-    
-    return !foundDisallowedCharacter;
-}
-
-+ (BOOL)nameIsUnique:(NSString *)name
-{
-    return YES;
-}
 
 #pragma mark - Saving
 
