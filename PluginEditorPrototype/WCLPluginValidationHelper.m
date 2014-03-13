@@ -8,30 +8,13 @@
 
 #import "WCLPluginValidationHelper.h"
 #import "WCLPluginManager.h"
+#import "WCLPlugin.h"
 
 @interface WCLPluginValidationHelper ()
 + (NSString *)generateUniquePluginNameFromName:(NSString *)name index:(NSUInteger)index;
 @end
 
 @implementation WCLPluginValidationHelper
-
-+ (BOOL)isValidName:(NSString *)name
-{
-    if (!name) {
-        return NO;
-    }
-
-    if (![WCLPluginValidationHelper nameContainsOnlyValidCharacters:name]) {
-        return NO;
-    }
-
-    if (![WCLPluginValidationHelper nameIsUnique:name]) {
-        return NO;
-    }
-#warning Need to check that a name can be written to disk here too to make sure it is valid.
-    
-    return YES;
-}
 
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name
 {

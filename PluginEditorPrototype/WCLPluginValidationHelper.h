@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class WCLPlugin;
+
 @interface WCLPluginValidationHelper : NSObject
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name;
-+ (BOOL)isValidName:(NSString *)name;
 + (BOOL)nameIsUnique:(NSString *)name;
 + (NSString *)uniquePluginNameFromName:(NSString *)name;
 @end

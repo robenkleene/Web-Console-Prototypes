@@ -8,6 +8,7 @@
 
 #import "WCLPlugin.h"
 #import "WCLPluginValidationHelper.h"
+#import "WCLPluginManager.h"
 
 #define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"fileExtensions", @"type", nil]
 
@@ -17,7 +18,7 @@
 
 @implementation WCLPlugin
 
-static void *WCLPlugiContext;
+static void *WCLPluginContext;
 
 
 @dynamic command;
@@ -46,7 +47,7 @@ static void *WCLPlugiContext;
         name = *ioValue;
     }
 
-    BOOL valid = [WCLPluginValidationHelper isValidName:name];
+    BOOL valid = [self isValidName:name];
     if (!valid && outError) {
         NSString *errorMessage = @"The plugin name must be unique, and can only contain alphanumeric characters, spaces, hyphens and underscores.";
         NSString *errorString = NSLocalizedString(errorMessage, @"Invalid plugin name error.");
@@ -60,7 +61,25 @@ static void *WCLPlugiContext;
     return valid;
 }
 
+- (BOOL)isValidName:(NSString *)name
+{
+    if (!name) {
+        return NO;
+    }
+    
+    if (![WCLPluginValidationHelper nameContainsOnlyValidCharacters:name]) {
+        return NO;
+    }
+    
+    if (![WCLPluginValidationHelper nameIsUnique:name] &&
+        !([[WCLPluginManager sharedPluginManager] pluginWithName:name] == self)) {
+        return NO;
+    }
+#warning Need to check that a name can be written to disk here too to make sure it is valid.
+    
+    return YES;
 
+}
 
 #pragma mark - Saving
 
@@ -72,7 +91,7 @@ static void *WCLPlugiContext;
         [self addObserver:self
                forKeyPath:keyPath
                   options:NSKeyValueObservingOptionNew
-                  context:&WCLPlugiContext];
+                  context:&WCLPluginContext];
     }
 }
 
@@ -81,13 +100,13 @@ static void *WCLPlugiContext;
     for (NSString *keyPath in kObservedSelectionKeyPaths) {
         [self removeObserver:self
                   forKeyPath:keyPath
-                     context:&WCLPlugiContext];
+                     context:&WCLPluginContext];
     }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (context != &WCLPlugiContext) {
+    if (context != &WCLPluginContext) {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
@@ -95,7 +114,7 @@ static void *WCLPlugiContext;
     NSError *error;
     NSLog(@"saving, edited keypath = %@", keyPath);
     if (![[self managedObjectContext] save:&error]) {
-        NSAssert(NO, @"Error saving.");
+        NSAssert(NO, @"Error saving. %@", error);
     }
 }
 

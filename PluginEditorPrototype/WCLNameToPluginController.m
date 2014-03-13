@@ -16,6 +16,8 @@
 
 @implementation WCLNameToPluginController
 
+static void *WCLNameToPluginControllerContext;
+
 @synthesize nameToPluginDictionary = _nameToPluginDictionary;
 
 - (void)addPlugin:(WCLPlugin *)plugin
@@ -25,12 +27,62 @@
     }
     
     self.nameToPluginDictionary[plugin.name] = plugin;
+    [plugin addObserver:self
+             forKeyPath:kPluginNameKey
+                options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+                context:&WCLNameToPluginControllerContext];
 }
 
 - (void)removePlugin:(WCLPlugin *)plugin
 {
     [self.nameToPluginDictionary removeObjectForKey:plugin.name];
+	[plugin removeObserver:self
+                forKeyPath:kPluginNameKey
+                   context:&WCLNameToPluginControllerContext];
 }
+
+- (void)dealloc
+{
+    NSArray *plugins = [self allPlugins];
+    for (WCLPlugin *plugin in plugins) {
+        [self removePlugin:plugin];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if (context != &WCLNameToPluginControllerContext) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        return;
+    }
+
+    NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
+    if (keyValueChange != NSKeyValueChangeSetting) {
+        return;
+    }
+    
+    if (![keyPath isEqualToString:kPluginNameKey]) {
+        return;
+    }
+
+    NSString *oldName = change[NSKeyValueChangeOldKey];
+    NSString *newName = change[NSKeyValueChangeNewKey];
+
+    if (![object isKindOfClass:[WCLPlugin class]]) {
+        return;
+    }
+    
+    WCLPlugin *plugin = (WCLPlugin *)object;
+    [self.nameToPluginDictionary removeObjectForKey:oldName];
+    self.nameToPluginDictionary[newName] = plugin;
+}
+
+
+
+#pragma mark Convienence Methods
 
 - (void)addPluginsFromArray:(NSArray *)plugins
 {
@@ -46,6 +98,9 @@
     }
 }
 
+
+#pragma mark Accessing Plugins
+
 - (WCLPlugin *)pluginWithName:(NSString *)name
 {
     return self.nameToPluginDictionary[name];
@@ -56,6 +111,7 @@
     return [self.nameToPluginDictionary allValues];
 }
 
+
 #pragma mark Properties
 
 - (NSMutableDictionary *)nameToPluginDictionary
@@ -65,7 +121,7 @@
     }
 
     _nameToPluginDictionary = [NSMutableDictionary dictionary];
-    
+
     return _nameToPluginDictionary;
 }
 
