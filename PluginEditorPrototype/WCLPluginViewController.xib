@@ -245,7 +245,7 @@
                 <binding destination="bad-zK-ts1" name="contentArray" keyPath="plugins" id="MYr-Be-RA7"/>
             </connections>
         </arrayController>
-        <customObject id="bad-zK-ts1" customClass="WCLSharedPluginManagerController"/>
+        <customObject id="bad-zK-ts1" customClass="WCLPluginManagerController"/>
     </objects>
     <resources>
         <image name="NSActionTemplate" width="15" height="15"/>

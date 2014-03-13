@@ -59,7 +59,7 @@
         return name;
     }
     
-    NSString *newName = [WCLPluginValidationHelper generateUniquePluginNameFromName:name index:0];
+    NSString *newName = [WCLPluginValidationHelper generateUniquePluginNameFromName:name index:2];
 
     if (!newName) {
 #warning Return guid here
@@ -75,12 +75,13 @@
         return nil;
     }
     
-    if ([WCLPluginValidationHelper nameIsUnique:name]) {
-        return name;
+    NSString *newName = [NSString stringWithFormat:@"%@ %lu", name, (unsigned long)index];
+    if ([WCLPluginValidationHelper nameIsUnique:newName]) {
+        return newName;
     }
 
     index++;
-    return [WCLPluginValidationHelper generateUniquePluginNameFromName:[NSString stringWithFormat:@"%@ %lu", name, (unsigned long)index]
+    return [WCLPluginValidationHelper generateUniquePluginNameFromName:name
                                                                  index:index];
 }
 

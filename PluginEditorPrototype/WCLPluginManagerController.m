@@ -6,24 +6,24 @@
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
 //
 
-#import "WCLSharedPluginManagerController.h"
+#import "WCLPluginManagerController.h"
 #import "WCLPlugin.h"
 #import "WCLPluginManager.h"
 
-@interface WCLSharedPluginManagerController ()
+@interface WCLPluginManagerController ()
 @property (nonatomic, strong, readonly) NSMutableArray *plugins;
 @end
 
-@implementation WCLSharedPluginManagerController
+@implementation WCLPluginManagerController
 
 @synthesize plugins = _plugins;
 
 #pragma mark - Interface Builder Compatible Singleton
 
-+ (id)sharedUserDefaultsController
++ (id)sharedPluginManagerController
 {
     static dispatch_once_t pred;
-    static WCLSharedPluginManagerController *pluginManagerController = nil;
+    static WCLPluginManagerController *pluginManagerController = nil;
     
     dispatch_once(&pred, ^{
         pluginManagerController = [[self hiddenAlloc] hiddenInit];
@@ -33,12 +33,12 @@
 
 + (id)allocWithZone:(NSZone *)zone
 {
-    return [self sharedUserDefaultsController];
+    return [self sharedPluginManagerController];
 }
 
 + (id)alloc
 {
-    return [self sharedUserDefaultsController];
+    return [self sharedPluginManagerController];
 }
 
 - (id)init

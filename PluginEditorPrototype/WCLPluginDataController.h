@@ -1,5 +1,5 @@
 //
-//  WCLNewPluginManager.h
+//  WCLPluginDataController.h
 //  PluginEditorPrototype
 //
 //  Created by Roben Kleene on 3/12/14.
@@ -10,10 +10,8 @@
 
 @class WCLPlugin;
 
-@interface WCLPluginManager : NSObject
-+ (instancetype)sharedPluginManager;
+@interface WCLPluginDataController : NSObject
 - (WCLPlugin *)newPlugin;
 - (void)deletePlugin:(WCLPlugin *)plugin;
-- (WCLPlugin *)pluginWithName:(NSString *)name;
-- (NSArray *)plugins;
+- (NSArray *)existingPlugins;
 @end

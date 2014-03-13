@@ -10,8 +10,8 @@
 
 @class WCLPlugin;
 
-@interface WCLSharedPluginManagerController : NSObject
-+ (instancetype)sharedUserDefaultsController;
+@interface WCLPluginManagerController : NSObject
++ (instancetype)sharedPluginManagerController;
 - (NSMutableArray *)plugins;
 - (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index;
 - (void)insertPlugins:(NSArray *)pluginsArray atIndexes:(NSIndexSet *)indexes;

@@ -83,7 +83,7 @@
 
 #pragma mark - WCLPluginViewController
 
-@interface WCLPluginViewController () <NSTableViewDelegate>
+@interface WCLPluginViewController () <NSTableViewDelegate, NSTokenFieldDelegate>
 @property (weak) IBOutlet WCLPluginArrayController *pluginArrayController;
 @property (weak) IBOutlet NSTableView *tableView;
 - (IBAction)addPlugin:(id)sender;
@@ -131,6 +131,17 @@
     if (returnCode != NSAlertFirstButtonReturn) return;
 
     [self.pluginArrayController remove:nil];
+}
+
+
+#pragma mark NSTokenFieldDelegate
+
+- (NSArray *)tokenField:(NSTokenField *)tokenField
+completionsForSubstring:(NSString *)substring
+           indexOfToken:(NSInteger)tokenIndex
+    indexOfSelectedItem:(NSInteger *)selectedIndex
+{
+    return nil;
 }
 
 
