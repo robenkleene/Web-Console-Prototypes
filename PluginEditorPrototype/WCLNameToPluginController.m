@@ -28,7 +28,7 @@ static void *WCLNameToPluginControllerContext;
     
     self.nameToPluginDictionary[plugin.name] = plugin;
     [plugin addObserver:self
-             forKeyPath:kPluginNameKey
+             forKeyPath:WCLPluginNameKey
                 options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
                 context:&WCLNameToPluginControllerContext];
 }
@@ -37,7 +37,7 @@ static void *WCLNameToPluginControllerContext;
 {
     [self.nameToPluginDictionary removeObjectForKey:plugin.name];
 	[plugin removeObserver:self
-                forKeyPath:kPluginNameKey
+                forKeyPath:WCLPluginNameKey
                    context:&WCLNameToPluginControllerContext];
 }
 
@@ -64,7 +64,7 @@ static void *WCLNameToPluginControllerContext;
         return;
     }
     
-    if (![keyPath isEqualToString:kPluginNameKey]) {
+    if (![keyPath isEqualToString:WCLPluginNameKey]) {
         return;
     }
 

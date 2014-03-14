@@ -54,7 +54,7 @@
 }
 
 
-#pragma mark - NSToolbar
+#pragma mark NSToolbar
 
 - (IBAction)switchView:(id)sender
 {
@@ -67,7 +67,7 @@
     return [item tag] != self.preferencePane;
 }
 
-#pragma mark - Properties
+#pragma mark Properties
 
 - (void)setPreferencePane:(WCLPreferencePane)preferencePane
 {
@@ -146,7 +146,7 @@
     return windowFrame;
 }
 
-#pragma mark - NSViewController Mappings
+#pragma mark NSViewController Mappings
 
 - (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)prefencePane
 {

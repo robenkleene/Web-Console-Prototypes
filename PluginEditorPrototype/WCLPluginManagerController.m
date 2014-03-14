@@ -18,7 +18,7 @@
 
 @synthesize plugins = _plugins;
 
-#pragma mark - Interface Builder Compatible Singleton
+#pragma mark Interface Builder Compatible Singleton
 
 + (id)sharedPluginManagerController
 {
@@ -57,7 +57,7 @@
 }
 
 
-#pragma mark - Required Key-Value Coding To-Many Relationship Compliance
+#pragma mark Required Key-Value Coding To-Many Relationship Compliance
 
 - (NSMutableArray *)plugins
 {
@@ -71,7 +71,7 @@
 }
 
 - (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index
-{
+{    
     [self.plugins insertObject:plugin atIndex:index];
 }
 
@@ -101,7 +101,7 @@
 }
 
 
-#pragma mark - Optional Key-Value Coding To-Many Relationship Compliance
+#pragma mark Optional Key-Value Coding To-Many Relationship Compliance
 
 // Don't implement these to avoid implementing delete for them.
 

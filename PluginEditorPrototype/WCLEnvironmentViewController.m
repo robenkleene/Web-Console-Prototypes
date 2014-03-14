@@ -107,7 +107,7 @@
 
 @synthesize environmentDictionaryController = _environmentDictionaryController;
 
-#pragma mark - IBActions
+#pragma mark IBActions
 
 - (IBAction)addEnvironmentVariable:(id)sender
 {
@@ -124,7 +124,7 @@
     return YES;
 }
 
-#pragma mark - Properties
+#pragma mark Properties
 
 - (NSDictionaryController *)environmentDictionaryController
 {

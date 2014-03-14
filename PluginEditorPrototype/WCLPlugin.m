@@ -12,6 +12,9 @@
 
 #define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"fileExtensions", @"type", nil]
 
+NSString * const WCLPluginNameKey = @"name";
+NSString * const WCLPluginFileExtensionsKey = @"fileExtensions";
+
 @interface WCLPlugin ()
 @property (nonatomic, retain) NSData * fileExtensionsData;
 @end

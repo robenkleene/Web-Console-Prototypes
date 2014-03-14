@@ -31,7 +31,7 @@
 
 @implementation WCLPreferencesWindowControllerTests
 
-#pragma mark - Setup & Teardown
+#pragma mark Setup & Teardown
 
 - (void)setUp
 {
@@ -54,7 +54,7 @@
     [super tearDown];
 }
 
-#pragma mark - Properties
+#pragma mark Properties
 
 - (WCLPreferencesWindowController *)preferencesWindowController
 {
@@ -66,7 +66,7 @@
     return (WCLAppDelegate *)[NSApp delegate];
 }
 
-#pragma mark - Tests
+#pragma mark Tests
 
 - (void)testSwitchingPreferencesViewsByPreferencePane
 {

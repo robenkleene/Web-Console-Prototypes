@@ -7,8 +7,9 @@
 //
 
 #define kAppName (NSString *)[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]
-#define kPluginNameKey @"name"
+
 #define kPlugInExtension @"wcplugin"
 #define kErrorDomain @"com.1percenter.Web-Console"
 
 #define kErrorCodeInvalidePluginName -42
+

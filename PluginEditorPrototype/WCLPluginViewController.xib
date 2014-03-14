@@ -213,6 +213,7 @@
                             </tokenFieldCell>
                             <connections>
                                 <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.fileExtensions" id="Xah-PX-aCj"/>
+                                <outlet property="delegate" destination="-2" id="MaV-MP-bfe"/>
                             </connections>
                         </tokenField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hZn-5y-2Bh">

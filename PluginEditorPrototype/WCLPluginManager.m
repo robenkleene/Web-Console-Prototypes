@@ -19,8 +19,8 @@
 
 @implementation WCLPluginManager
 
-@synthesize pluginDataController=_pluginDataController;
-@synthesize nameToPluginController=_nameToPluginController;
+@synthesize pluginDataController = _pluginDataController;
+@synthesize nameToPluginController = _nameToPluginController;
 
 + (id)sharedPluginManager
 {

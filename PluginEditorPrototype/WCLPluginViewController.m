@@ -11,6 +11,9 @@
 #import "WCLPluginManager.h"
 
 #import "WCLPluginValidationHelper.h"
+#import "WCLPlugin.h"
+
+#import "WCLFileExtensionController.h"
 
 #pragma mark - WCLPluginNameTextField
 
@@ -111,7 +114,7 @@
 
 - (IBAction)removePlugin:(id)sender
 {
-    NSString *pluginName = [[self.pluginArrayController selection] valueForKey:kPluginNameKey];
+    NSString *pluginName = [[self.pluginArrayController selection] valueForKey:WCLPluginNameKey];
     
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Move to Trash"];
@@ -141,7 +144,11 @@ completionsForSubstring:(NSString *)substring
            indexOfToken:(NSInteger)tokenIndex
     indexOfSelectedItem:(NSInteger *)selectedIndex
 {
-    return nil;
+    NSArray *fileExtensions = [[WCLFileExtensionController sharedFileExtensionController] fileExtensions];
+
+    NSString *substringPrefixMatch = [substring stringByAppendingString:@"*"];
+    NSPredicate *substringPrefixPredicate = [NSPredicate predicateWithFormat:@"SELF like  %@", substringPrefixMatch];
+    return [fileExtensions filteredArrayUsingPredicate:substringPrefixPredicate];
 }
 
 
@@ -156,7 +163,7 @@ completionsForSubstring:(NSString *)substring
 {
     if (_pluginArrayController == pluginArrayController) return;
 
-    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:kPluginNameKey
+    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:WCLPluginNameKey
                                                                        ascending:YES
                                                                         selector:@selector(localizedCaseInsensitiveCompare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:nameSortDescriptor, nil];

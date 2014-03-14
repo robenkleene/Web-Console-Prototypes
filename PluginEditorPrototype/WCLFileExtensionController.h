@@ -9,5 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface WCLFileExtensionController : NSObject
-
++ (id)sharedFileExtensionController;
+- (NSArray *)fileExtensions;
 @end

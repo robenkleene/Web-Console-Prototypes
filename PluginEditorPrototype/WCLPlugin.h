@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+extern NSString * const WCLPluginNameKey;
+extern NSString * const WCLPluginFileExtensionsKey;
 
 @interface WCLPlugin : NSManagedObject
 
