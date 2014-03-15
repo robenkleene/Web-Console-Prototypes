@@ -11,7 +11,7 @@
 @class WCLPlugin;
 
 @interface WCLPluginValidationHelper : NSObject
++ (BOOL)isValidName:(NSString *)name forPlugin:(WCLPlugin *)plugin;
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name;
-+ (BOOL)nameIsUnique:(NSString *)name;
 + (NSString *)uniquePluginNameFromName:(NSString *)name;
 @end

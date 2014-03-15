@@ -20,7 +20,7 @@
 
 #pragma mark Interface Builder Compatible Singleton
 
-+ (id)sharedPluginManagerController
++ (instancetype)sharedPluginManagerController
 {
     static dispatch_once_t pred;
     static WCLPluginManagerController *pluginManagerController = nil;
@@ -56,6 +56,10 @@
     return [super init];
 }
 
+- (WCLPluginManager *)pluginManager
+{
+    return [WCLPluginManager sharedPluginManager];
+}
 
 #pragma mark Required Key-Value Coding To-Many Relationship Compliance
 
@@ -65,7 +69,7 @@
         return _plugins;
     }
     
-    _plugins = [[[WCLPluginManager sharedPluginManager] plugins] mutableCopy];
+    _plugins = [[[self pluginManager] plugins] mutableCopy];
     
     return _plugins;
 }
@@ -86,7 +90,7 @@
     
     [self.plugins removeObjectAtIndex:index];
 
-    [[WCLPluginManager sharedPluginManager] deletePlugin:pluginToDelete];
+    [[self pluginManager] deletePlugin:pluginToDelete];
 }
 
 - (void)removePluginsAtIndexes:(NSIndexSet *)indexes
@@ -96,7 +100,7 @@
     [self.plugins removeObjectsAtIndexes:indexes];
 
     for (WCLPlugin *aPlugin in objectsToDelete) {
-        [[WCLPluginManager sharedPluginManager] deletePlugin:aPlugin];
+        [[self pluginManager] deletePlugin:aPlugin];
     }
 }
 

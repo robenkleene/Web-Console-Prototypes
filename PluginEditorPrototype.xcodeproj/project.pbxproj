@@ -26,6 +26,8 @@
 		4567DB9118B26DD000CBBD29 /* WCLPluginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB8F18B26DD000CBBD29 /* WCLPluginViewController.xib */; };
 		4567DB9518B26E5800CBBD29 /* WCLEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB9318B26E5800CBBD29 /* WCLEnvironmentViewController.m */; };
 		4567DB9618B26E5800CBBD29 /* WCLEnvironmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB9418B26E5800CBBD29 /* WCLEnvironmentViewController.xib */; };
+		4596913E18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4596913D18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m */; };
+		4596914118D4AFF60096B058 /* WCLTestPluginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4596914018D4AFF60096B058 /* WCLTestPluginManager.m */; };
 		45D21F0A18C80932001AFE36 /* WCLPluginManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D21F0918C80932001AFE36 /* WCLPluginManagerController.m */; };
 		45F892E818CFD84A00B89515 /* WCLPluginValidationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892E718CFD84A00B89515 /* WCLPluginValidationHelper.m */; };
 		45F892EB18CFF10D00B89515 /* WCLFileExtensionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892EA18CFF10D00B89515 /* WCLFileExtensionController.m */; };
@@ -77,6 +79,9 @@
 		4567DB9318B26E5800CBBD29 /* WCLEnvironmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLEnvironmentViewController.m; sourceTree = "<group>"; };
 		4567DB9418B26E5800CBBD29 /* WCLEnvironmentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WCLEnvironmentViewController.xib; sourceTree = "<group>"; };
 		456FAD7018CD03CF001B9067 /* WCLWebConsoleConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLWebConsoleConstants.h; sourceTree = "<group>"; };
+		4596913D18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLFileExtensionsControllerTests.m; sourceTree = "<group>"; };
+		4596913F18D4AFF60096B058 /* WCLTestPluginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLTestPluginManager.h; sourceTree = "<group>"; };
+		4596914018D4AFF60096B058 /* WCLTestPluginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLTestPluginManager.m; sourceTree = "<group>"; };
 		45D21F0818C80932001AFE36 /* WCLPluginManagerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPluginManagerController.h; sourceTree = "<group>"; };
 		45D21F0918C80932001AFE36 /* WCLPluginManagerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginManagerController.m; sourceTree = "<group>"; };
 		45F892E618CFD84A00B89515 /* WCLPluginValidationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPluginValidationHelper.h; sourceTree = "<group>"; };
@@ -203,8 +208,11 @@
 		4567DB6918B03A7A00CBBD29 /* PluginEditorPrototypeTests */ = {
 			isa = PBXGroup;
 			children = (
+				4596913D18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m */,
 				4567DB6F18B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m */,
 				4567DB6A18B03A7A00CBBD29 /* Supporting Files */,
+				4596913F18D4AFF60096B058 /* WCLTestPluginManager.h */,
+				4596914018D4AFF60096B058 /* WCLTestPluginManager.m */,
 			);
 			path = PluginEditorPrototypeTests;
 			sourceTree = "<group>";
@@ -340,7 +348,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4596913E18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m in Sources */,
 				4567DB7018B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m in Sources */,
+				4596914118D4AFF60096B058 /* WCLTestPluginManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

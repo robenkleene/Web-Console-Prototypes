@@ -16,6 +16,8 @@
 
 @implementation WCLPluginValidationHelper
 
+#pragma mark Public
+
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name
 {
     NSMutableCharacterSet *allowedCharacterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"_- "];
@@ -29,11 +31,22 @@
     return !foundDisallowedCharacter;
 }
 
-+ (BOOL)nameIsUnique:(NSString *)name
++ (BOOL)isValidName:(NSString *)name forPlugin:(WCLPlugin *)plugin
 {
-    WCLPlugin *plugin = [[WCLPluginManager sharedPluginManager] pluginWithName:name];
-
-    return plugin ? NO : YES;
+    if (!name) {
+        return NO;
+    }
+    
+    if (![WCLPluginValidationHelper nameContainsOnlyValidCharacters:name]) {
+        return NO;
+    }
+    
+    if (![WCLPluginValidationHelper nameIsUnique:name forPlugin:plugin]) {
+        return NO;
+    }
+#warning Need to check that a name can be written to disk here too to make sure it is valid.
+    
+    return YES;
 }
 
 + (NSString *)uniquePluginNameFromName:(NSString *)name
@@ -43,13 +56,33 @@
     }
     
     NSString *newName = [WCLPluginValidationHelper generateUniquePluginNameFromName:name index:2];
-
+    
     if (!newName) {
-#warning Return guid here
+#warning Return GUID here
         NSAssert(NO, @"Implement");
     }
     
     return newName;
+}
+
+#pragma mark Private
+
++ (BOOL)nameIsUnique:(NSString *)name
+{
+    WCLPlugin *plugin = [[WCLPluginManager sharedPluginManager] pluginWithName:name];
+
+    return plugin ? NO : YES;
+}
+
++ (BOOL)nameIsUnique:(NSString *)name forPlugin:(WCLPlugin *)plugin
+{
+    WCLPlugin *existingPlugin = [[WCLPluginManager sharedPluginManager] pluginWithName:name];
+
+    if (!existingPlugin) {
+        return YES;
+    }
+
+    return plugin == existingPlugin;
 }
 
 + (NSString *)generateUniquePluginNameFromName:(NSString *)name index:(NSUInteger)index

@@ -8,7 +8,6 @@
 
 #import "WCLPlugin.h"
 #import "WCLPluginValidationHelper.h"
-#import "WCLPluginManager.h"
 
 #define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"fileExtensions", @"type", nil]
 
@@ -66,22 +65,7 @@ static void *WCLPluginContext;
 
 - (BOOL)isValidName:(NSString *)name
 {
-    if (!name) {
-        return NO;
-    }
-    
-    if (![WCLPluginValidationHelper nameContainsOnlyValidCharacters:name]) {
-        return NO;
-    }
-    
-    if (![WCLPluginValidationHelper nameIsUnique:name] &&
-        !([[WCLPluginManager sharedPluginManager] pluginWithName:name] == self)) {
-        return NO;
-    }
-#warning Need to check that a name can be written to disk here too to make sure it is valid.
-    
-    return YES;
-
+    return [WCLPluginValidationHelper isValidName:name forPlugin:self];
 }
 
 #pragma mark - Saving

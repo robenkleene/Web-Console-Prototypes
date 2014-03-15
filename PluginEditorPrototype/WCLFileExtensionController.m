@@ -84,7 +84,7 @@ static void *WCLFileExtensionControllerContext;
 
 #pragma mark Interface Builder Compatible Singleton
 
-+ (id)sharedFileExtensionController
++ (instancetype)sharedFileExtensionController
 {
     static dispatch_once_t pred;
     static WCLFileExtensionController *fileExtensionController = nil;
@@ -123,10 +123,19 @@ static void *WCLFileExtensionControllerContext;
 - (void)dealloc
 {
     if (_fileExtensionsDictionaryManager) {
-        [[WCLPluginManagerController sharedPluginManagerController] removeObserver:self
-                                                                        forKeyPath:kPluginManagerControllerPluginsKeyPath
-                                                                           context:&WCLFileExtensionControllerContext];
+        NSArray *plugins = [[self pluginManagerController] plugins];
+        [[self pluginManagerController] removeObserver:self
+                                            forKeyPath:kPluginManagerControllerPluginsKeyPath
+                                               context:&WCLFileExtensionControllerContext];
+        for (WCLPlugin *plugin in plugins) {
+            [self removeFileExtensionsForPlugin:plugin];
+        }
     }
+}
+
+- (WCLPluginManagerController *)pluginManagerController
+{
+    return [WCLPluginManagerController sharedPluginManagerController];
 }
 
 - (NSArray *)fileExtensions
@@ -144,16 +153,16 @@ static void *WCLFileExtensionControllerContext;
 
     _fileExtensionsDictionaryManager = [[WCLFileExtensionDictionaryManager alloc] init];
 
-    NSArray *plugins = [[WCLPluginManagerController sharedPluginManagerController] plugins];
+    NSArray *plugins = [[self pluginManagerController] plugins];
     
     for (WCLPlugin *plugin in plugins) {
         [self addFileExtensionsForPlugin:plugin];
     }
     
-    [[WCLPluginManagerController sharedPluginManagerController] addObserver:self
-                                                                 forKeyPath:kPluginManagerControllerPluginsKeyPath
-                                                                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                                                                    context:&WCLFileExtensionControllerContext];
+    [[self pluginManagerController] addObserver:self
+                                     forKeyPath:kPluginManagerControllerPluginsKeyPath
+                                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                                        context:&WCLFileExtensionControllerContext];
     return _fileExtensionsDictionaryManager;
 }
 
@@ -169,7 +178,7 @@ static void *WCLFileExtensionControllerContext;
         return;
     }
 
-    if ([object isKindOfClass:[WCLPluginManagerController class]] &&
+    if ([object isKindOfClass:[[self pluginManagerController] class]] &&
         [keyPath isEqualToString:kPluginManagerControllerPluginsKeyPath]) {
 
         
@@ -191,8 +200,16 @@ static void *WCLFileExtensionControllerContext;
             return;
         }
 
-        NSArray *oldFileExtensions = change[NSKeyValueChangeOldKey];
-        NSArray *newFileExtensions = change[NSKeyValueChangeNewKey];
+#warning Setup tests before doing these tests
+        NSArray *oldFileExtensions;
+//        if (change[NSKeyValueChangeOldKey] != [NSNull null]) {
+            oldFileExtensions = change[NSKeyValueChangeOldKey];
+//        }
+
+        NSArray *newFileExtensions;
+//        if (change[NSKeyValueChangeNewKey] != [NSNull null]) {
+            newFileExtensions = change[NSKeyValueChangeNewKey];
+//        }
         
         [self processFileExtensionChangesForPluginFromOldFileExtensions:oldFileExtensions
                                                     toNewFileExtensions:newFileExtensions];
@@ -234,5 +251,17 @@ static void *WCLFileExtensionControllerContext;
                 context:&WCLFileExtensionControllerContext];
 }
 
+- (void)removeFileExtensionsForPlugin:(WCLPlugin *)plugin
+{
+    NSArray *fileExtensions = plugin.fileExtensions;
+    
+    for (NSString *fileExtension in fileExtensions) {
+        [self.fileExtensionsDictionaryManager decrementFileExtension:fileExtension];
+    }
+    
+    [plugin removeObserver:self
+                forKeyPath:WCLPluginFileExtensionsKey
+                   context:&WCLFileExtensionControllerContext];
+}
 
 @end

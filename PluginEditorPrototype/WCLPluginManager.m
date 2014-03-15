@@ -22,7 +22,7 @@
 @synthesize pluginDataController = _pluginDataController;
 @synthesize nameToPluginController = _nameToPluginController;
 
-+ (id)sharedPluginManager
++ (instancetype)sharedPluginManager
 {
     static dispatch_once_t pred;
     static WCLPluginManager *pluginManager = nil;
