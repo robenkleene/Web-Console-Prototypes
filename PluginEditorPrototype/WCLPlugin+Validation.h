@@ -9,8 +9,11 @@
 #import "WCLPlugin.h"
 
 @interface WCLPlugin (Validation)
+#pragma mark - File Extensions
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name;
 - (BOOL)nameIsValid:(NSString *)name;
 - (void)renameWithUniqueName;
+#pragma mark - File Extensions
+- (BOOL)fileExtensionsAreValid:(NSArray *)fileExtensions;
 + (NSArray *)validFileExtensionsFromFileExtensions:(NSArray *)fileExtensions;
 @end

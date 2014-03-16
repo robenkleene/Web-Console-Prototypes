@@ -44,9 +44,23 @@ static void *WCLPluginContext;
 
 - (BOOL)validateFileExtensions:(id *)ioValue error:(NSError * __autoreleasing *)outError
 {
-#warning Implement this
-    NSAssert(NO, @"Implement this");
-    return NO;
+    NSArray *fileExtensions;
+    if ([*ioValue isKindOfClass:[NSArray class]]) {
+        fileExtensions = *ioValue;
+    }
+    
+    BOOL valid = [self fileExtensionsAreValid:fileExtensions];
+    if (!valid && outError) {
+        NSString *errorMessage = @"The file extensions must be unique, and can only contain alphanumeric characters.";
+        NSString *errorString = NSLocalizedString(errorMessage, @"Invalid file extensions error.");
+        
+        NSDictionary *userInfoDict = @{NSLocalizedDescriptionKey: errorString};
+        *outError = [[NSError alloc] initWithDomain:kErrorDomain
+                                               code:kErrorCodeInvalidPlugin
+                                           userInfo:userInfoDict];
+    }
+
+    return valid;
 }
 
 - (BOOL)validateName:(id *)ioValue error:(NSError * __autoreleasing *)outError
@@ -63,7 +77,7 @@ static void *WCLPluginContext;
 
         NSDictionary *userInfoDict = @{NSLocalizedDescriptionKey: errorString};
         *outError = [[NSError alloc] initWithDomain:kErrorDomain
-                                               code:kErrorCodeInvalidePluginName
+                                               code:kErrorCodeInvalidPlugin
                                            userInfo:userInfoDict];
     }
 

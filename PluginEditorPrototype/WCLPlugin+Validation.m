@@ -18,15 +18,7 @@
 
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name
 {
-    NSMutableCharacterSet *allowedCharacterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"_- "];
-    [allowedCharacterSet formUnionWithCharacterSet:[NSCharacterSet alphanumericCharacterSet]];
-    
-    NSCharacterSet *disallowedCharacterSet = [allowedCharacterSet invertedSet];
-    
-    NSRange disallowedRange = [name rangeOfCharacterFromSet:disallowedCharacterSet];
-    BOOL foundDisallowedCharacter = !(NSNotFound == disallowedRange.location);
-    
-    return !foundDisallowedCharacter;
+    return [WCLPlugin string:name containsOnlyCharactersInCharacterSet:[WCLPlugin nameAllowedCharacterSet]];
 }
 
 - (BOOL)nameIsValid:(NSString *)name
@@ -98,9 +90,36 @@
                                     index:index];
 }
 
++ (NSCharacterSet *)nameAllowedCharacterSet
+{
+    NSMutableCharacterSet *allowedCharacterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"_- "];
+    [allowedCharacterSet formUnionWithCharacterSet:[NSCharacterSet alphanumericCharacterSet]];
+    
+    return allowedCharacterSet;
+}
+
 #pragma mark - File Extensions
 
 #pragma mark Public
+
+- (BOOL)fileExtensionsAreValid:(NSArray *)fileExtensions
+{
+    NSCountedSet *fileExtensionsCountedSet = [[NSCountedSet alloc] initWithArray:fileExtensions];
+    for (NSString *fileExtension in fileExtensionsCountedSet) {
+        if (![fileExtension isKindOfClass:[NSString class]] || // Must be a string
+            !(fileExtension.length > 0) || // Must be greater than zero characters
+            !([WCLPlugin fileExtensionContainsOnlyValidCharacters:fileExtension])) { // Must only contain valid characters
+            return NO;
+        }
+        
+        if ([fileExtensionsCountedSet countForObject:fileExtension] > 1) {
+            // Must not contain duplicates
+            return NO;
+        }
+    }
+
+    return YES;
+}
 
 + (NSArray *)validFileExtensionsFromFileExtensions:(NSArray *)fileExtensions
 {
@@ -118,9 +137,14 @@
 
 #pragma mark Private
 
++ (BOOL)fileExtensionContainsOnlyValidCharacters:(NSString *)fileExtension
+{
+    return [WCLPlugin string:fileExtension containsOnlyCharactersInCharacterSet:[WCLPlugin fileExtensionAllowedCharacterSet]];
+}
+
 + (NSString *)fileExtensionContainingOnlyValidCharactersFromFileExtension:(NSString *)fileExtension
 {
-    NSCharacterSet *disallowedCharacterSet = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
+    NSCharacterSet *disallowedCharacterSet = [[WCLPlugin fileExtensionAllowedCharacterSet] invertedSet];
 
     NSString *validFileExtension = [[fileExtension componentsSeparatedByCharactersInSet:disallowedCharacterSet] componentsJoinedByString:@""];
 
@@ -131,5 +155,20 @@
     return validFileExtension;
 }
 
++ (NSCharacterSet *)fileExtensionAllowedCharacterSet
+{
+    return [NSCharacterSet alphanumericCharacterSet];
+}
 
+#pragma mark - Helpers
+
++ (BOOL)string:(NSString *)string containsOnlyCharactersInCharacterSet:(NSCharacterSet *)characterSet
+{
+    NSCharacterSet *invertedCharacterSet = [characterSet invertedSet];
+    
+    NSRange disallowedRange = [string rangeOfCharacterFromSet:invertedCharacterSet];
+    BOOL foundCharacterInInvertedSet = !(NSNotFound == disallowedRange.location);
+    
+    return !foundCharacterInInvertedSet;
+}
 @end

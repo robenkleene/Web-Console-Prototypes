@@ -182,7 +182,11 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
-                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.command" id="c0R-E8-khN"/>
+                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.command" id="Y2H-NV-E1H">
+                                    <dictionary key="options">
+                                        <bool key="NSValidatesImmediately" value="YES"/>
+                                    </dictionary>
+                                </binding>
                                 <outlet property="nextKeyView" destination="eIf-fm-ZJw" id="4gh-Z1-DuR"/>
                             </connections>
                         </textField>
@@ -212,7 +216,11 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </tokenFieldCell>
                             <connections>
-                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.fileExtensions" id="Xah-PX-aCj"/>
+                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.fileExtensions" id="d1I-dk-Owb">
+                                    <dictionary key="options">
+                                        <bool key="NSValidatesImmediately" value="YES"/>
+                                    </dictionary>
+                                </binding>
                                 <outlet property="delegate" destination="-2" id="MaV-MP-bfe"/>
                             </connections>
                         </tokenField>

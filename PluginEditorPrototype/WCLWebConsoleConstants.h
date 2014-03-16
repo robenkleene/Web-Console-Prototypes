@@ -11,5 +11,5 @@
 #define kPlugInExtension @"wcplugin"
 #define kErrorDomain @"com.1percenter.Web-Console"
 
-#define kErrorCodeInvalidePluginName -42
+#define kErrorCodeInvalidPlugin -42
 
