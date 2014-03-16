@@ -100,19 +100,21 @@
 
 @synthesize pluginArrayController = _pluginArrayController;
 
-- (IBAction)addPlugin:(id)sender
-{
-    id newObject = [self.pluginArrayController newObject];
-    [self.pluginArrayController addObject:newObject];
-
-    // Simple re-implement of NSDictionaryController add because using the add: method waits for the next run loop before updating the table view.
-    [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
-}
-
 - (BOOL)becomeFirstResponder
 {
     [[self.view window] makeFirstResponder:self.tableView];
     return YES;
+}
+
+#pragma mark IBActions
+
+- (IBAction)addPlugin:(id)sender
+{
+    id newObject = [self.pluginArrayController newObject];
+    [self.pluginArrayController addObject:newObject];
+    
+    // Simple re-implement of NSDictionaryController add because using the add: method waits for the next run loop before updating the table view.
+    [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
 }
 
 - (IBAction)removePlugin:(id)sender
@@ -143,6 +145,16 @@
     for (WCLPlugin *plugin in plugins) {
         [[WCLPluginManager sharedPluginManager] deletePlugin:plugin];
     }
+}
+
+- (IBAction)duplicatePlugin:(id)sender
+{
+    NSLog(@"Duplicate Plugin");
+}
+
+- (IBAction)makeDefaultPlugin:(id)sender
+{
+    NSLog(@"Make Default Plugin");
 }
 
 

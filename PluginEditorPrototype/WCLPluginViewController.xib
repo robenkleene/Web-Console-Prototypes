@@ -138,14 +138,29 @@
                                 <binding destination="wNa-Wq-zbh" name="enabled" keyPath="canRemove" id="ntm-i7-Fz1"/>
                             </connections>
                         </button>
-                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JP6-iH-pRY">
+                        <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QEz-D8-aze">
                             <rect key="frame" x="62" y="0.0" width="32" height="23"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSActionTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DHb-pS-VJA">
+                            <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="nLB-6O-5Z4" id="ij3-I5-x1j">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
-                            </buttonCell>
-                        </button>
+                                <menu key="menu" title="OtherViews" id="Paj-8i-a7d">
+                                    <items>
+                                        <menuItem state="on" image="NSActionTemplate" hidden="YES" id="K5M-wI-zKW"/>
+                                        <menuItem title="Duplicate" id="SNT-hB-0Hf">
+                                            <connections>
+                                                <action selector="duplicatePlugin:" target="-2" id="5tB-z8-0rj"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Set as Default" id="nLB-6O-5Z4">
+                                            <connections>
+                                                <action selector="makeDefaultPlugin:" target="-2" id="epr-X6-fWN"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                        </popUpButton>
                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WOQ-8r-EV9">
                             <rect key="frame" x="93" y="0.0" width="57" height="23"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -182,9 +197,13 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
-                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.command" id="Y2H-NV-E1H">
+                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.command" id="sDT-QB-0Gl">
                                     <dictionary key="options">
                                         <bool key="NSValidatesImmediately" value="YES"/>
+                                        <string key="NSNotApplicablePlaceholder">script.sh</string>
+                                        <string key="NSNoSelectionPlaceholder">script.sh</string>
+                                        <string key="NSNullPlaceholder">script.sh</string>
+                                        <string key="NSMultipleValuesPlaceholder">script.sh</string>
                                     </dictionary>
                                 </binding>
                                 <outlet property="nextKeyView" destination="eIf-fm-ZJw" id="4gh-Z1-DuR"/>
@@ -216,9 +235,13 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </tokenFieldCell>
                             <connections>
-                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.fileExtensions" id="d1I-dk-Owb">
+                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.fileExtensions" id="m0P-Wa-vdX">
                                     <dictionary key="options">
                                         <bool key="NSValidatesImmediately" value="YES"/>
+                                        <string key="NSNotApplicablePlaceholder">html, md, rb</string>
+                                        <string key="NSNoSelectionPlaceholder">html, md, rb</string>
+                                        <string key="NSNullPlaceholder">html, md, rb</string>
+                                        <string key="NSMultipleValuesPlaceholder">html, md, rb</string>
                                     </dictionary>
                                 </binding>
                                 <outlet property="delegate" destination="-2" id="MaV-MP-bfe"/>
