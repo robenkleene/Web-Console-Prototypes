@@ -117,6 +117,27 @@
     [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
 }
 
+- (IBAction)duplicatePlugin:(id)sender
+{
+    NSArray *plugins = [self.pluginArrayController selectedObjects];
+
+    for (WCLPlugin *plugin in plugins) {
+        WCLPlugin *newPlugin = [[WCLPluginManager sharedPluginManager] newPluginFromPlugin:plugin];
+        [self.pluginArrayController addObject:newPlugin];
+    }
+
+    [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
+}
+
+- (IBAction)makeDefaultPlugin:(id)sender
+{
+    NSLog(@"Make Default Plugin");
+    NSArray *plugins = [self.pluginArrayController selectedObjects];
+    for (WCLPlugin *plugin in plugins) {
+        NSLog(@"plugins = %@", plugins);
+    }
+}
+
 - (IBAction)removePlugin:(id)sender
 {
     NSString *pluginName = [[self.pluginArrayController selection] valueForKey:WCLPluginNameKey];
@@ -145,16 +166,6 @@
     for (WCLPlugin *plugin in plugins) {
         [[WCLPluginManager sharedPluginManager] deletePlugin:plugin];
     }
-}
-
-- (IBAction)duplicatePlugin:(id)sender
-{
-    NSLog(@"Duplicate Plugin");
-}
-
-- (IBAction)makeDefaultPlugin:(id)sender
-{
-    NSLog(@"Make Default Plugin");
 }
 
 

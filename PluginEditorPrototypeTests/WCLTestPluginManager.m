@@ -50,7 +50,8 @@
     WCLTestPlugin *plugin = [[WCLTestPlugin alloc] initWithEntity:entity
                                    insertIntoManagedObjectContext:self.managedObjectContext];
     [plugin renameWithUniqueName];
-
+    plugin.identifier = [[NSUUID UUID] UUIDString];
+    
     NSError *error;
     NSLog(@"saving after adding plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {

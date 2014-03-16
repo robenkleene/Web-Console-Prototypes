@@ -37,6 +37,13 @@
     return plugin;
 }
 
+- (WCLPlugin *)newPluginFromPlugin:(WCLPlugin *)plugin
+{
+    WCLPlugin *newPlugin = [self.pluginDataController newPluginFromPlugin:plugin];
+    [self.nameToPluginController addPlugin:newPlugin];
+    return newPlugin;
+}
+
 - (void)deletePlugin:(WCLPlugin *)plugin
 {
     [self.nameToPluginController removePlugin:plugin];

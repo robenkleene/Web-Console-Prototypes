@@ -27,6 +27,7 @@ static void *WCLPluginContext;
 @dynamic fileExtensionsData;
 @dynamic name;
 @dynamic type;
+@dynamic identifier;
 
 #pragma mark - Properties
 

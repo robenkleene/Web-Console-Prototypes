@@ -28,6 +28,7 @@
     WCLPlugin *plugin = [[WCLPlugin alloc] initWithEntity:entity insertIntoManagedObjectContext:self.managedObjectContext];
 
     [plugin renameWithUniqueName];
+    plugin.identifier = [[NSUUID UUID] UUIDString];
     
     NSError *error;
     NSLog(@"saving after adding plugin %@", plugin);
@@ -35,10 +36,29 @@
         NSAssert(NO, @"Error saving.");
     }
     
-    // Adding the plugin to the dictionary must happen after saving, otherwise name validation will fail
-    // because this plugin in the dictionary will cause the name to no longer be unique.
-    
     return plugin;
+}
+
+- (WCLPlugin *)newPluginFromPlugin:(WCLPlugin *)plugin
+{
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin" inManagedObjectContext:self.managedObjectContext];
+    WCLPlugin *newPlugin = [[WCLPlugin alloc] initWithEntity:entity insertIntoManagedObjectContext:self.managedObjectContext];
+    
+    newPlugin.name = plugin.name;
+    newPlugin.command = plugin.command;
+    newPlugin.fileExtensions = plugin.fileExtensions;
+
+    [newPlugin renameWithUniqueName];
+
+    newPlugin.identifier = [[NSUUID UUID] UUIDString];
+
+    NSError *error;
+    NSLog(@"saving after adding plugin %@", plugin);
+    if (![[self managedObjectContext] save:&error]) {
+        NSAssert(NO, @"Error saving.");
+    }
+    
+    return newPlugin;
 }
 
 - (void)deletePlugin:(WCLPlugin *)plugin

@@ -12,6 +12,7 @@
 
 @interface WCLPluginDataController : NSObject
 - (WCLPlugin *)newPlugin;
+- (WCLPlugin *)newPluginFromPlugin:(WCLPlugin *)plugin;
 - (void)deletePlugin:(WCLPlugin *)plugin;
 - (NSArray *)existingPlugins;
 @end

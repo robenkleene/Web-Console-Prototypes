@@ -13,6 +13,7 @@
 @interface WCLPluginManager : NSObject
 + (instancetype)sharedPluginManager;
 - (WCLPlugin *)newPlugin;
+- (WCLPlugin *)newPluginFromPlugin:(WCLPlugin *)plugin;
 - (void)deletePlugin:(WCLPlugin *)plugin;
 - (WCLPlugin *)pluginWithName:(NSString *)name;
 - (NSArray *)plugins;
