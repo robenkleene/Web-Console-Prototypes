@@ -45,20 +45,23 @@
     return nil;
 }
 
-- (BOOL)getObjectValue:(out __autoreleasing id *)obj forString:(NSString *)string errorDescription:(out NSString *__autoreleasing *)error
+- (BOOL)getObjectValue:(out __autoreleasing id *)obj
+             forString:(NSString *)string
+      errorDescription:(out NSString *__autoreleasing *)error
 {
     *obj = string;
     
     return YES;
 }
 
-- (BOOL)isPartialStringValid:(NSString *)partialString newEditingString:(NSString *__autoreleasing *)newString errorDescription:(NSString *__autoreleasing *)error
+- (BOOL)isPartialStringValid:(NSString *)partialString
+            newEditingString:(NSString *__autoreleasing *)newString
+            errorDescription:(NSString *__autoreleasing *)error
 {
     return [WCLPlugin nameContainsOnlyValidCharacters:partialString];
 }
 
 @end
-
 
 
 #pragma mark - WCLPluginArrayController
@@ -151,12 +154,19 @@ completionsForSubstring:(NSString *)substring
     indexOfSelectedItem:(NSInteger *)selectedIndex
 {
     NSArray *fileExtensions = [[WCLFileExtensionController sharedFileExtensionController] fileExtensions];
-
-    NSString *substringPrefixMatch = [substring stringByAppendingString:@"*"];
-    NSPredicate *substringPrefixPredicate = [NSPredicate predicateWithFormat:@"SELF like  %@", substringPrefixMatch];
-    return [fileExtensions filteredArrayUsingPredicate:substringPrefixPredicate];
+    NSArray *matchingFileExtensions = [fileExtensions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[cd] %@", substring]];
+    return matchingFileExtensions;
 }
 
+
+- (NSArray *)tokenField:(NSTokenField *)tokenField
+       shouldAddObjects:(NSArray *)tokens
+                atIndex:(NSUInteger)index
+{
+    NSArray *validFileExtensions = [WCLPlugin validFileExtensionsFromFileExtensions:tokens];
+    
+    return validFileExtensions;
+}
 
 #pragma mark Properties
 

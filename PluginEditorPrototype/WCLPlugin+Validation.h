@@ -12,4 +12,5 @@
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name;
 - (BOOL)nameIsValid:(NSString *)name;
 - (void)renameWithUniqueName;
++ (NSArray *)validFileExtensionsFromFileExtensions:(NSArray *)fileExtensions;
 @end

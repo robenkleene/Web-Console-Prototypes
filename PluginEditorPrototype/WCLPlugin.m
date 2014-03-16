@@ -42,6 +42,13 @@ static void *WCLPluginContext;
     return [NSKeyedUnarchiver unarchiveObjectWithData:self.fileExtensionsData];
 }
 
+- (BOOL)validateFileExtensions:(id *)ioValue error:(NSError * __autoreleasing *)outError
+{
+#warning Implement this
+    NSAssert(NO, @"Implement this");
+    return NO;
+}
+
 - (BOOL)validateName:(id *)ioValue error:(NSError * __autoreleasing *)outError
 {
     NSString *name;

@@ -12,6 +12,10 @@
 
 @implementation WCLPlugin (Validation)
 
+#pragma mark - Name
+
+#pragma mark Public
+
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name
 {
     NSMutableCharacterSet *allowedCharacterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"_- "];
@@ -93,5 +97,39 @@
     return [self uniquePluginNameFromName:name
                                     index:index];
 }
+
+#pragma mark - File Extensions
+
+#pragma mark Public
+
++ (NSArray *)validFileExtensionsFromFileExtensions:(NSArray *)fileExtensions
+{
+    NSMutableArray *validFileExtensions = [NSMutableArray array];
+    for (NSString *fileExtension in fileExtensions) {
+        NSString *validFileExtension = [WCLPlugin fileExtensionContainingOnlyValidCharactersFromFileExtension:fileExtension];
+        if (validFileExtension &&
+            ![validFileExtensions containsObject:validFileExtension]) {
+            [validFileExtensions addObject:validFileExtension];
+        }
+    }
+    
+    return validFileExtensions;
+}
+
+#pragma mark Private
+
++ (NSString *)fileExtensionContainingOnlyValidCharactersFromFileExtension:(NSString *)fileExtension
+{
+    NSCharacterSet *disallowedCharacterSet = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
+
+    NSString *validFileExtension = [[fileExtension componentsSeparatedByCharactersInSet:disallowedCharacterSet] componentsJoinedByString:@""];
+
+    if (!(validFileExtension.length > 0)) {
+        return nil;
+    }
+
+    return validFileExtension;
+}
+
 
 @end
