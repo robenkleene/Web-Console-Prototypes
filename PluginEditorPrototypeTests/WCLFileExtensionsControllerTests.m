@@ -13,6 +13,7 @@
 #import "WCLTestPluginManager.h"
 
 #define kTestFileExtensions @[@"html", @"md", @"js"]
+#define kTestFileExtensionsEmpty @[]
 
 @interface WCLFileExtensionsControllerTests : XCTestCase
 @end
@@ -29,25 +30,43 @@
 {
     [self deleteAllPlugins];
     
-    NSLog(@"[[self fileExtensionsController] fileExtensions] = %@", [[self fileExtensionsController] fileExtensions]);
-    
-    XCTAssertNil([[self fileExtensionsController] fileExtensions], @"There should not be any file extensions after deleting all plugins.");
+    NSArray *fileExtensions = [[self fileExtensionsController] fileExtensions];
+    XCTAssertFalse([fileExtensions count] > 0, @"There should not be any file extensions after deleting all plugins.");
     
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
 
-- (void)testAddingPluginWithNoFileExtensions
+- (void)testAddingPluginAndChangingFileExtensions
 {
+    // Hitting file extensions early makes sure that the singletons are instantiated and observers are in place.
+    XCTAssertNil([[self fileExtensionsController] fileExtensions], @"There should not be any file extensions before adding a plugin.");
+    
     WCLPlugin *plugin = [[self pluginManager] newPlugin];
     [[self pluginManagerController] insertObject:plugin inPluginsAtIndex:0];
 
+    // Set file extensions to an array of file extensions
     plugin.fileExtensions = kTestFileExtensions;
 
     NSArray *fileExtensions = [[self fileExtensionsController] fileExtensions];
-    
     BOOL fileExtensionsMatch = [[self class] fileExtensions:fileExtensions matchFileExtensions:kTestFileExtensions];
     XCTAssertTrue(fileExtensionsMatch, @"The file extensions should match the test file extensions.");
+
+
+    // Set file extensions to an empty array
+    plugin.fileExtensions = kTestFileExtensionsEmpty;
+
+    fileExtensions = [[self fileExtensionsController] fileExtensions];
+    fileExtensionsMatch = [[self class] fileExtensions:fileExtensions matchFileExtensions:kTestFileExtensionsEmpty];
+    XCTAssertTrue(fileExtensionsMatch, @"The file extensions should match the empty test file extensions.");
+
+
+    // Set file extensions to nil
+    plugin.fileExtensions = nil;
+    
+    fileExtensions = [[self fileExtensionsController] fileExtensions];
+    fileExtensionsMatch = [[self class] fileExtensions:fileExtensions matchFileExtensions:kTestFileExtensionsEmpty];
+    XCTAssertTrue(fileExtensionsMatch, @"The file extensions should match the empty test file extensions.");
 }
 
 #pragma mark Helpers

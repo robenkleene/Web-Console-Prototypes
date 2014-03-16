@@ -181,14 +181,30 @@ static void *WCLFileExtensionControllerContext;
     if ([object isKindOfClass:[[self pluginManagerController] class]] &&
         [keyPath isEqualToString:kPluginManagerControllerPluginsKeyPath]) {
 
-        
-        NSLog(@"Break a plugin was added or removed");
-        
-        // NSKeyValueChangeInsertion
-        // NSKeyValueChangeRemoval
-        // NSKeyValueChangeReplacement
-#warning Figure out test for NSKeyValueChangeReplacement
-#warning Observe each new plugins fileExtensions property here
+
+
+        NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
+        switch (keyValueChange) {
+            case NSKeyValueChangeInsertion: {
+                NSArray *plugins = change[NSKeyValueChangeNewKey];
+                for (WCLPlugin *plugin in plugins) {
+                    [self addFileExtensionsForPlugin:plugin];
+                }
+                break;
+            }
+            case NSKeyValueChangeRemoval: {
+                NSArray *plugins = change[NSKeyValueChangeOldKey];
+                for (WCLPlugin *plugin in plugins) {
+                    [self removeFileExtensionsForPlugin:plugin];
+                }
+                break;
+            }
+            default:
+#warning Figure out case for NSKeyValueChangeReplacement?
+                NSAssert(NO, @"The NSKeyValueChangeKindKey is unhandled.");
+                break;
+        }
+
         return;
     }
 
@@ -200,19 +216,20 @@ static void *WCLFileExtensionControllerContext;
             return;
         }
 
-#warning Setup tests before doing these tests
         NSArray *oldFileExtensions;
-//        if (change[NSKeyValueChangeOldKey] != [NSNull null]) {
+        if (change[NSKeyValueChangeOldKey] != [NSNull null]) {
             oldFileExtensions = change[NSKeyValueChangeOldKey];
-//        }
+        }
 
         NSArray *newFileExtensions;
-//        if (change[NSKeyValueChangeNewKey] != [NSNull null]) {
+        if (change[NSKeyValueChangeNewKey] != [NSNull null]) {
             newFileExtensions = change[NSKeyValueChangeNewKey];
-//        }
+        }
         
         [self processFileExtensionChangesForPluginFromOldFileExtensions:oldFileExtensions
                                                     toNewFileExtensions:newFileExtensions];
+
+        return;
     }
 }
 
