@@ -8,7 +8,7 @@
 
 #import "WCLNameToPluginController.h"
 #import "WCLPlugin.h"
-#import "WCLPluginValidationHelper.h"
+#import "WCLPlugin+Validation.h"
 
 @interface WCLNameToPluginController ()
 @property (nonatomic, strong, readonly) NSMutableDictionary *nameToPluginDictionary;
@@ -22,10 +22,8 @@ static void *WCLNameToPluginControllerContext;
 
 - (void)addPlugin:(WCLPlugin *)plugin
 {
-    if (self.nameToPluginDictionary[plugin.name]) {
-        plugin.name = [WCLPluginValidationHelper uniquePluginNameFromName:plugin.name];
-    }
-    
+    [plugin renameWithUniqueName];
+
     self.nameToPluginDictionary[plugin.name] = plugin;
     [plugin addObserver:self
              forKeyPath:WCLPluginNameKey

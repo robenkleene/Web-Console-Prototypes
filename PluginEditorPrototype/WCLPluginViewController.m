@@ -10,7 +10,7 @@
 #import "WCLPluginViewController.h"
 #import "WCLPluginManager.h"
 
-#import "WCLPluginValidationHelper.h"
+#import "WCLPlugin+Validation.h"
 #import "WCLPlugin.h"
 
 #import "WCLFileExtensionController.h"
@@ -54,7 +54,7 @@
 
 - (BOOL)isPartialStringValid:(NSString *)partialString newEditingString:(NSString *__autoreleasing *)newString errorDescription:(NSString *__autoreleasing *)error
 {
-    return [WCLPluginValidationHelper nameContainsOnlyValidCharacters:partialString];
+    return [WCLPlugin nameContainsOnlyValidCharacters:partialString];
 }
 
 @end
@@ -133,7 +133,13 @@
 {
     if (returnCode != NSAlertFirstButtonReturn) return;
 
+    NSArray *plugins = [self.pluginArrayController selectedObjects];
+    
     [self.pluginArrayController remove:nil];
+
+    for (WCLPlugin *plugin in plugins) {
+        [[WCLPluginManager sharedPluginManager] deletePlugin:plugin];
+    }
 }
 
 

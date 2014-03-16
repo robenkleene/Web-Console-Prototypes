@@ -86,22 +86,12 @@
 
 - (void)removeObjectFromPluginsAtIndex:(NSUInteger)index
 {
-    WCLPlugin *pluginToDelete = [self.plugins objectAtIndex:index];
-    
     [self.plugins removeObjectAtIndex:index];
-
-    [[self pluginManager] deletePlugin:pluginToDelete];
 }
 
 - (void)removePluginsAtIndexes:(NSIndexSet *)indexes
 {
-    NSArray *objectsToDelete = [self.plugins objectsAtIndexes:indexes];
-    
     [self.plugins removeObjectsAtIndexes:indexes];
-
-    for (WCLPlugin *aPlugin in objectsToDelete) {
-        [[self pluginManager] deletePlugin:aPlugin];
-    }
 }
 
 

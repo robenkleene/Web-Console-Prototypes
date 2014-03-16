@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="12F45" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="WCLTestPlugin" representedClassName="WCLTestPlugin" syncable="YES">
+        <attribute name="command" optional="YES" attributeType="String" defaultValueString="script.sh" syncable="YES"/>
+        <attribute name="fileExtensionsData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="name" attributeType="String" defaultValueString="New Plugin" syncable="YES"/>
+        <attribute name="type" attributeType="String" defaultValueString="Built-In" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="WCLTestPlugin" positionX="0" positionY="0" width="0" height="0"/>
+    </elements>
+</model>

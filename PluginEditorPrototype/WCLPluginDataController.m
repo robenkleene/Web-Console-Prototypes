@@ -7,7 +7,7 @@
 //
 
 #import "WCLPluginDataController.h"
-#import "WCLPluginValidationHelper.h"
+#import "WCLPlugin+Validation.h"
 #import "WCLPlugin.h"
 
 @interface WCLPluginDataController ()
@@ -27,7 +27,7 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin" inManagedObjectContext:self.managedObjectContext];
     WCLPlugin *plugin = [[WCLPlugin alloc] initWithEntity:entity insertIntoManagedObjectContext:self.managedObjectContext];
 
-    plugin.name = [WCLPluginValidationHelper uniquePluginNameFromName:plugin.name];
+    [plugin renameWithUniqueName];
     
     NSError *error;
     NSLog(@"saving after adding plugin %@", plugin);

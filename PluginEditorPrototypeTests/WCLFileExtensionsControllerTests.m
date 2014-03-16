@@ -9,9 +9,10 @@
 #import <XCTest/XCTest.h>
 
 #import "WCLFileExtensionController.h"
-
 #import "WCLPluginManagerController.h"
 #import "WCLTestPluginManager.h"
+
+#define kTestFileExtensions @[@"html", @"md", @"js"]
 
 @interface WCLFileExtensionsControllerTests : XCTestCase
 @end
@@ -26,6 +27,12 @@
 
 - (void)tearDown
 {
+    [self deleteAllPlugins];
+    
+    NSLog(@"[[self fileExtensionsController] fileExtensions] = %@", [[self fileExtensionsController] fileExtensions]);
+    
+    XCTAssertNil([[self fileExtensionsController] fileExtensions], @"There should not be any file extensions after deleting all plugins.");
+    
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
@@ -35,18 +42,42 @@
     WCLPlugin *plugin = [[self pluginManager] newPlugin];
     [[self pluginManagerController] insertObject:plugin inPluginsAtIndex:0];
 
+    plugin.fileExtensions = kTestFileExtensions;
+
+    NSArray *fileExtensions = [[self fileExtensionsController] fileExtensions];
     
-    
-//    id newObject = [self.pluginArrayController newObject];
-//    [self.pluginArrayController addObject:newObject];
-    
-    
-//    [WCLPluginManagerController ]
-    
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    BOOL fileExtensionsMatch = [[self class] fileExtensions:fileExtensions matchFileExtensions:kTestFileExtensions];
+    XCTAssertTrue(fileExtensionsMatch, @"The file extensions should match the test file extensions.");
 }
 
 #pragma mark Helpers
+
++ (BOOL)fileExtensions:(NSArray *)fileExtensions1 matchFileExtensions:(NSArray *)fileExtensions2
+{
+    NSArray *sortedFileExtensions1 = [fileExtensions1 sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    NSArray *sortedFileExtensions2 = [fileExtensions2 sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    return [sortedFileExtensions1 isEqualToArray:sortedFileExtensions2];
+}
+
+- (void)deleteAllPlugins
+{
+    NSArray *plugins = [[self pluginManagerController] plugins];
+    
+    NSRange range = NSMakeRange(0, [plugins count]);
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
+    [[self pluginManagerController] removePluginsAtIndexes:indexSet];
+
+    for (WCLPlugin *plugin in plugins) {
+        [[self pluginManager] deletePlugin:plugin];
+    }
+}
+
+#pragma mark Test Singleton Stack
+
+- (WCLTestFileExtensionController *)fileExtensionsController
+{
+    return [WCLTestFileExtensionController sharedFileExtensionController];
+}
 
 - (WCLTestPluginManager *)pluginManager
 {

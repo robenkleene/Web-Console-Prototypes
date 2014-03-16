@@ -7,7 +7,7 @@
 //
 
 #import "WCLPlugin.h"
-#import "WCLPluginValidationHelper.h"
+#import "WCLPlugin+Validation.h"
 
 #define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"fileExtensions", @"type", nil]
 
@@ -49,7 +49,7 @@ static void *WCLPluginContext;
         name = *ioValue;
     }
 
-    BOOL valid = [self isValidName:name];
+    BOOL valid = [self nameIsValid:name];
     if (!valid && outError) {
         NSString *errorMessage = @"The plugin name must be unique, and can only contain alphanumeric characters, spaces, hyphens and underscores.";
         NSString *errorString = NSLocalizedString(errorMessage, @"Invalid plugin name error.");
@@ -61,11 +61,6 @@ static void *WCLPluginContext;
     }
 
     return valid;
-}
-
-- (BOOL)isValidName:(NSString *)name
-{
-    return [WCLPluginValidationHelper isValidName:name forPlugin:self];
 }
 
 #pragma mark - Saving

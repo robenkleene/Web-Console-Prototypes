@@ -14,7 +14,6 @@
 @interface WCLPluginManager ()
 @property (nonatomic, strong, readonly) WCLPluginDataController *pluginDataController;
 @property (nonatomic, strong, readonly) WCLNameToPluginController *nameToPluginController;
-
 @end
 
 @implementation WCLPluginManager
