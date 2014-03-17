@@ -19,4 +19,5 @@ extern NSString * const WCLPluginFileExtensionsKey;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * identifier;
+@property (nonatomic, assign, getter = isDefaultNewPlugin) BOOL defaultNewPlugin;
 @end

@@ -8,6 +8,8 @@
 
 #import "WCLPlugin.h"
 #import "WCLPlugin+Validation.h"
+#import "WCLPlugin+PluginManager.h"
+#import "WCLPlugin+PluginManager.m"
 
 #define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"fileExtensions", @"type", nil]
 
@@ -22,7 +24,7 @@ NSString * const WCLPluginFileExtensionsKey = @"fileExtensions";
 
 static void *WCLPluginContext;
 
-
+@synthesize defaultNewPlugin = _defaultNewPlugin;
 @dynamic command;
 @dynamic fileExtensionsData;
 @dynamic name;
@@ -83,6 +85,11 @@ static void *WCLPluginContext;
     }
 
     return valid;
+}
+
+- (BOOL)isDefaultNewPlugin
+{
+    return [[WCLPluginManager sharedPluginManager] defaultNewPlugin] == self;
 }
 
 #pragma mark - Saving

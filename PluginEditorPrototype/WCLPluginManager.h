@@ -17,4 +17,5 @@
 - (void)deletePlugin:(WCLPlugin *)plugin;
 - (WCLPlugin *)pluginWithName:(NSString *)name;
 - (NSArray *)plugins;
+@property (nonatomic, strong) WCLPlugin *defaultNewPlugin;
 @end

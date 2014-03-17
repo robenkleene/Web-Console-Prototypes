@@ -18,14 +18,14 @@
             <rect key="frame" x="0.0" y="0.0" width="550" height="272"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oa6-vp-8OW">
+                <scrollView autohidesScrollers="YES" horizontalLineScroll="36" horizontalPageScroll="10" verticalLineScroll="36" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oa6-vp-8OW">
                     <rect key="frame" x="20" y="44" width="150" height="208"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="IJA-um-SgK">
                         <rect key="frame" x="1" y="17" width="148" height="190"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="Qah-PF-O27" viewBased="YES" id="lLh-WI-Io6">
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="34" rowSizeStyle="automatic" headerView="Qah-PF-O27" viewBased="YES" id="lLh-WI-Io6">
                                 <rect key="frame" x="0.0" y="0.0" width="148" height="190"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -67,7 +67,7 @@
                                                         </connections>
                                                     </textField>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="anp-09-f78">
-                                                        <rect key="frame" x="0.0" y="0.0" width="145" height="17"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="5Ew-77-5iV">
                                                             <font key="font" metaFont="smallSystem"/>
@@ -76,6 +76,22 @@
                                                         </textFieldCell>
                                                         <connections>
                                                             <binding destination="L66-AX-u2D" name="value" keyPath="objectValue.type" id="GD8-sP-LmP"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LGI-sA-Bqs">
+                                                        <rect key="frame" x="102" y="0.0" width="43" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Default" id="PLH-MJ-cEW">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <binding destination="L66-AX-u2D" name="hidden" keyPath="objectValue.defaultNewPlugin" id="UFz-ms-fMC">
+                                                                <dictionary key="options">
+                                                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                                                </dictionary>
+                                                            </binding>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -143,7 +159,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="nLB-6O-5Z4" id="ij3-I5-x1j">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
+                                <font key="font" metaFont="menu"/>
                                 <menu key="menu" title="OtherViews" id="Paj-8i-a7d">
                                     <items>
                                         <menuItem state="on" image="NSActionTemplate" hidden="YES" id="K5M-wI-zKW"/>

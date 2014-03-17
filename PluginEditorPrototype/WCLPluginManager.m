@@ -20,6 +20,7 @@
 
 @synthesize pluginDataController = _pluginDataController;
 @synthesize nameToPluginController = _nameToPluginController;
+@synthesize defaultNewPlugin = _defaultNewPlugin;
 
 + (instancetype)sharedPluginManager
 {
@@ -61,6 +62,51 @@
 }
 
 #pragma mark Properties
+
+- (WCLPlugin *)defaultNewPlugin
+{
+    if (_defaultNewPlugin) {
+        return _defaultNewPlugin;
+    }
+
+    NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifier];
+
+    WCLPlugin *plugin = [self pluginWithIdentifier:identifier];
+
+    _defaultNewPlugin = plugin;
+    _defaultNewPlugin.defaultNewPlugin = YES;
+    
+    return _defaultNewPlugin;
+}
+
+- (void)setDefaultNewPlugin:(WCLPlugin *)defaultNewPlugin
+{
+    if (self.defaultNewPlugin == defaultNewPlugin) {
+        return;
+    }
+    
+    WCLPlugin *oldDefaultNewPlugin = _defaultNewPlugin;
+    _defaultNewPlugin = defaultNewPlugin;
+    
+    oldDefaultNewPlugin.defaultNewPlugin = NO;
+
+    _defaultNewPlugin.defaultNewPlugin = YES;
+
+    [[NSUserDefaults standardUserDefaults] setObject:_defaultNewPlugin.identifier
+                                              forKey:kDefaultNewPluginIdentifier];
+}
+
+- (WCLPlugin *)pluginWithIdentifier:(NSString *)identifer
+{
+    NSArray *plugins = [self plugins];
+    for (WCLPlugin *plugin in plugins) {
+        if ([plugin.identifier isEqualToString:identifer]) {
+            return plugin;
+        }
+    }
+
+    return nil;
+}
 
 - (WCLNameToPluginController *)nameToPluginController
 {

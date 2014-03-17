@@ -13,3 +13,4 @@
 
 #define kErrorCodeInvalidPlugin -42
 
+#define kDefaultNewPluginIdentifier @"WCLDefaultNewPluginIdentifier"

@@ -131,10 +131,9 @@
 
 - (IBAction)makeDefaultPlugin:(id)sender
 {
-    NSLog(@"Make Default Plugin");
     NSArray *plugins = [self.pluginArrayController selectedObjects];
     for (WCLPlugin *plugin in plugins) {
-        NSLog(@"plugins = %@", plugins);
+        [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:plugin];
     }
 }
 

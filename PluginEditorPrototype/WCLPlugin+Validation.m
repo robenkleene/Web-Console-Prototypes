@@ -7,7 +7,7 @@
 //
 
 #import "WCLPlugin+Validation.h"
-
+#import "WCLPlugin+PluginManager.h"
 #import "WCLPluginManager.h"
 
 @implementation WCLPlugin (Validation)
@@ -58,10 +58,6 @@
 
 #pragma mark Private
 
-- (WCLPluginManager *)pluginManager
-{
-    return [WCLPluginManager sharedPluginManager];
-}
 
 - (BOOL)isUniqueName:(NSString *)name
 {
