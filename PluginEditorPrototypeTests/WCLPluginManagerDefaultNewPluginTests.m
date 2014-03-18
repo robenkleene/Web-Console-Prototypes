@@ -90,11 +90,12 @@
 
     [[self pluginManager] setDefaultNewPlugin:plugin];
     
-    
-    
+    WCLPlugin *newPlugin = [[self pluginManager] newPlugin];
+
+    XCTAssertTrue([newPlugin.name hasPrefix:plugin.name], @"The new WCLPlugin's name should start with the WCLPlugin's name.");
+    XCTAssertFalse([newPlugin.name isEqualToString:plugin.name], @"The new WCLPlugin's name should not equal the WCLPlugin's name.");
+    XCTAssertTrue([newPlugin.command isEqualToString:plugin.command], @"The new WCLPlugin's command should equal the WCLPlugin's command.");
+    XCTAssertTrue([newPlugin.fileExtensions isEqualToArray:plugin.fileExtensions], @"The new WCLPlugin's file extensions should equal the WCLPlugin's file extensions.");
 }
 
-// Test that when creating a new plugin it is created from the default new plugin
-// Do this by first changing a couple of properties on the plugin, not name, file extensions and command
-// Actually test that the names are not equal, but that the second plugin begins with the default new plugins name
 @end
