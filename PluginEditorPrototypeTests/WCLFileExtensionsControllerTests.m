@@ -8,8 +8,6 @@
 
 #import <XCTest/XCTest.h>
 
-//#import "WCLFileExtensionController.h"
-//#import "WCLPluginManagerController.h"
 #import "WCLTestPluginManagerTestCase.h"
 #import "WCLTestPluginManager.h"
 
@@ -29,13 +27,6 @@
 
 - (void)tearDown
 {
-//    [self deleteAllPlugins];
-//    
-//    NSArray *fileExtensions = [[self fileExtensionsController] fileExtensions];
-//    XCTAssertFalse([fileExtensions count] > 0, @"There should not be any file extensions after deleting all plugins.");
-//
-//    XCTAssertNil([[self pluginManager] defaultNewPlugin], @"The default new plugin should be nil.");
-    
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
@@ -80,35 +71,5 @@
     NSArray *sortedFileExtensions2 = [fileExtensions2 sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     return [sortedFileExtensions1 isEqualToArray:sortedFileExtensions2];
 }
-
-//- (void)deleteAllPlugins
-//{
-//    NSArray *plugins = [[self pluginManagerController] plugins];
-//    
-//    NSRange range = NSMakeRange(0, [plugins count]);
-//    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-//    [[self pluginManagerController] removePluginsAtIndexes:indexSet];
-//
-//    for (WCLPlugin *plugin in plugins) {
-//        [[self pluginManager] deletePlugin:plugin];
-//    }
-//}
-
-//#pragma mark Test Singletons
-//
-//- (WCLTestFileExtensionController *)fileExtensionsController
-//{
-//    return [WCLTestFileExtensionController sharedFileExtensionController];
-//}
-//
-//- (WCLTestPluginManager *)pluginManager
-//{
-//    return [WCLTestPluginManager sharedPluginManager];
-//}
-//
-//- (WCLTestPluginManagerController *)pluginManagerController
-//{
-//    return [WCLTestPluginManagerController sharedPluginManagerController];
-//}
 
 @end
