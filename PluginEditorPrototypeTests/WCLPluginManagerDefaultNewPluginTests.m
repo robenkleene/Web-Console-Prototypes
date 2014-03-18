@@ -12,6 +12,8 @@
 #import "WCLTestPluginManager.h"
 #import "Web_ConsoleTestsConstants.h"
 
+#import "WCLKeyValueObservingTestsHelper.h"
+
 @interface WCLPluginManagerDefaultNewPluginTests : WCLTestPluginManagerTestCase
 
 @end
@@ -96,6 +98,25 @@
     XCTAssertFalse([newPlugin.name isEqualToString:plugin.name], @"The new WCLPlugin's name should not equal the WCLPlugin's name.");
     XCTAssertTrue([newPlugin.command isEqualToString:plugin.command], @"The new WCLPlugin's command should equal the WCLPlugin's command.");
     XCTAssertTrue([newPlugin.fileExtensions isEqualToArray:plugin.fileExtensions], @"The new WCLPlugin's file extensions should equal the WCLPlugin's file extensions.");
+}
+
+- (void)testDefaultNewPluginKeyValueObserving
+{
+    WCLPlugin *plugin = [[self pluginManager] newPlugin];
+
+    XCTAssertFalse(plugin.isDefaultNewPlugin, @"The WCLPlugin should not be the default new plugin.");
+    
+    __block BOOL isDefaultNewPlugin = plugin.isDefaultNewPlugin;
+
+    [WCLKeyValueObservingTestsHelper observeObject:plugin
+                                        forKeyPath:kTestPluginDefaultNewPluginKeyPath
+                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                               isDefaultNewPlugin = plugin.isDefaultNewPlugin;
+                                           }];
+
+    [[self pluginManager] setDefaultNewPlugin:plugin];
+
+    XCTAssertTrue(isDefaultNewPlugin, @"The key-value observing change should have happened for the WCLPlugin's isDefaultNewPlugin property");
 }
 
 @end

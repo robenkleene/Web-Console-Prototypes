@@ -16,9 +16,13 @@
 {
     [self deleteAllPlugins];
     
+    NSArray *plugins = [[self pluginManager] plugins];
+    XCTAssertFalse([plugins count] > 0, @"The WCLPluginManager should not have any WCLPlugins.");
+    
     NSArray *fileExtensions = [[self fileExtensionsController] fileExtensions];
     XCTAssertFalse([fileExtensions count] > 0, @"There should not be any file extensions after deleting all plugins.");
 
+    XCTAssertNil([[self pluginManager] defaultNewPlugin], @"The WCLPluginManager's default new WCLPlugin should be nil.");
     
     [super tearDown];
 }
@@ -33,6 +37,11 @@
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
     [[self pluginManagerController] removePluginsAtIndexes:indexSet];
     
+    for (WCLPlugin *plugin in plugins) {
+        [[self pluginManager] deletePlugin:plugin];
+    }
+
+    plugins = [[self pluginManager] plugins];
     for (WCLPlugin *plugin in plugins) {
         [[self pluginManager] deletePlugin:plugin];
     }

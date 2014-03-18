@@ -11,12 +11,12 @@
 #import "WCLPluginManager.h"
 
 @interface WCLPluginManagerController ()
-@property (nonatomic, strong, readonly) NSMutableArray *plugins;
+@property (nonatomic, strong, readonly) NSMutableArray *mutablePlugins;
 @end
 
 @implementation WCLPluginManagerController
 
-@synthesize plugins = _plugins;
+@synthesize mutablePlugins = _mutablePlugins;
 
 #pragma mark Interface Builder Compatible Singleton
 
@@ -63,35 +63,40 @@
 
 #pragma mark Required Key-Value Coding To-Many Relationship Compliance
 
-- (NSMutableArray *)plugins
+- (NSArray *)plugins
 {
-    if (_plugins) {
-        return _plugins;
+    return [NSArray arrayWithArray:self.mutablePlugins];
+}
+
+- (NSMutableArray *)mutablePlugins
+{
+    if (_mutablePlugins) {
+        return _mutablePlugins;
     }
     
-    _plugins = [[[self pluginManager] plugins] mutableCopy];
+    _mutablePlugins = [[[self pluginManager] plugins] mutableCopy];
     
-    return _plugins;
+    return _mutablePlugins;
 }
 
 - (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index
 {    
-    [self.plugins insertObject:plugin atIndex:index];
+    [self.mutablePlugins insertObject:plugin atIndex:index];
 }
 
 - (void)insertPlugins:(NSArray *)pluginsArray atIndexes:(NSIndexSet *)indexes
 {
-    [self.plugins insertObjects:pluginsArray atIndexes:indexes];
+    [self.mutablePlugins insertObjects:pluginsArray atIndexes:indexes];
 }
 
 - (void)removeObjectFromPluginsAtIndex:(NSUInteger)index
 {
-    [self.plugins removeObjectAtIndex:index];
+    [self.mutablePlugins removeObjectAtIndex:index];
 }
 
 - (void)removePluginsAtIndexes:(NSIndexSet *)indexes
 {
-    [self.plugins removeObjectsAtIndexes:indexes];
+    [self.mutablePlugins removeObjectsAtIndexes:indexes];
 }
 
 

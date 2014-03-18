@@ -12,7 +12,7 @@
 
 @interface WCLPluginManagerController : NSObject
 + (instancetype)sharedPluginManagerController;
-- (NSMutableArray *)plugins;
+- (NSArray *)plugins;
 - (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index;
 - (void)insertPlugins:(NSArray *)pluginsArray atIndexes:(NSIndexSet *)indexes;
 - (void)removeObjectFromPluginsAtIndex:(NSUInteger)index;
