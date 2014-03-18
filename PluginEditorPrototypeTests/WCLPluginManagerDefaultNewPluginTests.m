@@ -38,7 +38,7 @@
     [[self pluginManager] setDefaultNewPlugin:newPlugin];
     
     // Assert the WCLPlugin's isDefaultNewPlugin property
-    XCTAssertTrue(newPlugin.isDefaultNewPlugin, @"The WCLPlugin's isDefaultNewPlugin property should be YES.");
+    XCTAssertTrue(newPlugin.isDefaultNewPlugin, @"The WCLPlugin should be the default new plugin.");
     
     // Assert the default new plugin identifier in NSUserDefaults
     NSString *defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifier];
@@ -46,7 +46,7 @@
     
     // Assert the default new plugin is returned from the WCLPluginManager
     WCLPlugin *defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
-    XCTAssertEqual(defaultNewPlugin, newPlugin, @"The default new WCLPlugin should equal the new WCLPlugin.");
+    XCTAssertEqual(defaultNewPlugin, newPlugin, @"The default new WCLPlugin should be the new WCLPlugin.");
 }
 
 - (void)testDeletingDefaultNewPlugin
@@ -67,7 +67,21 @@
     XCTAssertNil(defaultNewPluginIdentifier, @"The default new plugin identifier should be nil.");
 }
 
-// Test that setting the default new plugin, then switching to another sets the flags correctly
+- (void)testChangingDefaultNewPlugin
+{
+    WCLPlugin *newPlugin = [[self pluginManager] newPlugin];
+    [[self pluginManager] setDefaultNewPlugin:newPlugin];
+
+    XCTAssertTrue(newPlugin.isDefaultNewPlugin, @"The WCLPlugin should be the default new plugin.");
+
+    WCLPlugin *newPluginTwo = [[self pluginManager] newPlugin];
+    [[self pluginManager] setDefaultNewPlugin:newPluginTwo];
+
+    XCTAssertFalse(newPlugin.isDefaultNewPlugin, @"The WCLPlugin should not be the default new plugin.");
+    XCTAssertTrue(newPluginTwo.isDefaultNewPlugin, @"The second WCLPlugin should be the default new plugin.");
+    WCLPlugin *defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
+    XCTAssertEqual(defaultNewPlugin, newPluginTwo, @"The default new WCLPlugin should be the second new WCLPlugin.");
+}
 
 // Test that when creating a new plugin it is created from the default new plugin
 // Do this by first changing a couple of properties on the plugin, not name, file extensions and command
