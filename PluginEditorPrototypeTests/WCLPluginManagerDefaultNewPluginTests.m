@@ -8,11 +8,12 @@
 
 #import <XCTest/XCTest.h>
 
+#import "WCLTestPluginManagerTestCase.h"
 #import "WCLTestPluginManager.h"
 
 #define kTestPluginName @"Test Plugin"
 
-@interface WCLPluginManagerDefaultNewPluginTests : XCTestCase
+@interface WCLPluginManagerDefaultNewPluginTests : WCLTestPluginManagerTestCase
 
 @end
 
@@ -26,8 +27,6 @@
 
 - (void)tearDown
 {
-    [[self pluginManager] setDefaultNewPlugin:nil];
-    XCTAssertNil([[self pluginManager] defaultNewPlugin], @"The default new plugin should be nil.");
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
@@ -57,16 +56,6 @@
     [[self pluginManager] deletePlugin:newPlugin];
 
     XCTAssertNil([[self pluginManager] defaultNewPlugin], @"The default new plugin should be nil.");
-}
-
-
-
-
-#pragma mark Test Singleton Stack
-
-- (WCLTestPluginManager *)pluginManager
-{
-    return [WCLTestPluginManager sharedPluginManager];
 }
 
 @end
