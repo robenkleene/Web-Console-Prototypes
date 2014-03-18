@@ -10,9 +10,7 @@
 
 #import "WCLTestPluginManagerTestCase.h"
 #import "WCLTestPluginManager.h"
-
-#define kTestFileExtensions @[@"html", @"md", @"js"]
-#define kTestFileExtensionsEmpty @[]
+#import "Web_ConsoleTestsConstants.h"
 
 @interface WCLFileExtensionsControllerTests : WCLTestPluginManagerTestCase
 @end
