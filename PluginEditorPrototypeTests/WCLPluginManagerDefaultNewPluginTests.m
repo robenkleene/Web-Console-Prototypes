@@ -11,7 +11,7 @@
 #import "WCLTestPluginManagerTestCase.h"
 #import "WCLTestPluginManager.h"
 
-#define kTestPluginName @"Test Plugin"
+//#define kTestPluginName @"Test Plugin"
 
 @interface WCLPluginManagerDefaultNewPluginTests : WCLTestPluginManagerTestCase
 
@@ -34,17 +34,19 @@
 - (void)testSettingDefaultNewPlugin
 {
     WCLPlugin *newPlugin = [[self pluginManager] newPlugin];
-    newPlugin.name = kTestPluginName;
 
     [[self pluginManager] setDefaultNewPlugin:newPlugin];
     
-    // Assert that the identifier is set correctly
+    // Assert the WCLPlugin's isDefaultNewPlugin property
+    XCTAssertTrue(newPlugin.isDefaultNewPlugin, @"The WCLPlugin's isDefaultNewPlugin property should be YES.");
+    
+    // Assert the default new plugin identifier in NSUserDefaults
     NSString *defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifier];
     XCTAssertTrue([newPlugin.identifier isEqualToString:defaultNewPluginIdentifier], @"The default new WCLPlugin's identifier should equal the WCLPlugin's identifier.");
     
-    // Assert that the default new plugin is returned
+    // Assert the default new plugin is returned from the WCLPluginManager
     WCLPlugin *defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
-    XCTAssertTrue([defaultNewPlugin.name isEqualToString:kTestPluginName], @"The default new WCLPlugin's name should equal the test plugin name.");
+    XCTAssertEqual(defaultNewPlugin, newPlugin, @"The default new WCLPlugin should equal the new WCLPlugin.");
 }
 
 - (void)testDeletingDefaultNewPlugin
@@ -65,4 +67,9 @@
     XCTAssertNil(defaultNewPluginIdentifier, @"The default new plugin identifier should be nil.");
 }
 
+// Test that setting the default new plugin, then switching to another sets the flags correctly
+
+// Test that when creating a new plugin it is created from the default new plugin
+// Do this by first changing a couple of properties on the plugin, not name, file extensions and command
+// Actually test that the names are not equal, but that the second plugin begins with the default new plugins name
 @end
