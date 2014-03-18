@@ -9,7 +9,7 @@
 #import "WCLPlugin.h"
 #import "WCLPlugin+Validation.h"
 #import "WCLPlugin+PluginManager.h"
-#import "WCLPlugin+PluginManager.m"
+#import "WCLPluginManager.h"
 
 #define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"fileExtensions", @"type", nil]
 

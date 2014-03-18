@@ -33,9 +33,19 @@
 
 - (WCLPlugin *)newPlugin
 {
-    WCLPlugin *plugin = [self.pluginDataController newPlugin];
-    [self.nameToPluginController addPlugin:plugin];
-    return plugin;
+    WCLPlugin *defaultPlugin = [self defaultNewPlugin];
+
+    WCLPlugin *newPlugin;
+    if (defaultPlugin) {
+        newPlugin = [self.pluginDataController newPluginFromPlugin:defaultPlugin];
+    }
+    
+    if (!newPlugin) {
+        newPlugin = [self.pluginDataController newPlugin];
+    }
+    
+    [self.nameToPluginController addPlugin:newPlugin];
+    return newPlugin;
 }
 
 - (WCLPlugin *)newPluginFromPlugin:(WCLPlugin *)plugin
@@ -47,6 +57,10 @@
 
 - (void)deletePlugin:(WCLPlugin *)plugin
 {
+    if (self.defaultNewPlugin == plugin) {
+        self.defaultNewPlugin = nil;
+    }
+    
     [self.nameToPluginController removePlugin:plugin];
     [self.pluginDataController deletePlugin:plugin];
 }
@@ -92,8 +106,13 @@
 
     _defaultNewPlugin.defaultNewPlugin = YES;
 
-    [[NSUserDefaults standardUserDefaults] setObject:_defaultNewPlugin.identifier
-                                              forKey:kDefaultNewPluginIdentifier];
+    if (_defaultNewPlugin) {
+        [[NSUserDefaults standardUserDefaults] setObject:_defaultNewPlugin.identifier
+                                                  forKey:kDefaultNewPluginIdentifier];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kDefaultNewPluginIdentifier];
+    }
+
 }
 
 - (WCLPlugin *)pluginWithIdentifier:(NSString *)identifer

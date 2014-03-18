@@ -32,6 +32,8 @@
     
     NSArray *fileExtensions = [[self fileExtensionsController] fileExtensions];
     XCTAssertFalse([fileExtensions count] > 0, @"There should not be any file extensions after deleting all plugins.");
+
+    XCTAssertNil([[self pluginManager] defaultNewPlugin], @"The default new plugin should be nil.");
     
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
@@ -91,7 +93,7 @@
     }
 }
 
-#pragma mark Test Singleton Stack
+#pragma mark Test Singletons
 
 - (WCLTestFileExtensionController *)fileExtensionsController
 {
