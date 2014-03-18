@@ -39,11 +39,12 @@
     [[self pluginManager] setDefaultNewPlugin:newPlugin];
     
     // Assert that the identifier is set correctly
-    
+    NSString *defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifier];
+    XCTAssertTrue([newPlugin.identifier isEqualToString:defaultNewPluginIdentifier], @"The default new WCLPlugin's identifier should equal the WCLPlugin's identifier.");
     
     // Assert that the default new plugin is returned
     WCLPlugin *defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
-    XCTAssertTrue([defaultNewPlugin.name isEqualToString:kTestPluginName], @"The default new plugins name should equal the test plugin name.");
+    XCTAssertTrue([defaultNewPlugin.name isEqualToString:kTestPluginName], @"The default new WCLPlugin's name should equal the test plugin name.");
 }
 
 - (void)testDeletingDefaultNewPlugin
@@ -51,11 +52,17 @@
     WCLPlugin *newPlugin = [[self pluginManager] newPlugin];
     [[self pluginManager] setDefaultNewPlugin:newPlugin];
 
-    XCTAssertNotNil([[self pluginManager] defaultNewPlugin], @"The default new plugin should not be nil.");
-
+    WCLPlugin *defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
+    XCTAssertNotNil(defaultNewPlugin, @"The default new WCLPlugin should not be nil.");
+    NSString *defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifier];
+    XCTAssertNotNil(defaultNewPluginIdentifier, @"The default new plugin identifier should not be nil.");
+    
     [[self pluginManager] deletePlugin:newPlugin];
 
-    XCTAssertNil([[self pluginManager] defaultNewPlugin], @"The default new plugin should be nil.");
+    defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
+    XCTAssertNil(defaultNewPlugin, @"The default new WCLPlugin should be nil.");
+    defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifier];
+    XCTAssertNil(defaultNewPluginIdentifier, @"The default new plugin identifier should be nil.");
 }
 
 @end
