@@ -171,6 +171,11 @@
                                         <menuItem title="Set as Default" id="nLB-6O-5Z4">
                                             <connections>
                                                 <action selector="makeDefaultPlugin:" target="-2" id="epr-X6-fWN"/>
+                                                <binding destination="wNa-Wq-zbh" name="enabled" keyPath="selection.defaultNewPlugin" id="uI5-n7-0uX">
+                                                    <dictionary key="options">
+                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                                    </dictionary>
+                                                </binding>
                                             </connections>
                                         </menuItem>
                                     </items>
