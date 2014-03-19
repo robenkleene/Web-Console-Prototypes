@@ -13,4 +13,5 @@
 
 #define kErrorCodeInvalidPlugin -42
 
-#define kDefaultNewPluginIdentifier @"WCLDefaultNewPluginIdentifier"
+#define kDefaultNewPluginIdentifierKey @"WCLDefaultNewPluginIdentifier"
+#define kDefaultPreferencesSelectedTabKey @"WCLPreferencesSelectedTab"

@@ -83,7 +83,7 @@
         return _defaultNewPlugin;
     }
 
-    NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifier];
+    NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifierKey];
 
     WCLPlugin *plugin = [self pluginWithIdentifier:identifier];
 
@@ -100,7 +100,7 @@
     
     if (!defaultNewPlugin) {
         // Do this early so that the subsequent calls to the getter don't reset the default new plugin
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kDefaultNewPluginIdentifier];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kDefaultNewPluginIdentifierKey];
     }
     
     WCLPlugin *oldDefaultNewPlugin = _defaultNewPlugin;
@@ -112,7 +112,7 @@
 
     if (_defaultNewPlugin) {
         [[NSUserDefaults standardUserDefaults] setObject:_defaultNewPlugin.identifier
-                                                  forKey:kDefaultNewPluginIdentifier];
+                                                  forKey:kDefaultNewPluginIdentifierKey];
     }
 }
 

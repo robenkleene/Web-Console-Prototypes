@@ -41,7 +41,7 @@
     XCTAssertTrue(plugin.isDefaultNewPlugin, @"The WCLPlugin should be the default new plugin.");
     
     // Assert the default new plugin identifier in NSUserDefaults
-    NSString *defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifier];
+    NSString *defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifierKey];
     XCTAssertTrue([plugin.identifier isEqualToString:defaultNewPluginIdentifier], @"The default WCLPlugin's identifier should equal the WCLPlugin's identifier.");
     
     // Assert the default new plugin is returned from the WCLPluginManager
@@ -56,14 +56,14 @@
 
     WCLPlugin *defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
     XCTAssertNotNil(defaultNewPlugin, @"The default WCLPlugin should not be nil.");
-    NSString *defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifier];
+    NSString *defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifierKey];
     XCTAssertNotNil(defaultNewPluginIdentifier, @"The default new plugin identifier should not be nil.");
     
     [[self pluginManager] deletePlugin:plugin];
 
     defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
     XCTAssertNil(defaultNewPlugin, @"The default WCLPlugin should be nil.");
-    defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifier];
+    defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifierKey];
     XCTAssertNil(defaultNewPluginIdentifier, @"The default new plugin identifier should be nil.");
 }
 

@@ -38,11 +38,8 @@
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
-    if (self) {
-        // Initialization code here.
-
-#warning This should be retrieved from storing the currently selected preference tab
-        _preferencePane = 0;
+    if (self) {        
+        _preferencePane = [[NSUserDefaults standardUserDefaults] integerForKey:kDefaultPreferencesSelectedTabKey];;
     }
     return self;
 }
@@ -79,6 +76,8 @@
     NSViewController *viewController = [self viewControllerForPreferencePane:preferencePane];
     
     [self setViewController:viewController animated:animated];
+
+    [[NSUserDefaults standardUserDefaults] setInteger:preferencePane forKey:kDefaultPreferencesSelectedTabKey];
 }
 
 - (void)setViewController:(NSViewController *)viewController
