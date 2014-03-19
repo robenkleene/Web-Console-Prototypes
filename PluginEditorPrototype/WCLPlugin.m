@@ -87,9 +87,22 @@ static void *WCLPluginContext;
     return valid;
 }
 
+- (void)setDefaultNewPlugin:(BOOL)defaultNewPlugin
+{
+    if (_defaultNewPlugin != defaultNewPlugin) {
+        _defaultNewPlugin = defaultNewPlugin;
+    }
+}
+
 - (BOOL)isDefaultNewPlugin
 {
-    return [[WCLPluginManager sharedPluginManager] defaultNewPlugin] == self;
+    BOOL isDefaultNewPlugin = [[WCLPluginManager sharedPluginManager] defaultNewPlugin] == self;
+
+    if (_defaultNewPlugin != isDefaultNewPlugin) {
+        _defaultNewPlugin = isDefaultNewPlugin;
+    }
+    
+    return _defaultNewPlugin;
 }
 
 #pragma mark - Saving

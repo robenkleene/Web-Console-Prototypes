@@ -88,7 +88,6 @@
     WCLPlugin *plugin = [self pluginWithIdentifier:identifier];
 
     _defaultNewPlugin = plugin;
-    _defaultNewPlugin.defaultNewPlugin = YES;
     
     return _defaultNewPlugin;
 }
@@ -97,6 +96,11 @@
 {
     if (self.defaultNewPlugin == defaultNewPlugin) {
         return;
+    }
+    
+    if (!defaultNewPlugin) {
+        // Do this early so that the subsequent calls to the getter don't reset the default new plugin
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kDefaultNewPluginIdentifier];
     }
     
     WCLPlugin *oldDefaultNewPlugin = _defaultNewPlugin;
@@ -109,10 +113,7 @@
     if (_defaultNewPlugin) {
         [[NSUserDefaults standardUserDefaults] setObject:_defaultNewPlugin.identifier
                                                   forKey:kDefaultNewPluginIdentifier];
-    } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kDefaultNewPluginIdentifier];
     }
-
 }
 
 - (WCLPlugin *)pluginWithIdentifier:(NSString *)identifer
