@@ -33,7 +33,7 @@
                             <action selector="switchView:" target="-2" id="zO8-ql-GfJ"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="90BEE560-AE1E-4EAF-AD23-2692DEF71A27" label="Files" paletteLabel="Files" tag="2" image="NSMultipleDocuments" selectable="YES" id="O0P-3w-Dt7">
+                    <toolbarItem implicitItemIdentifier="90BEE560-AE1E-4EAF-AD23-2692DEF71A27" label="Files" paletteLabel="Files" tag="2" image="NSMultipleDocuments" autovalidates="NO" selectable="YES" id="O0P-3w-Dt7">
                         <connections>
                             <action selector="switchView:" target="-2" id="vZn-C3-eGd"/>
                         </connections>
