@@ -56,7 +56,7 @@
                                         </tableHeaderCell>
                                         <popUpButtonCell key="dataCell" type="bevel" title="Pop Up" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="Jjo-Hp-zga" id="cnn-kg-7Nc">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
+                                            <font key="font" metaFont="menu"/>
                                             <menu key="menu" title="OtherViews" id="7tV-xv-X5L">
                                                 <items>
                                                     <menuItem title="Pop Up" state="on" id="Jjo-Hp-zga"/>
@@ -74,7 +74,7 @@
                         <rect key="frame" x="1" y="215" width="438" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="37" horizontal="NO" id="yJf-gE-NKq">
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="yJf-gE-NKq">
                         <rect key="frame" x="-15" y="17" width="16" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -91,7 +91,7 @@
                 <constraint firstAttribute="bottom" secondItem="0IZ-8n-o04" secondAttribute="bottom" constant="20" id="l9a-P0-BQd"/>
             </constraints>
         </customView>
-        <arrayController id="mG3-SJ-xOt">
+        <arrayController automaticallyRearrangesObjects="YES" id="mG3-SJ-xOt">
             <connections>
                 <binding destination="uTB-dW-NEV" name="contentArray" keyPath="fileExtensions" id="KFC-dU-yDP"/>
             </connections>
