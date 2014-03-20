@@ -30,9 +30,9 @@
 }
 
 - (void)testAddingPluginAndChangingFileExtensions
-{
+{    
     // Hitting file extensions early makes sure that the singletons are instantiated and observers are in place.
-    XCTAssertNil([[self fileExtensionsController] fileExtensions], @"There should not be any file extensions before adding a plugin.");
+    XCTAssertFalse([[[self fileExtensionsController] fileExtensions] count] > 0, @"There should not be any file extensions before adding a plugin.");
     
     WCLPlugin *plugin = [[self pluginManager] newPlugin];
     [[self pluginManagerController] insertObject:plugin inPluginsAtIndex:0];

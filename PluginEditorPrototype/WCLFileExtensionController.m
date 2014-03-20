@@ -13,10 +13,21 @@
 
 #define kPluginManagerControllerPluginsKeyPath @"plugins"
 
+#pragma mark - WCLFileExtensionsDictionaryManagerDelegate
+
+@class WCLFileExtensionDictionaryManager;
+
+@protocol WCLFileExtensionDictionaryManagerDelegate <NSObject>
+- (void)fileExtensionsDictionaryManager:(WCLFileExtensionDictionaryManager *)fileExtensionDictionaryManager
+                    didAddFileExtension:(NSString *)fileExtension;
+- (void)fileExtensionsDictionaryManager:(WCLFileExtensionDictionaryManager *)fileExtensionDictionaryManager
+                    didRemoveFileExtension:(NSString *)fileExtension;
+@end
 
 #pragma mark - WCLFileExtensionDictionaryManager
 
 @interface WCLFileExtensionDictionaryManager : NSObject
+@property (nonatomic, weak) id <WCLFileExtensionDictionaryManagerDelegate> delegate;
 @property (nonatomic, strong, readonly) NSMutableDictionary *fileExtensionToCountDictionary;
 - (NSArray *)fileExtensions;
 @end
@@ -31,7 +42,7 @@
     if (countNumber) {
         self.fileExtensionToCountDictionary[fileExtension] = [NSNumber numberWithInteger:[countNumber integerValue] + 1];
     } else {
-        self.fileExtensionToCountDictionary[fileExtension] = [NSNumber numberWithInteger:1];
+        [self addFileExtension:fileExtension];
     }
 }
 
@@ -43,16 +54,30 @@
     self.fileExtensionToCountDictionary[fileExtension] = [NSNumber numberWithInteger:[countNumber integerValue] - 1];
 
     if (!([self.fileExtensionToCountDictionary[fileExtension] integerValue] > 0)) {
-        [self.fileExtensionToCountDictionary removeObjectForKey:fileExtension];
+        [self removeFileExtension:fileExtension];
+    }
+}
+
+- (void)addFileExtension:(NSString *)fileExtension
+{
+    self.fileExtensionToCountDictionary[fileExtension] = [NSNumber numberWithInteger:1];
+
+    if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didAddFileExtension:)]) {
+        [self.delegate fileExtensionsDictionaryManager:self didAddFileExtension:fileExtension];
+    }
+}
+
+- (void)removeFileExtension:(NSString *)fileExtension
+{
+    [self.fileExtensionToCountDictionary removeObjectForKey:fileExtension];
+
+    if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didRemoveFileExtension:)]) {
+        [self.delegate fileExtensionsDictionaryManager:self didRemoveFileExtension:fileExtension];
     }
 }
 
 - (NSArray *)fileExtensions
 {
-    if (!_fileExtensionToCountDictionary) {
-        return nil;
-    }
-    
     return [self.fileExtensionToCountDictionary allKeys];
 }
 
@@ -72,8 +97,9 @@
 
 #pragma mark - WCLFileExtensionController
 
-@interface WCLFileExtensionController ()
+@interface WCLFileExtensionController () <WCLFileExtensionDictionaryManagerDelegate>
 @property (nonatomic, strong) WCLFileExtensionDictionaryManager *fileExtensionsDictionaryManager;
+@property (nonatomic, strong) NSMutableArray *mutableFileExtensions;
 @end
 
 @implementation WCLFileExtensionController
@@ -138,10 +164,6 @@ static void *WCLFileExtensionControllerContext;
     return [WCLPluginManagerController sharedPluginManagerController];
 }
 
-- (NSArray *)fileExtensions
-{
-    return [self.fileExtensionsDictionaryManager fileExtensions];
-}
 
 #pragma mark Properties
 
@@ -163,8 +185,66 @@ static void *WCLFileExtensionControllerContext;
                                      forKeyPath:kPluginManagerControllerPluginsKeyPath
                                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                                         context:&WCLFileExtensionControllerContext];
+
     return _fileExtensionsDictionaryManager;
 }
+
+- (NSMutableArray *)mutableFileExtensions
+{
+    if (_mutableFileExtensions) {
+        return _mutableFileExtensions;
+    }
+    
+    _mutableFileExtensions = [[self.fileExtensionsDictionaryManager fileExtensions] mutableCopy];
+    self.fileExtensionsDictionaryManager.delegate = self;
+    
+    
+    return _mutableFileExtensions;
+}
+
+#pragma mark WCLFileExtensionsDictionaryManagerDelegate
+
+- (void)fileExtensionsDictionaryManager:(WCLFileExtensionDictionaryManager *)fileExtensionDictionaryManager
+                    didAddFileExtension:(NSString *)fileExtension
+{
+    [self insertObject:fileExtension inFileExtensionsAtIndex:0];
+}
+
+- (void)fileExtensionsDictionaryManager:(WCLFileExtensionDictionaryManager *)fileExtensionDictionaryManager
+                 didRemoveFileExtension:(NSString *)fileExtension
+{
+    NSUInteger index = [self.mutableFileExtensions indexOfObject:fileExtension];
+    [self removeObjectFromFileExtensionsAtIndex:index];
+}
+
+#pragma mark Required Key-Value Coding To-Many Relationship Compliance
+
+- (NSArray *)fileExtensions
+{
+    return [NSArray arrayWithArray:self.mutableFileExtensions];
+}
+
+- (void)insertObject:(NSString *)fileExtension inFileExtensionsAtIndex:(NSUInteger)index
+{
+    [self.mutableFileExtensions insertObject:fileExtension atIndex:index];
+}
+
+- (void)insertFileExtensions:(NSArray *)fileExtensionsArray atIndexes:(NSIndexSet *)indexes
+{
+    [self.mutableFileExtensions insertObjects:fileExtensionsArray atIndexes:indexes];
+}
+
+- (void)removeObjectFromFileExtensionsAtIndex:(NSUInteger)index
+{
+    [self.mutableFileExtensions removeObjectAtIndex:index];
+}
+
+- (void)removeFileExtensionsAtIndexes:(NSIndexSet *)indexes
+{
+    [self.mutableFileExtensions removeObjectsAtIndexes:indexes];
+}
+
+
 
 #pragma mark Key-Value Observing
 
