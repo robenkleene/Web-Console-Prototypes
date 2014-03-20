@@ -7,6 +7,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WCLFilesViewController">
             <connections>
+                <outlet property="fileExtensionsArrayController" destination="mG3-SJ-xOt" id="YsN-0J-78K"/>
+                <outlet property="tableView" destination="Upa-PR-zAD" id="J40-3w-wM7"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
         </customObject>
@@ -36,12 +38,15 @@
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableHeaderCell>
-                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="hIo-dS-qac">
+                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" alignment="left" title="Text Cell" id="hIo-dS-qac">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        <connections>
+                                            <binding destination="mG3-SJ-xOt" name="value" keyPath="arrangedObjects" id="Gb1-Ex-0wm"/>
+                                        </connections>
                                     </tableColumn>
                                     <tableColumn width="216" minWidth="40" maxWidth="1000" id="tsg-2U-Aiz">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Plugin">
@@ -86,5 +91,11 @@
                 <constraint firstAttribute="bottom" secondItem="0IZ-8n-o04" secondAttribute="bottom" constant="20" id="l9a-P0-BQd"/>
             </constraints>
         </customView>
+        <arrayController id="mG3-SJ-xOt">
+            <connections>
+                <binding destination="uTB-dW-NEV" name="contentArray" keyPath="fileExtensions" id="KFC-dU-yDP"/>
+            </connections>
+        </arrayController>
+        <customObject id="uTB-dW-NEV" customClass="WCLFileExtensionController"/>
     </objects>
 </document>

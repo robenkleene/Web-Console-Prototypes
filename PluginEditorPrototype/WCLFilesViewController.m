@@ -9,18 +9,41 @@
 #import "WCLFilesViewController.h"
 
 @interface WCLFilesViewController ()
-
+@property (weak) IBOutlet NSArrayController *fileExtensionsArrayController;
+@property (weak) IBOutlet NSTableView *tableView;
 @end
 
 @implementation WCLFilesViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+@synthesize fileExtensionsArrayController = _fileExtensionsArrayController;
+
+- (BOOL)becomeFirstResponder
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Initialization code here.
-    }
-    return self;
+    [[self.view window] makeFirstResponder:self.tableView];
+    return YES;
 }
+
+#pragma mark Properties
+
+- (NSArrayController *)fileExtensionsArrayController
+{
+    return _fileExtensionsArrayController;
+}
+
+- (void)setFileExtensionsArrayController:(NSArrayController *)fileExtensionsArrayController
+{
+    if (_fileExtensionsArrayController == fileExtensionsArrayController) {
+        return;
+    }
+    
+    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"self"
+                                                                       ascending:YES
+                                                                        selector:@selector(localizedCaseInsensitiveCompare:)];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:nameSortDescriptor, nil];
+    [fileExtensionsArrayController setSortDescriptors:sortDescriptors];
+    _fileExtensionsArrayController = fileExtensionsArrayController;
+}
+
+
 
 @end
