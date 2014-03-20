@@ -23,20 +23,26 @@
             </view>
             <toolbar key="toolbar" implicitIdentifier="BC9A3B76-3EEB-4600-8CCA-3F0E9763DE27" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="EKS-Nz-sXk">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="3BFDC5EE-F15D-454E-AD0D-36CA9F7265F9" label="Environment" paletteLabel="Environment" image="NSPreferencesGeneral" id="1IL-9e-w1q">
+                    <toolbarItem implicitItemIdentifier="3BFDC5EE-F15D-454E-AD0D-36CA9F7265F9" label="Environment" paletteLabel="Environment" image="NSPreferencesGeneral" autovalidates="NO" selectable="YES" id="1IL-9e-w1q">
                         <connections>
                             <action selector="switchView:" target="-2" id="PLA-x7-hQ0"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="E2574EF6-8D5B-4529-BE7C-E1FE00FF3FCB" label="Plugins" paletteLabel="Plugins" tag="1" image="NSApplicationIcon" id="Zyw-Ec-deS">
+                    <toolbarItem implicitItemIdentifier="E2574EF6-8D5B-4529-BE7C-E1FE00FF3FCB" label="Plugins" paletteLabel="Plugins" tag="1" image="NSApplicationIcon" autovalidates="NO" selectable="YES" id="Zyw-Ec-deS">
                         <connections>
                             <action selector="switchView:" target="-2" id="zO8-ql-GfJ"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="90BEE560-AE1E-4EAF-AD23-2692DEF71A27" label="Files" paletteLabel="Files" tag="2" image="NSMultipleDocuments" selectable="YES" id="O0P-3w-Dt7">
+                        <connections>
+                            <action selector="switchView:" target="-2" id="vZn-C3-eGd"/>
                         </connections>
                     </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="1IL-9e-w1q"/>
                     <toolbarItem reference="Zyw-Ec-deS"/>
+                    <toolbarItem reference="O0P-3w-Dt7"/>
                 </defaultToolbarItems>
             </toolbar>
             <connections>
@@ -46,6 +52,7 @@
     </objects>
     <resources>
         <image name="NSApplicationIcon" width="128" height="128"/>
+        <image name="NSMultipleDocuments" width="32" height="32"/>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
     </resources>
 </document>

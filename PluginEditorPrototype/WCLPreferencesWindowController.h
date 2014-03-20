@@ -10,7 +10,8 @@
 
 typedef NS_ENUM(NSInteger, WCLPreferencePane) {
     WCLPreferencePaneEnvironment,
-    WCLPreferencePanePlugins
+    WCLPreferencePanePlugins,
+    WCLPreferencePaneFiles
 };
 
 #define kPreferencesWindowControllerNibName @"WCLPreferencesWindowController"

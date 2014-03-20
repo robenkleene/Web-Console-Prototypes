@@ -10,9 +10,11 @@
 
 #import "WCLEnvironmentViewController.h"
 #import "WCLPluginViewController.h"
+#import "WCLFilesViewController.h"
 
 #define kEnvironmentViewControllerNibName @"WCLEnvironmentViewController"
 #define kPluginViewControllerNibName @"WCLPluginViewController"
+#define kFilesViewControllerNibName @"WCLFilesViewController"
 
 @interface WCLPreferencesWindowController () <NSWindowDelegate>
 #pragma mark NSToolbar
@@ -29,6 +31,7 @@
 + (NSInteger)preferencePaneForViewController:(NSViewController *)viewController;
 @property (nonatomic, strong) WCLEnvironmentViewController *environmentViewController;
 @property (nonatomic, strong) WCLPluginViewController *pluginViewController;
+@property (nonatomic, strong) WCLFilesViewController *filesViewController;
 @end
 
 @implementation WCLPreferencesWindowController
@@ -46,10 +49,15 @@
 
 - (void)awakeFromNib
 {
+    NSString *itemIdentifier = [self toolbarItemIdentifierForPreferencePane:self.preferencePane];
+    if (itemIdentifier) {
+        [[[self window] toolbar] setSelectedItemIdentifier:itemIdentifier];
+    }
+
     self.viewController = [self viewControllerForPreferencePane:self.preferencePane];
+
     [[[self window] contentView] setWantsLayer:YES];
 }
-
 
 #pragma mark NSToolbar
 
@@ -59,9 +67,16 @@
     [self setPreferencePane:preferencePane animated:YES];
 }
 
-- (BOOL)validateToolbarItem:(NSToolbarItem *)item
+- (NSString *)toolbarItemIdentifierForPreferencePane:(WCLPreferencePane)preferencePane
 {
-    return [item tag] != self.preferencePane;
+    NSArray *toolbarItems = [[[self window] toolbar] items];
+    for (NSToolbarItem *toolbarItem in toolbarItems) {
+        if (toolbarItem.tag == preferencePane) {
+            return [toolbarItem itemIdentifier];
+        }
+    }
+    
+    return nil;
 }
 
 #pragma mark Properties
@@ -73,6 +88,10 @@
 
 - (void)setPreferencePane:(WCLPreferencePane)preferencePane animated:(BOOL)animated
 {
+    if (_preferencePane == preferencePane) {
+        return;
+    }
+    
     NSViewController *viewController = [self viewControllerForPreferencePane:preferencePane];
     
     [self setViewController:viewController animated:animated];
@@ -158,12 +177,25 @@
         case WCLPreferencePanePlugins:
             viewController = self.pluginViewController;
             break;
+        case WCLPreferencePaneFiles:
+            viewController = self.filesViewController;
+            break;
+
         default:
             NSAssert(NO, @"No NSViewController for WCLPreferencePane. %li", (long)prefencePane);
             break;
     }
     
     return viewController;
+}
+
+- (WCLFilesViewController *)filesViewController
+{
+    if (_filesViewController) return _filesViewController;
+    
+    _filesViewController = [[WCLFilesViewController alloc] initWithNibName:kFilesViewControllerNibName bundle:nil];
+    
+    return _filesViewController;
 }
 
 - (WCLEnvironmentViewController *)environmentViewController
@@ -186,9 +218,19 @@
 
 + (NSInteger)preferencePaneForViewController:(NSViewController *)viewController
 {
-    if ([viewController isKindOfClass:[WCLEnvironmentViewController class]]) return WCLPreferencePaneEnvironment;
-    if ([viewController isKindOfClass:[WCLPluginViewController class]]) return WCLPreferencePanePlugins;
+    if ([viewController isKindOfClass:[WCLEnvironmentViewController class]]) {
+        return WCLPreferencePaneEnvironment;
+    }
 
+    if ([viewController isKindOfClass:[WCLPluginViewController class]]) {
+        return WCLPreferencePanePlugins;
+    }
+
+    if ([viewController isKindOfClass:[WCLFilesViewController class]]) {
+        return WCLPreferencePaneFiles;
+    }
+
+    
     NSAssert(NO, @"No WCLPreferencePane for NSViewController. %@", viewController);
     return -1;
 }
