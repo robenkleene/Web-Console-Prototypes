@@ -46,7 +46,7 @@
     
     newPlugin.name = plugin.name;
     newPlugin.command = plugin.command;
-    newPlugin.fileExtensions = plugin.fileExtensions;
+    newPlugin.extensions = plugin.extensions;
 
     [newPlugin renameWithUniqueName];
 

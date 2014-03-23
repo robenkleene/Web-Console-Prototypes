@@ -14,6 +14,6 @@
 - (BOOL)nameIsValid:(NSString *)name;
 - (void)renameWithUniqueName;
 #pragma mark - File Extensions
-- (BOOL)fileExtensionsAreValid:(NSArray *)fileExtensions;
-+ (NSArray *)validFileExtensionsFromFileExtensions:(NSArray *)fileExtensions;
+- (BOOL)extensionsAreValid:(NSArray *)extensions;
++ (NSArray *)validExtensionsFromExtensions:(NSArray *)extensions;
 @end

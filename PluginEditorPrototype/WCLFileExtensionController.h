@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WCLFileExtensionToPluginsController : NSObject
+@class WCLFileExtension;
+
+@interface WCLFileExtensionController : NSObject
 + (instancetype)sharedFileExtensionController;
-- (NSArray *)fileExtensions;
-- (NSDictionary *)fileExtensionToPluginsDictionary;
-- (void)insertObject:(NSString *)fileExtension inFileExtensionsAtIndex:(NSUInteger)index;
+- (NSArray *)extensions;
+//- (NSArray *)fileExtensions;
+- (void)insertObject:(WCLFileExtension *)fileExtension inFileExtensionsAtIndex:(NSUInteger)index;
 - (void)insertFileExtensions:(NSArray *)fileExtensionsArray atIndexes:(NSIndexSet *)indexes;
 - (void)removeObjectFromFileExtensionsAtIndex:(NSUInteger)index;
 - (void)removeFileExtensionsAtIndexes:(NSIndexSet *)indexes;

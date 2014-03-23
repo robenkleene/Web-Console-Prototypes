@@ -6,58 +6,62 @@
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
 //
 
-#import "WCLFileExtensionToPluginsController.h"
+#import "WCLFileExtensionController.h"
 
 #import "WCLPluginManagerController.h"
 #import "WCLPlugin.h"
+#import "WCLFileExtension.h"
 
 #define kPluginManagerControllerPluginsKeyPath @"plugins"
 
 #pragma mark - WCLFileExtensionsDictionaryManagerDelegate
 
-@class WCLFileExtensionToPluginsDictionaryManager;
+@class WCLExtensionToFileExtensionDictionaryManager;
 
-@protocol WCLFileExtensionToPluginsDictionaryManagerDelegate <NSObject>
-- (void)fileExtensionsDictionaryManager:(WCLFileExtensionToPluginsDictionaryManager *)fileExtensionDictionaryManager
-                    didAddFileExtension:(NSString *)fileExtension;
-- (void)fileExtensionsDictionaryManager:(WCLFileExtensionToPluginsDictionaryManager *)fileExtensionDictionaryManager
-                    didRemoveFileExtension:(NSString *)fileExtension;
+@protocol WCLExtensionToFileExtensionDictionaryManagerDelegate <NSObject>
+- (void)fileExtensionsDictionaryManager:(WCLExtensionToFileExtensionDictionaryManager *)fileExtensionDictionaryManager
+                    didAddFileExtension:(WCLFileExtension *)fileExtension;
+- (void)fileExtensionsDictionaryManager:(WCLExtensionToFileExtensionDictionaryManager *)fileExtensionDictionaryManager
+                    didRemoveFileExtension:(WCLFileExtension *)fileExtension;
 @end
 
-#pragma mark - WCLFileExtensionToPluginsDictionaryManager
+#pragma mark - WCLExtensionToFileExtensionDictionaryManager
 
-@interface WCLFileExtensionToPluginsDictionaryManager : NSObject
-@property (nonatomic, weak) id <WCLFileExtensionToPluginsDictionaryManagerDelegate> delegate;
-@property (nonatomic, strong, readonly) NSMutableDictionary *fileExtensionToPluginsDictionary;
+@interface WCLExtensionToFileExtensionDictionaryManager : NSObject
+@property (nonatomic, weak) id <WCLExtensionToFileExtensionDictionaryManagerDelegate> delegate;
+@property (nonatomic, strong, readonly) NSMutableDictionary *extensionToFileExtensionDictionary;
+- (NSArray *)extensions;
 - (NSArray *)fileExtensions;
 @end
 
-@implementation WCLFileExtensionToPluginsDictionaryManager
+@implementation WCLExtensionToFileExtensionDictionaryManager
 
-@synthesize fileExtensionToPluginsDictionary = _fileExtensionToPluginsDictionary;
+@synthesize extensionToFileExtensionDictionary = _extensionToFileExtensionDictionary;
 
-- (void)addPlugin:(WCLPlugin *)plugin forFileExtension:(NSString *)fileExtension
+- (void)addPlugin:(WCLPlugin *)plugin forExtension:(NSString *)extension
 {
-    NSMutableArray *plugins = self.fileExtensionToPluginsDictionary[fileExtension];
-    if (plugins) {
-        [plugins addObject:plugin];
-    } else {
-        self.fileExtensionToPluginsDictionary[fileExtension] = [NSMutableArray arrayWithObject:plugin];
-        
+    WCLFileExtension *fileExtension = self.extensionToFileExtensionDictionary[extension];
+
+    if (!fileExtension) {
+        fileExtension = [[WCLFileExtension alloc] initWithExtension:extension];
+        self.extensionToFileExtensionDictionary[extension] = fileExtension;
+
         if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didAddFileExtension:)]) {
             [self.delegate fileExtensionsDictionaryManager:self didAddFileExtension:fileExtension];
         }
     }
+
+    [fileExtension.plugins addObject:plugin];
 }
 
-- (void)removePlugin:(WCLPlugin *)plugin forFileExtension:(NSString *)fileExtension
+- (void)removePlugin:(WCLPlugin *)plugin forExtension:(NSString *)extension
 {
-    NSMutableArray *plugins = self.fileExtensionToPluginsDictionary[fileExtension];
+    WCLFileExtension *fileExtension = self.extensionToFileExtensionDictionary[extension];
 
-    [plugins removeObject:plugin];
+    [fileExtension.plugins removeObject:plugin];
 
-    if (![plugins count]) {
-        [self.fileExtensionToPluginsDictionary removeObjectForKey:fileExtension];
+    if (![fileExtension.plugins count]) {
+        [self.extensionToFileExtensionDictionary removeObjectForKey:extension];
         
         if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didRemoveFileExtension:)]) {
             [self.delegate fileExtensionsDictionaryManager:self didRemoveFileExtension:fileExtension];
@@ -65,20 +69,27 @@
     }
 }
 
-- (NSArray *)fileExtensions
+- (NSArray *)extensions
 {
-    return [self.fileExtensionToPluginsDictionary allKeys];
+    return [self.extensionToFileExtensionDictionary allKeys];
 }
 
-- (NSMutableDictionary *)fileExtensionToPluginsDictionary
+- (NSArray *)fileExtensions
 {
-    if (_fileExtensionToPluginsDictionary) {
-        return _fileExtensionToPluginsDictionary;
+    return [self.extensionToFileExtensionDictionary allValues];
+}
+
+#pragma mark - Properties
+
+- (NSMutableDictionary *)extensionToFileExtensionDictionary
+{
+    if (_extensionToFileExtensionDictionary) {
+        return _extensionToFileExtensionDictionary;
     }
 
-    _fileExtensionToPluginsDictionary = [NSMutableDictionary dictionary];
+    _extensionToFileExtensionDictionary = [NSMutableDictionary dictionary];
     
-    return _fileExtensionToPluginsDictionary;
+    return _extensionToFileExtensionDictionary;
 }
 
 @end
@@ -86,12 +97,12 @@
 
 #pragma mark - WCLFileExtensionController
 
-@interface WCLFileExtensionToPluginsController () <WCLFileExtensionToPluginsDictionaryManagerDelegate>
-@property (nonatomic, strong) WCLFileExtensionToPluginsDictionaryManager *fileExtensionsDictionaryManager;
+@interface WCLFileExtensionController () <WCLExtensionToFileExtensionDictionaryManagerDelegate>
+@property (nonatomic, strong) WCLExtensionToFileExtensionDictionaryManager *fileExtensionsDictionaryManager;
 @property (nonatomic, strong) NSMutableArray *mutableFileExtensions;
 @end
 
-@implementation WCLFileExtensionToPluginsController
+@implementation WCLFileExtensionController
 
 static void *WCLFileExtensionControllerContext;
 
@@ -102,7 +113,7 @@ static void *WCLFileExtensionControllerContext;
 + (instancetype)sharedFileExtensionController
 {
     static dispatch_once_t pred;
-    static WCLFileExtensionToPluginsController *fileExtensionController = nil;
+    static WCLFileExtensionController *fileExtensionController = nil;
     
     dispatch_once(&pred, ^{
         fileExtensionController = [[self hiddenAlloc] hiddenInit];
@@ -153,16 +164,20 @@ static void *WCLFileExtensionControllerContext;
     return [WCLPluginManagerController sharedPluginManagerController];
 }
 
+- (NSArray *)extensions
+{
+    return [self.fileExtensionsDictionaryManager extensions];
+}
 
 #pragma mark Properties
 
-- (WCLFileExtensionToPluginsDictionaryManager *)fileExtensionsDictionaryManager
+- (WCLExtensionToFileExtensionDictionaryManager *)fileExtensionsDictionaryManager
 {
     if (_fileExtensionsDictionaryManager) {
         return _fileExtensionsDictionaryManager;
     }
 
-    _fileExtensionsDictionaryManager = [[WCLFileExtensionToPluginsDictionaryManager alloc] init];
+    _fileExtensionsDictionaryManager = [[WCLExtensionToFileExtensionDictionaryManager alloc] init];
 
     NSArray *plugins = [[self pluginManagerController] plugins];
     
@@ -186,33 +201,26 @@ static void *WCLFileExtensionControllerContext;
     
     _mutableFileExtensions = [[self.fileExtensionsDictionaryManager fileExtensions] mutableCopy];
     self.fileExtensionsDictionaryManager.delegate = self;
-    
-    
+
     return _mutableFileExtensions;
 }
 
+
 #pragma mark WCLFileExtensionsDictionaryManagerDelegate
 
-- (void)fileExtensionsDictionaryManager:(WCLFileExtensionToPluginsDictionaryManager *)fileExtensionDictionaryManager
-                    didAddFileExtension:(NSString *)fileExtension
+- (void)fileExtensionsDictionaryManager:(WCLExtensionToFileExtensionDictionaryManager *)fileExtensionDictionaryManager
+                    didAddFileExtension:(WCLFileExtension *)fileExtension
 {
     [self insertObject:fileExtension inFileExtensionsAtIndex:0];
 }
 
-- (void)fileExtensionsDictionaryManager:(WCLFileExtensionToPluginsDictionaryManager *)fileExtensionDictionaryManager
-                 didRemoveFileExtension:(NSString *)fileExtension
+- (void)fileExtensionsDictionaryManager:(WCLExtensionToFileExtensionDictionaryManager *)fileExtensionDictionaryManager
+                 didRemoveFileExtension:(WCLFileExtension *)fileExtension
 {
     NSUInteger index = [self.mutableFileExtensions indexOfObject:fileExtension];
     [self removeObjectFromFileExtensionsAtIndex:index];
 }
 
-#pragma mark Required Key-Value Coding To-Many Relationship Compliance for fileExtensionToPluginsDictionary
-
-- (NSDictionary *)fileExtensionToPluginsDictionary
-{
-#warning Should return immutable?
-    return [self.fileExtensionsDictionaryManager fileExtensionToPluginsDictionary];
-}
 
 #pragma mark Required Key-Value Coding To-Many Relationship Compliance for fileExtensions
 
@@ -286,7 +294,7 @@ static void *WCLFileExtensionControllerContext;
     }
 
     if ([object isKindOfClass:[WCLPlugin class]] &&
-        [keyPath isEqualToString:WCLPluginFileExtensionsKey]) {
+        [keyPath isEqualToString:WCLPluginExtensionsKey]) {
         WCLPlugin *plugin = (WCLPlugin *)object;
         
         NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
@@ -294,69 +302,69 @@ static void *WCLFileExtensionControllerContext;
             return;
         }
 
-        NSArray *oldFileExtensions;
+        NSArray *oldExtensions;
         if (change[NSKeyValueChangeOldKey] != [NSNull null]) {
-            oldFileExtensions = change[NSKeyValueChangeOldKey];
+            oldExtensions = change[NSKeyValueChangeOldKey];
         }
 
-        NSArray *newFileExtensions;
+        NSArray *newExtensions;
         if (change[NSKeyValueChangeNewKey] != [NSNull null]) {
-            newFileExtensions = change[NSKeyValueChangeNewKey];
+            newExtensions = change[NSKeyValueChangeNewKey];
         }
         
-        [self processFileExtensionChangesForPlugin:(WCLPlugin *)plugin
-                                fromFileExtensions:oldFileExtensions
-                                  toFileExtensions:newFileExtensions];
+        [self processExtensionChangesForPlugin:(WCLPlugin *)plugin
+                                fromExtensions:oldExtensions
+                                  toExtensions:newExtensions];
         return;
     }
 }
 
-- (void)processFileExtensionChangesForPlugin:(WCLPlugin *)plugin
-                          fromFileExtensions:(NSArray *)oldFileExtensions
-                            toFileExtensions:(NSArray *)newFileExtensions
+- (void)processExtensionChangesForPlugin:(WCLPlugin *)plugin
+                          fromExtensions:(NSArray *)oldExtensions
+                            toExtensions:(NSArray *)newExtensions
 {
-    NSSet *oldFileExtensionsSet = [NSSet setWithArray:oldFileExtensions];
-    NSSet *newFileExtensionsSet = [NSSet setWithArray:newFileExtensions];
+    NSSet *oldExtensionsSet = [NSSet setWithArray:oldExtensions];
+    NSSet *newExtensionsSet = [NSSet setWithArray:newExtensions];
     
     // New file extensions minus old file extensions are added file extensions.
-    NSMutableSet *addedFileExtensionsSet = [newFileExtensionsSet mutableCopy];
-    [addedFileExtensionsSet minusSet:oldFileExtensionsSet];
-    for (NSString *fileExtension in addedFileExtensionsSet) {
-        [self.fileExtensionsDictionaryManager addPlugin:plugin forFileExtension:fileExtension];
+    NSMutableSet *addedExtensionsSet = [newExtensionsSet mutableCopy];
+    [addedExtensionsSet minusSet:oldExtensionsSet];
+    for (NSString *extension in addedExtensionsSet) {
+        [self.fileExtensionsDictionaryManager addPlugin:plugin forExtension:extension];
     }
 
     // Old file extensions minus new file extensions are removed file extensions.
-    NSMutableSet *removedFileExtensionsSet = [oldFileExtensionsSet mutableCopy];
-    [removedFileExtensionsSet minusSet:newFileExtensionsSet];
-    for (NSString *fileExtension in removedFileExtensionsSet) {
-        [self.fileExtensionsDictionaryManager removePlugin:plugin forFileExtension:fileExtension];
+    NSMutableSet *removedExtensionsSet = [oldExtensionsSet mutableCopy];
+    [removedExtensionsSet minusSet:newExtensionsSet];
+    for (NSString *extension in removedExtensionsSet) {
+        [self.fileExtensionsDictionaryManager removePlugin:plugin forExtension:extension];
     }
 }
 
 - (void)processAddedPlugin:(WCLPlugin *)plugin
 {
-    NSArray *fileExtensions = plugin.fileExtensions;
+    NSArray *extensions = plugin.extensions;
 
-    for (NSString *fileExtension in fileExtensions) {
-        [self.fileExtensionsDictionaryManager addPlugin:plugin forFileExtension:fileExtension];
+    for (NSString *extension in extensions) {
+        [self.fileExtensionsDictionaryManager addPlugin:plugin forExtension:extension];
     }
 
     [plugin addObserver:self
-             forKeyPath:WCLPluginFileExtensionsKey
+             forKeyPath:WCLPluginExtensionsKey
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                 context:&WCLFileExtensionControllerContext];
 }
 
 - (void)processRemovedPlugin:(WCLPlugin *)plugin
 {
-    NSArray *fileExtensions = plugin.fileExtensions;
+    NSArray *extensions = plugin.extensions;
     
-    for (NSString *fileExtension in fileExtensions) {
-        [self.fileExtensionsDictionaryManager removePlugin:plugin forFileExtension:fileExtension];
+    for (NSString *extension in extensions) {
+        [self.fileExtensionsDictionaryManager removePlugin:plugin forExtension:extension];
     }
     
     [plugin removeObserver:self
-                forKeyPath:WCLPluginFileExtensionsKey
+                forKeyPath:WCLPluginExtensionsKey
                    context:&WCLFileExtensionControllerContext];
 }
 

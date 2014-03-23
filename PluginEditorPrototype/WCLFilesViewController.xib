@@ -55,13 +55,6 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                        <connections>
-                                            <binding destination="fpH-dc-D7n" name="value" keyPath="arrangedObjects.key" id="1eE-BW-ib7">
-                                                <dictionary key="options">
-                                                    <bool key="NSConditionallySetsEditable" value="NO"/>
-                                                </dictionary>
-                                            </binding>
-                                        </connections>
                                     </tableColumn>
                                     <tableColumn width="204" minWidth="40" maxWidth="1000" id="tsg-2U-Aiz">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Plugin">
@@ -77,10 +70,6 @@
                                                     <menuItem title="Pop Up" id="Jjo-Hp-zga"/>
                                                 </items>
                                             </menu>
-                                            <connections>
-                                                <binding destination="fpH-dc-D7n" name="content" keyPath="arrangedObjects.value" id="0w7-a6-qyR"/>
-                                                <binding destination="fpH-dc-D7n" name="contentValues" keyPath="arrangedObjects.value.name" previousBinding="0w7-a6-qyR" id="11n-C3-DXH"/>
-                                            </connections>
                                         </popUpButtonCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                     </tableColumn>
@@ -110,11 +99,6 @@
                 <constraint firstAttribute="bottom" secondItem="0IZ-8n-o04" secondAttribute="bottom" constant="20" id="l9a-P0-BQd"/>
             </constraints>
         </customView>
-        <dictionaryController objectClassName="_NSControllerKeyValuePair" id="fpH-dc-D7n">
-            <connections>
-                <binding destination="uTB-dW-NEV" name="contentDictionary" keyPath="fileExtensionToPluginsDictionary" id="0Q9-XL-CFA"/>
-            </connections>
-        </dictionaryController>
-        <customObject id="uTB-dW-NEV" customClass="WCLFileExtensionToPluginsController"/>
+        <customObject id="uTB-dW-NEV" customClass="WCLFileExtensionController"/>
     </objects>
 </document>

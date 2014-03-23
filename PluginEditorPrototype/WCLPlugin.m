@@ -11,13 +11,13 @@
 #import "WCLPlugin+PluginManager.h"
 #import "WCLPluginManager.h"
 
-#define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"fileExtensions", @"type", nil]
+#define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"extensions", @"type", nil]
 
 NSString * const WCLPluginNameKey = @"name";
-NSString * const WCLPluginFileExtensionsKey = @"fileExtensions";
+NSString * const WCLPluginExtensionsKey = @"extensions";
 
 @interface WCLPlugin ()
-@property (nonatomic, retain) NSData * fileExtensionsData;
+@property (nonatomic, retain) NSData * extensionsData;
 @end
 
 @implementation WCLPlugin
@@ -26,33 +26,33 @@ static void *WCLPluginContext;
 
 @synthesize defaultNewPlugin = _defaultNewPlugin;
 @dynamic command;
-@dynamic fileExtensionsData;
+@dynamic extensionsData;
 @dynamic name;
 @dynamic type;
 @dynamic identifier;
 
 #pragma mark - Properties
 
-- (void)setFileExtensions:(NSArray *)fileExtensions
+- (void)setExtensions:(NSArray *)extensions
 {
-    self.fileExtensionsData = [NSKeyedArchiver archivedDataWithRootObject:fileExtensions];
+    self.extensionsData = [NSKeyedArchiver archivedDataWithRootObject:extensions];
 }
 
-- (NSArray *)fileExtensions
+- (NSArray *)extensions
 {
-    if (!self.fileExtensionsData) return nil;
+    if (!self.extensionsData) return nil;
     
-    return [NSKeyedUnarchiver unarchiveObjectWithData:self.fileExtensionsData];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:self.extensionsData];
 }
 
-- (BOOL)validateFileExtensions:(id *)ioValue error:(NSError * __autoreleasing *)outError
+- (BOOL)validateExtensions:(id *)ioValue error:(NSError * __autoreleasing *)outError
 {
-    NSArray *fileExtensions;
+    NSArray *extensions;
     if ([*ioValue isKindOfClass:[NSArray class]]) {
-        fileExtensions = *ioValue;
+        extensions = *ioValue;
     }
     
-    BOOL valid = [self fileExtensionsAreValid:fileExtensions];
+    BOOL valid = [self extensionsAreValid:extensions];
     if (!valid && outError) {
         NSString *errorMessage = @"The file extensions must be unique, and can only contain alphanumeric characters.";
         NSString *errorString = NSLocalizedString(errorMessage, @"Invalid file extensions error.");

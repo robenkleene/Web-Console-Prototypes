@@ -10,11 +10,11 @@
 #import <CoreData/CoreData.h>
 
 extern NSString * const WCLPluginNameKey;
-extern NSString * const WCLPluginFileExtensionsKey;
+extern NSString * const WCLPluginExtensionsKey;
 
 @interface WCLPlugin : NSManagedObject
 
-@property (nonatomic, strong) NSArray * fileExtensions;
+@property (nonatomic, strong) NSArray * extensions;
 @property (nonatomic, retain) NSString * command;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * type;

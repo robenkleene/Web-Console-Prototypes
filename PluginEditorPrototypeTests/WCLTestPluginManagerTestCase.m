@@ -19,8 +19,8 @@
     NSArray *plugins = [[self pluginManager] plugins];
     XCTAssertFalse([plugins count] > 0, @"The WCLPluginManager should not have any WCLPlugins.");
     
-    NSArray *fileExtensions = [[self fileExtensionsController] fileExtensions];
-    XCTAssertFalse([fileExtensions count] > 0, @"There should not be any file extensions after deleting all plugins.");
+    NSArray *extensions = [[self fileExtensionsController] extensions];
+    XCTAssertFalse([extensions count] > 0, @"There should not be any file extensions after deleting all plugins.");
 
     XCTAssertNil([[self pluginManager] defaultNewPlugin], @"The WCLPluginManager's default new WCLPlugin should be nil.");
     

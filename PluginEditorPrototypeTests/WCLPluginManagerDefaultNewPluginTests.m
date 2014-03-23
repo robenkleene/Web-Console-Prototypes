@@ -87,7 +87,7 @@
 {
     WCLPlugin *plugin = [[self pluginManager] newPlugin];
     plugin.name = kTestPluginName;
-    plugin.fileExtensions = kTestFileExtensions;
+    plugin.extensions = kTestExtensions;
     plugin.command = kTestPluginCommand;
 
     [[self pluginManager] setDefaultNewPlugin:plugin];
@@ -97,7 +97,7 @@
     XCTAssertTrue([newPlugin.name hasPrefix:plugin.name], @"The new WCLPlugin's name should start with the WCLPlugin's name.");
     XCTAssertFalse([newPlugin.name isEqualToString:plugin.name], @"The new WCLPlugin's name should not equal the WCLPlugin's name.");
     XCTAssertTrue([newPlugin.command isEqualToString:plugin.command], @"The new WCLPlugin's command should equal the WCLPlugin's command.");
-    XCTAssertTrue([newPlugin.fileExtensions isEqualToArray:plugin.fileExtensions], @"The new WCLPlugin's file extensions should equal the WCLPlugin's file extensions.");
+    XCTAssertTrue([newPlugin.extensions isEqualToArray:plugin.extensions], @"The new WCLPlugin's file extensions should equal the WCLPlugin's file extensions.");
 }
 
 - (void)testDefaultNewPluginKeyValueObserving

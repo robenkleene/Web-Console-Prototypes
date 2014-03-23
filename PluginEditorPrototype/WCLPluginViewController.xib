@@ -256,7 +256,7 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </tokenFieldCell>
                             <connections>
-                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.fileExtensions" id="m0P-Wa-vdX">
+                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.extensions" id="1rf-TJ-oR4">
                                     <dictionary key="options">
                                         <string key="NSMultipleValuesPlaceholder">html, md, rb</string>
                                         <string key="NSNoSelectionPlaceholder">html, md, rb</string>

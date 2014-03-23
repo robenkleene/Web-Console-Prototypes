@@ -98,17 +98,17 @@
 
 #pragma mark Public
 
-- (BOOL)fileExtensionsAreValid:(NSArray *)fileExtensions
+- (BOOL)extensionsAreValid:(NSArray *)extensions
 {
-    NSCountedSet *fileExtensionsCountedSet = [[NSCountedSet alloc] initWithArray:fileExtensions];
-    for (NSString *fileExtension in fileExtensionsCountedSet) {
-        if (![fileExtension isKindOfClass:[NSString class]] || // Must be a string
-            !(fileExtension.length > 0) || // Must be greater than zero characters
-            !([WCLPlugin fileExtensionContainsOnlyValidCharacters:fileExtension])) { // Must only contain valid characters
+    NSCountedSet *extensionsCountedSet = [[NSCountedSet alloc] initWithArray:extensions];
+    for (NSString *extension in extensionsCountedSet) {
+        if (![extension isKindOfClass:[NSString class]] || // Must be a string
+            !(extension.length > 0) || // Must be greater than zero characters
+            !([WCLPlugin extensionContainsOnlyValidCharacters:extension])) { // Must only contain valid characters
             return NO;
         }
         
-        if ([fileExtensionsCountedSet countForObject:fileExtension] > 1) {
+        if ([extensionsCountedSet countForObject:extension] > 1) {
             // Must not contain duplicates
             return NO;
         }
@@ -117,38 +117,38 @@
     return YES;
 }
 
-+ (NSArray *)validFileExtensionsFromFileExtensions:(NSArray *)fileExtensions
++ (NSArray *)validExtensionsFromExtensions:(NSArray *)extensions
 {
-    NSMutableArray *validFileExtensions = [NSMutableArray array];
-    for (NSString *fileExtension in fileExtensions) {
-        NSString *validFileExtension = [WCLPlugin fileExtensionContainingOnlyValidCharactersFromFileExtension:fileExtension];
+    NSMutableArray *validExtensions = [NSMutableArray array];
+    for (NSString *fileExtension in extensions) {
+        NSString *validFileExtension = [WCLPlugin extensionContainingOnlyValidCharactersFromExtension:fileExtension];
         if (validFileExtension &&
-            ![validFileExtensions containsObject:validFileExtension]) {
-            [validFileExtensions addObject:validFileExtension];
+            ![validExtensions containsObject:validFileExtension]) {
+            [validExtensions addObject:validFileExtension];
         }
     }
     
-    return validFileExtensions;
+    return validExtensions;
 }
 
 #pragma mark Private
 
-+ (BOOL)fileExtensionContainsOnlyValidCharacters:(NSString *)fileExtension
++ (BOOL)extensionContainsOnlyValidCharacters:(NSString *)extension
 {
-    return [WCLPlugin string:fileExtension containsOnlyCharactersInCharacterSet:[WCLPlugin fileExtensionAllowedCharacterSet]];
+    return [WCLPlugin string:extension containsOnlyCharactersInCharacterSet:[WCLPlugin fileExtensionAllowedCharacterSet]];
 }
 
-+ (NSString *)fileExtensionContainingOnlyValidCharactersFromFileExtension:(NSString *)fileExtension
++ (NSString *)extensionContainingOnlyValidCharactersFromExtension:(NSString *)extension
 {
     NSCharacterSet *disallowedCharacterSet = [[WCLPlugin fileExtensionAllowedCharacterSet] invertedSet];
 
-    NSString *validFileExtension = [[fileExtension componentsSeparatedByCharactersInSet:disallowedCharacterSet] componentsJoinedByString:@""];
+    NSString *validExtension = [[extension componentsSeparatedByCharactersInSet:disallowedCharacterSet] componentsJoinedByString:@""];
 
-    if (!(validFileExtension.length > 0)) {
+    if (!(validExtension.length > 0)) {
         return nil;
     }
 
-    return validFileExtension;
+    return validExtension;
 }
 
 + (NSCharacterSet *)fileExtensionAllowedCharacterSet
