@@ -28,68 +28,62 @@
 
 @interface WCLFileExtensionToPluginsDictionaryManager : NSObject
 @property (nonatomic, weak) id <WCLFileExtensionToPluginsDictionaryManagerDelegate> delegate;
-@property (nonatomic, strong, readonly) NSMutableDictionary *fileExtensionToCountDictionary;
+@property (nonatomic, strong, readonly) NSMutableDictionary *fileExtensionToPluginsDictionary;
 - (NSArray *)fileExtensions;
 @end
 
 @implementation WCLFileExtensionToPluginsDictionaryManager
 
-@synthesize fileExtensionToCountDictionary = _fileExtensionToCountDictionary;
+@synthesize fileExtensionToPluginsDictionary = _fileExtensionToPluginsDictionary;
 
-- (void)incrementFileExtension:(NSString *)fileExtension
+- (void)addPlugin:(WCLPlugin *)plugin forFileExtension:(NSString *)fileExtension
 {
-    NSNumber *countNumber = self.fileExtensionToCountDictionary[fileExtension];
-    if (countNumber) {
-        self.fileExtensionToCountDictionary[fileExtension] = [NSNumber numberWithInteger:[countNumber integerValue] + 1];
+    NSMutableArray *plugins = self.fileExtensionToPluginsDictionary[fileExtension];
+    if (plugins) {
+        [plugins addObject:plugin];
+#warning Is this necessary?
+        self.fileExtensionToPluginsDictionary[fileExtension] = plugins;
     } else {
-        [self addFileExtension:fileExtension];
+        self.fileExtensionToPluginsDictionary[fileExtension] = [NSMutableArray arrayWithObject:plugin];
+        
+        if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didAddFileExtension:)]) {
+            [self.delegate fileExtensionsDictionaryManager:self didAddFileExtension:fileExtension];
+        }
     }
 }
 
-- (void)decrementFileExtension:(NSString *)fileExtension
+- (void)removePlugin:(WCLPlugin *)plugin forFileExtension:(NSString *)fileExtension
 {
-    NSNumber *countNumber = self.fileExtensionToCountDictionary[fileExtension];
-    NSAssert(countNumber, @"Attempted to decrement a file extension that does not exits.");
-    NSAssert([countNumber integerValue] > 0, @"Attempted to decrement a file extension with a count of zero.");
-    self.fileExtensionToCountDictionary[fileExtension] = [NSNumber numberWithInteger:[countNumber integerValue] - 1];
+    NSMutableArray *plugins = self.fileExtensionToPluginsDictionary[fileExtension];
 
-    if (!([self.fileExtensionToCountDictionary[fileExtension] integerValue] > 0)) {
-        [self removeFileExtension:fileExtension];
-    }
-}
+    [plugins removeObject:plugin];
 
-- (void)addFileExtension:(NSString *)fileExtension
-{
-    self.fileExtensionToCountDictionary[fileExtension] = [NSNumber numberWithInteger:1];
-
-    if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didAddFileExtension:)]) {
-        [self.delegate fileExtensionsDictionaryManager:self didAddFileExtension:fileExtension];
-    }
-}
-
-- (void)removeFileExtension:(NSString *)fileExtension
-{
-    [self.fileExtensionToCountDictionary removeObjectForKey:fileExtension];
-
-    if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didRemoveFileExtension:)]) {
-        [self.delegate fileExtensionsDictionaryManager:self didRemoveFileExtension:fileExtension];
+    if ([plugins count]) {
+#warning Is this necessary?
+        self.fileExtensionToPluginsDictionary[fileExtension] = plugins;
+    } else {
+        [self.fileExtensionToPluginsDictionary removeObjectForKey:fileExtension];
+        
+        if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didRemoveFileExtension:)]) {
+            [self.delegate fileExtensionsDictionaryManager:self didRemoveFileExtension:fileExtension];
+        }
     }
 }
 
 - (NSArray *)fileExtensions
 {
-    return [self.fileExtensionToCountDictionary allKeys];
+    return [self.fileExtensionToPluginsDictionary allKeys];
 }
 
-- (NSMutableDictionary *)fileExtensionToCountDictionary
+- (NSMutableDictionary *)fileExtensionToPluginsDictionary
 {
-    if (_fileExtensionToCountDictionary) {
-        return _fileExtensionToCountDictionary;
+    if (_fileExtensionToPluginsDictionary) {
+        return _fileExtensionToPluginsDictionary;
     }
 
-    _fileExtensionToCountDictionary = [NSMutableDictionary dictionary];
+    _fileExtensionToPluginsDictionary = [NSMutableDictionary dictionary];
     
-    return _fileExtensionToCountDictionary;
+    return _fileExtensionToPluginsDictionary;
 }
 
 @end
@@ -290,7 +284,8 @@ static void *WCLFileExtensionControllerContext;
 
     if ([object isKindOfClass:[WCLPlugin class]] &&
         [keyPath isEqualToString:WCLPluginFileExtensionsKey]) {
-
+        WCLPlugin *plugin = (WCLPlugin *)object;
+        
         NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
         if (keyValueChange != NSKeyValueChangeSetting) {
             return;
@@ -306,15 +301,16 @@ static void *WCLFileExtensionControllerContext;
             newFileExtensions = change[NSKeyValueChangeNewKey];
         }
         
-        [self processFileExtensionChangesForPluginFromOldFileExtensions:oldFileExtensions
-                                                    toNewFileExtensions:newFileExtensions];
-
+        [self processFileExtensionChangesForPlugin:(WCLPlugin *)plugin
+                                fromFileExtensions:oldFileExtensions
+                                  toFileExtensions:newFileExtensions];
         return;
     }
 }
 
-- (void)processFileExtensionChangesForPluginFromOldFileExtensions:(NSArray *)oldFileExtensions
-                                              toNewFileExtensions:(NSArray *)newFileExtensions
+- (void)processFileExtensionChangesForPlugin:(WCLPlugin *)plugin
+                          fromFileExtensions:(NSArray *)oldFileExtensions
+                            toFileExtensions:(NSArray *)newFileExtensions
 {
     NSSet *oldFileExtensionsSet = [NSSet setWithArray:oldFileExtensions];
     NSSet *newFileExtensionsSet = [NSSet setWithArray:newFileExtensions];
@@ -323,14 +319,14 @@ static void *WCLFileExtensionControllerContext;
     NSMutableSet *addedFileExtensionsSet = [newFileExtensionsSet mutableCopy];
     [addedFileExtensionsSet minusSet:oldFileExtensionsSet];
     for (NSString *fileExtension in addedFileExtensionsSet) {
-        [self.fileExtensionsDictionaryManager incrementFileExtension:fileExtension];
+        [self.fileExtensionsDictionaryManager addPlugin:plugin forFileExtension:fileExtension];
     }
 
     // Old file extensions minus new file extensions are removed file extensions.
     NSMutableSet *removedFileExtensionsSet = [oldFileExtensionsSet mutableCopy];
     [removedFileExtensionsSet minusSet:newFileExtensionsSet];
     for (NSString *fileExtension in removedFileExtensionsSet) {
-        [self.fileExtensionsDictionaryManager decrementFileExtension:fileExtension];
+        [self.fileExtensionsDictionaryManager removePlugin:plugin forFileExtension:fileExtension];
     }
 }
 
@@ -339,7 +335,7 @@ static void *WCLFileExtensionControllerContext;
     NSArray *fileExtensions = plugin.fileExtensions;
 
     for (NSString *fileExtension in fileExtensions) {
-        [self.fileExtensionsDictionaryManager incrementFileExtension:fileExtension];
+        [self.fileExtensionsDictionaryManager addPlugin:plugin forFileExtension:fileExtension];
     }
 
     [plugin addObserver:self
@@ -353,7 +349,7 @@ static void *WCLFileExtensionControllerContext;
     NSArray *fileExtensions = plugin.fileExtensions;
     
     for (NSString *fileExtension in fileExtensions) {
-        [self.fileExtensionsDictionaryManager decrementFileExtension:fileExtension];
+        [self.fileExtensionsDictionaryManager removePlugin:plugin forFileExtension:fileExtension];
     }
     
     [plugin removeObserver:self
