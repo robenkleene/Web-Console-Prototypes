@@ -26,12 +26,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" headerView="ruL-6S-gvE" id="Upa-PR-zAD">
-                                <rect key="frame" x="0.0" y="0.0" width="438" height="214"/>
+                                <rect key="frame" x="0.0" y="0.0" width="461" height="214"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
+                                    <tableColumn width="20" minWidth="20" maxWidth="20" id="lRl-At-saj">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                        </tableHeaderCell>
+                                        <buttonCell key="dataCell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" inset="2" id="FpO-Fm-6gx">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                    </tableColumn>
                                     <tableColumn width="216" minWidth="40" maxWidth="1000" id="JoQ-dr-HCa">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="File Extension">
                                             <font key="font" metaFont="smallSystem"/>
@@ -70,7 +82,7 @@
                         </subviews>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="CEZ-ao-hrU">
+                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="CEZ-ao-hrU">
                         <rect key="frame" x="1" y="215" width="438" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -79,7 +91,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <tableHeaderView key="headerView" id="ruL-6S-gvE">
-                        <rect key="frame" x="0.0" y="0.0" width="438" height="17"/>
+                        <rect key="frame" x="0.0" y="0.0" width="461" height="17"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>
