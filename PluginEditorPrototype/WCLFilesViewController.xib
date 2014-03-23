@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="WCLFilesViewController">
             <connections>
                 <outlet property="fileExtensionsArrayController" destination="mG3-SJ-xOt" id="YsN-0J-78K"/>
+                <outlet property="pluginArrayController" destination="w7H-GS-8y2" id="Ujc-QM-4MK"/>
                 <outlet property="tableView" destination="Upa-PR-zAD" id="J40-3w-wM7"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
@@ -26,7 +27,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" headerView="ruL-6S-gvE" id="Upa-PR-zAD">
-                                <rect key="frame" x="0.0" y="0.0" width="461" height="214"/>
+                                <rect key="frame" x="0.0" y="0.0" width="439" height="214"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -44,7 +45,7 @@
                                         </buttonCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                     </tableColumn>
-                                    <tableColumn width="216" minWidth="40" maxWidth="1000" id="JoQ-dr-HCa">
+                                    <tableColumn width="205" minWidth="40" maxWidth="1000" id="JoQ-dr-HCa">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="File Extension">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -60,20 +61,24 @@
                                             <binding destination="mG3-SJ-xOt" name="value" keyPath="arrangedObjects" id="Gb1-Ex-0wm"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn width="216" minWidth="40" maxWidth="1000" id="tsg-2U-Aiz">
+                                    <tableColumn width="205" minWidth="40" maxWidth="1000" id="tsg-2U-Aiz">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Plugin">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableHeaderCell>
-                                        <popUpButtonCell key="dataCell" type="bevel" title="Pop Up" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="Jjo-Hp-zga" id="cnn-kg-7Nc">
+                                        <popUpButtonCell key="dataCell" type="bevel" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="cnn-kg-7Nc">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="menu"/>
                                             <menu key="menu" title="OtherViews" id="7tV-xv-X5L">
                                                 <items>
-                                                    <menuItem title="Pop Up" state="on" id="Jjo-Hp-zga"/>
+                                                    <menuItem title="Pop Up" id="Jjo-Hp-zga"/>
                                                 </items>
                                             </menu>
+                                            <connections>
+                                                <binding destination="w7H-GS-8y2" name="content" keyPath="arrangedObjects" id="EeF-Xv-gbZ"/>
+                                                <binding destination="w7H-GS-8y2" name="contentValues" keyPath="arrangedObjects.name" previousBinding="EeF-Xv-gbZ" id="pX1-ec-3uf"/>
+                                            </connections>
                                         </popUpButtonCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                     </tableColumn>
@@ -91,7 +96,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <tableHeaderView key="headerView" id="ruL-6S-gvE">
-                        <rect key="frame" x="0.0" y="0.0" width="461" height="17"/>
+                        <rect key="frame" x="0.0" y="0.0" width="439" height="17"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>
@@ -103,11 +108,17 @@
                 <constraint firstAttribute="bottom" secondItem="0IZ-8n-o04" secondAttribute="bottom" constant="20" id="l9a-P0-BQd"/>
             </constraints>
         </customView>
-        <arrayController automaticallyRearrangesObjects="YES" id="mG3-SJ-xOt">
+        <arrayController automaticallyRearrangesObjects="YES" id="mG3-SJ-xOt" userLabel="File Extensions Array Controller">
             <connections>
                 <binding destination="uTB-dW-NEV" name="contentArray" keyPath="fileExtensions" id="KFC-dU-yDP"/>
             </connections>
         </arrayController>
         <customObject id="uTB-dW-NEV" customClass="WCLFileExtensionController"/>
+        <arrayController id="w7H-GS-8y2" userLabel="Plugin Array Controller">
+            <connections>
+                <binding destination="ieq-xa-zxx" name="contentArray" keyPath="plugins" id="7b8-nc-aDq"/>
+            </connections>
+        </arrayController>
+        <customObject id="ieq-xa-zxx" customClass="WCLPluginManagerController"/>
     </objects>
 </document>
