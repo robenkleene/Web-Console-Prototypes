@@ -55,6 +55,13 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        <connections>
+                                            <binding destination="8Rg-Xl-Jt6" name="value" keyPath="arrangedObjects.extension" id="A8J-pf-PMK">
+                                                <dictionary key="options">
+                                                    <bool key="NSConditionallySetsEditable" value="NO"/>
+                                                </dictionary>
+                                            </binding>
+                                        </connections>
                                     </tableColumn>
                                     <tableColumn width="204" minWidth="40" maxWidth="1000" id="tsg-2U-Aiz">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Plugin">
@@ -100,5 +107,10 @@
             </constraints>
         </customView>
         <customObject id="uTB-dW-NEV" customClass="WCLFileExtensionController"/>
+        <arrayController id="8Rg-Xl-Jt6">
+            <connections>
+                <binding destination="uTB-dW-NEV" name="contentArray" keyPath="fileExtensions" id="6be-T5-65f"/>
+            </connections>
+        </arrayController>
     </objects>
 </document>

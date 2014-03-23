@@ -13,7 +13,7 @@
 @interface WCLFileExtensionController : NSObject
 + (instancetype)sharedFileExtensionController;
 - (NSArray *)extensions;
-//- (NSArray *)fileExtensions;
+- (NSArray *)fileExtensions;
 - (void)insertObject:(WCLFileExtension *)fileExtension inFileExtensionsAtIndex:(NSUInteger)index;
 - (void)insertFileExtensions:(NSArray *)fileExtensionsArray atIndexes:(NSIndexSet *)indexes;
 - (void)removeObjectFromFileExtensionsAtIndex:(NSUInteger)index;
