@@ -7,8 +7,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WCLFilesViewController">
             <connections>
-                <outlet property="fileExtensionsArrayController" destination="mG3-SJ-xOt" id="YsN-0J-78K"/>
-                <outlet property="pluginArrayController" destination="w7H-GS-8y2" id="Ujc-QM-4MK"/>
                 <outlet property="tableView" destination="Upa-PR-zAD" id="J40-3w-wM7"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
@@ -58,7 +56,11 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <connections>
-                                            <binding destination="mG3-SJ-xOt" name="value" keyPath="arrangedObjects" id="Gb1-Ex-0wm"/>
+                                            <binding destination="fpH-dc-D7n" name="value" keyPath="arrangedObjects.key" id="1eE-BW-ib7">
+                                                <dictionary key="options">
+                                                    <bool key="NSConditionallySetsEditable" value="NO"/>
+                                                </dictionary>
+                                            </binding>
                                         </connections>
                                     </tableColumn>
                                     <tableColumn width="204" minWidth="40" maxWidth="1000" id="tsg-2U-Aiz">
@@ -76,8 +78,8 @@
                                                 </items>
                                             </menu>
                                             <connections>
-                                                <binding destination="w7H-GS-8y2" name="content" keyPath="arrangedObjects" id="EeF-Xv-gbZ"/>
-                                                <binding destination="w7H-GS-8y2" name="contentValues" keyPath="arrangedObjects.name" previousBinding="EeF-Xv-gbZ" id="pX1-ec-3uf"/>
+                                                <binding destination="fpH-dc-D7n" name="content" keyPath="arrangedObjects.value" id="0w7-a6-qyR"/>
+                                                <binding destination="fpH-dc-D7n" name="contentValues" keyPath="arrangedObjects.value.name" previousBinding="0w7-a6-qyR" id="11n-C3-DXH"/>
                                             </connections>
                                         </popUpButtonCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
@@ -96,7 +98,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <tableHeaderView key="headerView" id="ruL-6S-gvE">
-                        <rect key="frame" x="0.0" y="0.0" width="439" height="17"/>
+                        <rect key="frame" x="0.0" y="0.0" width="438" height="17"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>
@@ -108,17 +110,11 @@
                 <constraint firstAttribute="bottom" secondItem="0IZ-8n-o04" secondAttribute="bottom" constant="20" id="l9a-P0-BQd"/>
             </constraints>
         </customView>
-        <arrayController automaticallyRearrangesObjects="YES" id="mG3-SJ-xOt" userLabel="File Extensions Array Controller">
+        <dictionaryController objectClassName="_NSControllerKeyValuePair" id="fpH-dc-D7n">
             <connections>
-                <binding destination="uTB-dW-NEV" name="contentArray" keyPath="fileExtensions" id="KFC-dU-yDP"/>
+                <binding destination="uTB-dW-NEV" name="contentDictionary" keyPath="fileExtensionToPluginsDictionary" id="0Q9-XL-CFA"/>
             </connections>
-        </arrayController>
+        </dictionaryController>
         <customObject id="uTB-dW-NEV" customClass="WCLFileExtensionToPluginsController"/>
-        <arrayController id="w7H-GS-8y2" userLabel="Plugin Array Controller">
-            <connections>
-                <binding destination="ieq-xa-zxx" name="contentArray" keyPath="plugins" id="7b8-nc-aDq"/>
-            </connections>
-        </arrayController>
-        <customObject id="ieq-xa-zxx" customClass="WCLPluginManagerController"/>
     </objects>
 </document>

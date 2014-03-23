@@ -11,6 +11,7 @@
 @interface WCLFileExtensionToPluginsController : NSObject
 + (instancetype)sharedFileExtensionController;
 - (NSArray *)fileExtensions;
+- (NSDictionary *)fileExtensionToPluginsDictionary;
 - (void)insertObject:(NSString *)fileExtension inFileExtensionsAtIndex:(NSUInteger)index;
 - (void)insertFileExtensions:(NSArray *)fileExtensionsArray atIndexes:(NSIndexSet *)indexes;
 - (void)removeObjectFromFileExtensionsAtIndex:(NSUInteger)index;

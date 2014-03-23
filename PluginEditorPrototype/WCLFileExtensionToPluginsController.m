@@ -206,7 +206,15 @@ static void *WCLFileExtensionControllerContext;
     [self removeObjectFromFileExtensionsAtIndex:index];
 }
 
-#pragma mark Required Key-Value Coding To-Many Relationship Compliance
+#pragma mark Required Key-Value Coding To-Many Relationship Compliance for fileExtensionToPluginsDictionary
+
+- (NSDictionary *)fileExtensionToPluginsDictionary
+{
+#warning Should return immutable?
+    return [self.fileExtensionsDictionaryManager fileExtensionToPluginsDictionary];
+}
+
+#pragma mark Required Key-Value Coding To-Many Relationship Compliance for fileExtensions
 
 - (NSArray *)fileExtensions
 {
