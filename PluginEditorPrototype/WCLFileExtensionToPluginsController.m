@@ -41,8 +41,6 @@
     NSMutableArray *plugins = self.fileExtensionToPluginsDictionary[fileExtension];
     if (plugins) {
         [plugins addObject:plugin];
-#warning Is this necessary?
-        self.fileExtensionToPluginsDictionary[fileExtension] = plugins;
     } else {
         self.fileExtensionToPluginsDictionary[fileExtension] = [NSMutableArray arrayWithObject:plugin];
         
@@ -58,10 +56,7 @@
 
     [plugins removeObject:plugin];
 
-    if ([plugins count]) {
-#warning Is this necessary?
-        self.fileExtensionToPluginsDictionary[fileExtension] = plugins;
-    } else {
+    if (![plugins count]) {
         [self.fileExtensionToPluginsDictionary removeObjectForKey:fileExtension];
         
         if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didRemoveFileExtension:)]) {
