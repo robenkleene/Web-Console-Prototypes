@@ -27,7 +27,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" headerView="ruL-6S-gvE" id="Upa-PR-zAD">
-                                <rect key="frame" x="0.0" y="0.0" width="439" height="214"/>
+                                <rect key="frame" x="0.0" y="0.0" width="438" height="214"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -61,7 +61,7 @@
                                             <binding destination="mG3-SJ-xOt" name="value" keyPath="arrangedObjects" id="Gb1-Ex-0wm"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn width="205" minWidth="40" maxWidth="1000" id="tsg-2U-Aiz">
+                                    <tableColumn width="204" minWidth="40" maxWidth="1000" id="tsg-2U-Aiz">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Plugin">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -87,7 +87,7 @@
                         </subviews>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
-                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="CEZ-ao-hrU">
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="CEZ-ao-hrU">
                         <rect key="frame" x="1" y="215" width="438" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -113,7 +113,7 @@
                 <binding destination="uTB-dW-NEV" name="contentArray" keyPath="fileExtensions" id="KFC-dU-yDP"/>
             </connections>
         </arrayController>
-        <customObject id="uTB-dW-NEV" customClass="WCLFileExtensionController"/>
+        <customObject id="uTB-dW-NEV" customClass="WCLFileExtensionToPluginsController"/>
         <arrayController id="w7H-GS-8y2" userLabel="Plugin Array Controller">
             <connections>
                 <binding destination="ieq-xa-zxx" name="contentArray" keyPath="plugins" id="7b8-nc-aDq"/>

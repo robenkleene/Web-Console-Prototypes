@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WCLFileExtensionController : NSObject
+@interface WCLFileExtensionToPluginsController : NSObject
 + (instancetype)sharedFileExtensionController;
 - (NSArray *)fileExtensions;
 - (void)insertObject:(NSString *)fileExtension inFileExtensionsAtIndex:(NSUInteger)index;
