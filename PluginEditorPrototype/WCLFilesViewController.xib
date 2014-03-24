@@ -79,6 +79,13 @@
                                             </menu>
                                         </popUpButtonCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        <connections>
+                                            <binding destination="8Rg-Xl-Jt6" name="content" keyPath="arrangedObjects.plugins" id="V5G-pP-DGJ">
+                                                <dictionary key="options">
+                                                    <string key="NSValueTransformerName">WCLPluginsToPluginNamesValueTransformer</string>
+                                                </dictionary>
+                                            </binding>
+                                        </connections>
                                     </tableColumn>
                                 </tableColumns>
                             </tableView>

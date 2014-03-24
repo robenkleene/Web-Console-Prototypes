@@ -9,6 +9,24 @@
 #import "WCLFilesViewController.h"
 #import "WCLPlugin.h"
 
+@interface WCLPluginsToPluginNamesValueTransformer : NSValueTransformer
+@end
+
+@implementation WCLPluginsToPluginNamesValueTransformer
+
+- (id)transformedValue:(id)value
+{
+    if (![value isKindOfClass:[NSArray class]]) {
+        return nil;
+    }
+
+    NSArray *plugins = (NSArray *)value;
+    
+    return [plugins valueForKey:WCLPluginNameKey];
+}
+
+@end
+
 @interface WCLFilesViewController ()
 @property (weak) IBOutlet NSTableView *tableView;
 @end
