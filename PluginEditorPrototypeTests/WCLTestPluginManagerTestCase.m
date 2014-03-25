@@ -29,6 +29,18 @@
 
 #pragma mark Helpers
 
+- (WCLPlugin *)addedPlugin
+{
+    WCLPlugin *plugin = [[self pluginManager] newPlugin];
+    
+    // You have to insert the plugin into the plugin manager controller because
+    // the pluginManagerController implements the key-value coding to-many
+    // relationship accessors
+    [[self pluginManagerController] insertObject:plugin inPluginsAtIndex:0];
+
+    return plugin;
+}
+
 - (void)deleteAllPlugins
 {
     NSArray *plugins = [[self pluginManagerController] plugins];

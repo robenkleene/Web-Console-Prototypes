@@ -11,8 +11,10 @@
 @class WCLTestFileExtensionController;
 @class WCLTestPluginManager;
 @class WCLTestPluginManagerController;
+@class WCLPlugin;
 
 @interface WCLTestPluginManagerTestCase : XCTestCase
+- (WCLPlugin *)addedPlugin;
 - (void)deleteAllPlugins;
 - (WCLTestFileExtensionController *)fileExtensionsController;
 - (WCLTestPluginManager *)pluginManager;

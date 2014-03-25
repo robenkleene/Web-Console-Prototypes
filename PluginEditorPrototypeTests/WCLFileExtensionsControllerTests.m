@@ -34,9 +34,8 @@
     // Hitting file extensions early makes sure that the singletons are instantiated and observers are in place.
     XCTAssertFalse([[[self fileExtensionsController] extensions] count] > 0, @"There should not be any file extensions before adding a plugin.");
     
-    WCLPlugin *plugin = [[self pluginManager] newPlugin];
-    [[self pluginManagerController] insertObject:plugin inPluginsAtIndex:0];
-
+    WCLPlugin *plugin = [self addedPlugin];
+    
     // Set file extensions to an array of file extensions
     plugin.extensions = kTestExtensions;
 

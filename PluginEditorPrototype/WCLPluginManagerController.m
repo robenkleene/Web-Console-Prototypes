@@ -61,12 +61,7 @@
     return [WCLPluginManager sharedPluginManager];
 }
 
-#pragma mark Required Key-Value Coding To-Many Relationship Compliance
-
-- (NSArray *)plugins
-{
-    return [NSArray arrayWithArray:self.mutablePlugins];
-}
+#pragma mark Properties
 
 - (NSMutableArray *)mutablePlugins
 {
@@ -79,24 +74,46 @@
     return _mutablePlugins;
 }
 
+#pragma mark Required Key-Value Coding To-Many Relationship Compliance
+
+// All accessors do nothing if _mutablePlugins is nil because we don't care about
+// key-value observing until the plugins array is being observed.
+// This prevents a plugin from being added twice if the _mutablePlugins is
+// instansiated during an accessor. The plugin can be added twice if its
+// already been added to the plugin manager, i.e., once from plugin manager's
+// plugins in the getter, and once being added by the insert.
+
+- (NSArray *)plugins
+{
+    return [NSArray arrayWithArray:self.mutablePlugins];
+}
+
 - (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index
-{    
-    [self.mutablePlugins insertObject:plugin atIndex:index];
+{
+    if (_mutablePlugins) {
+        [self.mutablePlugins insertObject:plugin atIndex:index];
+    }
 }
 
 - (void)insertPlugins:(NSArray *)pluginsArray atIndexes:(NSIndexSet *)indexes
 {
-    [self.mutablePlugins insertObjects:pluginsArray atIndexes:indexes];
+    if (_mutablePlugins) {
+        [self.mutablePlugins insertObjects:pluginsArray atIndexes:indexes];
+    }
 }
 
 - (void)removeObjectFromPluginsAtIndex:(NSUInteger)index
 {
-    [self.mutablePlugins removeObjectAtIndex:index];
+    if (_mutablePlugins) {
+        [self.mutablePlugins removeObjectAtIndex:index];
+    }
 }
 
 - (void)removePluginsAtIndexes:(NSIndexSet *)indexes
 {
-    [self.mutablePlugins removeObjectsAtIndexes:indexes];
+    if (_mutablePlugins) {
+        [self.mutablePlugins removeObjectsAtIndexes:indexes];
+    }
 }
 
 

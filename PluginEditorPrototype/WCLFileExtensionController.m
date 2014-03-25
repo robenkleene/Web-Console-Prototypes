@@ -58,6 +58,8 @@
 {
     WCLFileExtension *fileExtension = self.extensionToFileExtensionDictionary[extension];
 
+    NSAssert(fileExtension, @"Attempted to remove a plugin for a file extension that does not exist.");
+    
     [fileExtension.plugins removeObject:plugin];
 
     if (![fileExtension.plugins count]) {
@@ -169,42 +171,6 @@ static void *WCLFileExtensionControllerContext;
     return [self.fileExtensionsDictionaryManager extensions];
 }
 
-#pragma mark Properties
-
-- (WCLExtensionToFileExtensionDictionaryManager *)fileExtensionsDictionaryManager
-{
-    if (_fileExtensionsDictionaryManager) {
-        return _fileExtensionsDictionaryManager;
-    }
-
-    _fileExtensionsDictionaryManager = [[WCLExtensionToFileExtensionDictionaryManager alloc] init];
-
-    NSArray *plugins = [[self pluginManagerController] plugins];
-    
-    for (WCLPlugin *plugin in plugins) {
-        [self processAddedPlugin:plugin];
-    }
-    
-    [[self pluginManagerController] addObserver:self
-                                     forKeyPath:kPluginManagerControllerPluginsKeyPath
-                                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                                        context:&WCLFileExtensionControllerContext];
-
-    return _fileExtensionsDictionaryManager;
-}
-
-- (NSMutableArray *)mutableFileExtensions
-{
-    if (_mutableFileExtensions) {
-        return _mutableFileExtensions;
-    }
-    
-    _mutableFileExtensions = [[self.fileExtensionsDictionaryManager fileExtensions] mutableCopy];
-    self.fileExtensionsDictionaryManager.delegate = self;
-
-    return _mutableFileExtensions;
-}
-
 
 #pragma mark WCLFileExtensionsDictionaryManagerDelegate
 
@@ -222,7 +188,47 @@ static void *WCLFileExtensionControllerContext;
 }
 
 
+#pragma mark Properties
+
+- (WCLExtensionToFileExtensionDictionaryManager *)fileExtensionsDictionaryManager
+{
+    if (_fileExtensionsDictionaryManager) {
+        return _fileExtensionsDictionaryManager;
+    }
+    
+    _fileExtensionsDictionaryManager = [[WCLExtensionToFileExtensionDictionaryManager alloc] init];
+    
+    NSArray *plugins = [[self pluginManagerController] plugins];
+    
+    for (WCLPlugin *plugin in plugins) {
+        [self processAddedPlugin:plugin];
+    }
+    
+    [[self pluginManagerController] addObserver:self
+                                     forKeyPath:kPluginManagerControllerPluginsKeyPath
+                                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                                        context:&WCLFileExtensionControllerContext];
+    
+    return _fileExtensionsDictionaryManager;
+}
+
+- (NSMutableArray *)mutableFileExtensions
+{
+    if (_mutableFileExtensions) {
+        return _mutableFileExtensions;
+    }
+    
+    _mutableFileExtensions = [[self.fileExtensionsDictionaryManager fileExtensions] mutableCopy];
+    self.fileExtensionsDictionaryManager.delegate = self;
+    
+    return _mutableFileExtensions;
+}
+
+
 #pragma mark Required Key-Value Coding To-Many Relationship Compliance for fileExtensions
+
+// All accessors do nothing if _mutableFileExtensions is nil because we don't
+// care about key-value observing until the plugins array is being observed.
 
 - (NSArray *)fileExtensions
 {
@@ -231,22 +237,30 @@ static void *WCLFileExtensionControllerContext;
 
 - (void)insertObject:(NSString *)fileExtension inFileExtensionsAtIndex:(NSUInteger)index
 {
-    [self.mutableFileExtensions insertObject:fileExtension atIndex:index];
+    if (_mutableFileExtensions) {
+        [self.mutableFileExtensions insertObject:fileExtension atIndex:index];
+    }
 }
 
 - (void)insertFileExtensions:(NSArray *)fileExtensionsArray atIndexes:(NSIndexSet *)indexes
 {
-    [self.mutableFileExtensions insertObjects:fileExtensionsArray atIndexes:indexes];
+    if (_mutableFileExtensions) {
+        [self.mutableFileExtensions insertObjects:fileExtensionsArray atIndexes:indexes];
+    }
 }
 
 - (void)removeObjectFromFileExtensionsAtIndex:(NSUInteger)index
 {
-    [self.mutableFileExtensions removeObjectAtIndex:index];
+    if (_mutableFileExtensions) {
+        [self.mutableFileExtensions removeObjectAtIndex:index];
+    }
 }
 
 - (void)removeFileExtensionsAtIndexes:(NSIndexSet *)indexes
 {
-    [self.mutableFileExtensions removeObjectsAtIndexes:indexes];
+    if (_mutableFileExtensions) {
+        [self.mutableFileExtensions removeObjectsAtIndexes:indexes];
+    }
 }
 
 

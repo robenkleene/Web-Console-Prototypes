@@ -11,10 +11,10 @@
 #import "WCLPlugin+PluginManager.h"
 #import "WCLPluginManager.h"
 
-#define kObservedSelectionKeyPaths [NSArray arrayWithObjects:@"name", @"command", @"extensions", @"type", nil]
-
 NSString * const WCLPluginNameKey = @"name";
 NSString * const WCLPluginExtensionsKey = @"extensions";
+
+#define kPluginObservedKeyPaths [NSArray arrayWithObjects:WCLPluginNameKey, @"command", WCLPluginExtensionsKey, @"type", nil]
 
 @interface WCLPlugin ()
 @property (nonatomic, retain) NSData * extensionsData;
@@ -111,7 +111,7 @@ static void *WCLPluginContext;
 {
     [super awakeFromFetch];
 
-    for (NSString *keyPath in kObservedSelectionKeyPaths) {
+    for (NSString *keyPath in kPluginObservedKeyPaths) {
         [self addObserver:self
                forKeyPath:keyPath
                   options:NSKeyValueObservingOptionNew
@@ -121,17 +121,23 @@ static void *WCLPluginContext;
 
 - (void)dealloc
 {
-    for (NSString *keyPath in kObservedSelectionKeyPaths) {
+    for (NSString *keyPath in kPluginObservedKeyPaths) {
         [self removeObserver:self
                   forKeyPath:keyPath
                      context:&WCLPluginContext];
     }
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
 {
     if (context != &WCLPluginContext) {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        [super observeValueForKeyPath:keyPath
+                             ofObject:object
+                               change:change
+                              context:context];
         return;
     }
     
