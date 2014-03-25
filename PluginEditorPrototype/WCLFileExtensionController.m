@@ -32,6 +32,7 @@
 @property (nonatomic, strong, readonly) NSMutableDictionary *extensionToFileExtensionDictionary;
 - (NSArray *)extensions;
 - (NSArray *)fileExtensions;
+- (WCLFileExtension *)fileExtensionForExtension:(NSString *)extension;
 @end
 
 @implementation WCLExtensionToFileExtensionDictionaryManager
@@ -71,6 +72,11 @@
     }
 }
 
+- (WCLFileExtension *)fileExtensionForExtension:(NSString *)extension
+{
+    return self.extensionToFileExtensionDictionary[extension];
+}
+
 - (NSArray *)extensions
 {
     return [self.extensionToFileExtensionDictionary allKeys];
@@ -81,7 +87,7 @@
     return [self.extensionToFileExtensionDictionary allValues];
 }
 
-#pragma mark - Properties
+#pragma mark Properties
 
 - (NSMutableDictionary *)extensionToFileExtensionDictionary
 {
@@ -171,6 +177,10 @@ static void *WCLFileExtensionControllerContext;
     return [self.fileExtensionsDictionaryManager extensions];
 }
 
+- (WCLFileExtension *)fileExtensionForExtension:(NSString *)extension
+{
+    return [self.fileExtensionsDictionaryManager fileExtensionForExtension:extension];
+}
 
 #pragma mark WCLFileExtensionsDictionaryManagerDelegate
 

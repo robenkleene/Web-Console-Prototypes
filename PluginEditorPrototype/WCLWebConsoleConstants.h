@@ -15,3 +15,5 @@
 
 #define kDefaultNewPluginIdentifierKey @"WCLDefaultNewPluginIdentifier"
 #define kDefaultPreferencesSelectedTabKey @"WCLPreferencesSelectedTab"
+
+#define kFileExtensionDefaultEnabled NO

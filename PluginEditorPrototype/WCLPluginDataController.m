@@ -86,7 +86,7 @@
     return plugins;
 }
 
-#pragma mark - Core Data Stack
+#pragma mark Core Data
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "com.1percenter.PluginEditorPrototype" in the user's Application Support directory.
 - (NSURL *)applicationFilesDirectory

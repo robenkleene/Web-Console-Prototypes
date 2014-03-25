@@ -31,7 +31,7 @@ static void *WCLPluginContext;
 @dynamic type;
 @dynamic identifier;
 
-#pragma mark - Properties
+#pragma mark Properties
 
 - (void)setExtensions:(NSArray *)extensions
 {
@@ -105,7 +105,7 @@ static void *WCLPluginContext;
     return _defaultNewPlugin;
 }
 
-#pragma mark - Saving
+#pragma mark Saving
 
 - (void)awakeFromFetch
 {

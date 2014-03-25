@@ -13,6 +13,9 @@
 @interface WCLFileExtensionController : NSObject
 + (instancetype)sharedFileExtensionController;
 - (NSArray *)extensions;
+- (WCLFileExtension *)fileExtensionForExtension:(NSString *)extension;
+
+#pragma mark Required Key-Value Coding To-Many Relationship Compliance
 - (NSArray *)fileExtensions;
 - (void)insertObject:(WCLFileExtension *)fileExtension inFileExtensionsAtIndex:(NSUInteger)index;
 - (void)insertFileExtensions:(NSArray *)fileExtensionsArray atIndexes:(NSIndexSet *)indexes;

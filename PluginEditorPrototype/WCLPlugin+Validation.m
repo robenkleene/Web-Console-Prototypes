@@ -12,9 +12,7 @@
 
 @implementation WCLPlugin (Validation)
 
-#pragma mark - Name
-
-#pragma mark Public
+#pragma mark Name Public
 
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name
 {
@@ -56,8 +54,7 @@
     self.name = newName;
 }
 
-#pragma mark Private
-
+#pragma mark Name Private
 
 - (BOOL)isUniqueName:(NSString *)name
 {
@@ -94,9 +91,8 @@
     return allowedCharacterSet;
 }
 
-#pragma mark - File Extensions
 
-#pragma mark Public
+#pragma mark File Extensions Public
 
 - (BOOL)extensionsAreValid:(NSArray *)extensions
 {
@@ -131,7 +127,7 @@
     return validExtensions;
 }
 
-#pragma mark Private
+#pragma mark File Extensions Private
 
 + (BOOL)extensionContainsOnlyValidCharacters:(NSString *)extension
 {
@@ -156,7 +152,7 @@
     return [NSCharacterSet alphanumericCharacterSet];
 }
 
-#pragma mark - Helpers
+#pragma mark Helpers
 
 + (BOOL)string:(NSString *)string containsOnlyCharactersInCharacterSet:(NSCharacterSet *)characterSet
 {

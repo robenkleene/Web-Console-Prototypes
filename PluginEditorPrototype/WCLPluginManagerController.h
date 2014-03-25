@@ -12,6 +12,8 @@
 
 @interface WCLPluginManagerController : NSObject
 + (instancetype)sharedPluginManagerController;
+
+#pragma mark Required Key-Value Coding To-Many Relationship Compliance
 - (NSArray *)plugins;
 - (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index;
 - (void)insertPlugins:(NSArray *)pluginsArray atIndexes:(NSIndexSet *)indexes;

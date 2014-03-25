@@ -38,14 +38,14 @@ static void *WCLFileExtensionContext;
     return self;
 }
 
-#pragma mark - Properties
+#pragma mark Properties
 
 - (BOOL)isEnabled
 {
     NSNumber *enabledNumber = [self.userDefaultsDictionary objectForKey:kFileExtensionEnabledKey];
 
     if (!enabledNumber) {
-        enabledNumber = [NSNumber numberWithBool:YES];
+        enabledNumber = [NSNumber numberWithBool:kFileExtensionDefaultEnabled];
     }
 
     return [enabledNumber boolValue];
