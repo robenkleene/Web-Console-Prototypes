@@ -13,7 +13,14 @@
 
 #define kErrorCodeInvalidPlugin -42
 
+#pragma mark - NSUserDefaults
+
 #define kDefaultNewPluginIdentifierKey @"WCLDefaultNewPluginIdentifier"
 #define kDefaultPreferencesSelectedTabKey @"WCLPreferencesSelectedTab"
 
+#pragma mark Defaults
+
 #define kFileExtensionDefaultEnabled NO
+#define kFileExtensionPluginsKey @"WCLFileExtensionPlugins"
+#define kFileExtensionEnabledKey @"enabled"
+#define kFileExtensionPluginIdentifierKey @"pluginIdentifier"

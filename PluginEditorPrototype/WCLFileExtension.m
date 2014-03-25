@@ -11,11 +11,6 @@
 #import "WCLPlugin.h"
 #import "WCLPluginManager.h"
 
-#define kFileExtensionPluginsKey @"WCLFileExtensionPlugins"
-
-#define kFileExtensionEnabledKey @"enabled"
-#define kFileExtensionPluginIdentifierKey @"pluginIdentifier"
-
 #define kFileExtensionObservedKeyPaths [NSArray arrayWithObjects:kFileExtensionEnabledKey, kFileExtensionPluginIdentifierKey, nil]
 
 @interface WCLFileExtension ()
@@ -99,9 +94,15 @@ static void *WCLFileExtensionContext;
         return _userDefaultsDictionary;
     }
     
-    NSArray *fileExtensionPluginDictionary = [[NSUserDefaults standardUserDefaults] valueForKey:kFileExtensionPluginsKey];
+    NSDictionary *fileExtensionPluginDictionary = [[NSUserDefaults standardUserDefaults] valueForKey:kFileExtensionPluginsKey];
     
-    _userDefaultsDictionary = [fileExtensionPluginDictionary valueForKey:self.extension];
+    NSMutableDictionary *userDefaultsDictionary = [[fileExtensionPluginDictionary valueForKey:self.extension] mutableCopy];
+
+    if (!userDefaultsDictionary) {
+        userDefaultsDictionary = [NSMutableDictionary dictionary];
+    }
+    
+    _userDefaultsDictionary = userDefaultsDictionary;
     
     for (NSString *keyPath in kFileExtensionObservedKeyPaths) {
         [self addObserver:self

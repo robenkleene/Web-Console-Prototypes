@@ -12,8 +12,8 @@
 
 @interface WCLFileExtension : NSObject
 - (id)initWithExtension:(NSString *)extension;
-@property (nonatomic, strong) NSString *extension;
-@property (nonatomic, strong) NSMutableArray *plugins;
+@property (nonatomic, strong, readonly) NSString *extension;
+@property (nonatomic, strong, readonly) NSMutableArray *plugins;
 @property (nonatomic, assign, getter = isEnabled) BOOL enabled;
 @property (nonatomic, strong) WCLPlugin *selectedPlugin;
 

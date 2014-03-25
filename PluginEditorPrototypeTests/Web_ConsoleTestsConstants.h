@@ -10,8 +10,15 @@
 
 #define kTestPluginName @"Test Plugin"
 #define kTestPluginCommand @"wcprint.rb"
+#define kTestPluginDefaultNewPluginKeyPath @"defaultNewPlugin"
+
+#pragma mark Extensions
+
 #define kTestExtensions @[@"html", @"md", @"js"]
 #define kTestExtension @"html"
 #define kTestExtensionsOne @[kTestExtension]
 #define kTestExtensionsEmpty @[]
-#define kTestPluginDefaultNewPluginKeyPath @"defaultNewPlugin"
+
+#pragma mark File Extensions
+
+#define kTestFileExtensionEnabledKeyPath @"enabled"

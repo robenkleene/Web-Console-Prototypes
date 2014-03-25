@@ -13,6 +13,7 @@
 #import "Web_ConsoleTestsConstants.h"
 
 #import "WCLFileExtension.h"
+#import "WCLKeyValueObservingTestsHelper.h"
 
 @interface WCLFileExtensionTests : WCLTestPluginManagerTestCase
 
@@ -37,6 +38,9 @@
 {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 #warning Delete NSUserDefaults here
+    NSDictionary *fileExtensionPluginDictionary = [[NSUserDefaults standardUserDefaults] valueForKey:kFileExtensionPluginsKey];
+
+    NSLog(@"fileExtensionPluginDictionary = %@", fileExtensionPluginDictionary);
     
     [super tearDown];
 }
@@ -56,6 +60,37 @@
         XCTAssertTrue(matches, @"The plugin should match the file extension.");
     }
 }
+
+- (void)testSettingEnabled
+{
+    WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
+
+    // Test key-value observing fires for the enabled property
+    __block BOOL isEnabled = fileExtension.isEnabled;
+    [WCLKeyValueObservingTestsHelper observeObject:fileExtension
+                                        forKeyPath:kTestFileExtensionEnabledKeyPath
+                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                               isEnabled = fileExtension.isEnabled;
+                                           }];
+    BOOL inverseEnabled = !fileExtension.isEnabled;
+    fileExtension.enabled = inverseEnabled;
+    XCTAssertTrue(isEnabled == inverseEnabled, @"The key-value observing change notification for the WCLFileExtensions's enabled property should have occurred.");
+    XCTAssertTrue(fileExtension.isEnabled == inverseEnabled, @"The WCLFileExtension's isEnabled should equal the inverse enabled.");
+
+    
+    // Test NSUserDefaults is set
+}
+
+- (void)testSettingSelectedPlugin
+{
+    // Test key-value observing fires
+    
+    // Test NSUserDefaults is set
+}
+
+
+
+#pragma mark Helpers
 
 + (BOOL)plugin:(WCLPlugin *)plugin matchesForFileExtension:(WCLFileExtension *)fileExtension
 {
