@@ -41,6 +41,15 @@
     return plugin;
 }
 
+- (void)deletePlugin:(WCLPlugin *)plugin
+{
+    NSUInteger index = [[[self pluginManagerController] plugins] indexOfObject:plugin];
+    NSAssert(index != NSNotFound, @"Attempted to remove a plugin from pluginManagerController's plugins that was not found.");
+    [[self pluginManagerController] removeObjectFromPluginsAtIndex:index];
+    
+    [[self pluginManager] deletePlugin:plugin];
+}
+
 - (void)deleteAllPlugins
 {
     NSArray *plugins = [[self pluginManagerController] plugins];

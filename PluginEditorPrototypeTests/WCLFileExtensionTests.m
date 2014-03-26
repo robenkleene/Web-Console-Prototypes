@@ -240,7 +240,50 @@
     XCTAssertNil(pluginIdentifierInDictionary, @"The plugin identifier value in the dictionary should be nil.");
 }
 
-// TODO: Test deleting the selected plugin
+- (void)testDeletingSelectedPlugin
+{
+    WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
+    WCLPlugin *newPlugin = [self addedPlugin];
+    newPlugin.extensions = kTestExtensionsOne;
+
+    fileExtension.selectedPlugin = newPlugin;
+
+    // Test key-value observing for the plugins property
+    __block NSArray *plugins = [fileExtension.plugins copy];
+    [WCLKeyValueObservingTestsHelper observeObject:fileExtension
+                                        forKeyPath:WCLFileExtensionPluginsKey
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
+                                       plugins = [fileExtension.plugins copy];
+                                   }];
+    
+    // Test key-value observing for the selected plugin property
+    fileExtension.selectedPlugin = newPlugin;
+    __block BOOL observedChange = NO;
+    [WCLKeyValueObservingTestsHelper observeObject:fileExtension
+                                        forKeyPath:kTestFileExtensionSelectedPluginKeyPath
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
+                                       observedChange = YES;
+                                   }];
+    XCTAssertFalse(observedChange, @"The change should not have been observed.");
+    
+    [self deletePlugin:newPlugin];
+    
+    // Test the file extensions plugins property changed
+    XCTAssertFalse([plugins containsObject:newPlugin], @"The key-value observing change notification for the WCLFileExtensions's plugins property should have occurred.");
+    XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new plugin.");
+    
+    // Test the file extensions selected plugin property changed
+    XCTAssertTrue(observedChange, @"The key-value observing change should have occurred.");
+    XCTAssertNil(fileExtension.selectedPlugin, @"The WCLFileExtension's selected plugin should be nil.");
+    
+    // Test key was removed from NSUserDefaults
+    NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
+    NSDictionary *fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
+    NSString *pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
+    XCTAssertNil(pluginIdentifierInDictionary, @"The plugin identifier value in the dictionary should be nil.");
+}
 
 // TODO: Test selectedPlugin validation
 
