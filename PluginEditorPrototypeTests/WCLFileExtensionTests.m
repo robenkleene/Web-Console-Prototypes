@@ -70,6 +70,8 @@
 {
     WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
 
+    // Test setting the enabled property
+    
     // Test key-value observing fires for the enabled property
     __block BOOL isEnabled = fileExtension.isEnabled;
     [WCLKeyValueObservingTestsHelper observeObject:fileExtension
@@ -79,8 +81,8 @@
                                            }];
     BOOL inverseEnabled = !fileExtension.isEnabled;
     fileExtension.enabled = inverseEnabled;
-    XCTAssertTrue(isEnabled == inverseEnabled, @"The key-value observing change notification for the WCLFileExtensions's enabled property should have occurred.");
-    XCTAssertTrue(fileExtension.isEnabled == inverseEnabled, @"The WCLFileExtension's isEnabled should equal the inverse enabled.");
+    XCTAssertEqual(isEnabled, inverseEnabled, @"The key-value observing change notification for the WCLFileExtensions's enabled property should have occurred.");
+    XCTAssertEqual(fileExtension.isEnabled, inverseEnabled, @"The WCLFileExtension's isEnabled should equal the inverse enabled.");
     
     // Test NSUserDefaults is set
     NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
@@ -88,15 +90,34 @@
     BOOL enabledInDictionary = [[fileExtensionPluginDictionary valueForKey:kFileExtensionEnabledKey] boolValue];
     XCTAssertEqual(enabledInDictionary, fileExtension.isEnabled, @"The enabled value in the dictionary should match the file extension's enabled property");
 
-    // Swap the key and assert the inverse
+    // Test inverting the enabled property
+
+    // Test key-value observing fires for the enabled property
+    isEnabled = fileExtension.isEnabled;
+    [WCLKeyValueObservingTestsHelper observeObject:fileExtension
+                                        forKeyPath:kTestFileExtensionEnabledKeyPath
+                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                               isEnabled = fileExtension.isEnabled;
+                                           }];
+    inverseEnabled = !fileExtension.isEnabled;
+    fileExtension.enabled = inverseEnabled;
+    XCTAssertEqual(isEnabled, inverseEnabled, @"The key-value observing change notification for the WCLFileExtensions's enabled property should have occurred.");
+    XCTAssertEqual(fileExtension.isEnabled, inverseEnabled, @"The WCLFileExtension's isEnabled should equal the inverse enabled.");
     
+    // Test NSUserDefaults is set
+    fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
+    fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
+    enabledInDictionary = [[fileExtensionPluginDictionary valueForKey:kFileExtensionEnabledKey] boolValue];
+    XCTAssertEqual(enabledInDictionary, fileExtension.isEnabled, @"The enabled value in the dictionary should match the file extension's enabled property");
 }
+
+
 
 - (void)testSettingSelectedPlugin
 {
-    // Test key-value observing fires
+    // TODO: Test key-value observing fires
     
-    // Test NSUserDefaults is set
+    // TODO: Test NSUserDefaults is set
 }
 
 
@@ -112,5 +133,6 @@
     
     return containsPlugin == containsFileExtesion;
 }
+
 
 @end
