@@ -126,28 +126,54 @@
     XCTAssertNotEqual(selectedPlugin, plugin, @"The WCLFileExtension's selected plugin should not equal the plugin.");
     fileExtension.selectedPlugin = plugin;
     XCTAssertEqual(selectedPlugin, plugin, @"The key-value observing change notification for the WCLFileExtensions's selected plugin property should have occurred.");
-
+    XCTAssertEqual(fileExtension.selectedPlugin, plugin, @"The WCLFileExtension's selected plugin should equal the plugin.");
+    
     // Test NSUserDefaults is set
     NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
     NSDictionary *fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
     NSString *pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
     XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The plugin identifier value in the dictionary should match the WCLFileExtension's selected WCLPlugin's identifier.");
     
+    // Test changing the selected plugin
     
-    // TODO: Test above when setting the plugin to another plugin
+    // Test key-value observing for the selected plugin property
+    WCLPlugin *newPlugin = [self addedPlugin];
+    newPlugin.extensions = kTestExtensionsOne;
+    [WCLKeyValueObservingTestsHelper observeObject:fileExtension
+                                        forKeyPath:kTestFileExtensionSelectedPluginKeyPath
+                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                               selectedPlugin = fileExtension.selectedPlugin;
+                                           }];
+    XCTAssertNotEqual(selectedPlugin, newPlugin, @"The selected plugin should not equal the new plugin.");
+    fileExtension.selectedPlugin = newPlugin;
+    XCTAssertEqual(selectedPlugin, newPlugin, @"The key-value observing change notification for the WCLFileExtensions's selected plugin property should have occurred.");
+    XCTAssertEqual(fileExtension.selectedPlugin, newPlugin, @"The WCLFileExtension's selected plugin should equal the plugin.");
+    
+    // Test NSUserDefaults is set
+    fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
+    fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
+    pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
+    XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The plugin identifier value in the dictionary should match the WCLFileExtension's selected WCLPlugin's identifier.");
+
     
     // TODO: Test above when setting the plugin to nil
-
-    // TODO: Test deleting the selected plugin
-
-    // TODO: Test Removing this file extension from the selected plugin
     
-    // TODO: Test KVO fires when adding and removing a plugin from this file extensions plugins
+    
 
-    // TODO: Test selectedPlugin validation
+
+
+    
 }
 
 
+
+// TODO: Test deleting the selected plugin
+
+// TODO: Test Removing this file extension from the selected plugin
+
+// TODO: Test KVO fires when adding and removing a plugin from this file extensions plugins
+
+// TODO: Test selectedPlugin validation
 
 #pragma mark Helpers
 
