@@ -28,13 +28,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PluginEditorPrototype/WCLFileExtension.m"
-            timestampString = "417489879.113873"
+            filePath = "PluginEditorPrototypeTests/WCLFileExtensionTests.m"
+            timestampString = "417493942.603527"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "-validateSelectedPlugin:error:"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
+            landmarkName = "-testChangingPluginsFileExtensions"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

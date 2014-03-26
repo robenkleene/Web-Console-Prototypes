@@ -76,7 +76,8 @@
     __block BOOL isEnabled = fileExtension.isEnabled;
     [WCLKeyValueObservingTestsHelper observeObject:fileExtension
                                         forKeyPath:kTestFileExtensionEnabledKeyPath
-                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
                                                isEnabled = fileExtension.isEnabled;
                                            }];
     BOOL inverseEnabled = !fileExtension.isEnabled;
@@ -96,7 +97,8 @@
     isEnabled = fileExtension.isEnabled;
     [WCLKeyValueObservingTestsHelper observeObject:fileExtension
                                         forKeyPath:kTestFileExtensionEnabledKeyPath
-                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
                                                isEnabled = fileExtension.isEnabled;
                                            }];
     inverseEnabled = !fileExtension.isEnabled;
@@ -116,16 +118,17 @@
     WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
     
     // Test key-value observing for the selected plugin property
-    __block WCLPlugin *selectedPlugin = fileExtension.selectedPlugin;
+    __block BOOL observedChange = NO;
     [WCLKeyValueObservingTestsHelper observeObject:fileExtension
                                         forKeyPath:kTestFileExtensionSelectedPluginKeyPath
-                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
-                                               selectedPlugin = fileExtension.selectedPlugin;
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
+                                               observedChange = YES;
                                            }];
     WCLPlugin *plugin = fileExtension.plugins[0];
-    XCTAssertNotEqual(selectedPlugin, plugin, @"The WCLFileExtension's selected plugin should not equal the plugin.");
+    XCTAssertFalse(observedChange, @"The change should not have been observed.");
     fileExtension.selectedPlugin = plugin;
-    XCTAssertEqual(selectedPlugin, plugin, @"The key-value observing change notification for the WCLFileExtensions's selected plugin property should have occurred.");
+    XCTAssertTrue(observedChange, @"The key-value observing change should have occurred.");
     XCTAssertEqual(fileExtension.selectedPlugin, plugin, @"The WCLFileExtension's selected plugin should equal the plugin.");
     
     // Test NSUserDefaults is set
@@ -139,14 +142,17 @@
     // Test key-value observing for the selected plugin property
     WCLPlugin *newPlugin = [self addedPlugin];
     newPlugin.extensions = kTestExtensionsOne;
+
+    observedChange = NO;
     [WCLKeyValueObservingTestsHelper observeObject:fileExtension
                                         forKeyPath:kTestFileExtensionSelectedPluginKeyPath
-                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
-                                               selectedPlugin = fileExtension.selectedPlugin;
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
+                                               observedChange = YES;
                                            }];
-    XCTAssertNotEqual(selectedPlugin, newPlugin, @"The selected plugin should not equal the new plugin.");
+    XCTAssertFalse(observedChange, @"The change should not have been observed.");
     fileExtension.selectedPlugin = newPlugin;
-    XCTAssertEqual(selectedPlugin, newPlugin, @"The key-value observing change notification for the WCLFileExtensions's selected plugin property should have occurred.");
+    XCTAssertTrue(observedChange, @"The key-value observing change should have occurred.");
     XCTAssertEqual(fileExtension.selectedPlugin, newPlugin, @"The WCLFileExtension's selected plugin should equal the plugin.");
     
     // Test NSUserDefaults is set
@@ -158,13 +164,16 @@
     // Test setting the selected plugin to nil
     
     // Test key-value observing for the selected plugin property
+    observedChange = NO;
     [WCLKeyValueObservingTestsHelper observeObject:fileExtension
                                         forKeyPath:kTestFileExtensionSelectedPluginKeyPath
-                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
-                                               selectedPlugin = fileExtension.selectedPlugin;
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
+                                               observedChange = YES;
                                            }];
+    XCTAssertFalse(observedChange, @"The change should not have been observed.");
     fileExtension.selectedPlugin = nil;
-    XCTAssertNil(selectedPlugin, @"The key-value observing change notification for the WCLFileExtensions's selected plugin property should have occurred.");
+    XCTAssertTrue(observedChange, @"The key-value observing change should have occurred.");
     XCTAssertNil(fileExtension.selectedPlugin, @"The WCLFileExtension's selected plugin should be nil.");
     
     // Test key was removed from NSUserDefaults
@@ -174,13 +183,65 @@
     XCTAssertNil(pluginIdentifierInDictionary, @"The plugin identifier value in the dictionary should be nil.");
 }
 
+- (void)testChangingPluginsFileExtensions
+{
+    WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
+    WCLPlugin *newPlugin = [self addedPlugin];
+    XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new plugin.");
 
+    // Test key-value observing for the plugins property
+    __block NSArray *plugins = [fileExtension.plugins copy];
+    [WCLKeyValueObservingTestsHelper observeObject:fileExtension
+                                        forKeyPath:WCLFileExtensionPluginsKey
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
+                                               plugins = [fileExtension.plugins copy];
+                                           }];
+    XCTAssertFalse([plugins containsObject:newPlugin], @"The plugins should not contain the new plugin.");
+    newPlugin.extensions = kTestExtensionsOne;
+    XCTAssertTrue([plugins containsObject:newPlugin], @"The key-value observing change notification for the WCLFileExtensions's plugins property should have occurred.");
+    XCTAssertTrue([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should contain the new plugin.");
+
+    // Test removing the file extension
+
+    // Test key-value observing for the plugins property
+    [WCLKeyValueObservingTestsHelper observeObject:fileExtension
+                                        forKeyPath:WCLFileExtensionPluginsKey
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
+                                               plugins = [fileExtension.plugins copy];
+                                           }];
+
+    // Test key-value observing for the selected plugin property
+    fileExtension.selectedPlugin = newPlugin;
+    __block WCLPlugin *selectedPlugin = [fileExtension.selectedPlugin copy];
+    [WCLKeyValueObservingTestsHelper observeObject:fileExtension
+                                        forKeyPath:kTestFileExtensionSelectedPluginKeyPath
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
+                                               selectedPlugin = [fileExtension.selectedPlugin copy];
+                                           }];
+
+    // Test the file extensions plugins property changed
+    newPlugin.extensions = kTestExtensionsEmpty;
+    XCTAssertFalse([plugins containsObject:newPlugin], @"The key-value observing change notification for the WCLFileExtensions's plugins property should have occurred.");
+    XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new plugin.");
+    
+    // Test the file extensions selected plugin property changed
+    XCTAssertNil(selectedPlugin, @"The key-value observing change notification for the WCLFileExtensions's selected plugin property should have occurred.");
+    XCTAssertNil(fileExtension.selectedPlugin, @"The WCLFileExtension's selected plugin should be nil.");
+    
+    // Test key was removed from NSUserDefaults
+    NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
+    NSDictionary *fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
+    NSString *pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
+    XCTAssertNil(pluginIdentifierInDictionary, @"The plugin identifier value in the dictionary should be nil.");
+}
 
 // TODO: Test deleting the selected plugin
 
-// TODO: Test Removing this file extension from the selected plugin
-
 // TODO: Test KVO fires when adding and removing a plugin from this file extensions plugins
+// TODO: Test Removing this file extension from the selected plugin
 
 // TODO: Test selectedPlugin validation
 

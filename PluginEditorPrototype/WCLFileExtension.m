@@ -11,7 +11,9 @@
 #import "WCLPlugin.h"
 #import "WCLPluginManager.h"
 
-#define kFileExtensionObservedKeyPaths [NSArray arrayWithObjects:kFileExtensionEnabledKey, kFileExtensionPluginIdentifierKey, nil]
+NSString * const WCLFileExtensionPluginsKey = @"plugins";
+
+#define kFileExtensionPluginDictionaryObservedKeyPaths [NSArray arrayWithObjects:kFileExtensionEnabledKey, kFileExtensionPluginIdentifierKey, nil]
 
 @interface WCLFileExtension ()
 @property (nonatomic, strong, readonly) NSMutableDictionary *fileExtensionPluginDictionary;
@@ -29,6 +31,10 @@ static void *WCLFileExtensionContext;
     if (self) {
 		_extension = extension;
         _plugins = [NSMutableArray array];
+        [self addObserver:self
+               forKeyPath:WCLFileExtensionPluginsKey
+                  options:NSKeyValueObservingOptionNew
+                  context:&WCLFileExtensionContext];
     }
     return self;
 }
@@ -131,7 +137,7 @@ static void *WCLFileExtensionContext;
     
     _fileExtensionPluginDictionary = fileExtensionPluginDictionary;
     
-    for (NSString *keyPath in kFileExtensionObservedKeyPaths) {
+    for (NSString *keyPath in kFileExtensionPluginDictionaryObservedKeyPaths) {
         [_fileExtensionPluginDictionary addObserver:self
                                          forKeyPath:keyPath
                                             options:NSKeyValueObservingOptionNew
@@ -153,8 +159,10 @@ static void *WCLFileExtensionContext;
 
 - (void)dealloc
 {
+    [self removeObserver:self forKeyPath:WCLFileExtensionPluginsKey];
+    
     if (_fileExtensionPluginDictionary) {
-        for (NSString *keyPath in kFileExtensionObservedKeyPaths) {
+        for (NSString *keyPath in kFileExtensionPluginDictionaryObservedKeyPaths) {
             [_fileExtensionPluginDictionary removeObserver:self
                                                 forKeyPath:keyPath
                                                    context:&WCLFileExtensionContext];
@@ -175,15 +183,26 @@ static void *WCLFileExtensionContext;
         return;
     }
 
-    NSMutableDictionary *fileExtensionToPluginDictionary = [[[self class] fileExtensionToPluginDictionary] mutableCopy];
-    
-    if (!fileExtensionToPluginDictionary) {
-        fileExtensionToPluginDictionary = [NSMutableDictionary dictionary];
+    if ([kFileExtensionPluginDictionaryObservedKeyPaths containsObject:keyPath] &&
+        object == self.fileExtensionPluginDictionary) {
+
+        NSMutableDictionary *fileExtensionToPluginDictionary = [[[self class] fileExtensionToPluginDictionary] mutableCopy];
+        
+        if (!fileExtensionToPluginDictionary) {
+            fileExtensionToPluginDictionary = [NSMutableDictionary dictionary];
+        }
+        
+        [fileExtensionToPluginDictionary setValue:self.fileExtensionPluginDictionary forKey:self.extension];
+        
+        [[self class] setfileExtensionToPluginDictionary:fileExtensionToPluginDictionary];
+
+        return;
     }
 
-    [fileExtensionToPluginDictionary setValue:self.fileExtensionPluginDictionary forKey:self.extension];
-
-    [[self class] setfileExtensionToPluginDictionary:fileExtensionToPluginDictionary];
+    if ([keyPath isEqualToString:WCLFileExtensionPluginsKey] &&
+        object == self.plugins) {
+        NSLog(@"Break");
+    }
 }
 
 @end

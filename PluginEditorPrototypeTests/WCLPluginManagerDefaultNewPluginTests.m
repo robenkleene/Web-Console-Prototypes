@@ -108,7 +108,8 @@
     __block BOOL isDefaultNewPlugin = plugin.isDefaultNewPlugin;
     [WCLKeyValueObservingTestsHelper observeObject:plugin
                                         forKeyPath:kTestPluginDefaultNewPluginKeyPath
-                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
                                                isDefaultNewPlugin = plugin.isDefaultNewPlugin;
                                            }];
     [[self pluginManager] setDefaultNewPlugin:plugin];
@@ -120,13 +121,15 @@
     XCTAssertFalse(pluginTwo.isDefaultNewPlugin, @"The second WCLPlugin should not be the default new plugin.");
     [WCLKeyValueObservingTestsHelper observeObject:plugin
                                         forKeyPath:kTestPluginDefaultNewPluginKeyPath
-                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
                                                isDefaultNewPlugin = plugin.isDefaultNewPlugin;
                                            }];
     __block BOOL isDefaultNewPluginTwo = pluginTwo.isDefaultNewPlugin;
     [WCLKeyValueObservingTestsHelper observeObject:pluginTwo
                                         forKeyPath:kTestPluginDefaultNewPluginKeyPath
-                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
                                                isDefaultNewPluginTwo = pluginTwo.isDefaultNewPlugin;
                                            }];
     [[self pluginManager] setDefaultNewPlugin:pluginTwo];
@@ -138,7 +141,8 @@
     // Test that key-value observing notifications occur when the default new plugin is set to nil
     [WCLKeyValueObservingTestsHelper observeObject:pluginTwo
                                         forKeyPath:kTestPluginDefaultNewPluginKeyPath
-                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                           options:NSKeyValueObservingOptionNew
+                                   completionBlock:^(NSDictionary *change) {
                                                isDefaultNewPluginTwo = pluginTwo.isDefaultNewPlugin;
                                            }];
     [[self pluginManager] setDefaultNewPlugin:nil];

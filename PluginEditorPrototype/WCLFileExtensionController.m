@@ -290,8 +290,6 @@ static void *WCLFileExtensionControllerContext;
     if ([object isKindOfClass:[[self pluginManagerController] class]] &&
         [keyPath isEqualToString:kPluginManagerControllerPluginsKeyPath]) {
 
-
-
         NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
         switch (keyValueChange) {
             case NSKeyValueChangeInsertion: {

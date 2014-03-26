@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const WCLFileExtensionPluginsKey;
+
 @class WCLPlugin;
 
 @interface WCLFileExtension : NSObject
