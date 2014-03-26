@@ -52,7 +52,7 @@
         }
     }
 
-    [fileExtension.plugins addObject:plugin];
+    [fileExtension insertObject:plugin inPluginsAtIndex:0];
 }
 
 - (void)removePlugin:(WCLPlugin *)plugin forExtension:(NSString *)extension
@@ -61,7 +61,10 @@
 
     NSAssert(fileExtension, @"Attempted to remove a plugin for a file extension that does not exist.");
     
-    [fileExtension.plugins removeObject:plugin];
+    NSUInteger index = [fileExtension.plugins indexOfObject:plugin];
+    NSAssert(index != NSNotFound, @"Attempted to remove a plugin from a file extension's plugins that was not found.");
+    
+    [fileExtension removeObjectFromPluginsAtIndex:index];
 
     if (![fileExtension.plugins count]) {
         [self.extensionToFileExtensionDictionary removeObjectForKey:extension];

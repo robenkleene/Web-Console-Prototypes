@@ -214,23 +214,25 @@
 
     // Test key-value observing for the selected plugin property
     fileExtension.selectedPlugin = newPlugin;
-    __block WCLPlugin *selectedPlugin = [fileExtension.selectedPlugin copy];
+    __block BOOL observedChange = NO;
     [WCLKeyValueObservingTestsHelper observeObject:fileExtension
                                         forKeyPath:kTestFileExtensionSelectedPluginKeyPath
                                            options:NSKeyValueObservingOptionNew
                                    completionBlock:^(NSDictionary *change) {
-                                               selectedPlugin = [fileExtension.selectedPlugin copy];
+                                               observedChange = YES;
                                            }];
+    XCTAssertFalse(observedChange, @"The change should not have been observed.");
+    
+    newPlugin.extensions = kTestExtensionsEmpty;
 
     // Test the file extensions plugins property changed
-    newPlugin.extensions = kTestExtensionsEmpty;
     XCTAssertFalse([plugins containsObject:newPlugin], @"The key-value observing change notification for the WCLFileExtensions's plugins property should have occurred.");
     XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new plugin.");
     
     // Test the file extensions selected plugin property changed
-    XCTAssertNil(selectedPlugin, @"The key-value observing change notification for the WCLFileExtensions's selected plugin property should have occurred.");
+    XCTAssertTrue(observedChange, @"The key-value observing change should have occurred.");
     XCTAssertNil(fileExtension.selectedPlugin, @"The WCLFileExtension's selected plugin should be nil.");
-    
+
     // Test key was removed from NSUserDefaults
     NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
     NSDictionary *fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
@@ -239,9 +241,6 @@
 }
 
 // TODO: Test deleting the selected plugin
-
-// TODO: Test KVO fires when adding and removing a plugin from this file extensions plugins
-// TODO: Test Removing this file extension from the selected plugin
 
 // TODO: Test selectedPlugin validation
 

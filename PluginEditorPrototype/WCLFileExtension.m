@@ -17,6 +17,7 @@ NSString * const WCLFileExtensionPluginsKey = @"plugins";
 
 @interface WCLFileExtension ()
 @property (nonatomic, strong, readonly) NSMutableDictionary *fileExtensionPluginDictionary;
+@property (nonatomic, strong, readonly) NSMutableArray *mutablePlugins;
 @end
 
 @implementation WCLFileExtension
@@ -30,7 +31,7 @@ static void *WCLFileExtensionContext;
     self = [super init];
     if (self) {
 		_extension = extension;
-        _plugins = [NSMutableArray array];
+        _mutablePlugins = [NSMutableArray array];
         [self addObserver:self
                forKeyPath:WCLFileExtensionPluginsKey
                   options:NSKeyValueObservingOptionNew
@@ -119,6 +120,34 @@ static void *WCLFileExtensionContext;
 //    return valid;
 }
 
+#pragma mark Required Key-Value Coding To-Many Relationship Compliance
+
+- (NSArray *)plugins
+{
+    return [NSArray arrayWithArray:self.mutablePlugins];
+}
+
+- (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index
+{
+    [self.mutablePlugins insertObject:plugin atIndex:index];
+}
+
+- (void)insertPlugins:(NSArray *)pluginsArray atIndexes:(NSIndexSet *)indexes
+{
+    [self.mutablePlugins insertObjects:pluginsArray atIndexes:indexes];
+}
+
+- (void)removeObjectFromPluginsAtIndex:(NSUInteger)index
+{
+    [self.mutablePlugins removeObjectAtIndex:index];
+}
+
+- (void)removePluginsAtIndexes:(NSIndexSet *)indexes
+{
+    [self.mutablePlugins removeObjectsAtIndexes:indexes];
+}
+
+
 #pragma mark - NSUserDefaults Dictionary
 
 - (NSMutableDictionary *)fileExtensionPluginDictionary
@@ -199,10 +228,14 @@ static void *WCLFileExtensionContext;
         return;
     }
 
-    if ([keyPath isEqualToString:WCLFileExtensionPluginsKey] &&
-        object == self.plugins) {
-        NSLog(@"Break");
+
+    if ([keyPath isEqualToString:WCLFileExtensionPluginsKey]) {
+        NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
+        if (keyValueChange == NSKeyValueChangeRemoval &&
+            ![[self plugins] containsObject:self.selectedPlugin]) {
+            self.selectedPlugin = nil;
+        }
+        return;
     }
 }
-
 @end
