@@ -83,6 +83,8 @@ static void *WCLFileExtensionContext;
     if (_selectedPlugin) {
         [self.fileExtensionPluginDictionary setValue:selectedPlugin.identifier
                                               forKey:kFileExtensionPluginIdentifierKey];
+    } else {
+        [self.fileExtensionPluginDictionary removeObjectForKey:kFileExtensionPluginIdentifierKey];
     }
 }
 
@@ -135,7 +137,6 @@ static void *WCLFileExtensionContext;
                                             options:NSKeyValueObservingOptionNew
                                             context:&WCLFileExtensionContext];
     }
-
     
     return _fileExtensionPluginDictionary;
 }

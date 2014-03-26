@@ -29,11 +29,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PluginEditorPrototype/WCLFileExtension.m"
-            timestampString = "417487738.167347"
+            timestampString = "417489879.113873"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "-validateSelectedPlugin:error:"
             landmarkType = "5">
          </BreakpointContent>

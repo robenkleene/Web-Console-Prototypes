@@ -155,14 +155,23 @@
     pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
     XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The plugin identifier value in the dictionary should match the WCLFileExtension's selected WCLPlugin's identifier.");
 
+    // Test setting the selected plugin to nil
     
-    // TODO: Test above when setting the plugin to nil
+    // Test key-value observing for the selected plugin property
+    [WCLKeyValueObservingTestsHelper observeObject:fileExtension
+                                        forKeyPath:kTestFileExtensionSelectedPluginKeyPath
+                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                               selectedPlugin = fileExtension.selectedPlugin;
+                                           }];
+    fileExtension.selectedPlugin = nil;
+    XCTAssertNil(selectedPlugin, @"The key-value observing change notification for the WCLFileExtensions's selected plugin property should have occurred.");
+    XCTAssertNil(fileExtension.selectedPlugin, @"The WCLFileExtension's selected plugin should be nil.");
     
-    
-
-
-
-    
+    // Test key was removed from NSUserDefaults
+    fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
+    fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
+    pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
+    XCTAssertNil(pluginIdentifierInDictionary, @"The plugin identifier value in the dictionary should be nil.");
 }
 
 
