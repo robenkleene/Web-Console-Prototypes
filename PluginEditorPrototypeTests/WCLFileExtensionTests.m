@@ -15,6 +15,12 @@
 #import "WCLFileExtension.h"
 #import "WCLKeyValueObservingTestsHelper.h"
 
+
+@interface WCLFileExtension (Test)
++ (NSDictionary *)fileExtensionToPluginDictionary;
++ (void)setfileExtensionToPluginDictionary:(NSDictionary *)fileExtensionToPluginDictionary;
+@end
+
 @interface WCLFileExtensionTests : WCLTestPluginManagerTestCase
 
 @end
@@ -25,6 +31,8 @@
 {
     [super setUp];
     
+    // TODO: Assert existing plugin settings in userDefaults are nil? I.e., [WCLFileExtension fileExtensionToPluginDictionary]
+
     WCLPlugin *plugin = [self addedPlugin];
     
     // Set file extensions to an array of file extensions
@@ -36,11 +44,8 @@
 
 - (void)tearDown
 {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-#warning Delete NSUserDefaults here
-    NSDictionary *fileExtensionPluginDictionary = [[NSUserDefaults standardUserDefaults] valueForKey:kFileExtensionPluginsKey];
-
-    NSLog(@"fileExtensionPluginDictionary = %@", fileExtensionPluginDictionary);
+    // Delete all file extension settings
+    [WCLFileExtension setfileExtensionToPluginDictionary:nil];
     
     [super tearDown];
 }
@@ -76,9 +81,15 @@
     fileExtension.enabled = inverseEnabled;
     XCTAssertTrue(isEnabled == inverseEnabled, @"The key-value observing change notification for the WCLFileExtensions's enabled property should have occurred.");
     XCTAssertTrue(fileExtension.isEnabled == inverseEnabled, @"The WCLFileExtension's isEnabled should equal the inverse enabled.");
-
     
     // Test NSUserDefaults is set
+    NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
+    NSDictionary *fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
+    BOOL enabledInDictionary = [[fileExtensionPluginDictionary valueForKey:kFileExtensionEnabledKey] boolValue];
+    XCTAssertEqual(enabledInDictionary, fileExtension.isEnabled, @"The enabled value in the dictionary should match the file extension's enabled property");
+
+    // Swap the key and assert the inverse
+    
 }
 
 - (void)testSettingSelectedPlugin

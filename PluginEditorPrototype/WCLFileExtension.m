@@ -14,7 +14,7 @@
 #define kFileExtensionObservedKeyPaths [NSArray arrayWithObjects:kFileExtensionEnabledKey, kFileExtensionPluginIdentifierKey, nil]
 
 @interface WCLFileExtension ()
-@property (nonatomic, strong, readonly) NSMutableDictionary *userDefaultsDictionary;
+@property (nonatomic, strong, readonly) NSMutableDictionary *fileExtensionPluginDictionary;
 @end
 
 @implementation WCLFileExtension
@@ -22,7 +22,7 @@
 static void *WCLFileExtensionContext;
 
 @synthesize selectedPlugin = _selectedPlugin;
-@synthesize userDefaultsDictionary = _userDefaultsDictionary;
+@synthesize fileExtensionPluginDictionary = _fileExtensionPluginDictionary;
 
 - (id)initWithExtension:(NSString *)extension {
     self = [super init];
@@ -37,7 +37,7 @@ static void *WCLFileExtensionContext;
 
 - (BOOL)isEnabled
 {
-    NSNumber *enabledNumber = [self.userDefaultsDictionary objectForKey:kFileExtensionEnabledKey];
+    NSNumber *enabledNumber = [self.fileExtensionPluginDictionary objectForKey:kFileExtensionEnabledKey];
 
     if (!enabledNumber) {
         enabledNumber = [NSNumber numberWithBool:kFileExtensionDefaultEnabled];
@@ -52,8 +52,8 @@ static void *WCLFileExtensionContext;
         return;
     }
 
-    [self.userDefaultsDictionary setValue:[NSNumber numberWithBool:enabled]
-                                   forKey:kFileExtensionEnabledKey];
+    [self.fileExtensionPluginDictionary setValue:[NSNumber numberWithBool:enabled]
+                                          forKey:kFileExtensionEnabledKey];
 }
 
 - (WCLPlugin *)selectedPlugin
@@ -62,7 +62,7 @@ static void *WCLFileExtensionContext;
         return _selectedPlugin;
     }
 
-    NSString *identifier = [self.userDefaultsDictionary objectForKey:kFileExtensionEnabledKey];
+    NSString *identifier = [self.fileExtensionPluginDictionary objectForKey:kFileExtensionEnabledKey];
 
     if (identifier) {
         _selectedPlugin = [[WCLPluginManager sharedPluginManager] pluginWithIdentifier:identifier];
@@ -80,29 +80,29 @@ static void *WCLFileExtensionContext;
     _selectedPlugin = selectedPlugin;
 
     if (_selectedPlugin) {
-        [self.userDefaultsDictionary setValue:selectedPlugin.identifier
-                                       forKey:kFileExtensionPluginIdentifierKey];
+        [self.fileExtensionPluginDictionary setValue:selectedPlugin.identifier
+                                              forKey:kFileExtensionPluginIdentifierKey];
     }
 }
 
 
 #pragma mark - NSUserDefaults Dictionary
 
-- (NSMutableDictionary *)userDefaultsDictionary
+- (NSMutableDictionary *)fileExtensionPluginDictionary
 {
-    if (_userDefaultsDictionary) {
-        return _userDefaultsDictionary;
+    if (_fileExtensionPluginDictionary) {
+        return _fileExtensionPluginDictionary;
     }
     
-    NSDictionary *fileExtensionPluginDictionary = [[NSUserDefaults standardUserDefaults] valueForKey:kFileExtensionPluginsKey];
+    NSDictionary *fileExtensionToPluginDictionary = [[self class] fileExtensionToPluginDictionary];
     
-    NSMutableDictionary *userDefaultsDictionary = [[fileExtensionPluginDictionary valueForKey:self.extension] mutableCopy];
+    NSMutableDictionary *fileExtensionPluginDictionary = [[fileExtensionToPluginDictionary valueForKey:self.extension] mutableCopy];
 
-    if (!userDefaultsDictionary) {
-        userDefaultsDictionary = [NSMutableDictionary dictionary];
+    if (!fileExtensionPluginDictionary) {
+        fileExtensionPluginDictionary = [NSMutableDictionary dictionary];
     }
     
-    _userDefaultsDictionary = userDefaultsDictionary;
+    _fileExtensionPluginDictionary = fileExtensionPluginDictionary;
     
     for (NSString *keyPath in kFileExtensionObservedKeyPaths) {
         [self addObserver:self
@@ -112,12 +112,22 @@ static void *WCLFileExtensionContext;
     }
 
     
-    return _userDefaultsDictionary;
+    return _fileExtensionPluginDictionary;
+}
+
++ (void)setfileExtensionToPluginDictionary:(NSDictionary *)fileExtensionToPluginDictionary
+{
+    [[NSUserDefaults standardUserDefaults] setValue:fileExtensionToPluginDictionary forKey:kFileExtensionToPluginKey];
+}
+
++ (NSDictionary *)fileExtensionToPluginDictionary
+{
+    return [[NSUserDefaults standardUserDefaults] valueForKey:kFileExtensionToPluginKey];
 }
 
 - (void)dealloc
 {
-    if (_userDefaultsDictionary) {
+    if (_fileExtensionPluginDictionary) {
         for (NSString *keyPath in kFileExtensionObservedKeyPaths) {
             [self removeObserver:self
                       forKeyPath:keyPath
@@ -139,7 +149,15 @@ static void *WCLFileExtensionContext;
         return;
     }
 
-    NSLog(@"A change happened");
+    NSMutableDictionary *fileExtensionToPluginDictionary = [[[self class] fileExtensionToPluginDictionary] mutableCopy];
+    
+    if (!fileExtensionToPluginDictionary) {
+        fileExtensionToPluginDictionary = [NSMutableDictionary dictionary];
+    }
+
+    [fileExtensionToPluginDictionary setValue:self.fileExtensionPluginDictionary forKey:self.extension];
+
+    [[self class] setfileExtensionToPluginDictionary:fileExtensionToPluginDictionary];
 }
 
 @end

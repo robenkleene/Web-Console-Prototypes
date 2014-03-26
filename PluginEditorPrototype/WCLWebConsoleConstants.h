@@ -21,6 +21,6 @@
 #pragma mark Defaults
 
 #define kFileExtensionDefaultEnabled NO
-#define kFileExtensionPluginsKey @"WCLFileExtensionPlugins"
+#define kFileExtensionToPluginKey @"WCLFileExtensionToPlugin"
 #define kFileExtensionEnabledKey @"enabled"
 #define kFileExtensionPluginIdentifierKey @"pluginIdentifier"
