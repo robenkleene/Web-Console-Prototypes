@@ -33,6 +33,7 @@ static void *WCLFileExtensionContext;
     return self;
 }
 
+
 #pragma mark Properties
 
 - (BOOL)isEnabled
@@ -85,6 +86,30 @@ static void *WCLFileExtensionContext;
     }
 }
 
+- (BOOL)validateSelectedPlugin:(id *)ioValue error:(NSError * __autoreleasing *)outError
+{
+    // TODO: Implement
+    
+    WCLPlugin *plugin;
+    if ([*ioValue isKindOfClass:[WCLPlugin class]]) {
+        plugin = *ioValue;
+    }
+
+    return plugin ? YES : NO;
+    
+//    BOOL valid = [self nameIsValid:name];
+//    if (!valid && outError) {
+//        NSString *errorMessage = @"The plugin name must be unique, and can only contain alphanumeric characters, spaces, hyphens and underscores.";
+//        NSString *errorString = NSLocalizedString(errorMessage, @"Invalid plugin name error.");
+//        
+//        NSDictionary *userInfoDict = @{NSLocalizedDescriptionKey: errorString};
+//        *outError = [[NSError alloc] initWithDomain:kErrorDomain
+//                                               code:kErrorCodeInvalidPlugin
+//                                           userInfo:userInfoDict];
+//    }
+//    
+//    return valid;
+}
 
 #pragma mark - NSUserDefaults Dictionary
 
@@ -105,10 +130,10 @@ static void *WCLFileExtensionContext;
     _fileExtensionPluginDictionary = fileExtensionPluginDictionary;
     
     for (NSString *keyPath in kFileExtensionObservedKeyPaths) {
-        [self addObserver:self
-               forKeyPath:keyPath
-                  options:NSKeyValueObservingOptionNew
-                  context:&WCLFileExtensionContext];
+        [_fileExtensionPluginDictionary addObserver:self
+                                         forKeyPath:keyPath
+                                            options:NSKeyValueObservingOptionNew
+                                            context:&WCLFileExtensionContext];
     }
 
     
@@ -129,9 +154,9 @@ static void *WCLFileExtensionContext;
 {
     if (_fileExtensionPluginDictionary) {
         for (NSString *keyPath in kFileExtensionObservedKeyPaths) {
-            [self removeObserver:self
-                      forKeyPath:keyPath
-                         context:&WCLFileExtensionContext];
+            [_fileExtensionPluginDictionary removeObserver:self
+                                                forKeyPath:keyPath
+                                                   context:&WCLFileExtensionContext];
         }
     }
 }

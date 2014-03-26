@@ -54,8 +54,8 @@
 {
     WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
     
-    XCTAssertTrue([fileExtension.extension isEqualToString:kTestExtension] , @"The file extension's extension should equal the test extension.");
-    XCTAssertTrue(fileExtension.isEnabled == kFileExtensionDefaultEnabled, @"The file extension enabled should equal the default enabled.");
+    XCTAssertTrue([fileExtension.extension isEqualToString:kTestExtension] , @"The WCLFileExtension's extension should equal the test extension.");
+    XCTAssertTrue(fileExtension.isEnabled == kFileExtensionDefaultEnabled, @"The WCLFileExtension's enabled should equal the default enabled.");
     XCTAssertNil(fileExtension.selectedPlugin, @"The file extension's select plugin should be nil.");
 
     NSArray *plugins = [[self pluginManager] plugins];
@@ -72,7 +72,7 @@
 
     // Test setting the enabled property
     
-    // Test key-value observing fires for the enabled property
+    // Test key-value observing for the enabled property
     __block BOOL isEnabled = fileExtension.isEnabled;
     [WCLKeyValueObservingTestsHelper observeObject:fileExtension
                                         forKeyPath:kTestFileExtensionEnabledKeyPath
@@ -88,11 +88,11 @@
     NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
     NSDictionary *fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
     BOOL enabledInDictionary = [[fileExtensionPluginDictionary valueForKey:kFileExtensionEnabledKey] boolValue];
-    XCTAssertEqual(enabledInDictionary, fileExtension.isEnabled, @"The enabled value in the dictionary should match the file extension's enabled property");
+    XCTAssertEqual(enabledInDictionary, fileExtension.isEnabled, @"The enabled value in the dictionary should match the WCLFileExtension's enabled property");
 
     // Test inverting the enabled property
 
-    // Test key-value observing fires for the enabled property
+    // Test key-value observing for the enabled property
     isEnabled = fileExtension.isEnabled;
     [WCLKeyValueObservingTestsHelper observeObject:fileExtension
                                         forKeyPath:kTestFileExtensionEnabledKeyPath
@@ -108,16 +108,43 @@
     fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
     fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
     enabledInDictionary = [[fileExtensionPluginDictionary valueForKey:kFileExtensionEnabledKey] boolValue];
-    XCTAssertEqual(enabledInDictionary, fileExtension.isEnabled, @"The enabled value in the dictionary should match the file extension's enabled property");
+    XCTAssertEqual(enabledInDictionary, fileExtension.isEnabled, @"The enabled value in the dictionary should match the WCLFileExtension's enabled property");
 }
-
-
 
 - (void)testSettingSelectedPlugin
 {
-    // TODO: Test key-value observing fires
+    WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
     
-    // TODO: Test NSUserDefaults is set
+    // Test key-value observing for the selected plugin property
+    __block WCLPlugin *selectedPlugin = fileExtension.selectedPlugin;
+    [WCLKeyValueObservingTestsHelper observeObject:fileExtension
+                                        forKeyPath:kTestFileExtensionSelectedPluginKeyPath
+                                           options:NSKeyValueObservingOptionNew completionBlock:^(NSDictionary *change) {
+                                               selectedPlugin = fileExtension.selectedPlugin;
+                                           }];
+    WCLPlugin *plugin = fileExtension.plugins[0];
+    XCTAssertNotEqual(selectedPlugin, plugin, @"The WCLFileExtension's selected plugin should not equal the plugin.");
+    fileExtension.selectedPlugin = plugin;
+    XCTAssertEqual(selectedPlugin, plugin, @"The key-value observing change notification for the WCLFileExtensions's selected plugin property should have occurred.");
+
+    // Test NSUserDefaults is set
+    NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
+    NSDictionary *fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
+    NSString *pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
+    XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The plugin identifier value in the dictionary should match the WCLFileExtension's selected WCLPlugin's identifier.");
+    
+    
+    // TODO: Test above when setting the plugin to another plugin
+    
+    // TODO: Test above when setting the plugin to nil
+
+    // TODO: Test deleting the selected plugin
+
+    // TODO: Test Removing this file extension from the selected plugin
+    
+    // TODO: Test KVO fires when adding and removing a plugin from this file extensions plugins
+
+    // TODO: Test selectedPlugin validation
 }
 
 

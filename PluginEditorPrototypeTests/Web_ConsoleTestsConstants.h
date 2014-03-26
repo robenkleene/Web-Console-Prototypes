@@ -22,3 +22,4 @@
 #pragma mark File Extensions
 
 #define kTestFileExtensionEnabledKeyPath @"enabled"
+#define kTestFileExtensionSelectedPluginKeyPath @"selectedPlugin"
