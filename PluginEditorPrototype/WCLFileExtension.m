@@ -12,6 +12,7 @@
 #import "WCLPluginManager.h"
 
 NSString * const WCLFileExtensionPluginsKey = @"plugins";
+NSString * const WCLFileExtensionExtensionKey = @"extension";
 
 #define kFileExtensionPluginDictionaryObservedKeyPaths [NSArray arrayWithObjects:kFileExtensionEnabledKey, kFileExtensionPluginIdentifierKey, nil]
 
@@ -70,7 +71,7 @@ static void *WCLFileExtensionContext;
         return _selectedPlugin;
     }
 
-    NSString *identifier = [self.fileExtensionPluginDictionary objectForKey:kFileExtensionEnabledKey];
+    NSString *identifier = [self.fileExtensionPluginDictionary objectForKey:kFileExtensionPluginIdentifierKey];
 
     if (identifier) {
         _selectedPlugin = [[WCLPluginManager sharedPluginManager] pluginWithIdentifier:identifier];

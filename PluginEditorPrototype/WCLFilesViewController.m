@@ -8,35 +8,105 @@
 
 #import "WCLFilesViewController.h"
 #import "WCLPlugin.h"
+#import "WCLPluginManager.h"
+#import "WCLFileExtension.h"
 
 @interface WCLPluginsToPluginNamesValueTransformer : NSValueTransformer
 @end
 
 @implementation WCLPluginsToPluginNamesValueTransformer
 
-- (id)transformedValue:(id)value
++ (BOOL)allowsReverseTransformation {
+    return YES;
+}
+
+-(id)transformedArray:(NSArray *)array
 {
-    if (![value isKindOfClass:[NSArray class]]) {
-        return nil;
+    NSMutableArray *transformedArray = [NSMutableArray array];
+
+    for (id value in array) {
+        [transformedArray addObject:[self transformedValue:value]];
     }
 
-    NSArray *plugins = (NSArray *)value;
+    return transformedArray;
+}
+
+- (id)transformedValue:(id)value
+{
+    if ([value isKindOfClass:[NSArray class]]) {
+        return [self transformedArray:value];
+    }
     
-    return [plugins valueForKey:WCLPluginNameKey];
+    if ([value isKindOfClass:[WCLPlugin class]]) {
+        WCLPlugin *plugin = (WCLPlugin *)value;
+        return plugin.name;
+    }
+    
+    return nil;
+}
+
+-(id)reverseTransformedArray:(NSArray *)array
+{
+    NSMutableArray *transformedArray = [NSMutableArray array];
+    
+    for (id value in array) {
+        [transformedArray addObject:[self reverseTransformedValue:value]];
+    }
+    
+    return transformedArray;
+}
+
+- (id)reverseTransformedValue:(id)value
+{
+    if ([value isKindOfClass:[NSArray class]]) {
+        return [self reverseTransformedValue:value];
+    }
+    
+    if ([value isKindOfClass:[NSString class]]) {
+        NSString *pluginName = (NSString *)value;
+        return [[WCLPluginManager sharedPluginManager] pluginWithName:pluginName];
+    }
+
+    return nil;
 }
 
 @end
 
 @interface WCLFilesViewController ()
 @property (weak) IBOutlet NSTableView *tableView;
+@property (weak) IBOutlet NSArrayController *fileExtensionsArrayController;
 @end
 
 @implementation WCLFilesViewController
+
+@synthesize fileExtensionsArrayController = _fileExtensionsArrayController;
 
 - (BOOL)becomeFirstResponder
 {
     [[self.view window] makeFirstResponder:self.tableView];
     return YES;
 }
+
+#pragma mark Properties
+
+- (NSArrayController *)fileExtensionsArrayController
+{
+    return _fileExtensionsArrayController;
+}
+
+- (void)setFileExtensionsArrayController:(NSArrayController *)fileExtensionsArrayController
+{
+    if (_fileExtensionsArrayController == fileExtensionsArrayController) {
+        return;
+    }
+    
+    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:WCLFileExtensionExtensionKey
+                                                                       ascending:YES
+                                                                        selector:@selector(localizedCaseInsensitiveCompare:)];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:nameSortDescriptor, nil];
+    [fileExtensionsArrayController setSortDescriptors:sortDescriptors];
+    _fileExtensionsArrayController = fileExtensionsArrayController;
+}
+
 
 @end

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 extern NSString * const WCLFileExtensionPluginsKey;
+extern NSString * const WCLFileExtensionExtensionKey;
 
 @class WCLPlugin;
 
