@@ -9,11 +9,15 @@
 #import <XCTest/XCTest.h>
 
 #import "WCLTestPluginManagerTestCase.h"
-#import "WCLTestPluginManager.h"
+
 #import "Web_ConsoleTestsConstants.h"
 
+#import "WCLFileExtensionController.h"
 #import "WCLFileExtension.h"
+#import "WCLPluginManager.h"
+#import "WCLPlugin.h"
 #import "WCLKeyValueObservingTestsHelper.h"
+
 
 
 @interface WCLFileExtension (Test)
@@ -38,7 +42,7 @@
     // Set file extensions to an array of file extensions
     plugin.extensions = kTestExtensionsOne;
 
-    NSArray *fileExtensions = [[self fileExtensionsController] fileExtensions];
+    NSArray *fileExtensions = [[WCLFileExtensionController sharedFileExtensionController] fileExtensions];
     XCTAssertTrue([fileExtensions count] == 1, @"The file extensions count should equal one.");
 }
 
@@ -52,13 +56,13 @@
 
 - (void)testNewFileExtensionProperties
 {
-    WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
+    WCLFileExtension *fileExtension = [[WCLFileExtensionController sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
     
     XCTAssertTrue([fileExtension.extension isEqualToString:kTestExtension] , @"The WCLFileExtension's extension should equal the test extension.");
     XCTAssertTrue(fileExtension.isEnabled == kFileExtensionDefaultEnabled, @"The WCLFileExtension's enabled should equal the default enabled.");
     XCTAssertNil(fileExtension.selectedPlugin, @"The file extension's select plugin should be nil.");
 
-    NSArray *plugins = [[self pluginManager] plugins];
+    NSArray *plugins = [[WCLPluginManager sharedPluginManager] plugins];
     
     for (WCLPlugin *plugin in plugins) {
         BOOL matches = [[self class] plugin:plugin matchesForFileExtension:fileExtension];
@@ -68,7 +72,7 @@
 
 - (void)testSettingEnabled
 {
-    WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
+    WCLFileExtension *fileExtension = [[WCLFileExtensionController sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
 
     // Test setting the enabled property
     
@@ -115,7 +119,7 @@
 
 - (void)testSettingSelectedPlugin
 {
-    WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
+    WCLFileExtension *fileExtension = [[WCLFileExtensionController sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
     
     // Test key-value observing for the selected plugin property
     __block BOOL observedChange = NO;
@@ -185,7 +189,7 @@
 
 - (void)testChangingPluginsFileExtensions
 {
-    WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
+    WCLFileExtension *fileExtension = [[WCLFileExtensionController sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
     WCLPlugin *newPlugin = [self addedPlugin];
     XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new plugin.");
 
@@ -242,7 +246,7 @@
 
 - (void)testDeletingSelectedPlugin
 {
-    WCLFileExtension *fileExtension = [[self fileExtensionsController] fileExtensionForExtension:kTestExtension];
+    WCLFileExtension *fileExtension = [[WCLFileExtensionController sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
     WCLPlugin *newPlugin = [self addedPlugin];
     newPlugin.extensions = kTestExtensionsOne;
 

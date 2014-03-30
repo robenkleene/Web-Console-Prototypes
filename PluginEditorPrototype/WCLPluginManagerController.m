@@ -64,7 +64,7 @@
         return _mutablePlugins;
     }
     
-    _mutablePlugins = [[[self pluginManager] plugins] mutableCopy];
+    _mutablePlugins = [[[WCLPluginManager sharedPluginManager] plugins] mutableCopy];
     
     return _mutablePlugins;
 }

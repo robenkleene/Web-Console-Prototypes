@@ -45,7 +45,7 @@ void WCLSwizzleClassMethod(Class class,
     static WCLTestPluginManager *pluginManager = nil;
     
     dispatch_once(&pred, ^{
-        pluginManager = [[self alloc] init];
+        pluginManager = [[WCLTestPluginManager alloc] init];
     });
     
     return pluginManager;

@@ -8,7 +8,9 @@
 
 #import "WCLTestPluginManagerTestCase.h"
 
-#import "WCLTestPluginManager.h"
+#import "WCLPluginManager.h"
+#import "WCLFileExtensionController.h"
+#import "WCLPluginManagerController.h"
 
 @implementation WCLTestPluginManagerTestCase
 
@@ -16,13 +18,13 @@
 {
     [self deleteAllPlugins];
     
-    NSArray *plugins = [[self pluginManager] plugins];
+    NSArray *plugins = [[WCLPluginManager sharedPluginManager] plugins];
     XCTAssertFalse([plugins count] > 0, @"The WCLPluginManager should not have any WCLPlugins.");
     
-    NSArray *extensions = [[self fileExtensionsController] extensions];
+    NSArray *extensions = [[WCLFileExtensionController sharedFileExtensionController] extensions];
     XCTAssertFalse([extensions count] > 0, @"There should not be any file extensions after deleting all plugins.");
 
-    XCTAssertNil([[self pluginManager] defaultNewPlugin], @"The WCLPluginManager's default new WCLPlugin should be nil.");
+    XCTAssertNil([[WCLPluginManager sharedPluginManager] defaultNewPlugin], @"The WCLPluginManager's default new WCLPlugin should be nil.");
     
     [super tearDown];
 }
@@ -31,40 +33,40 @@
 
 - (WCLPlugin *)addedPlugin
 {
-    WCLPlugin *plugin = [[self pluginManager] newPlugin];
+    WCLPlugin *plugin = [[WCLPluginManager sharedPluginManager] newPlugin];
     
     // You have to insert the plugin into the plugin manager controller because
     // the pluginManagerController implements the key-value coding to-many
     // relationship accessors
-    [[self pluginManagerController] insertObject:plugin inPluginsAtIndex:0];
+    [[WCLPluginManagerController sharedPluginManagerController] insertObject:plugin inPluginsAtIndex:0];
 
     return plugin;
 }
 
 - (void)deletePlugin:(WCLPlugin *)plugin
 {
-    NSUInteger index = [[[self pluginManagerController] plugins] indexOfObject:plugin];
+    NSUInteger index = [[[WCLPluginManagerController sharedPluginManagerController] plugins] indexOfObject:plugin];
     NSAssert(index != NSNotFound, @"Attempted to remove a plugin from pluginManagerController's plugins that was not found.");
-    [[self pluginManagerController] removeObjectFromPluginsAtIndex:index];
+    [[WCLPluginManagerController sharedPluginManagerController] removeObjectFromPluginsAtIndex:index];
     
-    [[self pluginManager] deletePlugin:plugin];
+    [[WCLPluginManager sharedPluginManager] deletePlugin:plugin];
 }
 
 - (void)deleteAllPlugins
 {
-    NSArray *plugins = [[self pluginManagerController] plugins];
+    NSArray *plugins = [[WCLPluginManagerController sharedPluginManagerController] plugins];
     
     NSRange range = NSMakeRange(0, [plugins count]);
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-    [[self pluginManagerController] removePluginsAtIndexes:indexSet];
+    [[WCLPluginManagerController sharedPluginManagerController] removePluginsAtIndexes:indexSet];
     
     for (WCLPlugin *plugin in plugins) {
-        [[self pluginManager] deletePlugin:plugin];
+        [[WCLPluginManager sharedPluginManager] deletePlugin:plugin];
     }
 
-    plugins = [[self pluginManager] plugins];
+    plugins = [[WCLPluginManager sharedPluginManager] plugins];
     for (WCLPlugin *plugin in plugins) {
-        [[self pluginManager] deletePlugin:plugin];
+        [[WCLPluginManager sharedPluginManager] deletePlugin:plugin];
     }
 }
 

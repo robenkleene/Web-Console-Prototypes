@@ -8,7 +8,6 @@
 
 #import "WCLPlugin.h"
 #import "WCLPlugin+Validation.h"
-#import "WCLPlugin+PluginManager.h"
 #import "WCLPluginManager.h"
 
 NSString * const WCLPluginNameKey = @"name";
@@ -96,7 +95,7 @@ static void *WCLPluginContext;
 
 - (BOOL)isDefaultNewPlugin
 {
-    BOOL isDefaultNewPlugin = [[self pluginManager] defaultNewPlugin] == self;
+    BOOL isDefaultNewPlugin = [[WCLPluginManager sharedPluginManager] defaultNewPlugin] == self;
 
     if (_defaultNewPlugin != isDefaultNewPlugin) {
         _defaultNewPlugin = isDefaultNewPlugin;

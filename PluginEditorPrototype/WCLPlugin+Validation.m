@@ -7,7 +7,6 @@
 //
 
 #import "WCLPlugin+Validation.h"
-#import "WCLPlugin+PluginManager.h"
 #import "WCLPluginManager.h"
 
 @implementation WCLPlugin (Validation)
@@ -63,7 +62,7 @@
 
 - (BOOL)isUniqueName:(NSString *)name
 {
-    WCLPlugin *existingPlugin = [[self pluginManager] pluginWithName:name];
+    WCLPlugin *existingPlugin = [[WCLPluginManager sharedPluginManager] pluginWithName:name];
     
     if (!existingPlugin) {
         return YES;

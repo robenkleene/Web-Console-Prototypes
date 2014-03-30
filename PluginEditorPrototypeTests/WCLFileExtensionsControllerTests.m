@@ -9,8 +9,12 @@
 #import <XCTest/XCTest.h>
 
 #import "WCLTestPluginManagerTestCase.h"
-#import "WCLTestPluginManager.h"
+
 #import "Web_ConsoleTestsConstants.h"
+
+#import "WCLFileExtensionController.h"
+
+#import "WCLPlugin.h"
 
 @interface WCLFileExtensionsControllerTests : WCLTestPluginManagerTestCase
 @end
@@ -32,14 +36,14 @@
 - (void)testAddingPluginAndChangingFileExtensions
 {    
     // Hitting file extensions early makes sure that the singletons are instantiated and observers are in place.
-    XCTAssertFalse([[[self fileExtensionsController] extensions] count] > 0, @"There should not be any file extensions before adding a plugin.");
+    XCTAssertFalse([[[WCLFileExtensionController sharedFileExtensionController] extensions] count] > 0, @"There should not be any file extensions before adding a plugin.");
     
     WCLPlugin *plugin = [self addedPlugin];
     
     // Set file extensions to an array of file extensions
     plugin.extensions = kTestExtensions;
 
-    NSArray *extensions = [[self fileExtensionsController] extensions];
+    NSArray *extensions = [[WCLFileExtensionController sharedFileExtensionController] extensions];
     BOOL extensionsMatch = [[self class] extensions:extensions matchExtensions:kTestExtensions];
     XCTAssertTrue(extensionsMatch, @"The file extensions should match the test file extensions.");
 
@@ -47,7 +51,7 @@
     // Set file extensions to an empty array
     plugin.extensions = kTestExtensionsEmpty;
 
-    extensions = [[self fileExtensionsController] extensions];
+    extensions = [[WCLFileExtensionController sharedFileExtensionController] extensions];
     extensionsMatch = [[self class] extensions:extensions matchExtensions:kTestExtensionsEmpty];
     XCTAssertTrue(extensionsMatch, @"The file extensions should match the empty test file extensions.");
 
@@ -55,7 +59,7 @@
     // Set file extensions to nil
     plugin.extensions = nil;
     
-    extensions = [[self fileExtensionsController] extensions];
+    extensions = [[WCLFileExtensionController sharedFileExtensionController] extensions];
     extensionsMatch = [[self class] extensions:extensions matchExtensions:kTestExtensionsEmpty];
     XCTAssertTrue(extensionsMatch, @"The file extensions should match the empty test file extensions.");
 }

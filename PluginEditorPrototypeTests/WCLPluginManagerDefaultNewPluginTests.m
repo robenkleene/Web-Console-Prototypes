@@ -9,10 +9,15 @@
 #import <XCTest/XCTest.h>
 
 #import "WCLTestPluginManagerTestCase.h"
-#import "WCLTestPluginManager.h"
+
 #import "Web_ConsoleTestsConstants.h"
 
+#import "WCLPluginManager.h"
+#import "WCLPlugin.h"
+
 #import "WCLKeyValueObservingTestsHelper.h"
+
+
 
 @interface WCLPluginManagerDefaultNewPluginTests : WCLTestPluginManagerTestCase
 
@@ -34,8 +39,8 @@
 
 - (void)testSettingDefaultNewPlugin
 {
-    WCLPlugin *plugin = [[self pluginManager] newPlugin];
-    [[self pluginManager] setDefaultNewPlugin:plugin];
+    WCLPlugin *plugin = [[WCLPluginManager sharedPluginManager] newPlugin];
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:plugin];
     
     // Assert the WCLPlugin's isDefaultNewPlugin property
     XCTAssertTrue(plugin.isDefaultNewPlugin, @"The WCLPlugin should be the default new plugin.");
@@ -45,23 +50,23 @@
     XCTAssertTrue([plugin.identifier isEqualToString:defaultNewPluginIdentifier], @"The default WCLPlugin's identifier should equal the WCLPlugin's identifier.");
     
     // Assert the default new plugin is returned from the WCLPluginManager
-    WCLPlugin *defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
+    WCLPlugin *defaultNewPlugin = [[WCLPluginManager sharedPluginManager] defaultNewPlugin];
     XCTAssertEqual(defaultNewPlugin, plugin, @"The default new WCLPlugin should be the WCLPlugin.");
 }
 
 - (void)testDeletingDefaultNewPlugin
 {
-    WCLPlugin *plugin = [[self pluginManager] newPlugin];
-    [[self pluginManager] setDefaultNewPlugin:plugin];
+    WCLPlugin *plugin = [[WCLPluginManager sharedPluginManager] newPlugin];
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:plugin];
 
-    WCLPlugin *defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
+    WCLPlugin *defaultNewPlugin = [[WCLPluginManager sharedPluginManager] defaultNewPlugin];
     XCTAssertNotNil(defaultNewPlugin, @"The default WCLPlugin should not be nil.");
     NSString *defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifierKey];
     XCTAssertNotNil(defaultNewPluginIdentifier, @"The default new plugin identifier should not be nil.");
     
-    [[self pluginManager] deletePlugin:plugin];
+    [[WCLPluginManager sharedPluginManager] deletePlugin:plugin];
 
-    defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
+    defaultNewPlugin = [[WCLPluginManager sharedPluginManager] defaultNewPlugin];
     XCTAssertNil(defaultNewPlugin, @"The default WCLPlugin should be nil.");
     defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifierKey];
     XCTAssertNil(defaultNewPluginIdentifier, @"The default new plugin identifier should be nil.");
@@ -69,30 +74,30 @@
 
 - (void)testChangingDefaultNewPlugin
 {
-    WCLPlugin *plugin = [[self pluginManager] newPlugin];
-    [[self pluginManager] setDefaultNewPlugin:plugin];
+    WCLPlugin *plugin = [[WCLPluginManager sharedPluginManager] newPlugin];
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:plugin];
 
     XCTAssertTrue(plugin.isDefaultNewPlugin, @"The WCLPlugin should be the default WCLPlugin.");
 
-    WCLPlugin *pluginTwo = [[self pluginManager] newPlugin];
-    [[self pluginManager] setDefaultNewPlugin:pluginTwo];
+    WCLPlugin *pluginTwo = [[WCLPluginManager sharedPluginManager] newPlugin];
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:pluginTwo];
 
     XCTAssertFalse(plugin.isDefaultNewPlugin, @"The WCLPlugin should not be the default WCLPlugin.");
     XCTAssertTrue(pluginTwo.isDefaultNewPlugin, @"The second WCLPlugin should be the default WCLPlugin.");
-    WCLPlugin *defaultNewPlugin = [[self pluginManager] defaultNewPlugin];
+    WCLPlugin *defaultNewPlugin = [[WCLPluginManager sharedPluginManager] defaultNewPlugin];
     XCTAssertEqual(defaultNewPlugin, pluginTwo, @"The default WCLPlugin should be the second WCLPlugin.");
 }
 
 - (void)testNewPlugin
 {
-    WCLPlugin *plugin = [[self pluginManager] newPlugin];
+    WCLPlugin *plugin = [[WCLPluginManager sharedPluginManager] newPlugin];
     plugin.name = kTestPluginName;
     plugin.extensions = kTestExtensions;
     plugin.command = kTestPluginCommand;
 
-    [[self pluginManager] setDefaultNewPlugin:plugin];
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:plugin];
     
-    WCLPlugin *newPlugin = [[self pluginManager] newPlugin];
+    WCLPlugin *newPlugin = [[WCLPluginManager sharedPluginManager] newPlugin];
 
     XCTAssertTrue([newPlugin.name hasPrefix:plugin.name], @"The new WCLPlugin's name should start with the WCLPlugin's name.");
     XCTAssertFalse([newPlugin.name isEqualToString:plugin.name], @"The new WCLPlugin's name should not equal the WCLPlugin's name.");
@@ -103,7 +108,7 @@
 - (void)testDefaultNewPluginKeyValueObserving
 {
     // Test that key-value observing notifications occur when a new plugin is set as the default new plugin
-    WCLPlugin *plugin = [[self pluginManager] newPlugin];
+    WCLPlugin *plugin = [[WCLPluginManager sharedPluginManager] newPlugin];
     XCTAssertFalse(plugin.isDefaultNewPlugin, @"The WCLPlugin should not be the default new plugin.");
     __block BOOL isDefaultNewPlugin = plugin.isDefaultNewPlugin;
     [WCLKeyValueObservingTestsHelper observeObject:plugin
@@ -112,12 +117,12 @@
                                    completionBlock:^(NSDictionary *change) {
                                                isDefaultNewPlugin = plugin.isDefaultNewPlugin;
                                            }];
-    [[self pluginManager] setDefaultNewPlugin:plugin];
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:plugin];
     XCTAssertTrue(isDefaultNewPlugin, @"The key-value observing change notification for the WCLPlugin's default new plugin property should have occurred.");
     XCTAssertTrue(plugin.isDefaultNewPlugin, @"The WCLPlugin should be the default new plugin.");
 
     // Test that key-value observing notifications occur when second new plugin is set as the default new plugin
-    WCLPlugin *pluginTwo = [[self pluginManager] newPlugin];
+    WCLPlugin *pluginTwo = [[WCLPluginManager sharedPluginManager] newPlugin];
     XCTAssertFalse(pluginTwo.isDefaultNewPlugin, @"The second WCLPlugin should not be the default new plugin.");
     [WCLKeyValueObservingTestsHelper observeObject:plugin
                                         forKeyPath:kTestPluginDefaultNewPluginKeyPath
@@ -132,7 +137,7 @@
                                    completionBlock:^(NSDictionary *change) {
                                                isDefaultNewPluginTwo = pluginTwo.isDefaultNewPlugin;
                                            }];
-    [[self pluginManager] setDefaultNewPlugin:pluginTwo];
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:pluginTwo];
     XCTAssertFalse(isDefaultNewPlugin, @"The key-value observing change notification for the WCLPlugin's default new plugin property should have occurred.");
     XCTAssertTrue(isDefaultNewPluginTwo, @"The key-value observing change notification for the second WCLPlugin's default new plugin property should have occurred.");
     XCTAssertFalse(plugin.isDefaultNewPlugin, @"The WCLPlugin should not be the default new plugin.");
@@ -145,7 +150,7 @@
                                    completionBlock:^(NSDictionary *change) {
                                                isDefaultNewPluginTwo = pluginTwo.isDefaultNewPlugin;
                                            }];
-    [[self pluginManager] setDefaultNewPlugin:nil];
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:nil];
     XCTAssertFalse(isDefaultNewPluginTwo, @"The key-value observing change notification for the second WCLPlugin's default new plugin property should have occurred.");
     XCTAssertFalse(pluginTwo.isDefaultNewPlugin, @"The second WCLPlugin should not be the default new plugin.");
 }
