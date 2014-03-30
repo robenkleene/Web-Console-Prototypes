@@ -68,21 +68,4 @@
     }
 }
 
-#pragma mark Test Singletons
-
-- (WCLTestFileExtensionController *)fileExtensionsController
-{
-    return [WCLTestFileExtensionController sharedFileExtensionController];
-}
-
-- (WCLTestPluginManager *)pluginManager
-{
-    return [WCLTestPluginManager sharedPluginManager];
-}
-
-- (WCLTestPluginManagerController *)pluginManagerController
-{
-    return [WCLTestPluginManagerController sharedPluginManagerController];
-}
-
 @end

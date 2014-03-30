@@ -8,17 +8,10 @@
 
 #import <XCTest/XCTest.h>
 
-@class WCLTestFileExtensionController;
-@class WCLTestPluginManager;
-@class WCLTestPluginManagerController;
 @class WCLPlugin;
 
 @interface WCLTestPluginManagerTestCase : XCTestCase
 - (WCLPlugin *)addedPlugin;
 - (void)deletePlugin:(WCLPlugin *)plugin;
 - (void)deleteAllPlugins;
-
-- (WCLTestFileExtensionController *)fileExtensionsController;
-- (WCLTestPluginManager *)pluginManager;
-- (WCLTestPluginManagerController *)pluginManagerController;
 @end

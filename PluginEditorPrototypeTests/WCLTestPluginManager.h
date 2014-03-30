@@ -8,22 +8,12 @@
 
 #import "WCLPluginManager.h"
 
-#import "WCLFileExtensionController.h"
-
 #warning When merging into main project, I'll need to cut and paste the implementation for this into WCLTestPlugin and make the WCLTestPlugin an NSManagedObject subclass
 #import "WCLPlugin.h"
 
-#import "WCLPluginManagerController.h"
-
 @class WCLTestPluginDataController;
 
-@interface WCLTestPluginManagerController : WCLPluginManagerController
-@end
-
 @interface WCLTestPlugin : WCLPlugin
-@end
-
-@interface WCLTestFileExtensionController : WCLFileExtensionController
 @end
 
 @interface WCLTestPluginManager : WCLPluginManager

@@ -7,14 +7,6 @@
 //
 
 #import "WCLPluginManager.h"
-#import "WCLFileExtensionController.h"
-#import "WCLPluginManagerController.h"
 
 @interface WCLPluginManager (TestPluginManager)
-@end
-
-@interface WCLFileExtensionController (TestPluginManager)
-@end
-
-@interface WCLPluginManagerController (TestPluginManager)
 @end

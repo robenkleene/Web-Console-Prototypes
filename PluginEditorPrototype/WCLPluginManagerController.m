@@ -56,11 +56,6 @@
     return [super init];
 }
 
-- (WCLPluginManager *)pluginManager
-{
-    return [WCLPluginManager sharedPluginManager];
-}
-
 #pragma mark Properties
 
 - (NSMutableArray *)mutablePlugins

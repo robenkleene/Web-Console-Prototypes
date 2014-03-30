@@ -171,11 +171,6 @@ static void *WCLFileExtensionControllerContext;
     }
 }
 
-- (WCLPluginManagerController *)pluginManagerController
-{
-    return [WCLPluginManagerController sharedPluginManagerController];
-}
-
 - (NSArray *)extensions
 {
     return [self.fileExtensionsDictionaryManager extensions];

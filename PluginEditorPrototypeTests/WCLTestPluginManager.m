@@ -19,12 +19,6 @@
 #pragma mark - WCLTestPlugin
 
 @implementation WCLTestPlugin
-
-- (WCLTestPluginManager *)pluginManager
-{
-    return [WCLTestPluginManager sharedPluginManager];
-}
-
 @end
 
 
@@ -165,30 +159,6 @@
     [_managedObjectContext setPersistentStoreCoordinator:coordinator];
     
     return _managedObjectContext;
-}
-
-@end
-
-
-#pragma mark - WCLTestPluginManagerController
-
-@implementation WCLTestPluginManagerController
-
-- (WCLPluginManager *)pluginManager
-{
-    return [WCLTestPluginManager sharedPluginManager];
-}
-
-@end
-
-
-#pragma mark - WCLTestFileExtensionController
-
-@implementation WCLTestFileExtensionController
-
-- (WCLTestPluginManagerController *)pluginManagerController
-{
-    return [WCLTestPluginManagerController sharedPluginManagerController];
 }
 
 @end
