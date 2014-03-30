@@ -27,7 +27,10 @@
     static dispatch_once_t pred;
     static WCLPluginManager *pluginManager = nil;
     
-    dispatch_once(&pred, ^{ pluginManager = [[self alloc] init]; });
+    dispatch_once(&pred, ^{
+        pluginManager = [[self alloc] init];
+    });
+
     return pluginManager;
 }
 

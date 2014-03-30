@@ -129,6 +129,7 @@ static void *WCLFileExtensionControllerContext;
     dispatch_once(&pred, ^{
         fileExtensionController = [[self hiddenAlloc] hiddenInit];
     });
+
     return fileExtensionController;
 }
 
