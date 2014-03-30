@@ -121,8 +121,11 @@
         
         [[[self window] animator] setFrame:frame display:YES];
         _viewController = viewController;
-        _preferencePane = [[self class] preferencePaneForViewController:viewController];
+        WCLPreferencePane preferencePane = [[self class] preferencePaneForViewController:viewController];
+        _preferencePane = preferencePane;
 
+        [[self window] setTitle:[viewController title]];
+        
         [self.window makeFirstResponder:viewController];
     };
     
@@ -166,11 +169,29 @@
 
 #pragma mark NSViewController Mappings
 
-- (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)prefencePane
++ (NSInteger)preferencePaneForViewController:(NSViewController *)viewController
+{
+    if ([viewController isKindOfClass:[WCLEnvironmentViewController class]]) {
+        return WCLPreferencePaneEnvironment;
+    }
+
+    if ([viewController isKindOfClass:[WCLPluginViewController class]]) {
+        return WCLPreferencePanePlugins;
+    }
+
+    if ([viewController isKindOfClass:[WCLFilesViewController class]]) {
+        return WCLPreferencePaneFiles;
+    }
+    
+    NSAssert(NO, @"No WCLPreferencePane for NSViewController. %@", viewController);
+    return -1;
+}
+
+- (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)preferencePane
 {
     NSViewController *viewController;
     
-    switch (prefencePane) {
+    switch (preferencePane) {
         case WCLPreferencePaneEnvironment:
             viewController = self.environmentViewController;
             break;
@@ -180,9 +201,8 @@
         case WCLPreferencePaneFiles:
             viewController = self.filesViewController;
             break;
-
         default:
-            NSAssert(NO, @"No NSViewController for WCLPreferencePane. %li", (long)prefencePane);
+            NSAssert(NO, @"No NSViewController for WCLPreferencePane. %li", (long)preferencePane);
             break;
     }
     
@@ -214,25 +234,6 @@
     _pluginViewController = [[WCLPluginViewController alloc] initWithNibName:kPluginViewControllerNibName bundle:nil];
     
     return _pluginViewController;
-}
-
-+ (NSInteger)preferencePaneForViewController:(NSViewController *)viewController
-{
-    if ([viewController isKindOfClass:[WCLEnvironmentViewController class]]) {
-        return WCLPreferencePaneEnvironment;
-    }
-
-    if ([viewController isKindOfClass:[WCLPluginViewController class]]) {
-        return WCLPreferencePanePlugins;
-    }
-
-    if ([viewController isKindOfClass:[WCLFilesViewController class]]) {
-        return WCLPreferencePaneFiles;
-    }
-
-    
-    NSAssert(NO, @"No WCLPreferencePane for NSViewController. %@", viewController);
-    return -1;
 }
 
 @end

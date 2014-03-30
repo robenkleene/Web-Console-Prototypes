@@ -119,6 +119,19 @@ static void *WCLPluginContext;
     }
 }
 
+- (void)awakeFromInsert
+{
+    [super awakeFromInsert];
+    
+    for (NSString *keyPath in kPluginObservedKeyPaths) {
+        [self addObserver:self
+               forKeyPath:keyPath
+                  options:NSKeyValueObservingOptionNew
+                  context:&WCLPluginContext];
+    }
+}
+
+
 - (void)dealloc
 {
     for (NSString *keyPath in kPluginObservedKeyPaths) {
@@ -141,8 +154,14 @@ static void *WCLPluginContext;
         return;
     }
     
+    if (!self.identifier) {
+        // Don't automatically save until the identifier is set, otherwise the setters in newPlugin will
+        // cause saves to happen before all the plugins properties are initialized to valid values.
+        return;
+    }
+    
     NSError *error;
-    NSLog(@"saving, edited keypath = %@", keyPath);
+    NSLog(@"saving, edited keypath = %@, plugin = %@", keyPath, self);
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving. %@", error);
     }

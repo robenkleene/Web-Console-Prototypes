@@ -81,6 +81,15 @@
 
 @synthesize fileExtensionsArrayController = _fileExtensionsArrayController;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self setTitle:@"Files"];
+    }
+    return self;
+}
+
 - (BOOL)becomeFirstResponder
 {
     [[self.view window] makeFirstResponder:self.tableView];

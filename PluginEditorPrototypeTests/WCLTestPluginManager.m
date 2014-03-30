@@ -49,7 +49,7 @@
                                               inManagedObjectContext:self.managedObjectContext];
     WCLTestPlugin *plugin = [[WCLTestPlugin alloc] initWithEntity:entity
                                    insertIntoManagedObjectContext:self.managedObjectContext];
-    
+
     [plugin renameWithUniqueName];
     plugin.identifier = [[NSUUID UUID] UUIDString];
     
@@ -69,12 +69,10 @@
     WCLTestPlugin *newPlugin = [[WCLTestPlugin alloc] initWithEntity:entity
                                    insertIntoManagedObjectContext:self.managedObjectContext];
     
-    newPlugin.name = plugin.name;
+    newPlugin.name = [newPlugin uniquePluginNameFromName:plugin.name];
     newPlugin.command = plugin.command;
     newPlugin.extensions = plugin.extensions;
-    
-    [newPlugin renameWithUniqueName];
-    
+
     newPlugin.identifier = [[NSUUID UUID] UUIDString];
     
     NSError *error;

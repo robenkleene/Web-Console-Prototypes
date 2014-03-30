@@ -40,25 +40,30 @@
 
 - (void)renameWithUniqueName
 {
-    if ([self isUniqueName:self.name]) {
-        return;
+    self.name = [self uniquePluginNameFromName:self.name];
+}
+
+- (NSString *)uniquePluginNameFromName:(NSString *)name
+{
+    if ([self isUniqueName:name]) {
+        return name;
     }
     
-    NSString *newName = [self uniquePluginNameFromName:self.name index:2];
+    NSString *newName = [self uniquePluginNameFromName:name index:2];
     
     if (!newName) {
 #warning Return GUID here
         NSAssert(NO, @"Implement");
     }
     
-    self.name = newName;
+    return newName;
 }
 
 #pragma mark Name Private
 
 - (BOOL)isUniqueName:(NSString *)name
 {
-    WCLPlugin *existingPlugin = [[WCLPluginManager sharedPluginManager] pluginWithName:name];
+    WCLPlugin *existingPlugin = [[self pluginManager] pluginWithName:name];
     
     if (!existingPlugin) {
         return YES;

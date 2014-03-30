@@ -22,7 +22,7 @@ static void *WCLNameToPluginControllerContext;
 
 - (void)addPlugin:(WCLPlugin *)plugin
 {
-    [plugin renameWithUniqueName];
+    NSAssert(self.nameToPluginDictionary[plugin.name] == nil, @"Attemped to add a plugin with an existing name.");
 
     self.nameToPluginDictionary[plugin.name] = plugin;
     [plugin addObserver:self

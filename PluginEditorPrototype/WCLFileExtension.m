@@ -121,6 +121,25 @@ static void *WCLFileExtensionContext;
 //    return valid;
 }
 
+- (NSArrayController *)pluginsArrayController
+{
+    if (_pluginsArrayController) {
+        return _pluginsArrayController;
+    }
+    
+    _pluginsArrayController = [[NSArrayController alloc] initWithContent:nil];
+
+    [_pluginsArrayController bind:@"contentArray" toObject:self withKeyPath:WCLFileExtensionPluginsKey options:nil];
+    
+    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:WCLPluginNameKey
+                                                                       ascending:YES
+                                                                        selector:@selector(localizedCaseInsensitiveCompare:)];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:nameSortDescriptor, nil];
+    [_pluginsArrayController setSortDescriptors:sortDescriptors];
+    
+    return _pluginsArrayController;
+}
+
 #pragma mark Required Key-Value Coding To-Many Relationship Compliance
 
 - (NSArray *)plugins

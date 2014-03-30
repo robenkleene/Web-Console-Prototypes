@@ -107,6 +107,15 @@
 
 @synthesize environmentDictionaryController = _environmentDictionaryController;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self setTitle:@"Environment"];
+    }
+    return self;
+}
+
 #pragma mark IBActions
 
 - (IBAction)addEnvironmentVariable:(id)sender

@@ -18,6 +18,7 @@ extern NSString * const WCLFileExtensionExtensionKey;
 @property (nonatomic, strong, readonly) NSString *extension;
 @property (nonatomic, assign, getter = isEnabled) BOOL enabled;
 @property (nonatomic, strong) WCLPlugin *selectedPlugin;
+@property (nonatomic, strong) NSArrayController *pluginsArrayController;
 
 #pragma mark Required Key-Value Coding To-Many Relationship Compliance
 - (NSArray *)plugins;

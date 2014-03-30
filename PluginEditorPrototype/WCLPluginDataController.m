@@ -44,14 +44,12 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin" inManagedObjectContext:self.managedObjectContext];
     WCLPlugin *newPlugin = [[WCLPlugin alloc] initWithEntity:entity insertIntoManagedObjectContext:self.managedObjectContext];
     
-    newPlugin.name = plugin.name;
+    newPlugin.name = [newPlugin uniquePluginNameFromName:plugin.name];
     newPlugin.command = plugin.command;
     newPlugin.extensions = plugin.extensions;
 
-    [newPlugin renameWithUniqueName];
-
     newPlugin.identifier = [[NSUUID UUID] UUIDString];
-
+    
     NSError *error;
     NSLog(@"saving after adding plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {

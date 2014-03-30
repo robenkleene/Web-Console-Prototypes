@@ -13,6 +13,7 @@
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name;
 - (BOOL)nameIsValid:(NSString *)name;
 - (void)renameWithUniqueName;
+- (NSString *)uniquePluginNameFromName:(NSString *)name;
 #pragma mark File Extensions
 - (BOOL)extensionsAreValid:(NSArray *)extensions;
 + (NSArray *)validExtensionsFromExtensions:(NSArray *)extensions;

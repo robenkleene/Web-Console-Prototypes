@@ -83,13 +83,13 @@
                                         </popUpButtonCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <connections>
-                                            <binding destination="8Rg-Xl-Jt6" name="content" keyPath="arrangedObjects.plugins" id="9Hc-7b-w1o">
+                                            <binding destination="8Rg-Xl-Jt6" name="content" keyPath="arrangedObjects.pluginsArrayController.arrangedObjects" id="Sc3-nE-j6C">
                                                 <dictionary key="options">
                                                     <string key="NSNullPlaceholder">None</string>
                                                     <string key="NSValueTransformerName">WCLPluginsToPluginNamesValueTransformer</string>
                                                 </dictionary>
                                             </binding>
-                                            <binding destination="8Rg-Xl-Jt6" name="selectedObject" keyPath="arrangedObjects.selectedPlugin" previousBinding="9Hc-7b-w1o" id="HPL-9O-cBL">
+                                            <binding destination="8Rg-Xl-Jt6" name="selectedObject" keyPath="arrangedObjects.selectedPlugin" previousBinding="Sc3-nE-j6C" id="ZcT-de-6LJ">
                                                 <dictionary key="options">
                                                     <bool key="NSValidatesImmediately" value="YES"/>
                                                     <string key="NSValueTransformerName">WCLPluginsToPluginNamesValueTransformer</string>

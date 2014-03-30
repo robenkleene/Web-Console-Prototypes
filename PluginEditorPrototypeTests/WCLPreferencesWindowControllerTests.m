@@ -70,13 +70,13 @@
 
 - (void)testSwitchingPreferencesViewsByPreferencePane
 {
-    
     WCLPreferencePane firstPreferencePane = self.preferencesWindowController.preferencePane;
     NSViewController *firstViewController = self.preferencesWindowController.viewController;
     NSArray *firstSubviews = [self.preferencesWindowController.window.contentView subviews];
     XCTAssertEqual([firstSubviews count], (NSUInteger)1, @"The WCLPreferencesViewController's contentView should have one subview");
     NSView *firstSubview = firstSubviews[0];
     XCTAssertEqualObjects(firstSubview, firstViewController.view, @"The first subview should equal the first NSViewController's NSView.");
+    XCTAssertEqual(self.preferencesWindowController.window.title, firstViewController.title, @"The WCLPreferenceWindowController's window should equal the first NSViewController's title.");
     
     self.preferencesWindowController.preferencePane++;
     
@@ -86,7 +86,8 @@
     XCTAssertEqual([secondSubviews count], (NSUInteger)1, @"The WCLPreferencesViewController's contentView should have one subview");
     NSView *secondSubview = secondSubviews[0];
     XCTAssertEqualObjects(secondSubview, secondViewController.view, @"The second subview should equal the second NSViewController's NSView.");
-    
+    XCTAssertEqual(self.preferencesWindowController.window.title, secondViewController.title, @"The WCLPreferenceWindowController's window should equal the second NSViewController's title.");
+
     XCTAssertNotEqualObjects(firstSubview, secondSubview, @"The first subview should not equal the second subview.");
     XCTAssertNotEqual(firstPreferencePane, secondPreferencePane, @"The first WCLPreferencePane should not equal the second WCLPreferencePane.");
     XCTAssertNotEqualObjects([firstViewController class], [secondViewController class], @"The first NSViewController should not equal the second NSViewController.");

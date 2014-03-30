@@ -100,6 +100,15 @@
 
 @synthesize pluginArrayController = _pluginArrayController;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self setTitle:@"Plugins"];
+    }
+    return self;
+}
+
 - (BOOL)becomeFirstResponder
 {
     [[self.view window] makeFirstResponder:self.tableView];
@@ -166,7 +175,6 @@
         [[WCLPluginManager sharedPluginManager] deletePlugin:plugin];
     }
 }
-
 
 #pragma mark NSTokenFieldDelegate
 
