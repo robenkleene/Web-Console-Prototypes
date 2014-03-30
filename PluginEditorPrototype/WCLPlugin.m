@@ -96,7 +96,7 @@ static void *WCLPluginContext;
 
 - (BOOL)isDefaultNewPlugin
 {
-    BOOL isDefaultNewPlugin = [[WCLPluginManager sharedPluginManager] defaultNewPlugin] == self;
+    BOOL isDefaultNewPlugin = [[self pluginManager] defaultNewPlugin] == self;
 
     if (_defaultNewPlugin != isDefaultNewPlugin) {
         _defaultNewPlugin = isDefaultNewPlugin;
