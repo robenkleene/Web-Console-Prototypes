@@ -38,6 +38,16 @@
                ReferencedContainer = "container:PluginEditorPrototype.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4500C24718E8A39D00B7B0C6"
+               BuildableName = "PreferencesTests.xctest"
+               BlueprintName = "PreferencesTests"
+               ReferencedContainer = "container:PluginEditorPrototype.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

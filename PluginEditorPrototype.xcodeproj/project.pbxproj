@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4500C24918E8A39D00B7B0C6 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB6418B03A7A00CBBD29 /* XCTest.framework */; };
+		4500C24F18E8A39D00B7B0C6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4500C24D18E8A39D00B7B0C6 /* InfoPlist.strings */; };
+		4500C25A18E8A50800B7B0C6 /* WCLPreferencesWindowControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4500C25918E8A50800B7B0C6 /* WCLPreferencesWindowControllerTests.m */; };
 		451DAFD818D7D46E00AACC86 /* WCLTestPluginManagerTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 451DAFD718D7D46E00AACC86 /* WCLTestPluginManagerTestCase.m */; };
 		451DAFDC18D7E57000AACC86 /* WCLKeyValueObservingTestsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 451DAFDB18D7E57000AACC86 /* WCLKeyValueObservingTestsHelper.m */; };
 		4567DB4318B03A7A00CBBD29 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB4218B03A7A00CBBD29 /* Cocoa.framework */; };
@@ -20,7 +23,6 @@
 		4567DB6518B03A7A00CBBD29 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB6418B03A7A00CBBD29 /* XCTest.framework */; };
 		4567DB6618B03A7A00CBBD29 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB4218B03A7A00CBBD29 /* Cocoa.framework */; };
 		4567DB6E18B03A7A00CBBD29 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB6C18B03A7A00CBBD29 /* InfoPlist.strings */; };
-		4567DB7018B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB6F18B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m */; };
 		4567DB7C18B044B700CBBD29 /* WCLPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB7A18B044B700CBBD29 /* WCLPreferencesWindowController.m */; };
 		4567DB7D18B044B700CBBD29 /* WCLPreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB7B18B044B700CBBD29 /* WCLPreferencesWindowController.xib */; };
 		4567DB8918B1C08800CBBD29 /* WCLPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB8818B1C08800CBBD29 /* WCLPlugin.m */; };
@@ -46,6 +48,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4500C25318E8A39D00B7B0C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4567DB3718B03A7A00CBBD29 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4567DB3E18B03A7A00CBBD29;
+			remoteInfo = PluginEditorPrototype;
+		};
 		4567DB6718B03A7A00CBBD29 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4567DB3718B03A7A00CBBD29 /* Project object */;
@@ -56,6 +65,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4500C24818E8A39D00B7B0C6 /* PreferencesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PreferencesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4500C24C18E8A39D00B7B0C6 /* PreferencesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PreferencesTests-Info.plist"; sourceTree = "<group>"; };
+		4500C24E18E8A39D00B7B0C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4500C25218E8A39D00B7B0C6 /* PreferencesTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PreferencesTests-Prefix.pch"; sourceTree = "<group>"; };
+		4500C25918E8A50800B7B0C6 /* WCLPreferencesWindowControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPreferencesWindowControllerTests.m; sourceTree = "<group>"; };
 		451DAFD618D7D46E00AACC86 /* WCLTestPluginManagerTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLTestPluginManagerTestCase.h; sourceTree = "<group>"; };
 		451DAFD718D7D46E00AACC86 /* WCLTestPluginManagerTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLTestPluginManagerTestCase.m; sourceTree = "<group>"; };
 		451DAFD918D7DF9E00AACC86 /* Web_ConsoleTestsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Web_ConsoleTestsConstants.h; sourceTree = "<group>"; };
@@ -76,11 +90,10 @@
 		4567DB5818B03A7A00CBBD29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		4567DB5B18B03A7A00CBBD29 /* PluginEditorPrototype.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PluginEditorPrototype.xcdatamodel; sourceTree = "<group>"; };
 		4567DB5D18B03A7A00CBBD29 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		4567DB6318B03A7A00CBBD29 /* TestPluginManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TestPluginManagerTests.xctest; path = TestPluginManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4567DB6318B03A7A00CBBD29 /* TestPluginManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestPluginManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4567DB6418B03A7A00CBBD29 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		4567DB6B18B03A7A00CBBD29 /* TestPluginManagerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TestPluginManagerTests-Info.plist"; sourceTree = "<group>"; };
 		4567DB6D18B03A7A00CBBD29 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		4567DB6F18B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WCLPreferencesWindowControllerTests.m; sourceTree = "<group>"; };
 		4567DB7918B044B700CBBD29 /* WCLPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPreferencesWindowController.h; sourceTree = "<group>"; };
 		4567DB7A18B044B700CBBD29 /* WCLPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPreferencesWindowController.m; sourceTree = "<group>"; };
 		4567DB7B18B044B700CBBD29 /* WCLPreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WCLPreferencesWindowController.xib; sourceTree = "<group>"; };
@@ -121,6 +134,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4500C24518E8A39D00B7B0C6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4500C24918E8A39D00B7B0C6 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4567DB3C18B03A7A00CBBD29 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -141,11 +162,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4500C24A18E8A39D00B7B0C6 /* PreferencesTests */ = {
+			isa = PBXGroup;
+			children = (
+				4500C25918E8A50800B7B0C6 /* WCLPreferencesWindowControllerTests.m */,
+				4500C24B18E8A39D00B7B0C6 /* Supporting Files */,
+			);
+			path = PreferencesTests;
+			sourceTree = "<group>";
+		};
+		4500C24B18E8A39D00B7B0C6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4500C24C18E8A39D00B7B0C6 /* PreferencesTests-Info.plist */,
+				4500C24D18E8A39D00B7B0C6 /* InfoPlist.strings */,
+				4500C25218E8A39D00B7B0C6 /* PreferencesTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		4567DB3618B03A7A00CBBD29 = {
 			isa = PBXGroup;
 			children = (
 				4567DB4818B03A7A00CBBD29 /* PluginEditorPrototype */,
 				4567DB6918B03A7A00CBBD29 /* TestPluginManagerTests */,
+				4500C24A18E8A39D00B7B0C6 /* PreferencesTests */,
 				4567DB4118B03A7A00CBBD29 /* Frameworks */,
 				4567DB4018B03A7A00CBBD29 /* Products */,
 			);
@@ -156,6 +197,7 @@
 			children = (
 				4567DB3F18B03A7A00CBBD29 /* PluginEditorPrototype.app */,
 				4567DB6318B03A7A00CBBD29 /* TestPluginManagerTests.xctest */,
+				4500C24818E8A39D00B7B0C6 /* PreferencesTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -237,7 +279,6 @@
 		4567DB6918B03A7A00CBBD29 /* TestPluginManagerTests */ = {
 			isa = PBXGroup;
 			children = (
-				4567DB6F18B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m */,
 				4576716C18E1015B00EB720C /* WCLFileExtensionTests.m */,
 				4596913D18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m */,
 				4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests.m */,
@@ -268,6 +309,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4500C24718E8A39D00B7B0C6 /* PreferencesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4500C25718E8A39D00B7B0C6 /* Build configuration list for PBXNativeTarget "PreferencesTests" */;
+			buildPhases = (
+				4500C24418E8A39D00B7B0C6 /* Sources */,
+				4500C24518E8A39D00B7B0C6 /* Frameworks */,
+				4500C24618E8A39D00B7B0C6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4500C25418E8A39D00B7B0C6 /* PBXTargetDependency */,
+			);
+			name = PreferencesTests;
+			productName = PreferencesTests;
+			productReference = 4500C24818E8A39D00B7B0C6 /* PreferencesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4567DB3E18B03A7A00CBBD29 /* PluginEditorPrototype */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4567DB7318B03A7A00CBBD29 /* Build configuration list for PBXNativeTarget "PluginEditorPrototype" */;
@@ -313,6 +372,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Roben Kleene";
 				TargetAttributes = {
+					4500C24718E8A39D00B7B0C6 = {
+						TestTargetID = 4567DB3E18B03A7A00CBBD29;
+					};
 					4567DB6218B03A7A00CBBD29 = {
 						TestTargetID = 4567DB3E18B03A7A00CBBD29;
 					};
@@ -333,11 +395,20 @@
 			targets = (
 				4567DB3E18B03A7A00CBBD29 /* PluginEditorPrototype */,
 				4567DB6218B03A7A00CBBD29 /* TestPluginManagerTests */,
+				4500C24718E8A39D00B7B0C6 /* PreferencesTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4500C24618E8A39D00B7B0C6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4500C24F18E8A39D00B7B0C6 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4567DB3D18B03A7A00CBBD29 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -364,6 +435,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4500C24418E8A39D00B7B0C6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4500C25A18E8A50800B7B0C6 /* WCLPreferencesWindowControllerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4567DB3B18B03A7A00CBBD29 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -396,7 +475,6 @@
 				451DAFD818D7D46E00AACC86 /* WCLTestPluginManagerTestCase.m in Sources */,
 				4596913E18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m in Sources */,
 				451DAFDC18D7E57000AACC86 /* WCLKeyValueObservingTestsHelper.m in Sources */,
-				4567DB7018B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m in Sources */,
 				4596914118D4AFF60096B058 /* WCLTestPluginManager.m in Sources */,
 				457F7B6018D4F6CD0034F6D5 /* WCLTestPluginPrototype.xcdatamodeld in Sources */,
 			);
@@ -405,6 +483,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4500C25418E8A39D00B7B0C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4567DB3E18B03A7A00CBBD29 /* PluginEditorPrototype */;
+			targetProxy = 4500C25318E8A39D00B7B0C6 /* PBXContainerItemProxy */;
+		};
 		4567DB6818B03A7A00CBBD29 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4567DB3E18B03A7A00CBBD29 /* PluginEditorPrototype */;
@@ -413,6 +496,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		4500C24D18E8A39D00B7B0C6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4500C24E18E8A39D00B7B0C6 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		4567DB4B18B03A7A00CBBD29 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -448,6 +539,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4500C25518E8A39D00B7B0C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PluginEditorPrototype.app/Contents/MacOS/PluginEditorPrototype";
+				CLANG_ENABLE_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PreferencesTests/PreferencesTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "PreferencesTests/PreferencesTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		4500C25618E8A39D00B7B0C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PluginEditorPrototype.app/Contents/MacOS/PluginEditorPrototype";
+				CLANG_ENABLE_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PreferencesTests/PreferencesTests-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "PreferencesTests/PreferencesTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 		4567DB7118B03A7A00CBBD29 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -585,6 +718,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4500C25718E8A39D00B7B0C6 /* Build configuration list for PBXNativeTarget "PreferencesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4500C25518E8A39D00B7B0C6 /* Debug */,
+				4500C25618E8A39D00B7B0C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		4567DB3A18B03A7A00CBBD29 /* Build configuration list for PBXProject "PluginEditorPrototype" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
