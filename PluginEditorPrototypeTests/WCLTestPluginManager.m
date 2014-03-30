@@ -18,6 +18,7 @@
 
 #pragma mark - WCLTestPlugin
 
+#warning Just a placeholder for now, eventually this will be an NSManagedObject subclass that mimics WCLPlugin
 @implementation WCLTestPlugin
 @end
 
