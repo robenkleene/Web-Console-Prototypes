@@ -76,9 +76,9 @@
 		4567DB5818B03A7A00CBBD29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		4567DB5B18B03A7A00CBBD29 /* PluginEditorPrototype.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PluginEditorPrototype.xcdatamodel; sourceTree = "<group>"; };
 		4567DB5D18B03A7A00CBBD29 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		4567DB6318B03A7A00CBBD29 /* PluginEditorPrototypeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PluginEditorPrototypeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4567DB6318B03A7A00CBBD29 /* TestPluginManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TestPluginManagerTests.xctest; path = TestPluginManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4567DB6418B03A7A00CBBD29 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		4567DB6B18B03A7A00CBBD29 /* PluginEditorPrototypeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PluginEditorPrototypeTests-Info.plist"; sourceTree = "<group>"; };
+		4567DB6B18B03A7A00CBBD29 /* TestPluginManagerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TestPluginManagerTests-Info.plist"; sourceTree = "<group>"; };
 		4567DB6D18B03A7A00CBBD29 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4567DB6F18B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WCLPreferencesWindowControllerTests.m; sourceTree = "<group>"; };
 		4567DB7918B044B700CBBD29 /* WCLPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				4567DB4818B03A7A00CBBD29 /* PluginEditorPrototype */,
-				4567DB6918B03A7A00CBBD29 /* PluginEditorPrototypeTests */,
+				4567DB6918B03A7A00CBBD29 /* TestPluginManagerTests */,
 				4567DB4118B03A7A00CBBD29 /* Frameworks */,
 				4567DB4018B03A7A00CBBD29 /* Products */,
 			);
@@ -155,7 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				4567DB3F18B03A7A00CBBD29 /* PluginEditorPrototype.app */,
-				4567DB6318B03A7A00CBBD29 /* PluginEditorPrototypeTests.xctest */,
+				4567DB6318B03A7A00CBBD29 /* TestPluginManagerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -234,7 +234,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		4567DB6918B03A7A00CBBD29 /* PluginEditorPrototypeTests */ = {
+		4567DB6918B03A7A00CBBD29 /* TestPluginManagerTests */ = {
 			isa = PBXGroup;
 			children = (
 				4567DB6F18B03A7A00CBBD29 /* WCLPreferencesWindowControllerTests.m */,
@@ -253,13 +253,13 @@
 				457F7B5E18D4F6CD0034F6D5 /* WCLTestPluginPrototype.xcdatamodeld */,
 				451DAFD918D7DF9E00AACC86 /* Web_ConsoleTestsConstants.h */,
 			);
-			path = PluginEditorPrototypeTests;
+			path = TestPluginManagerTests;
 			sourceTree = "<group>";
 		};
 		4567DB6A18B03A7A00CBBD29 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4567DB6B18B03A7A00CBBD29 /* PluginEditorPrototypeTests-Info.plist */,
+				4567DB6B18B03A7A00CBBD29 /* TestPluginManagerTests-Info.plist */,
 				4567DB6C18B03A7A00CBBD29 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -285,9 +285,9 @@
 			productReference = 4567DB3F18B03A7A00CBBD29 /* PluginEditorPrototype.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4567DB6218B03A7A00CBBD29 /* PluginEditorPrototypeTests */ = {
+		4567DB6218B03A7A00CBBD29 /* TestPluginManagerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4567DB7618B03A7A00CBBD29 /* Build configuration list for PBXNativeTarget "PluginEditorPrototypeTests" */;
+			buildConfigurationList = 4567DB7618B03A7A00CBBD29 /* Build configuration list for PBXNativeTarget "TestPluginManagerTests" */;
 			buildPhases = (
 				4567DB5F18B03A7A00CBBD29 /* Sources */,
 				4567DB6018B03A7A00CBBD29 /* Frameworks */,
@@ -298,9 +298,9 @@
 			dependencies = (
 				4567DB6818B03A7A00CBBD29 /* PBXTargetDependency */,
 			);
-			name = PluginEditorPrototypeTests;
-			productName = PluginEditorPrototypeTests;
-			productReference = 4567DB6318B03A7A00CBBD29 /* PluginEditorPrototypeTests.xctest */;
+			name = TestPluginManagerTests;
+			productName = TestPluginManagerTests;
+			productReference = 4567DB6318B03A7A00CBBD29 /* TestPluginManagerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -332,7 +332,7 @@
 			projectRoot = "";
 			targets = (
 				4567DB3E18B03A7A00CBBD29 /* PluginEditorPrototype */,
-				4567DB6218B03A7A00CBBD29 /* PluginEditorPrototypeTests */,
+				4567DB6218B03A7A00CBBD29 /* TestPluginManagerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -557,7 +557,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "PluginEditorPrototypeTests/PluginEditorPrototypeTests-Info.plist";
+				INFOPLIST_FILE = "TestPluginManagerTests/TestPluginManagerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -575,7 +575,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PluginEditorPrototype/PluginEditorPrototype-Prefix.pch";
-				INFOPLIST_FILE = "PluginEditorPrototypeTests/PluginEditorPrototypeTests-Info.plist";
+				INFOPLIST_FILE = "TestPluginManagerTests/TestPluginManagerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -603,7 +603,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4567DB7618B03A7A00CBBD29 /* Build configuration list for PBXNativeTarget "PluginEditorPrototypeTests" */ = {
+		4567DB7618B03A7A00CBBD29 /* Build configuration list for PBXNativeTarget "TestPluginManagerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4567DB7718B03A7A00CBBD29 /* Debug */,

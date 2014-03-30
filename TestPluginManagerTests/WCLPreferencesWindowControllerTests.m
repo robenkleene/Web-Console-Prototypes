@@ -1,6 +1,6 @@
 //
-//  PluginEditorPrototypeTests.m
-//  PluginEditorPrototypeTests
+//  TestPluginManagerTests.m
+//  TestPluginManagerTests
 //
 //  Created by Roben Kleene on 2/15/14.
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
