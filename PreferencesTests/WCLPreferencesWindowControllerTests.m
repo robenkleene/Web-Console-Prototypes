@@ -62,10 +62,6 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 
     [self.appDelegate showPreferencesWindow:nil];
     XCTAssertTrue([self.preferencesWindowController.window isVisible], @"The WCLPreferncesWindowController's NSWindow should be visible");
-
-    // TODO: This should be unnecessary
-    self.preferencePane = self.preferencesWindowController.preferencePane;
-
     
     self.preferencesWindowController.preferencePane = 0; // Always start with the first preference view visible
 }
@@ -74,9 +70,6 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 {
     [self.appDelegate.preferencesWindowController.window performClose:nil];
     XCTAssertFalse([self.preferencesWindowController.window isVisible], @"The WCLPreferncesWindowController's NSWindow should not visible");
-
-    // TODO: This should be unnecessary
-    self.preferencesWindowController.preferencePane = self.preferencePane; // Restore the users preference
 
     [[self class] clearPreferencesWindowSavedFrame];
     
@@ -143,9 +136,10 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     NSRect savedFrame = [[self class] savedFrameForPreferencesWindow];
     NSRect windowFrame = [self.preferencesWindowController.window frame];
 
-    // TODO: This should be unnecessary
     if (!NSRectEqualToRect(savedFrame, NSZeroRect)) {
         // Only test if the first rect is equal if we've already stored a frame for this plugin
+        // This is still necessary even though we clear the saved frame in setup because showing the preference window
+        // saves the frame again.
         BOOL framesMatch = [[self class] windowFrameWithToolbar:windowFrame matchesWindowFrameWithoutToolbar:savedFrame];
         XCTAssertTrue(framesMatch, @"The NSWindow's frame should equal the saved frame.");
     }
