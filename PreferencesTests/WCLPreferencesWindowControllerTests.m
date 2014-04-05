@@ -55,11 +55,18 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 - (void)setUp
 {
     [super setUp];
+    
+    [[self class] clearPreferencesWindowSavedFrame];
+    NSRect savedPreferencesWindowFrame = [[self class] savedFrameForPreferencesWindow];
+    XCTAssertTrue(NSRectEqualToRect(savedPreferencesWindowFrame, NSZeroRect), @"The saved preferences window frame should equal NSZeroRect.");
 
     [self.appDelegate showPreferencesWindow:nil];
     XCTAssertTrue([self.preferencesWindowController.window isVisible], @"The WCLPreferncesWindowController's NSWindow should be visible");
-    // TODO Add assert that the first preferences equals the stored preference
+
+    // TODO: This should be unnecessary
     self.preferencePane = self.preferencesWindowController.preferencePane;
+
+    
     self.preferencesWindowController.preferencePane = 0; // Always start with the first preference view visible
 }
 
@@ -67,8 +74,11 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 {
     [self.appDelegate.preferencesWindowController.window performClose:nil];
     XCTAssertFalse([self.preferencesWindowController.window isVisible], @"The WCLPreferncesWindowController's NSWindow should not visible");
-    // TODO Add assert that the stored preference equals the stored preference
+
+    // TODO: This should be unnecessary
     self.preferencesWindowController.preferencePane = self.preferencePane; // Restore the users preference
+
+    [[self class] clearPreferencesWindowSavedFrame];
     
     [super tearDown];
 }
@@ -130,9 +140,10 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 - (void)testResizingPreferencesWindow
 {
 
-    NSRect savedFrame = [self savedFrameForPreferencesWindow];
+    NSRect savedFrame = [[self class] savedFrameForPreferencesWindow];
     NSRect windowFrame = [self.preferencesWindowController.window frame];
 
+    // TODO: This should be unnecessary
     if (!NSRectEqualToRect(savedFrame, NSZeroRect)) {
         // Only test if the first rect is equal if we've already stored a frame for this plugin
         BOOL framesMatch = [[self class] windowFrameWithToolbar:windowFrame matchesWindowFrameWithoutToolbar:savedFrame];
@@ -149,16 +160,19 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     [self.preferencesWindowController.window setFrame:destinationFrame display:NO];
     
     // Test that the saved frame now equals the destination frame
-    savedFrame = [self savedFrameForPreferencesWindow];
+    savedFrame = [[self class] savedFrameForPreferencesWindow];
     BOOL framesMatch = [[self class] windowFrameWithToolbar:destinationFrame matchesWindowFrameWithoutToolbar:savedFrame];
     XCTAssertTrue(framesMatch, @"The saved frame should equal the destination frame.");
-
-    // Close Preferences window
-
     
-    // Set it to nil so it re-initializes
-    // Create a new preferences window
-    // Confirm it has the right frame
+    // Close Preferences window
+    [self.preferencesWindowController.window performClose:nil];
+    self.appDelegate.preferencesWindowController = nil;
+
+    [self.appDelegate showPreferencesWindow:nil];
+    windowFrame = self.preferencesWindowController.window.frame;
+
+    framesMatch = [[self class] windowFrameWithToolbar:windowFrame matchesWindowFrameWithoutToolbar:savedFrame];
+    XCTAssertTrue(framesMatch, @"The NSWindow's frame should equal the saved frame.");
 }
 
 // Test correct prefence pane is restored
@@ -177,16 +191,28 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 
 #pragma mark - Helpers
 
-- (NSRect)savedFrameForPreferencesWindow
++ (NSString *)prefrencesWindowSavedFrameKey
 {
     static dispatch_once_t onceToken;
     static NSString *windowFrameKey = nil;
     dispatch_once(&onceToken, ^{
         windowFrameKey = [NSString stringWithFormat:@"NSWindow Frame %@", WCLPreferencesWindowFrameName];
     });
-    
+
+    return windowFrameKey;
+}
+
++ (NSRect)savedFrameForPreferencesWindow
+{
+    NSString *windowFrameKey = [[self class] prefrencesWindowSavedFrameKey];
     NSString *frameString = [[NSUserDefaults standardUserDefaults] stringForKey:windowFrameKey];
     return NSRectFromString(frameString); // If frame string is nil, returns NSZeroRect
+}
+
++ (void)clearPreferencesWindowSavedFrame
+{
+    NSString *windowFrameKey = [[self class] prefrencesWindowSavedFrameKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:windowFrameKey];
 }
 
 @end

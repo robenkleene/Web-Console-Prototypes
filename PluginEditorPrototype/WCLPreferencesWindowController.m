@@ -43,7 +43,8 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
-    if (self) {        
+    if (self) {
+        [self setShouldCascadeWindows:NO];
         _preferencePane = [[NSUserDefaults standardUserDefaults] integerForKey:kDefaultPreferencesSelectedTabKey];;
     }
     return self;
