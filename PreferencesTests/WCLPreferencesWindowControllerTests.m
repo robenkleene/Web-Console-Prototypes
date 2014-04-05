@@ -192,8 +192,10 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 
     // Setup destination frames
     NSRect windowFrame = [self.preferencesWindowController.window frame];
-    NSRect destinationFrame = NSRectEqualToRect(windowFrame, kTestWindowFrame) ? kTestWindowFrameTwo : kTestWindowFrame;
-    NSRect destinationFrameTwo = NSRectEqualToRect(windowFrame, kTestWindowFrame) ? kTestWindowFrame : kTestWindowFrameTwo;
+
+    BOOL testWindowFrameIsValidDestinationFrame = [[self class] destinationFrame:kTestWindowFrame isValidForWindowFrame:windowFrame];
+    NSRect destinationFrame = testWindowFrameIsValidDestinationFrame ? kTestWindowFrame : kTestWindowFrameTwo;
+    NSRect destinationFrameTwo = testWindowFrameIsValidDestinationFrame ? kTestWindowFrameTwo : kTestWindowFrame;
     XCTAssertFalse(NSRectEqualToRect(windowFrame, destinationFrame), @"The NSWindow's frame should not equal the destination frame.");
     XCTAssertFalse(NSRectEqualToRect(destinationFrame, destinationFrameTwo), @"The NSWindow's frame should not equal the destination frame.");
     
@@ -229,11 +231,24 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     NSSize viewSize = [self selectedPreferenceViewSize];
     XCTAssertTrue(NSSizeEqualToSize(viewSize, savedSize), @"The NSView's NSSize should equal the saved NSSize.");
 
-    
-//    viewSize = [self selectedPreferenceViewSize];
-//    XCTAssertTrue(NSSizeEqualToSize(viewSize, savedSize), @"The NSView's NSSize should equal the saved NSSize.");
+    // Switch to the second preference pane and assert size is equal to the saved size
+    self.preferencesWindowController.preferencePane++;
 
+    XCTAssertFalse(NSSizeEqualToSize([self selectedPreferenceViewSize], viewSize), @"The first preference pane's NSSize should not equal the previous preference pane's size.");
+    viewSizeTwo = [self selectedPreferenceViewSize];
+    XCTAssertTrue(NSSizeEqualToSize(viewSizeTwo, savedSizeTwo), @"The NSView's NSSize should equal the saved NSSize.");
     
+    // Show a new preference window
+    WCLPreferencePane preferencePane = self.preferencesWindowController.preferencePane;
+    [self showNewPreferencesWindow];
+    XCTAssertEqual(self.preferencesWindowController.preferencePane, preferencePane, @"The preference window controller's WCLPreferencePane should be equal to the WCLPreferencePane");
+    XCTAssertTrue(NSSizeEqualToSize([self selectedPreferenceViewSize], savedSizeTwo), @"The selected preference pane's view size should equal the saved size");
+
+    // Switch back to the previous preference pane
+    self.preferencesWindowController.preferencePane--;
+    XCTAssertFalse(NSSizeEqualToSize([self selectedPreferenceViewSize], viewSizeTwo), @"The first preference pane's NSSize should not equal the previous preference pane's size.");
+    viewSize = [self selectedPreferenceViewSize];
+    XCTAssertTrue(NSSizeEqualToSize(viewSize, savedSize), @"The NSView's NSSize should equal the saved NSSize.");
 }
 
 #pragma mark - Helpers
