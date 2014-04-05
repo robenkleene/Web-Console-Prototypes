@@ -129,15 +129,12 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 
 - (void)testResizingPreferencesWindow
 {
-    NSString *key = [NSString stringWithFormat:@"NSWindow Frame %@", WCLPreferencesWindowFrameName];
-    NSString *frameString = [[NSUserDefaults standardUserDefaults] stringForKey:key];
-    NSRect savedFrame = NSRectFromString(frameString); // If frame string is nil, returns NSZeroRect
 
+    NSRect savedFrame = [self savedFrameForPreferencesWindow];
     NSRect windowFrame = [self.preferencesWindowController.window frame];
 
     if (!NSRectEqualToRect(savedFrame, NSZeroRect)) {
         // Only test if the first rect is equal if we've already stored a frame for this plugin
-
         BOOL framesMatch = [[self class] windowFrameWithToolbar:windowFrame matchesWindowFrameWithoutToolbar:savedFrame];
         XCTAssertTrue(framesMatch, @"The NSWindow's frame should equal the saved frame.");
     }
@@ -147,11 +144,24 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     NSRect destinationFrameTwo = NSRectEqualToRect(windowFrame, kTestWindowFrame) ? kTestWindowFrame : kTestWindowFrameTwo;
     XCTAssertFalse(NSRectEqualToRect(windowFrame, destinationFrame), @"The NSWindow's frame should not equal the destination frame.");
     XCTAssertFalse(NSRectEqualToRect(destinationFrame, destinationFrameTwo), @"The NSWindow's frame should not equal the destination frame.");
+
+    // Set the NSWindow's frame to the destination frame
+    [self.preferencesWindowController.window setFrame:destinationFrame display:NO];
     
-    // TODO: I think a wrinkle in this is that the different preference windows resize the frame
+    // Test that the saved frame now equals the destination frame
+    savedFrame = [self savedFrameForPreferencesWindow];
+    BOOL framesMatch = [[self class] windowFrameWithToolbar:destinationFrame matchesWindowFrameWithoutToolbar:savedFrame];
+    XCTAssertTrue(framesMatch, @"The saved frame should equal the destination frame.");
+
+    // Close Preferences window
+
     
-    // Then close the window and make sure that it opens again with the right frame
+    // Set it to nil so it re-initializes
+    // Create a new preferences window
+    // Confirm it has the right frame
 }
+
+// Test correct prefence pane is restored
 
 + (BOOL)windowFrameWithToolbar:(NSRect)windowFrameWithToolbar matchesWindowFrameWithoutToolbar:(NSRect)windowFrameWithoutToolbar
 {
@@ -163,6 +173,20 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
                                        windowFrameWithoutToolbar.size.width,
                                        windowFrameWithoutToolbar.size.height + toolbarHeight);
     return NSRectEqualToRect(comparisonRect, windowFrameWithToolbar);
+}
+
+#pragma mark - Helpers
+
+- (NSRect)savedFrameForPreferencesWindow
+{
+    static dispatch_once_t onceToken;
+    static NSString *windowFrameKey = nil;
+    dispatch_once(&onceToken, ^{
+        windowFrameKey = [NSString stringWithFormat:@"NSWindow Frame %@", WCLPreferencesWindowFrameName];
+    });
+    
+    NSString *frameString = [[NSUserDefaults standardUserDefaults] stringForKey:windowFrameKey];
+    return NSRectFromString(frameString); // If frame string is nil, returns NSZeroRect
 }
 
 @end
