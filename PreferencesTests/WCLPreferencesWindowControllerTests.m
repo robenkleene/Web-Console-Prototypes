@@ -146,9 +146,7 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     
     // Do the whole destination frame dance here
     NSRect destinationFrame = NSRectEqualToRect(windowFrame, kTestWindowFrame) ? kTestWindowFrameTwo : kTestWindowFrame;
-    NSRect destinationFrameTwo = NSRectEqualToRect(windowFrame, kTestWindowFrame) ? kTestWindowFrame : kTestWindowFrameTwo;
     XCTAssertFalse(NSRectEqualToRect(windowFrame, destinationFrame), @"The NSWindow's frame should not equal the destination frame.");
-    XCTAssertFalse(NSRectEqualToRect(destinationFrame, destinationFrameTwo), @"The NSWindow's frame should not equal the destination frame.");
 
     // Set the NSWindow's frame to the destination frame
     [self.preferencesWindowController.window setFrame:destinationFrame display:NO];
