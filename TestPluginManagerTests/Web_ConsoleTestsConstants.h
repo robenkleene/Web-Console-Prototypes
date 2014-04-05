@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
 //
 
+#warning Cut & Paste job from Web Console
+#define kTestTimeoutInterval 1
+
 #pragma mark Test Plugin
 
 #define kTestPluginName @"Test Plugin"

@@ -82,7 +82,7 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
 {
 
 #warning Can I also test if an animation is occurring here? I don't want the window frame to be saved when transitioning between view controllers, only based on user interaction
-
+    
     if (![self.window isVisible]) {
         return;
     }

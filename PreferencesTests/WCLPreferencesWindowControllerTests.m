@@ -22,7 +22,9 @@
 @interface WCLPreferencesWindowController ()
 @property (nonatomic, assign) NSInteger preferencePane;
 @property (nonatomic, strong) NSViewController *viewController;
+- (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)preferencePane;
 + (NSSize)savedViewSizeForViewController:(NSViewController *)viewController;
++ (NSString *)viewSizeNameForViewController:(NSViewController *)viewController;
 @end
 
 @interface WCLPreferencesWindowControllerTests : XCTestCase
@@ -61,6 +63,8 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     NSRect savedPreferencesWindowFrame = [[self class] savedFrameForPreferencesWindow];
     XCTAssertTrue(NSRectEqualToRect(savedPreferencesWindowFrame, NSZeroRect), @"The saved preferences window frame should equal NSZeroRect.");
 
+    [self clearPreferencePaneSavedSizes];
+    
     [self.appDelegate showPreferencesWindow:nil];
     XCTAssertTrue([self.preferencesWindowController.window isVisible], @"The WCLPreferncesWindowController's NSWindow should be visible");
     
@@ -73,6 +77,7 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     XCTAssertFalse([self.preferencesWindowController.window isVisible], @"The WCLPreferncesWindowController's NSWindow should not visible");
 
     [[self class] clearPreferencesWindowSavedFrame];
+    [self clearPreferencePaneSavedSizes];
     
     [super tearDown];
 }
@@ -141,7 +146,6 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 
 - (void)testRestoringPreferencesWindowFrame
 {
-
     NSRect savedFrame = [[self class] savedFrameForPreferencesWindow];
     NSRect windowFrame = [self.preferencesWindowController.window frame];
 
@@ -154,7 +158,9 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     }
     
     // Do the whole destination frame dance here
-    NSRect destinationFrame = NSRectEqualToRect(windowFrame, kTestWindowFrame) ? kTestWindowFrameTwo : kTestWindowFrame;
+    BOOL testWindowFrameIsValidDestinationFrame = [[self class] destinationFrame:kTestWindowFrame isValidForWindowFrame:windowFrame];
+    NSRect destinationFrame = testWindowFrameIsValidDestinationFrame ? kTestWindowFrame : kTestWindowFrameTwo;
+    
     XCTAssertFalse(NSRectEqualToRect(windowFrame, destinationFrame), @"The NSWindow's frame should not equal the destination frame.");
 
     // Set the NSWindow's frame to the destination frame
@@ -164,9 +170,10 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     savedFrame = [[self class] savedFrameForPreferencesWindow];
     BOOL framesMatch = [[self class] windowFrameWithToolbar:destinationFrame matchesWindowFrameWithoutToolbar:savedFrame];
     XCTAssertTrue(framesMatch, @"The saved frame should equal the destination frame.");
-    
+
     // Show new Preferences window and test it has the saved frame
     [self showNewPreferencesWindow];
+
     windowFrame = self.preferencesWindowController.window.frame;
     framesMatch = [[self class] windowFrameWithToolbar:windowFrame matchesWindowFrameWithoutToolbar:savedFrame];
     XCTAssertTrue(framesMatch, @"The NSWindow's frame should equal the saved frame.");
@@ -174,15 +181,59 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 
 - (void)testRestoringPreferencesViewSizes
 {
-    NSSize savedSize = [WCLPreferencesWindowController savedViewSizeForViewController:self.preferencesWindowController.viewController];
-    NSRect savedFrame = [self.preferencesWindowController.viewController.view frame];
-    NSSize viewSize = savedFrame.size;
-    if (!NSSizeEqualToSize(savedSize, NSZeroSize)) {
+    if (!NSSizeEqualToSize([self selectedPreferenceSavedSize], NSZeroSize)) {
         // Only test the size if there's a saved size
         // This is still necessary even though we clear the saved sizes in setup because showing the preference window
         // saves the size again.
-        XCTAssertTrue(NSSizeEqualToSize(viewSize, savedSize), @"The NSView's size should equal the saved size.");
+        XCTAssertTrue(NSSizeEqualToSize([self selectedPreferenceViewSize],
+                                        [self selectedPreferenceSavedSize]),
+                      @"The NSView's size should equal the saved NSSize.");
     }
+
+    // Setup destination frames
+    NSRect windowFrame = [self.preferencesWindowController.window frame];
+    NSRect destinationFrame = NSRectEqualToRect(windowFrame, kTestWindowFrame) ? kTestWindowFrameTwo : kTestWindowFrame;
+    NSRect destinationFrameTwo = NSRectEqualToRect(windowFrame, kTestWindowFrame) ? kTestWindowFrame : kTestWindowFrameTwo;
+    XCTAssertFalse(NSRectEqualToRect(windowFrame, destinationFrame), @"The NSWindow's frame should not equal the destination frame.");
+    XCTAssertFalse(NSRectEqualToRect(destinationFrame, destinationFrameTwo), @"The NSWindow's frame should not equal the destination frame.");
+    
+    // Set the NSWindow's frame to the destination frame
+    NSSize savedSize = [self selectedPreferenceSavedSize];
+    [self.preferencesWindowController.window setFrame:destinationFrame display:NO];
+    
+    // Test that the saved NSSize now equals the NSView's NSSize
+    XCTAssertFalse(NSSizeEqualToSize([self selectedPreferenceSavedSize], savedSize), @"The saved NSSize should not equal the previous saved size.");
+    savedSize = [self selectedPreferenceSavedSize];
+    XCTAssertTrue(NSSizeEqualToSize([self selectedPreferenceViewSize], savedSize), @"The NSView's NSSize should equal the saved NSSize.");
+
+    // Switch preference panes
+    self.preferencesWindowController.preferencePane++;
+
+    // Assert that the new preference pane's size has been stored
+    XCTAssertFalse(NSSizeEqualToSize([self selectedPreferenceSavedSize], savedSize), @"The saved NSSize for the new preference pane should not equal the previous saved size.");
+    NSSize savedSizeTwo = [self selectedPreferenceSavedSize];
+    XCTAssertTrue(NSSizeEqualToSize([self selectedPreferenceViewSize], savedSizeTwo), @"The NSView's NSSize should equal the saved NSSize.");
+    
+    // Set the NSWindow's frame to the destination frame two
+    [self.preferencesWindowController.window setFrame:destinationFrameTwo display:NO];
+    
+    // Test that the saved NSSize now equals the NSView's NSSize
+    XCTAssertFalse(NSSizeEqualToSize([self selectedPreferenceSavedSize], savedSizeTwo), @"The saved NSSize should not equal the previous saved size.");
+    savedSizeTwo = [self selectedPreferenceSavedSize];
+    NSSize viewSizeTwo = [self selectedPreferenceViewSize];
+    XCTAssertTrue(NSSizeEqualToSize(viewSizeTwo, savedSizeTwo), @"The NSView's NSSize should equal the second saved NSSize.");
+
+    // Switch back to the previous preference pane
+    self.preferencesWindowController.preferencePane--;
+    XCTAssertFalse(NSSizeEqualToSize([self selectedPreferenceViewSize], viewSizeTwo), @"The first preference pane's NSSize should not equal the previous preference pane's size.");
+    NSSize viewSize = [self selectedPreferenceViewSize];
+    XCTAssertTrue(NSSizeEqualToSize(viewSize, savedSize), @"The NSView's NSSize should equal the saved NSSize.");
+
+    
+//    viewSize = [self selectedPreferenceViewSize];
+//    XCTAssertTrue(NSSizeEqualToSize(viewSize, savedSize), @"The NSView's NSSize should equal the saved NSSize.");
+
+    
 }
 
 #pragma mark - Helpers
@@ -228,6 +279,45 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 {
     NSString *windowFrameKey = [[self class] prefrencesWindowSavedFrameKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:windowFrameKey];
+}
+
+- (void)clearPreferencePaneSavedSizes
+{
+    NSMutableArray *viewControllers = [NSMutableArray array];
+   [viewControllers addObject:[self.preferencesWindowController viewControllerForPreferencePane:WCLPreferencePaneEnvironment]];
+   [viewControllers addObject:[self.preferencesWindowController viewControllerForPreferencePane:WCLPreferencePanePlugins]];
+   [viewControllers addObject:[self.preferencesWindowController viewControllerForPreferencePane:WCLPreferencePaneFiles]];
+
+    for (NSViewController *viewController in viewControllers) {
+        NSString *viewSizeName = [WCLPreferencesWindowController viewSizeNameForViewController:viewController];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:viewSizeName];
+    }
+}
+
+- (NSSize)selectedPreferenceSavedSize
+{
+    return [WCLPreferencesWindowController savedViewSizeForViewController:self.preferencesWindowController.viewController];
+}
+
+- (NSSize)selectedPreferenceViewSize
+{
+    NSRect savedFrame = [self.preferencesWindowController.viewController.view frame];
+    return savedFrame.size;
+}
+
+
+#warning During merge to web console, use this frame comparison method when selecting destination frames
++ (BOOL)destinationFrame:(NSRect)destinationFrame isValidForWindowFrame:(NSRect)windowFrame
+{
+    if (NSSizeEqualToSize(windowFrame.size, destinationFrame.size)) {
+        return NO;
+    }
+    
+    if (NSPointEqualToPoint(windowFrame.origin, destinationFrame.origin)) {
+        return NO;
+    }
+
+    return YES;
 }
 
 @end
