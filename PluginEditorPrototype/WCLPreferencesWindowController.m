@@ -171,13 +171,13 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
         
         // Setup the subview transition
         if ([oldView superview]) {
-            [[[[self window] contentView] animator] replaceSubview:oldView with:view];
+            [contentView replaceSubview:oldView with:view];
         } else {
-            [[[[self window] contentView] animator] addSubview:view];
+            [contentView addSubview:view];
         }
 
         // Configure the view
-        [[self class] setupConstraintsForView:view inView:[[self window] contentView]];
+        [[self class] setupConstraintsForView:view inView:contentView];
         
         // Restore the frame for the view from NSUserDefaults
         NSString *viewSizeName = [[self class] viewSizeNameForViewController:viewController];
@@ -190,12 +190,12 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
         }
 
         // Setup the frame transition
-        NSRect frame = [[self class] newFrameForNewContentView:viewController.view inWindow:self.window];
-        [[[self window] animator] setFrame:frame display:YES];
+        NSRect frame = [[self class] newFrameForNewContentView:viewController.view inWindow:window];
+        [window setFrame:frame display:YES];
 
         // Other tweaks
-        [[self window] setTitle:[viewController title]];
-        [self.window makeFirstResponder:viewController];
+        [window setTitle:[viewController title]];
+        [window makeFirstResponder:viewController];
     };
     
     if (animated) {
