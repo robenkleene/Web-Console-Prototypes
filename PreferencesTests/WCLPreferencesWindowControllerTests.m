@@ -130,6 +130,16 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     XCTAssertTrue([NSStringFromRect(firstFrame) isEqualToString:NSStringFromRect(secondFrame)], @"The first frame should equal the second frame.");
 }
 
+// TODO: Test correct prefence pane is restored
+
+- (void)testPreferencePaneIsRestored
+{
+    self.preferencesWindowController.preferencePane++;
+    WCLPreferencePane preferencePane = self.preferencesWindowController.preferencePane;
+    [self showNewPreferencesWindow];
+    XCTAssertEqual(preferencePane, self.preferencesWindowController.preferencePane, @"The WCLPreferencePanes should be equal.");
+}
+
 - (void)testResizingPreferencesWindow
 {
 
@@ -156,23 +166,26 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     BOOL framesMatch = [[self class] windowFrameWithToolbar:destinationFrame matchesWindowFrameWithoutToolbar:savedFrame];
     XCTAssertTrue(framesMatch, @"The saved frame should equal the destination frame.");
     
-    // Close Preferences window
-    [self.preferencesWindowController.window performClose:nil];
-    self.appDelegate.preferencesWindowController = nil;
-
-    [self.appDelegate showPreferencesWindow:nil];
+    // Show new Preferences window and test it has the saved frame
+    [self showNewPreferencesWindow];
     windowFrame = self.preferencesWindowController.window.frame;
-
     framesMatch = [[self class] windowFrameWithToolbar:windowFrame matchesWindowFrameWithoutToolbar:savedFrame];
     XCTAssertTrue(framesMatch, @"The NSWindow's frame should equal the saved frame.");
 }
 
-// Test correct prefence pane is restored
+#pragma mark - Helpers
+
+- (void)showNewPreferencesWindow
+{
+    [self.preferencesWindowController.window performClose:nil];
+    self.appDelegate.preferencesWindowController = nil;
+    [self.appDelegate showPreferencesWindow:nil];
+}
 
 + (BOOL)windowFrameWithToolbar:(NSRect)windowFrameWithToolbar matchesWindowFrameWithoutToolbar:(NSRect)windowFrameWithoutToolbar
 {
     // NSWindow's setFrameUsingName: and saveFrameUsingName: methods adjust for the toolbar
-
+    
     static NSInteger toolbarHeight = 56;
     NSRect comparisonRect = NSMakeRect(windowFrameWithoutToolbar.origin.x,
                                        windowFrameWithoutToolbar.origin.y - toolbarHeight,
@@ -180,8 +193,6 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
                                        windowFrameWithoutToolbar.size.height + toolbarHeight);
     return NSRectEqualToRect(comparisonRect, windowFrameWithToolbar);
 }
-
-#pragma mark - Helpers
 
 + (NSString *)prefrencesWindowSavedFrameKey
 {
