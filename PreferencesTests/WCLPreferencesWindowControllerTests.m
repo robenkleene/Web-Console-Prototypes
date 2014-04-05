@@ -10,6 +10,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "Web_ConsoleTestsConstants.h"
 #import "WCLAppDelegate.h"
 #import "WCLPreferencesWindowController.h"
 
@@ -28,6 +29,24 @@
 @property (nonatomic, strong, readonly) WCLPreferencesWindowController *preferencesWindowController;
 @property (nonatomic, assign) WCLPreferencePane preferencePane;
 @end
+
+#warning Cut & paste job, remove these after merging into Web Console project
+
+NS_INLINE BOOL NSSizeEqualToSize (NSSize size1, NSSize size2)
+{
+    return (size1.height == size2.height) && (size1.width == size2.width);
+}
+
+NS_INLINE BOOL NSPointEqualToPoint (NSPoint point1, NSPoint point2)
+{
+    return (point1.x == point2.x) && (point1.y == point2.y);
+}
+
+NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
+{
+    return NSPointEqualToPoint(rect1.origin, rect2.origin) && NSSizeEqualToSize(rect1.size, rect2.size);
+}
+
 
 @implementation WCLPreferencesWindowControllerTests
 
@@ -106,6 +125,34 @@
     NSRect secondFrame = secondViewController.view.frame;
     
     XCTAssertTrue([NSStringFromRect(firstFrame) isEqualToString:NSStringFromRect(secondFrame)], @"The first frame should equal the second frame.");
+}
+
+- (void)testResizingPreferencesWindow
+{
+    NSString *key = [NSString stringWithFormat:@"NSWindow Frame %@", WCLPreferencesWindowFrameName];
+    NSString *frameString = [[NSUserDefaults standardUserDefaults] stringForKey:key];
+    NSRect savedFrame = NSRectFromString(frameString); // If frame string is nil, returns NSZeroRect
+
+    NSRect windowFrame = [self.preferencesWindowController.window frame];
+
+    if (!NSRectEqualToRect(savedFrame, NSZeroRect)) {
+        // Only test if the first rect is equal if we've already stored a frame for this plugin
+        XCTAssertTrue(NSRectEqualToRect(windowFrame, savedFrame), @"The NSWindow's frame should equal the saved frame.");
+
+        // TODO: This is probably just off by the toolbars height
+    }
+    
+    // Do the whole destination frame dance here
+    NSRect destinationFrame = NSRectEqualToRect(windowFrame, kTestWindowFrame) ? kTestWindowFrameTwo : kTestWindowFrame;
+    NSRect destinationFrameTwo = NSRectEqualToRect(windowFrame, kTestWindowFrame) ? kTestWindowFrame : kTestWindowFrameTwo;
+    XCTAssertFalse(NSRectEqualToRect(windowFrame, destinationFrame), @"The NSWindow's frame should not equal the destination frame.");
+    XCTAssertFalse(NSRectEqualToRect(destinationFrame, destinationFrameTwo), @"The NSWindow's frame should not equal the destination frame.");
+
+
+    
+    // TODO: I think a wrinkle in this is that the different preference windows resize the frame
+    
+    // Then close the window and make sure that it opens again with the right frame
 }
 
 @end

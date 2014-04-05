@@ -23,3 +23,10 @@
 
 #define kTestFileExtensionEnabledKeyPath @"enabled"
 #define kTestFileExtensionSelectedPluginKeyPath @"selectedPlugin"
+
+
+#warning Cut & Paste job from Web Console
+#pragma mark - Window Sizes
+
+#define kTestWindowFrame NSMakeRect(158, 97, 425, 450)
+#define kTestWindowFrameTwo NSMakeRect(200, 200, 333, 388)

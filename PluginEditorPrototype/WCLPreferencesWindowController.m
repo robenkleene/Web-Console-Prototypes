@@ -16,6 +16,8 @@
 #define kPluginViewControllerNibName @"WCLPluginViewController"
 #define kFilesViewControllerNibName @"WCLFilesViewController"
 
+NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
+
 @interface WCLPreferencesWindowController () <NSWindowDelegate>
 #pragma mark NSToolbar
 - (IBAction)switchView:(id)sender;
@@ -54,9 +56,61 @@
         [[[self window] toolbar] setSelectedItemIdentifier:itemIdentifier];
     }
 
-    self.viewController = [self viewControllerForPreferencePane:self.preferencePane];
 
+    // This only ends up being used to set the origin because when setViewController gets called the size for the view will be set.
+    [self.window setFrameUsingName:WCLPreferencesWindowFrameName];
+
+    self.viewController = [self viewControllerForPreferencePane:self.preferencePane];
+    
     [[[self window] contentView] setWantsLayer:YES];
+}
+
+
+#pragma mark NSWindowDelegate
+
+- (void)windowDidMove:(NSNotification *)notification
+{
+    if (![self.window isVisible]) {
+        return;
+    }
+
+    [self.window saveFrameUsingName:WCLPreferencesWindowFrameName];
+}
+
+- (void)windowDidResize:(NSNotification *)notification
+{
+
+#warning Can I also test if an animation is occurring here? I don't want the window frame to be saved when transitioning between view controllers, only based on user interaction
+
+    if (![self.window isVisible]) {
+        return;
+    }
+    
+    [self.window saveFrameUsingName:WCLPreferencesWindowFrameName];
+    [self saveViewSize];
+}
+
+#pragma mark - Save & Restore Window Frame
+
+- (void)saveViewSize
+{
+    NSRect viewFrame = [[self.window contentView] frame];
+    NSSize viewSize = viewFrame.size;
+
+    NSString *viewSizeName = [[self class] viewSizeNameForViewController:self.viewController];
+
+    [[NSUserDefaults standardUserDefaults] setObject:NSStringFromSize(viewSize)
+                                              forKey:viewSizeName];
+}
+
++ (NSString *)viewSizeNameForViewController:(NSViewController *)viewController
+{
+    NSString *title = viewController.title;
+    if (!title) {
+        return nil;
+    }
+    
+    return [NSString stringWithFormat:@"%@ %@", WCLPreferencesWindowFrameName, title];
 }
 
 #pragma mark NSToolbar
@@ -108,24 +162,39 @@
 {
     NSView *oldView = _viewController.view;
     NSView *view = viewController.view;
-    NSRect frame = [[self class] newFrameForNewContentView:viewController.view inWindow:self.window];
 
     void (^switchViewBlock)(NSWindow *window, NSView *contentView) = ^void(NSWindow *window, NSView *contentView) {
+
+        // Set properties
+        _viewController = viewController;
+        _preferencePane = [[self class] preferencePaneForViewController:viewController];
+        
+        // Setup the subview transition
         if ([oldView superview]) {
             [[[[self window] contentView] animator] replaceSubview:oldView with:view];
         } else {
             [[[[self window] contentView] animator] addSubview:view];
         }
-        
+
+        // Configure the view
         [[self class] setupConstraintsForView:view inView:[[self window] contentView]];
         
-        [[[self window] animator] setFrame:frame display:YES];
-        _viewController = viewController;
-        WCLPreferencePane preferencePane = [[self class] preferencePaneForViewController:viewController];
-        _preferencePane = preferencePane;
+        // Restore the frame for the view from NSUserDefaults
+        NSString *viewSizeName = [[self class] viewSizeNameForViewController:viewController];
+        NSString *viewSizeString = [[NSUserDefaults standardUserDefaults] objectForKey:viewSizeName];
+        NSSize viewSize = NSSizeFromString(viewSizeString);
+        if (viewSizeString &&
+            viewSize.height != 0 &&
+            viewSize.width != 0) {
+            [viewController.view setFrameSize:viewSize];
+        }
 
+        // Setup the frame transition
+        NSRect frame = [[self class] newFrameForNewContentView:viewController.view inWindow:self.window];
+        [[[self window] animator] setFrame:frame display:YES];
+
+        // Other tweaks
         [[self window] setTitle:[viewController title]];
-        
         [self.window makeFirstResponder:viewController];
     };
     
@@ -134,7 +203,7 @@
         switchViewBlock([self.window animator], [self.window.contentView animator]);
         [NSAnimationContext endGrouping];
     } else {
-        switchViewBlock(self.window, [self.window.contentView animator]);
+        switchViewBlock(self.window, self.window.contentView);
     }
 }
 
