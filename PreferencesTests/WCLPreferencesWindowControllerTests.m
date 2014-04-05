@@ -137,9 +137,9 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 
     if (!NSRectEqualToRect(savedFrame, NSZeroRect)) {
         // Only test if the first rect is equal if we've already stored a frame for this plugin
-        XCTAssertTrue(NSRectEqualToRect(windowFrame, savedFrame), @"The NSWindow's frame should equal the saved frame.");
 
-        // TODO: This is probably just off by the toolbars height
+        BOOL framesMatch = [[self class] windowFrameWithToolbar:windowFrame matchesWindowFrameWithoutToolbar:savedFrame];
+        XCTAssertTrue(framesMatch, @"The NSWindow's frame should equal the saved frame.");
     }
     
     // Do the whole destination frame dance here
@@ -147,12 +147,22 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     NSRect destinationFrameTwo = NSRectEqualToRect(windowFrame, kTestWindowFrame) ? kTestWindowFrame : kTestWindowFrameTwo;
     XCTAssertFalse(NSRectEqualToRect(windowFrame, destinationFrame), @"The NSWindow's frame should not equal the destination frame.");
     XCTAssertFalse(NSRectEqualToRect(destinationFrame, destinationFrameTwo), @"The NSWindow's frame should not equal the destination frame.");
-
-
     
     // TODO: I think a wrinkle in this is that the different preference windows resize the frame
     
     // Then close the window and make sure that it opens again with the right frame
+}
+
++ (BOOL)windowFrameWithToolbar:(NSRect)windowFrameWithToolbar matchesWindowFrameWithoutToolbar:(NSRect)windowFrameWithoutToolbar
+{
+    // NSWindow's setFrameUsingName: and saveFrameUsingName: methods adjust for the toolbar
+
+    static NSInteger toolbarHeight = 56;
+    NSRect comparisonRect = NSMakeRect(windowFrameWithoutToolbar.origin.x,
+                                       windowFrameWithoutToolbar.origin.y - toolbarHeight,
+                                       windowFrameWithoutToolbar.size.width,
+                                       windowFrameWithoutToolbar.size.height + toolbarHeight);
+    return NSRectEqualToRect(comparisonRect, windowFrameWithToolbar);
 }
 
 @end
