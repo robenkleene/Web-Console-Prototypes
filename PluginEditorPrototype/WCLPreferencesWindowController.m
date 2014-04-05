@@ -104,6 +104,13 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
                                               forKey:viewSizeName];
 }
 
++ (NSSize)savedViewSizeForViewController:(NSViewController *)viewController
+{
+    NSString *viewSizeName = [[self class] viewSizeNameForViewController:viewController];
+    NSString *viewSizeString = [[NSUserDefaults standardUserDefaults] objectForKey:viewSizeName];
+    return NSSizeFromString(viewSizeString);
+}
+
 + (NSString *)viewSizeNameForViewController:(NSViewController *)viewController
 {
     NSString *title = viewController.title;
@@ -181,11 +188,8 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
         [[self class] setupConstraintsForView:view inView:contentView];
         
         // Restore the frame for the view from NSUserDefaults
-        NSString *viewSizeName = [[self class] viewSizeNameForViewController:viewController];
-        NSString *viewSizeString = [[NSUserDefaults standardUserDefaults] objectForKey:viewSizeName];
-        NSSize viewSize = NSSizeFromString(viewSizeString);
-        if (viewSizeString &&
-            viewSize.height != 0 &&
+        NSSize viewSize = [[self class] savedViewSizeForViewController:viewController];
+        if (viewSize.height != 0 &&
             viewSize.width != 0) {
             [viewController.view setFrameSize:viewSize];
         }

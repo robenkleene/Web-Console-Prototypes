@@ -22,6 +22,7 @@
 @interface WCLPreferencesWindowController ()
 @property (nonatomic, assign) NSInteger preferencePane;
 @property (nonatomic, strong) NSViewController *viewController;
++ (NSSize)savedViewSizeForViewController:(NSViewController *)viewController;
 @end
 
 @interface WCLPreferencesWindowControllerTests : XCTestCase
@@ -130,8 +131,6 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     XCTAssertTrue([NSStringFromRect(firstFrame) isEqualToString:NSStringFromRect(secondFrame)], @"The first frame should equal the second frame.");
 }
 
-// TODO: Test correct prefence pane is restored
-
 - (void)testPreferencePaneIsRestored
 {
     self.preferencesWindowController.preferencePane++;
@@ -140,14 +139,14 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     XCTAssertEqual(preferencePane, self.preferencesWindowController.preferencePane, @"The WCLPreferencePanes should be equal.");
 }
 
-- (void)testResizingPreferencesWindow
+- (void)testRestoringPreferencesWindowFrame
 {
 
     NSRect savedFrame = [[self class] savedFrameForPreferencesWindow];
     NSRect windowFrame = [self.preferencesWindowController.window frame];
 
     if (!NSRectEqualToRect(savedFrame, NSZeroRect)) {
-        // Only test if the first rect is equal if we've already stored a frame for this plugin
+        // Only test the frame if there's a saved frame
         // This is still necessary even though we clear the saved frame in setup because showing the preference window
         // saves the frame again.
         BOOL framesMatch = [[self class] windowFrameWithToolbar:windowFrame matchesWindowFrameWithoutToolbar:savedFrame];
@@ -171,6 +170,19 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     windowFrame = self.preferencesWindowController.window.frame;
     framesMatch = [[self class] windowFrameWithToolbar:windowFrame matchesWindowFrameWithoutToolbar:savedFrame];
     XCTAssertTrue(framesMatch, @"The NSWindow's frame should equal the saved frame.");
+}
+
+- (void)testRestoringPreferencesViewSizes
+{
+    NSSize savedSize = [WCLPreferencesWindowController savedViewSizeForViewController:self.preferencesWindowController.viewController];
+    NSRect savedFrame = [self.preferencesWindowController.viewController.view frame];
+    NSSize viewSize = savedFrame.size;
+    if (!NSSizeEqualToSize(savedSize, NSZeroSize)) {
+        // Only test the size if there's a saved size
+        // This is still necessary even though we clear the saved sizes in setup because showing the preference window
+        // saves the size again.
+        XCTAssertTrue(NSSizeEqualToSize(viewSize, savedSize), @"The NSView's size should equal the saved size.");
+    }
 }
 
 #pragma mark - Helpers
