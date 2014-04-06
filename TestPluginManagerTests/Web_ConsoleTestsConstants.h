@@ -9,6 +9,10 @@
 #warning Cut & Paste job from Web Console
 #define kTestTimeoutInterval 1
 
+#pragma mark Defaults
+
+#define kTestDefaultNewPluginName @"New Plugin"
+
 #pragma mark Test Plugin
 
 #define kTestPluginName @"Test Plugin"

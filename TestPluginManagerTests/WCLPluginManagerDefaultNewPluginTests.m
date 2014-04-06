@@ -28,12 +28,14 @@
 - (void)setUp
 {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:nil];
 }
 
 - (void)tearDown
 {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:nil];
+    
     [super tearDown];
 }
 
@@ -88,7 +90,7 @@
     XCTAssertEqual(defaultNewPlugin, pluginTwo, @"The default WCLPlugin should be the second WCLPlugin.");
 }
 
-- (void)testNewPlugin
+- (void)testDefaultNewPlugin
 {
     WCLPlugin *plugin = [[WCLPluginManager sharedPluginManager] newPlugin];
     plugin.name = kTestPluginName;
@@ -103,6 +105,19 @@
     XCTAssertFalse([newPlugin.name isEqualToString:plugin.name], @"The new WCLPlugin's name should not equal the WCLPlugin's name.");
     XCTAssertTrue([newPlugin.command isEqualToString:plugin.command], @"The new WCLPlugin's command should equal the WCLPlugin's command.");
     XCTAssertTrue([newPlugin.extensions isEqualToArray:plugin.extensions], @"The new WCLPlugin's file extensions should equal the WCLPlugin's file extensions.");
+}
+
+- (void)testSettingDefaultNewPluginToNil
+{
+    WCLPlugin *plugin = [[WCLPluginManager sharedPluginManager] newPlugin];
+    plugin.name = kTestPluginName;
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:plugin];
+    WCLPlugin *newPlugin = [[WCLPluginManager sharedPluginManager] newPlugin];
+    XCTAssertTrue([newPlugin.name hasPrefix:plugin.name], @"The new WCLPlugin's name should start with the WCLPlugin's name.");
+
+    [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:nil];
+    WCLPlugin *newPluginTwo = [[WCLPluginManager sharedPluginManager] newPlugin];
+    XCTAssertTrue([newPluginTwo.name hasPrefix:kTestDefaultNewPluginName], @"The new WCLPlugin's name should start with the default new plugin name.");
 }
 
 - (void)testDefaultNewPluginKeyValueObserving

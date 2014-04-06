@@ -10,6 +10,7 @@
 		4500C24918E8A39D00B7B0C6 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB6418B03A7A00CBBD29 /* XCTest.framework */; };
 		4500C24F18E8A39D00B7B0C6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4500C24D18E8A39D00B7B0C6 /* InfoPlist.strings */; };
 		4500C25A18E8A50800B7B0C6 /* WCLPreferencesWindowControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4500C25918E8A50800B7B0C6 /* WCLPreferencesWindowControllerTests.m */; };
+		45087C9618F0E2E900C18554 /* WCLPluginManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 45087C9518F0E2E900C18554 /* WCLPluginManagerTests.m */; };
 		451DAFD818D7D46E00AACC86 /* WCLTestPluginManagerTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 451DAFD718D7D46E00AACC86 /* WCLTestPluginManagerTestCase.m */; };
 		451DAFDC18D7E57000AACC86 /* WCLKeyValueObservingTestsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 451DAFDB18D7E57000AACC86 /* WCLKeyValueObservingTestsHelper.m */; };
 		4567DB4318B03A7A00CBBD29 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB4218B03A7A00CBBD29 /* Cocoa.framework */; };
@@ -70,6 +71,7 @@
 		4500C24E18E8A39D00B7B0C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4500C25218E8A39D00B7B0C6 /* PreferencesTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PreferencesTests-Prefix.pch"; sourceTree = "<group>"; };
 		4500C25918E8A50800B7B0C6 /* WCLPreferencesWindowControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPreferencesWindowControllerTests.m; sourceTree = "<group>"; };
+		45087C9518F0E2E900C18554 /* WCLPluginManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginManagerTests.m; sourceTree = "<group>"; };
 		451DAFD618D7D46E00AACC86 /* WCLTestPluginManagerTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLTestPluginManagerTestCase.h; sourceTree = "<group>"; };
 		451DAFD718D7D46E00AACC86 /* WCLTestPluginManagerTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLTestPluginManagerTestCase.m; sourceTree = "<group>"; };
 		451DAFD918D7DF9E00AACC86 /* Web_ConsoleTestsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Web_ConsoleTestsConstants.h; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 			children = (
 				4576716C18E1015B00EB720C /* WCLFileExtensionTests.m */,
 				4596913D18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m */,
+				45087C9518F0E2E900C18554 /* WCLPluginManagerTests.m */,
 				4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests.m */,
 				451DAFD618D7D46E00AACC86 /* WCLTestPluginManagerTestCase.h */,
 				451DAFD718D7D46E00AACC86 /* WCLTestPluginManagerTestCase.m */,
@@ -469,6 +472,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45087C9618F0E2E900C18554 /* WCLPluginManagerTests.m in Sources */,
 				4576716D18E1015B00EB720C /* WCLFileExtensionTests.m in Sources */,
 				4589996918D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests.m in Sources */,
 				45A8600F18E881A000468D0C /* WCLPluginManager+TestPluginManager.m in Sources */,
