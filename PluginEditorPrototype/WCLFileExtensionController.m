@@ -306,7 +306,6 @@ static void *WCLFileExtensionControllerContext;
                 break;
             }
             default:
-#warning Figure out case for NSKeyValueChangeReplacement?
                 NSAssert(NO, @"The NSKeyValueChangeKindKey is unhandled.");
                 break;
         }

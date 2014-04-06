@@ -130,7 +130,6 @@ static void *WCLPluginContext;
     }
 }
 
-
 - (void)dealloc
 {
     for (NSString *keyPath in kPluginObservedKeyPaths) {

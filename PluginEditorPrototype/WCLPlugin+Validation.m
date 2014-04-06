@@ -51,8 +51,7 @@
     NSString *newName = [self uniquePluginNameFromName:name index:2];
     
     if (!newName) {
-#warning Return GUID here
-        NSAssert(NO, @"Implement");
+        newName = self.identifier;
     }
     
     return newName;

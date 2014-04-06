@@ -89,4 +89,27 @@
     XCTAssertNil(error, @"The error should be nil.");    
 }
 
+- (void)testPluginNames
+{
+    for (NSUInteger i = 0; i < 105; i++) {
+        WCLPlugin *plugin = [self addedPlugin];
+ 
+        if (i == 0) {
+            XCTAssertTrue([plugin.name isEqualToString:kTestDefaultNewPluginName], @"The WCLPlugin's name equal the default new plugin name.");
+            continue;
+        }
+        
+        NSUInteger suffixCount = i + 1;
+        if (suffixCount > 99) {
+            XCTAssertTrue([plugin.name isEqualToString:plugin.identifier], @"The WCLPlugin's name should equal its identifier.");
+            continue;
+        }
+
+        
+        XCTAssertTrue([plugin.name hasPrefix:kTestDefaultNewPluginName], @"The WCLPlugin's name should start with the default new plugin name.");
+        NSString *suffix = [NSString stringWithFormat:@"%lu", (unsigned long)suffixCount];
+        XCTAssertTrue([plugin.name hasSuffix:suffix], @"The WCLPlugin's name should end with the suffix.");
+    }
+}
+
 @end
