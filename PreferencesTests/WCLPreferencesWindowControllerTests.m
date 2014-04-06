@@ -320,7 +320,6 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     return savedFrame.size;
 }
 
-
 #warning During merge to web console, use this frame comparison method when selecting destination frames
 + (BOOL)destinationFrame:(NSRect)destinationFrame isValidForWindowFrame:(NSRect)windowFrame
 {

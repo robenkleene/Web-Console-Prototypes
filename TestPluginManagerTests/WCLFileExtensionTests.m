@@ -60,13 +60,13 @@
     
     XCTAssertTrue([fileExtension.extension isEqualToString:kTestExtension] , @"The WCLFileExtension's extension should equal the test extension.");
     XCTAssertTrue(fileExtension.isEnabled == kFileExtensionDefaultEnabled, @"The WCLFileExtension's enabled should equal the default enabled.");
-    XCTAssertNil(fileExtension.selectedPlugin, @"The file extension's select plugin should be nil.");
+    XCTAssertEqual(fileExtension.selectedPlugin, [fileExtension.plugins firstObject], @"The WCLFileExtension's selected WCLPlugin should be the first WCLPlugin.");
 
     NSArray *plugins = [[WCLPluginManager sharedPluginManager] plugins];
     
     for (WCLPlugin *plugin in plugins) {
         BOOL matches = [[self class] plugin:plugin matchesForFileExtension:fileExtension];
-        XCTAssertTrue(matches, @"The plugin should match the file extension.");
+        XCTAssertTrue(matches, @"The WCLPlugin should match the WCLFileExtension.");
     }
 }
 
@@ -133,13 +133,13 @@
     XCTAssertFalse(observedChange, @"The change should not have been observed.");
     fileExtension.selectedPlugin = plugin;
     XCTAssertTrue(observedChange, @"The key-value observing change should have occurred.");
-    XCTAssertEqual(fileExtension.selectedPlugin, plugin, @"The WCLFileExtension's selected plugin should equal the plugin.");
+    XCTAssertEqual(fileExtension.selectedPlugin, plugin, @"The WCLFileExtension's selected WCLPlugin should equal the WCLPlugin.");
     
     // Test NSUserDefaults is set
     NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
     NSDictionary *fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
     NSString *pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
-    XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The plugin identifier value in the dictionary should match the WCLFileExtension's selected WCLPlugin's identifier.");
+    XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The WCLPlugin's identifier value in the dictionary should match the WCLFileExtension's selected WCLPlugin's identifier.");
     
     // Test changing the selected plugin
     
@@ -157,13 +157,13 @@
     XCTAssertFalse(observedChange, @"The change should not have been observed.");
     fileExtension.selectedPlugin = newPlugin;
     XCTAssertTrue(observedChange, @"The key-value observing change should have occurred.");
-    XCTAssertEqual(fileExtension.selectedPlugin, newPlugin, @"The WCLFileExtension's selected plugin should equal the plugin.");
+    XCTAssertEqual(fileExtension.selectedPlugin, newPlugin, @"The WCLFileExtension's selected WCLPlugin should equal the WCLPlugin.");
     
     // Test NSUserDefaults is set
     fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
     fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
     pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
-    XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The plugin identifier value in the dictionary should match the WCLFileExtension's selected WCLPlugin's identifier.");
+    XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The WCLPlugin identifier value in the dictionary should match the WCLFileExtension's selected WCLPlugin's identifier.");
 
     // Test setting the selected plugin to nil
     
@@ -178,20 +178,21 @@
     XCTAssertFalse(observedChange, @"The change should not have been observed.");
     fileExtension.selectedPlugin = nil;
     XCTAssertTrue(observedChange, @"The key-value observing change should have occurred.");
-    XCTAssertNil(fileExtension.selectedPlugin, @"The WCLFileExtension's selected plugin should be nil.");
     
-    // Test key was removed from NSUserDefaults
+    XCTAssertEqual(fileExtension.selectedPlugin, [fileExtension.plugins firstObject], @"The WCLFileExtension's selected WCLPlugin should be the first WCLPlugin.");
+
+    // Test key was set in NSUserDefaults
     fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
     fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
     pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
-    XCTAssertNil(pluginIdentifierInDictionary, @"The plugin identifier value in the dictionary should be nil.");
+    XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The WCLPlugin's identifier value in the dictionary should equal the select WCLPlugin's identifier.");
 }
 
 - (void)testChangingPluginsFileExtensions
 {
     WCLFileExtension *fileExtension = [[WCLFileExtensionController sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
     WCLPlugin *newPlugin = [self addedPlugin];
-    XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new plugin.");
+    XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new WCLPlugin.");
 
     // Test key-value observing for the plugins property
     __block NSArray *plugins = [fileExtension.plugins copy];
@@ -201,10 +202,10 @@
                                    completionBlock:^(NSDictionary *change) {
                                                plugins = [fileExtension.plugins copy];
                                            }];
-    XCTAssertFalse([plugins containsObject:newPlugin], @"The plugins should not contain the new plugin.");
+    XCTAssertFalse([plugins containsObject:newPlugin], @"The WCLPlugins should not contain the new WCLPlugin.");
     newPlugin.extensions = kTestExtensionsOne;
-    XCTAssertTrue([plugins containsObject:newPlugin], @"The key-value observing change notification for the WCLFileExtensions's plugins property should have occurred.");
-    XCTAssertTrue([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should contain the new plugin.");
+    XCTAssertTrue([plugins containsObject:newPlugin], @"The key-value observing change notification for the WCLFileExtensions's WCLPlugins property should have occurred.");
+    XCTAssertTrue([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should contain the new WCLPlugin.");
 
     // Test removing the file extension
 
@@ -230,18 +231,19 @@
     newPlugin.extensions = kTestExtensionsEmpty;
 
     // Test the file extensions plugins property changed
-    XCTAssertFalse([plugins containsObject:newPlugin], @"The key-value observing change notification for the WCLFileExtensions's plugins property should have occurred.");
-    XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new plugin.");
+    XCTAssertFalse([plugins containsObject:newPlugin], @"The key-value observing change notification for the WCLFileExtensions's WCLPlugins property should have occurred.");
+    XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new WCLPlugin.");
     
     // Test the file extensions selected plugin property changed
     XCTAssertTrue(observedChange, @"The key-value observing change should have occurred.");
-    XCTAssertNil(fileExtension.selectedPlugin, @"The WCLFileExtension's selected plugin should be nil.");
-
+    XCTAssertNotEqual(fileExtension.selectedPlugin, newPlugin, @"The WCLFileExtension's selected WCLPlugin should not be the new WCLPlugin.");
+    XCTAssertEqual(fileExtension.selectedPlugin, [fileExtension.plugins firstObject], @"The WCLFileExtension's selected WCLPlugin should be the first WCLPlugin.");
+    
     // Test key was removed from NSUserDefaults
     NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
     NSDictionary *fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
     NSString *pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
-    XCTAssertNil(pluginIdentifierInDictionary, @"The plugin identifier value in the dictionary should be nil.");
+    XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The WCLPlugin's identifier value in the dictionary should equal the select WCLPlugin's identifier.");
 }
 
 - (void)testDeletingSelectedPlugin
@@ -275,18 +277,19 @@
     [self deletePlugin:newPlugin];
     
     // Test the file extensions plugins property changed
-    XCTAssertFalse([plugins containsObject:newPlugin], @"The key-value observing change notification for the WCLFileExtensions's plugins property should have occurred.");
-    XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new plugin.");
+    XCTAssertFalse([plugins containsObject:newPlugin], @"The key-value observing change notification for the WCLFileExtensions's WCLPlugins property should have occurred.");
+    XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new WCLPlugin.");
     
     // Test the file extensions selected plugin property changed
     XCTAssertTrue(observedChange, @"The key-value observing change should have occurred.");
-    XCTAssertNil(fileExtension.selectedPlugin, @"The WCLFileExtension's selected plugin should be nil.");
+    XCTAssertNotEqual(fileExtension.selectedPlugin, newPlugin, @"The WCLFileExtension's selected WCLPlugin should not be the new WCLPlugin.");
+    XCTAssertEqual(fileExtension.selectedPlugin, [fileExtension.plugins firstObject], @"The WCLFileExtension's selected WCLPlugin should be the first WCLPlugin.");
     
     // Test key was removed from NSUserDefaults
     NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension fileExtensionToPluginDictionary];
     NSDictionary *fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
     NSString *pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
-    XCTAssertNil(pluginIdentifierInDictionary, @"The plugin identifier value in the dictionary should be nil.");
+    XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The WCLPlugin identifier value in the dictionary should equal the select WCLPlugin's identifier.");
 }
 
 // TODO: Test selectedPlugin validation

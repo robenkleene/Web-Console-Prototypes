@@ -77,19 +77,30 @@ static void *WCLFileExtensionContext;
         _selectedPlugin = [[WCLPluginManager sharedPluginManager] pluginWithIdentifier:identifier];
     }
     
+    if (!_selectedPlugin) {
+        _selectedPlugin = [self.plugins firstObject];
+    }
+
+    [self saveSelectedPlugin];
+    
     return _selectedPlugin;
 }
 
 - (void)setSelectedPlugin:(WCLPlugin *)selectedPlugin
 {
-    if (self.selectedPlugin == selectedPlugin) {
+    if (_selectedPlugin == selectedPlugin) {
         return;
     }
 
     _selectedPlugin = selectedPlugin;
 
+    [self saveSelectedPlugin];
+}
+
+- (void)saveSelectedPlugin
+{
     if (_selectedPlugin) {
-        [self.fileExtensionPluginDictionary setValue:selectedPlugin.identifier
+        [self.fileExtensionPluginDictionary setValue:_selectedPlugin.identifier
                                               forKey:kFileExtensionPluginIdentifierKey];
     } else {
         [self.fileExtensionPluginDictionary removeObjectForKey:kFileExtensionPluginIdentifierKey];
