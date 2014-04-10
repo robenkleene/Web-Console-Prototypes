@@ -1,0 +1,13 @@
+doctype 5
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    link(rel='stylesheet', href='css/mocha.css')
+    script(src='js/test_helper.js')
+    title= "Bullets Tests"
+    - var resourceBasePath = '../../example/'
+    include ../../../example/jade/css.jade
+    include ../../../example/jade/javascript.jade
+  body
+    include ../../../example/jade/content.jade
+    include mocha.html

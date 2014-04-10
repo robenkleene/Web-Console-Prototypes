@@ -1,0 +1,30 @@
+require 'shellwords'
+require 'webconsole'
+require WebConsole::shared_test_resource("ruby/test_constants")
+require WebConsole::Tests::TEST_HELPER_FILE
+
+task :default => ['wccoffee:tests']
+
+namespace :wccoffee do
+  
+  task :tests => [:clean_up]
+
+  task :test_input_controller do
+    input_controller_tests_file = File.join(File.dirname(__FILE__), "tc_input_controller.rb")
+    ruby Shellwords.escape(input_controller_tests_file)
+  end
+
+  task :test_output_controller => [:test_input_controller] do
+    output_controller_tests_file = File.join(File.dirname(__FILE__), "tc_output_controller.rb")
+    ruby Shellwords.escape(output_controller_tests_file)
+  end
+
+  task :test_wrapper => [:test_output_controller] do
+    wrapper_tests_file = File.join(File.dirname(__FILE__), "tc_wrapper.rb")
+    ruby Shellwords.escape(wrapper_tests_file)
+  end
+
+  task :clean_up => [:test_wrapper] do
+    WebConsole::Tests::Helper::quit
+  end
+end

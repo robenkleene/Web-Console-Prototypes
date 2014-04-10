@@ -1,0 +1,15 @@
+
+	<div id="mocha"></div>
+	<script src="js/mocha.js"></script>
+	<script src="js/chai.js"></script>
+	<script>
+	  mocha.ui('bdd');
+	  mocha.reporter('html');
+	  // expect = chai.expect;
+	  var should = chai.should();
+	</script>
+	<script src="../test.js"></script>
+	<script>
+	  if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
+	  else { mocha.run(); }
+	</script>

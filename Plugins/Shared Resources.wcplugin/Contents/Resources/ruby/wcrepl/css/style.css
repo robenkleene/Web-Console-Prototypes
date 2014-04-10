@@ -1,0 +1,20 @@
+body {
+	font-family: "Menlo", monospace;
+	font-size: 13px;
+}
+li {
+	list-style: none;
+	white-space: pre-wrap;
+}
+pre {
+	position: relative;
+	padding-left: 18px;
+}
+pre.output code:before
+{
+    content: '>';
+	font-weight: bold;
+	left: 7px;
+	position: absolute;
+	opacity: 0.5;
+}

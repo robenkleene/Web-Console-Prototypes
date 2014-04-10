@@ -39,7 +39,9 @@ static void *WCLPluginContext;
 
 - (NSArray *)extensions
 {
-    if (!self.extensionsData) return nil;
+    if (!self.extensionsData) {
+        return nil;
+    }
     
     return [NSKeyedUnarchiver unarchiveObjectWithData:self.extensionsData];
 }

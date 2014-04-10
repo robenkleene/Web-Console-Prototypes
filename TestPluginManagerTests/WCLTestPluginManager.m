@@ -9,18 +9,14 @@
 #import "WCLTestPluginManager.h"
 
 #import "WCLPluginDataController.h"
-#import "WCLPlugin+Validation.h"
+
+#import "WCLTestPlugin.h"
+
+#import <objc/runtime.h>
 
 
 #define kTestPluginModelName @"WCLTestPluginPrototype"
 #define kTestPluginEntityName @"WCLTestPlugin"
-
-
-#pragma mark - WCLTestPlugin
-
-#warning Just a placeholder for now, eventually this will be an NSManagedObject subclass that mimics WCLPlugin
-@implementation WCLTestPlugin
-@end
 
 
 #pragma mark - WCLTestPluginDataController
@@ -55,15 +51,15 @@
         NSAssert(NO, @"Error saving.");
     }
     
-    return plugin;
+    return (WCLPlugin *)plugin;
 }
 
-- (WCLPlugin *)newPluginFromPlugin:(WCLPlugin *)plugin
+- (WCLPlugin *)newPluginFromPlugin:(WCLTestPlugin *)plugin
 {
     NSEntityDescription *entity = [NSEntityDescription entityForName:kTestPluginEntityName
                                               inManagedObjectContext:self.managedObjectContext];
     WCLTestPlugin *newPlugin = [[WCLTestPlugin alloc] initWithEntity:entity
-                                   insertIntoManagedObjectContext:self.managedObjectContext];
+                                      insertIntoManagedObjectContext:self.managedObjectContext];
     
     newPlugin.command = plugin.command;
     newPlugin.extensions = plugin.extensions;
@@ -78,10 +74,10 @@
         NSAssert(NO, @"Error saving.");
     }
     
-    return newPlugin;
+    return (WCLPlugin *)newPlugin;
 }
 
-- (void)deletePlugin:(WCLPlugin *)plugin
+- (void)deletePlugin:(WCLTestPlugin *)plugin
 {
     [self.managedObjectContext deleteObject:plugin];
     
@@ -167,7 +163,63 @@
 @end
 
 
+#pragma mark - WCLPluginManager
+
+void WCLSwizzleClassMethod(Class class,
+                           SEL originalSelector,
+                           SEL overrideSelector)
+{
+    
+    Method originalMethod = class_getClassMethod(class, originalSelector);
+    Method overrideMethod = class_getClassMethod(class, overrideSelector);
+    
+    class = object_getClass((id)class);
+    
+    if(class_addMethod(class, originalSelector,
+                       method_getImplementation(overrideMethod),
+                       method_getTypeEncoding(overrideMethod))) {
+        class_replaceMethod(class, overrideSelector,
+                            method_getImplementation(originalMethod),
+                            method_getTypeEncoding(originalMethod));
+    } else {
+        method_exchangeImplementations(originalMethod, overrideMethod);
+    }
+}
+
+
+@interface WCLPluginManager (TestPluginManager)
+@end
+
+
+@implementation WCLPluginManager (TestPluginManager)
+
++ (instancetype)overrideSharedPluginManager
+{
+    static dispatch_once_t pred;
+    static WCLTestPluginManager *pluginManager = nil;
+    
+    dispatch_once(&pred, ^{
+        pluginManager = [[WCLTestPluginManager alloc] init];
+    });
+    
+    return pluginManager;
+}
+
++ (void)load
+{
+    WCLSwizzleClassMethod([WCLPluginManager class],
+                          @selector(sharedPluginManager),
+                          @selector(overrideSharedPluginManager));
+}
+
+@end
+
+
 #pragma mark - WCLTestPluginManager
+
+@interface WCLTestPluginManager ()
+@property (nonatomic, strong, readonly) WCLTestPluginDataController *pluginDataController;
+@end
 
 @implementation WCLTestPluginManager
 

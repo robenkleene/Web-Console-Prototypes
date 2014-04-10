@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    title Git
+    == shared_stylesheet_link_tag "raster"
+    == shared_stylesheet_link_tag "../js/bullets/example/css/bullets"
+    == shared_javascript_include_tag "handlebars"
+    == shared_javascript_include_tag "mousetrap"
+    == shared_javascript_include_tag "zepto"
+    == shared_javascript_include_tag "bullets/bullets"
+    == shared_javascript_include_tag "bullets/example/js/mousetrap_config"
+    link href="css/style.css" rel="stylesheet"
+    script type="text/javascript" src="js/coffee-script.js"
+    script type="text/coffeescript" src="coffee/wcgit.coffee"
+    script id="branch-template" type="text/x-handlebars-template"
+      p#branch_message 
+                       | On branch 
+                       strong#branch {{branchName}}
+  	script id="staged-template" type="text/x-handlebars-template"
+  		div#staged
+  			h2 Changes to be committed
+  			table
+  				caption use "git reset HEAD &lt;file&gt;..." to unstage
+  				tbody
+
+body
+  h1 Git

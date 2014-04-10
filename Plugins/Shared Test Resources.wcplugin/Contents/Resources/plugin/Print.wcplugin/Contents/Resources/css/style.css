@@ -1,0 +1,7 @@
+body {
+	font-family: "Menlo", monospace;
+}
+li {
+	list-style: none;
+	white-space: pre-wrap;
+}

@@ -1,0 +1,28 @@
+{
+  "name": "bullets",
+  "version": "0.0.1",
+  "description": "A simple JavaScript library to give outliner functionality to an HTML document.",
+  "main": "bullets.js",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test/run_tests.rb"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robenkleene/bullets"
+  },
+  "author": "Roben Kleene",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/robenkleene/bullets/issues"
+  },
+  "homepage": "https://github.com/robenkleene/bullets",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jade": "~0.8.0",
+    "grunt-contrib-watch": "~0.5.3"
+  }
+}
