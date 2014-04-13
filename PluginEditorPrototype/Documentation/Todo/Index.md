@@ -1,4 +1,4 @@
-# Plugin Editor 2
+# Index
 
 Making the plugin editor work with a `WCLTestPlugin` that is not a `WCLPlugin` subclass.
 
