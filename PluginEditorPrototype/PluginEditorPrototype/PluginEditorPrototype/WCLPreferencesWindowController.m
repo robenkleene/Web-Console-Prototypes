@@ -63,7 +63,9 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
 
     self.viewController = [self viewControllerForPreferencePane:self.preferencePane];
     
-    [[[self window] contentView] setWantsLayer:YES];
+    // TODO: `setWantsLayer:YES` is required for subview animations, but it causes a display bug
+    // on NSToolbarItem's selectable state
+    //    [[[self window] contentView] setWantsLayer:YES];
 }
 
 
