@@ -9,6 +9,8 @@
 import Cocoa
 import XCTest
 
+let testPluginName = "HTML"
+
 class PluginManagerPrototypeTests: XCTestCase {
     
     override func setUp() {
@@ -23,6 +25,9 @@ class PluginManagerPrototypeTests: XCTestCase {
     
     func testExample() {
         // This is an example of a functional test case.
+
+        let path = self.dynamicType.pathToPlugin(testPluginName)
+        
         XCTAssert(true, "Pass")
     }
     
@@ -33,4 +38,12 @@ class PluginManagerPrototypeTests: XCTestCase {
         }
     }
     
+    class func pathToPlugin(name: String) -> String {
+        let bundle = NSBundle(forClass:self)
+        let builtInPlugInsPath = bundle.builtInPlugInsPath
+        
+        println("builtInPlugInsPath = \(builtInPlugInsPath)")
+        
+        return ""
+    }
 }
