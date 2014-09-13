@@ -22,6 +22,8 @@
 		459A8E6819C4BC2900BE6A72 /* HTML.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 459A8E5F19C4BC2900BE6A72 /* HTML.wcplugin */; };
 		459A8E6919C4BC2900BE6A72 /* Git.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 459A8E6019C4BC2900BE6A72 /* Git.wcplugin */; };
 		459A8E6A19C4BC2900BE6A72 /* Coffee.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 459A8E6119C4BC2900BE6A72 /* Coffee.wcplugin */; };
+		459A8E9F19C4C56200BE6A72 /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459A8E9E19C4C56200BE6A72 /* PluginManager.swift */; };
+		45C9DA0D19C4D859004BE31A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C9DA0C19C4D859004BE31A /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +68,8 @@
 		459A8E5F19C4BC2900BE6A72 /* HTML.wcplugin */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HTML.wcplugin; path = ../Plugins/HTML.wcplugin; sourceTree = "<group>"; };
 		459A8E6019C4BC2900BE6A72 /* Git.wcplugin */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Git.wcplugin; path = ../Plugins/Git.wcplugin; sourceTree = "<group>"; };
 		459A8E6119C4BC2900BE6A72 /* Coffee.wcplugin */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Coffee.wcplugin; path = ../Plugins/Coffee.wcplugin; sourceTree = "<group>"; };
+		459A8E9E19C4C56200BE6A72 /* PluginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginManager.swift; sourceTree = "<group>"; };
+		45C9DA0C19C4D859004BE31A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,8 @@
 				459A8DF419C4B14E00BE6A72 /* MainMenu.xib */,
 				459A8DEC19C4B14E00BE6A72 /* Supporting Files */,
 				459A8E0B19C4B2B300BE6A72 /* Plugin.swift */,
+				459A8E9E19C4C56200BE6A72 /* PluginManager.swift */,
+				45C9DA0C19C4D859004BE31A /* Constants.swift */,
 			);
 			path = PluginManagerPrototype;
 			sourceTree = "<group>";
@@ -268,6 +274,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45C9DA0D19C4D859004BE31A /* Constants.swift in Sources */,
+				459A8E9F19C4C56200BE6A72 /* PluginManager.swift in Sources */,
 				459A8E0C19C4B2B300BE6A72 /* Plugin.swift in Sources */,
 				459A8DF119C4B14E00BE6A72 /* AppDelegate.swift in Sources */,
 				459A8DEF19C4B14E00BE6A72 /* main.swift in Sources */,
