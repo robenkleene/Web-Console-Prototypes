@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>CDD037D1-FF01-490A-9216-E26F0B3DE726</string>
+	<key>IDESourceControlProjectName</key>
+	<string>PluginManagerPrototype</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>7BEFC773-E963-4C04-94FA-96239D47F92D</key>
+		<string>ssh://github.com/robenkleene/Web-Console-Prototypes.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>PluginManagerPrototype/PluginManagerPrototype.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>7BEFC773-E963-4C04-94FA-96239D47F92D</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/robenkleene/Web-Console-Prototypes.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>7BEFC773-E963-4C04-94FA-96239D47F92D</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>7BEFC773-E963-4C04-94FA-96239D47F92D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Web Console Prototypes</string>
+		</dict>
+	</array>
+</dict>
+</plist>
