@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Search</title>
+	<%= shared_stylesheet_link_tag "raster" %>
+	<%= shared_stylesheet_link_tag "../js/bullets/example/css/bullets" %>
+	<link rel="stylesheet" href="css/style.css" />
+	<script id="file-template" type="text/x-handlebars-template">
+		<section>
+			<header>
+				<h5><a href="file://{{filePath}}">{{displayFilePath}}</a></h1>
+			</header>
+			<ul>
+			</ul>
+		</section>
+	</script>
+	<script id="line-template" type="text/x-handlebars-template">
+		<li><strong>{{number}}:</strong>{{{text}}}</li>
+	</script>
+	<script id="match-template" type="text/x-handlebars-template"><strong>{{text}}</strong></script>
+	<%= shared_javascript_include_tag "handlebars" %>
+	<%= shared_javascript_include_tag "mousetrap" %>
+	<%= shared_javascript_include_tag "zepto" %>
+	<script type="text/javascript" src="js/wcsearch.js"></script>
+	<%= shared_javascript_include_tag "bullets/bullets" %>
+	<%= shared_javascript_include_tag "bullets/example/js/mousetrap_config" %>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+require 'shellwords'
+require 'webconsole'
+require WebConsole::shared_test_resource("ruby/test_constants")
+require WebConsole::Tests::TEST_HELPER_FILE
+
+task :default => ['wcirb:tests']
+
+namespace :wcirb do
+  
+  task :tests => [:clean_up]
+
+  task :test_output_controller do
+    output_controller_tests_file = File.join(File.dirname(__FILE__), "tc_output_controller.rb")
+    ruby Shellwords.escape(output_controller_tests_file)
+  end
+
+  task :test_wrapper => [:test_output_controller] do
+    wrapper_tests_file = File.join(File.dirname(__FILE__), "tc_wrapper.rb")
+    ruby Shellwords.escape(wrapper_tests_file)
+  end
+
+  task :clean_up => [:test_wrapper] do
+    WebConsole::Tests::Helper::quit
+  end
+end

@@ -1,0 +1,10 @@
+- var sections = 10
+- var sectionSize = 5
+- for (var section = 0; section < sections; section++)
+  section
+    header
+      h5
+        a(href='google.com') Anchor #{section}
+      ul
+        - for (var listItem = 0; listItem < sectionSize; listItem++)
+          li List Item #{listItem}
