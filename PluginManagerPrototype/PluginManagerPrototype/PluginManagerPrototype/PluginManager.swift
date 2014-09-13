@@ -20,18 +20,18 @@ class PluginManager: NSObject {
     }
 
     func plugin(name: String) -> Plugin? {
-        return nil
+        return nameToPlugin[name]
     }
     
     func plugins() -> [Plugin] {
-        let nameToPluginValues = nameToPlugin.values
+        // TOODO Why can't I do something like this? `return nameToPlugin.values as [Plugin]`
         
-        
-//        if let plugins = nameToPlugin.values() as [Plugin] {
-//            
-//        }
-
-        return []
+        var plugins = [Plugin]()
+        let values = nameToPlugin.values
+        for value in values {
+            plugins.append(value)
+        }
+        return plugins
     }
 }
 
