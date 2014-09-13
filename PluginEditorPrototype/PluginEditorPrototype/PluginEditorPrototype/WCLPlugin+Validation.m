@@ -24,7 +24,7 @@
         return NO;
     }
     
-    if (![[self class] nameContainsOnlyValidCharacters:name]) {
+    if (![WCLPlugin nameContainsOnlyValidCharacters:name]) {
         return NO;
     }
     
@@ -103,7 +103,7 @@
     for (NSString *extension in extensionsCountedSet) {
         if (![extension isKindOfClass:[NSString class]] || // Must be a string
             !(extension.length > 0) || // Must be greater than zero characters
-            !([[self class] extensionContainsOnlyValidCharacters:extension])) { // Must only contain valid characters
+            !([WCLPlugin extensionContainsOnlyValidCharacters:extension])) { // Must only contain valid characters
             return NO;
         }
         
