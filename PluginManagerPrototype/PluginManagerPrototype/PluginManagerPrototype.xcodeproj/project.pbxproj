@@ -24,6 +24,15 @@
 		459A8E6A19C4BC2900BE6A72 /* Coffee.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 459A8E6119C4BC2900BE6A72 /* Coffee.wcplugin */; };
 		459A8E9F19C4C56200BE6A72 /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459A8E9E19C4C56200BE6A72 /* PluginManager.swift */; };
 		45C9DA0D19C4D859004BE31A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C9DA0C19C4D859004BE31A /* Constants.swift */; };
+		45C9DA0F19C4E5A5004BE31A /* Shared Test Resources.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E5919C4BC2900BE6A72 /* Shared Test Resources.wcplugin */; };
+		45C9DA1019C4E5A9004BE31A /* Shared Resources.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E5A19C4BC2900BE6A72 /* Shared Resources.wcplugin */; };
+		45C9DA1119C4E5AD004BE31A /* Search.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E5B19C4BC2900BE6A72 /* Search.wcplugin */; };
+		45C9DA1219C4E5B0004BE31A /* Node.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E5C19C4BC2900BE6A72 /* Node.wcplugin */; };
+		45C9DA1319C4E5B3004BE31A /* Markdown.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E5D19C4BC2900BE6A72 /* Markdown.wcplugin */; };
+		45C9DA1419C4E5B6004BE31A /* IRB.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E5E19C4BC2900BE6A72 /* IRB.wcplugin */; };
+		45C9DA1519C4E5B9004BE31A /* HTML.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E5F19C4BC2900BE6A72 /* HTML.wcplugin */; };
+		45C9DA1619C4E5BC004BE31A /* Git.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E6019C4BC2900BE6A72 /* Git.wcplugin */; };
+		45C9DA1719C4E5C0004BE31A /* Coffee.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E6119C4BC2900BE6A72 /* Coffee.wcplugin */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,12 +46,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		459A8E4F19C4B86600BE6A72 /* CopyFiles */ = {
+		45C9DA0E19C4E59B004BE31A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				45C9DA1719C4E5C0004BE31A /* Coffee.wcplugin in CopyFiles */,
+				45C9DA1619C4E5BC004BE31A /* Git.wcplugin in CopyFiles */,
+				45C9DA1519C4E5B9004BE31A /* HTML.wcplugin in CopyFiles */,
+				45C9DA1419C4E5B6004BE31A /* IRB.wcplugin in CopyFiles */,
+				45C9DA1319C4E5B3004BE31A /* Markdown.wcplugin in CopyFiles */,
+				45C9DA1219C4E5B0004BE31A /* Node.wcplugin in CopyFiles */,
+				45C9DA1119C4E5AD004BE31A /* Search.wcplugin in CopyFiles */,
+				45C9DA1019C4E5A9004BE31A /* Shared Resources.wcplugin in CopyFiles */,
+				45C9DA0F19C4E5A5004BE31A /* Shared Test Resources.wcplugin in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,6 +191,7 @@
 			buildConfigurationList = 459A8E0519C4B14E00BE6A72 /* Build configuration list for PBXNativeTarget "PluginManagerPrototype" */;
 			buildPhases = (
 				459A8DE519C4B14E00BE6A72 /* Sources */,
+				45C9DA0E19C4E59B004BE31A /* CopyFiles */,
 				459A8DE619C4B14E00BE6A72 /* Frameworks */,
 				459A8DE719C4B14E00BE6A72 /* Resources */,
 			);
@@ -190,7 +209,6 @@
 			buildConfigurationList = 459A8E0819C4B14E00BE6A72 /* Build configuration list for PBXNativeTarget "PluginManagerPrototypeTests" */;
 			buildPhases = (
 				459A8DF719C4B14E00BE6A72 /* Sources */,
-				459A8E4F19C4B86600BE6A72 /* CopyFiles */,
 				459A8DF819C4B14E00BE6A72 /* Frameworks */,
 				459A8DF919C4B14E00BE6A72 /* Resources */,
 			);

@@ -11,8 +11,27 @@ import Cocoa
 let pluginManagerSharedInstance = PluginManager()
 
 class PluginManager: NSObject {
+    lazy var nameToPlugin = [String : Plugin]()
     func addedPlugin(path: String) -> Plugin? {
+        if let plugin = Plugin.pluginWithPath(path) {
+            nameToPlugin[plugin.name] = plugin
+        }
         return nil
+    }
+
+    func plugin(name: String) -> Plugin? {
+        return nil
+    }
+    
+    func plugins() -> [Plugin] {
+        let nameToPluginValues = nameToPlugin.values
+        
+        
+//        if let plugins = nameToPlugin.values() as [Plugin] {
+//            
+//        }
+
+        return []
     }
 }
 

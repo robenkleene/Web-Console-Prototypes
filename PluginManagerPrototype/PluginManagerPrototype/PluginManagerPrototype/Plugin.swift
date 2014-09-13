@@ -9,8 +9,27 @@
 import Cocoa
 
 class Plugin: NSObject {
-    var bundle: NSBundle
-    init(path: String) {
-        self.bundle = NSBundle(path: path)
+    let pluginNameKey = "WCName"
+    let bundle: NSBundle
+    var name: String {
+        get {
+            return bundle.infoDictionary[pluginNameKey] as NSString
+        }
     }
+    
+    private init(_ bundle: NSBundle) {
+        self.bundle = bundle
+    }
+
+    class func pluginWithPath(path: String) -> Plugin? {
+        if let bundle = NSBundle(path: path) as NSBundle? {
+            let plugin = Plugin(bundle)
+            if (countElements(plugin.name) > 0) {
+               return plugin
+            }
+        }
+        println("Failed to load a plugin at path \(path)")
+        return nil
+    }
+    
 }

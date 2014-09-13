@@ -15,6 +15,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(aNotification: NSNotification?) {
         // Insert code here to initialize your application
+
+
+        pluginManagerSharedInstance.loadPlugins()
+        // Load plugins
+        // Then list plugins
     }
 
     func applicationWillTerminate(aNotification: NSNotification?) {
