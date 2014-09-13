@@ -15,7 +15,7 @@
 
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name
 {
-    return [WCLPlugin string:name containsOnlyCharactersInCharacterSet:[WCLPlugin nameAllowedCharacterSet]];
+    return [self string:name containsOnlyCharactersInCharacterSet:[WCLPlugin nameAllowedCharacterSet]];
 }
 
 - (BOOL)nameIsValid:(NSString *)name
@@ -24,7 +24,7 @@
         return NO;
     }
     
-    if (![WCLPlugin nameContainsOnlyValidCharacters:name]) {
+    if (![[self class] nameContainsOnlyValidCharacters:name]) {
         return NO;
     }
     
@@ -61,7 +61,7 @@
 
 - (BOOL)isUniqueName:(NSString *)name
 {
-    WCLPlugin *existingPlugin = [[WCLPluginManager sharedPluginManager] pluginWithName:name];
+    id existingPlugin = [[WCLPluginManager sharedPluginManager] pluginWithName:name];
     
     if (!existingPlugin) {
         return YES;
@@ -103,7 +103,7 @@
     for (NSString *extension in extensionsCountedSet) {
         if (![extension isKindOfClass:[NSString class]] || // Must be a string
             !(extension.length > 0) || // Must be greater than zero characters
-            !([WCLPlugin extensionContainsOnlyValidCharacters:extension])) { // Must only contain valid characters
+            !([[self class] extensionContainsOnlyValidCharacters:extension])) { // Must only contain valid characters
             return NO;
         }
         
@@ -134,12 +134,12 @@
 
 + (BOOL)extensionContainsOnlyValidCharacters:(NSString *)extension
 {
-    return [WCLPlugin string:extension containsOnlyCharactersInCharacterSet:[WCLPlugin fileExtensionAllowedCharacterSet]];
+    return [self string:extension containsOnlyCharactersInCharacterSet:[self fileExtensionAllowedCharacterSet]];
 }
 
 + (NSString *)extensionContainingOnlyValidCharactersFromExtension:(NSString *)extension
 {
-    NSCharacterSet *disallowedCharacterSet = [[WCLPlugin fileExtensionAllowedCharacterSet] invertedSet];
+    NSCharacterSet *disallowedCharacterSet = [[self fileExtensionAllowedCharacterSet] invertedSet];
 
     NSString *validExtension = [[extension componentsSeparatedByCharactersInSet:disallowedCharacterSet] componentsJoinedByString:@""];
 

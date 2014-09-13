@@ -10,9 +10,11 @@
 
 #import "WCLPlugin.h"
 
+#import "WCLPluginManager.h"
+
 #import <objc/runtime.h>
 
-#define kPluginObservedKeyPaths [NSArray arrayWithObjects:WCLPluginNameKey, @"command", WCLPluginExtensionsKey, @"type", nil]
+#define kTestPluginObservedKeyPaths [NSArray arrayWithObjects:WCLPluginNameKey, @"command", WCLPluginExtensionsKey, @"type", nil]
 
 
 @interface WCLTestPlugin ()
@@ -23,74 +25,308 @@
 
 static void *WCLTestPluginContext;
 
+@synthesize defaultNewPlugin = _defaultNewPlugin;
 @dynamic command;
 @dynamic extensionsData;
 @dynamic name;
 @dynamic type;
 @dynamic identifier;
 
-#pragma mark Use WCLPlugin's Implementation
+#pragma mark Properties
 
-- (BOOL)isDefaultNewPlugin
-{
-    NSAssert(NO, @"WCLPlugin's implementation should be called.");
-    return NO;
-}
+//- (void)setExtensions:(NSArray *)extensions
+//{
+//    self.extensionsData = [NSKeyedArchiver archivedDataWithRootObject:extensions];
+//}
+//
+//- (NSArray *)extensions
+//{
+//    if (!self.extensionsData) {
+//        return nil;
+//    }
+//    
+//    return [NSKeyedUnarchiver unarchiveObjectWithData:self.extensionsData];
+//}
 
-- (void)setDefaultNewPlugin:(BOOL)defaultNewPlugin
+- (BOOL)validateExtensions:(id *)ioValue error:(NSError * __autoreleasing *)outError
 {
-    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+    NSArray *extensions;
+    if ([*ioValue isKindOfClass:[NSArray class]]) {
+        extensions = *ioValue;
+    }
+    
+    BOOL valid = [self extensionsAreValid:extensions];
+    if (!valid && outError) {
+        NSString *errorMessage = @"The file extensions must be unique, and can only contain alphanumeric characters.";
+        NSString *errorString = NSLocalizedString(errorMessage, @"Invalid file extensions error.");
+        
+        NSDictionary *userInfoDict = @{NSLocalizedDescriptionKey: errorString};
+        *outError = [[NSError alloc] initWithDomain:kErrorDomain
+                                               code:kErrorCodeInvalidPlugin
+                                           userInfo:userInfoDict];
+    }
+    
+    return valid;
 }
 
 - (BOOL)validateName:(id *)ioValue error:(NSError * __autoreleasing *)outError
 {
-    NSAssert(NO, @"WCLPlugin's implementation should be called.");
-    return NO;
+    NSString *name;
+    if ([*ioValue isKindOfClass:[NSString class]]) {
+        name = *ioValue;
+    }
+    
+    BOOL valid = [self nameIsValid:name];
+    if (!valid && outError) {
+        NSString *errorMessage = @"The plugin name must be unique, and can only contain alphanumeric characters, spaces, hyphens and underscores.";
+        NSString *errorString = NSLocalizedString(errorMessage, @"Invalid plugin name error.");
+        
+        NSDictionary *userInfoDict = @{NSLocalizedDescriptionKey: errorString};
+        *outError = [[NSError alloc] initWithDomain:kErrorDomain
+                                               code:kErrorCodeInvalidPlugin
+                                           userInfo:userInfoDict];
+    }
+    
+    return valid;
 }
 
-- (BOOL)validateExtensions:(id *)ioValue error:(NSError * __autoreleasing *)outError
+- (void)setDefaultNewPlugin:(BOOL)defaultNewPlugin
 {
-    NSAssert(NO, @"WCLPlugin's implementation should be called.");
-    return NO;
+    if (_defaultNewPlugin != defaultNewPlugin) {
+        _defaultNewPlugin = defaultNewPlugin;
+    }
 }
 
-- (BOOL)extensionsAreValid:(NSArray *)extensions
+- (BOOL)isDefaultNewPlugin
 {
-    NSAssert(NO, @"WCLPlugin's implementation should be called.");
-    return NO;
+    BOOL isDefaultNewPlugin = [[WCLPluginManager sharedPluginManager] defaultNewPlugin] == self;
+    
+    if (_defaultNewPlugin != isDefaultNewPlugin) {
+        _defaultNewPlugin = isDefaultNewPlugin;
+    }
+    
+    return _defaultNewPlugin;
+}
+
+#pragma mark Name Public
+
++ (BOOL)nameContainsOnlyValidCharacters:(NSString *)name
+{
+    return [self string:name containsOnlyCharactersInCharacterSet:[self nameAllowedCharacterSet]];
 }
 
 - (BOOL)nameIsValid:(NSString *)name
 {
-    NSAssert(NO, @"WCLPlugin's implementation should be called.");
-    return NO;
-}
-
-- (NSString *)uniquePluginNameFromName:(NSString *)name
-{
-    NSAssert(NO, @"WCLPlugin's implementation should be called.");
-    return nil;
+    if (!name) {
+        return NO;
+    }
+    
+    if (![[self class] nameContainsOnlyValidCharacters:name]) {
+        return NO;
+    }
+    
+    if (![self isUniqueName:name]) {
+        return NO;
+    }
+    
+#warning Need to check that a name can be written to disk here too to make sure it is valid.
+    
+    return YES;
 }
 
 - (void)renameWithUniqueName
 {
-    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+    self.name = [self uniquePluginNameFromName:self.name];
 }
+
+- (NSString *)uniquePluginNameFromName:(NSString *)name
+{
+    if ([self isUniqueName:name]) {
+        return name;
+    }
+    
+    NSString *newName = [self uniquePluginNameFromName:name index:2];
+    
+    if (!newName) {
+        newName = self.identifier;
+    }
+    
+    return newName;
+}
+
+#pragma mark Name Private
 
 - (BOOL)isUniqueName:(NSString *)name
 {
-    NSAssert(NO, @"WCLPlugin's implementation should be called.");
-    return NO;
+    id existingPlugin = [[WCLPluginManager sharedPluginManager] pluginWithName:name];
+    
+    if (!existingPlugin) {
+        return YES;
+    }
+    
+    return self == existingPlugin;
 }
 
 - (NSString *)uniquePluginNameFromName:(NSString *)name index:(NSUInteger)index
 {
-    NSAssert(NO, @"WCLPlugin's implementation should be called.");
-    return nil;
+    if (index > 99) {
+        return nil;
+    }
+    
+    NSString *newName = [NSString stringWithFormat:@"%@ %lu", name, (unsigned long)index];
+    if ([self isUniqueName:newName]) {
+        return newName;
+    }
+    
+    index++;
+    return [self uniquePluginNameFromName:name
+                                    index:index];
 }
 
-#pragma mark Swizzling
++ (NSCharacterSet *)nameAllowedCharacterSet
+{
+    NSMutableCharacterSet *allowedCharacterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"_- "];
+    [allowedCharacterSet formUnionWithCharacterSet:[NSCharacterSet alphanumericCharacterSet]];
+    
+    return allowedCharacterSet;
+}
 
+
+#pragma mark File Extensions Public
+
+- (BOOL)extensionsAreValid:(NSArray *)extensions
+{
+    NSCountedSet *extensionsCountedSet = [[NSCountedSet alloc] initWithArray:extensions];
+    for (NSString *extension in extensionsCountedSet) {
+        if (![extension isKindOfClass:[NSString class]] || // Must be a string
+            !(extension.length > 0) || // Must be greater than zero characters
+            !([[self class] extensionContainsOnlyValidCharacters:extension])) { // Must only contain valid characters
+            return NO;
+        }
+        
+        if ([extensionsCountedSet countForObject:extension] > 1) {
+            // Must not contain duplicates
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
++ (NSArray *)validExtensionsFromExtensions:(NSArray *)extensions
+{
+    NSMutableArray *validExtensions = [NSMutableArray array];
+    for (NSString *fileExtension in extensions) {
+        NSString *validFileExtension = [self extensionContainingOnlyValidCharactersFromExtension:fileExtension];
+        if (validFileExtension &&
+            ![validExtensions containsObject:validFileExtension]) {
+            [validExtensions addObject:validFileExtension];
+        }
+    }
+    
+    return validExtensions;
+}
+
+#pragma mark File Extensions Private
+
++ (BOOL)extensionContainsOnlyValidCharacters:(NSString *)extension
+{
+    return [self string:extension containsOnlyCharactersInCharacterSet:[self fileExtensionAllowedCharacterSet]];
+}
+
++ (NSString *)extensionContainingOnlyValidCharactersFromExtension:(NSString *)extension
+{
+    NSCharacterSet *disallowedCharacterSet = [[self fileExtensionAllowedCharacterSet] invertedSet];
+    
+    NSString *validExtension = [[extension componentsSeparatedByCharactersInSet:disallowedCharacterSet] componentsJoinedByString:@""];
+    
+    if (!(validExtension.length > 0)) {
+        return nil;
+    }
+    
+    return validExtension;
+}
+
++ (NSCharacterSet *)fileExtensionAllowedCharacterSet
+{
+    return [NSCharacterSet alphanumericCharacterSet];
+}
+
+#pragma mark Helpers
+
++ (BOOL)string:(NSString *)string containsOnlyCharactersInCharacterSet:(NSCharacterSet *)characterSet
+{
+    NSCharacterSet *invertedCharacterSet = [characterSet invertedSet];
+    
+    NSRange disallowedRange = [string rangeOfCharacterFromSet:invertedCharacterSet];
+    BOOL foundCharacterInInvertedSet = !(NSNotFound == disallowedRange.location);
+    
+    return !foundCharacterInInvertedSet;
+}
+
+
+//#pragma mark Use WCLPlugin's Implementation
+//
+//- (BOOL)isDefaultNewPlugin
+//{
+//    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+//    return NO;
+//}
+//
+//- (void)setDefaultNewPlugin:(BOOL)defaultNewPlugin
+//{
+//    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+//}
+//
+//- (BOOL)validateName:(id *)ioValue error:(NSError * __autoreleasing *)outError
+//{
+//    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+//    return NO;
+//}
+//
+//- (BOOL)validateExtensions:(id *)ioValue error:(NSError * __autoreleasing *)outError
+//{
+//    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+//    return NO;
+//}
+//
+//- (BOOL)extensionsAreValid:(NSArray *)extensions
+//{
+//    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+//    return NO;
+//}
+//
+//- (BOOL)nameIsValid:(NSString *)name
+//{
+//    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+//    return NO;
+//}
+//
+//- (NSString *)uniquePluginNameFromName:(NSString *)name
+//{
+//    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+//    return nil;
+//}
+//
+//- (void)renameWithUniqueName
+//{
+//    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+//}
+//
+//- (BOOL)isUniqueName:(NSString *)name
+//{
+//    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+//    return NO;
+//}
+//
+//- (NSString *)uniquePluginNameFromName:(NSString *)name index:(NSUInteger)index
+//{
+//    NSAssert(NO, @"WCLPlugin's implementation should be called.");
+//    return nil;
+//}
+//
+//#pragma mark Swizzling
+//
 - (BOOL)isKindOfClass:(Class)aClass
 {
     if (aClass == [WCLPlugin class]) {
@@ -99,26 +335,26 @@ static void *WCLTestPluginContext;
 
     return [super isKindOfClass:aClass];
 }
-
-+ (void)load {
-    [self usePluginImplementationForSelector:@selector(isDefaultNewPlugin)];
-    [self usePluginImplementationForSelector:@selector(setDefaultNewPlugin:)];
-    [self usePluginImplementationForSelector:@selector(extensionsAreValid:)];
-    [self usePluginImplementationForSelector:@selector(nameIsValid:)];
-    [self usePluginImplementationForSelector:@selector(validateExtensions:error:)];
-    [self usePluginImplementationForSelector:@selector(validateName:error:)];
-    [self usePluginImplementationForSelector:@selector(uniquePluginNameFromName:)];
-    [self usePluginImplementationForSelector:@selector(renameWithUniqueName)];
-    [self usePluginImplementationForSelector:@selector(isUniqueName:)];
-    [self usePluginImplementationForSelector:@selector(uniquePluginNameFromName:index:)];
-}
-
-+ (void)usePluginImplementationForSelector:(SEL)selector
-{
-    Method testPluginMethod = class_getInstanceMethod(self, selector);
-    Method pluginMethod = class_getInstanceMethod([WCLPlugin class], selector);
-    method_exchangeImplementations(testPluginMethod, pluginMethod);
-}
+//
+//+ (void)load {
+//    [self usePluginImplementationForSelector:@selector(isDefaultNewPlugin)];
+//    [self usePluginImplementationForSelector:@selector(setDefaultNewPlugin:)];
+//    [self usePluginImplementationForSelector:@selector(extensionsAreValid:)];
+//    [self usePluginImplementationForSelector:@selector(nameIsValid:)];
+//    [self usePluginImplementationForSelector:@selector(validateExtensions:error:)];
+//    [self usePluginImplementationForSelector:@selector(validateName:error:)];
+//    [self usePluginImplementationForSelector:@selector(uniquePluginNameFromName:)];
+//    [self usePluginImplementationForSelector:@selector(renameWithUniqueName)];
+//    [self usePluginImplementationForSelector:@selector(isUniqueName:)];
+//    [self usePluginImplementationForSelector:@selector(uniquePluginNameFromName:index:)];
+//}
+//
+//+ (void)usePluginImplementationForSelector:(SEL)selector
+//{
+//    Method testPluginMethod = class_getInstanceMethod(self, selector);
+//    Method pluginMethod = class_getInstanceMethod([WCLPlugin class], selector);
+//    method_exchangeImplementations(testPluginMethod, pluginMethod);
+//}
 
 #pragma mark Properties
 
@@ -142,7 +378,7 @@ static void *WCLTestPluginContext;
 {
     [super awakeFromFetch];
     
-    for (NSString *keyPath in kPluginObservedKeyPaths) {
+    for (NSString *keyPath in kTestPluginObservedKeyPaths) {
         [self addObserver:self
                forKeyPath:keyPath
                   options:NSKeyValueObservingOptionNew
@@ -154,7 +390,7 @@ static void *WCLTestPluginContext;
 {
     [super awakeFromInsert];
     
-    for (NSString *keyPath in kPluginObservedKeyPaths) {
+    for (NSString *keyPath in kTestPluginObservedKeyPaths) {
         [self addObserver:self
                forKeyPath:keyPath
                   options:NSKeyValueObservingOptionNew
@@ -164,7 +400,7 @@ static void *WCLTestPluginContext;
 
 - (void)dealloc
 {
-    for (NSString *keyPath in kPluginObservedKeyPaths) {
+    for (NSString *keyPath in kTestPluginObservedKeyPaths) {
         [self removeObserver:self
                   forKeyPath:keyPath
                      context:&WCLTestPluginContext];
