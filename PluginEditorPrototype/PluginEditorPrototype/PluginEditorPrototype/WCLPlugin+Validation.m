@@ -61,7 +61,7 @@
 
 - (BOOL)isUniqueName:(NSString *)name
 {
-    id existingPlugin = [[WCLPluginManager sharedPluginManager] pluginWithName:name];
+    WCLPlugin *existingPlugin = [[WCLPluginManager sharedPluginManager] pluginWithName:name];
     
     if (!existingPlugin) {
         return YES;
