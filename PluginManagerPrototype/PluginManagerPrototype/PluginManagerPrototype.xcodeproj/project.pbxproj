@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4567A58519C52036004978FF /* PluginDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567A58419C52036004978FF /* PluginDataController.swift */; };
 		459A8DEF19C4B14E00BE6A72 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459A8DEE19C4B14E00BE6A72 /* main.swift */; };
 		459A8DF119C4B14E00BE6A72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459A8DF019C4B14E00BE6A72 /* AppDelegate.swift */; };
 		459A8DF319C4B14E00BE6A72 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 459A8DF219C4B14E00BE6A72 /* Images.xcassets */; };
@@ -73,6 +74,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4567A58419C52036004978FF /* PluginDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginDataController.swift; sourceTree = "<group>"; };
 		459A8DE919C4B14E00BE6A72 /* PluginManagerPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PluginManagerPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		459A8DED19C4B14E00BE6A72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		459A8DEE19C4B14E00BE6A72 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				45C9DA0C19C4D859004BE31A /* Constants.swift */,
 				45C9DA1819C50CFB004BE31A /* TestConstants.swift */,
 				45C9DA1D19C51382004BE31A /* PluginManager+LoadingPlugins.swift */,
+				4567A58419C52036004978FF /* PluginDataController.swift */,
 			);
 			path = PluginManagerPrototype;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 			files = (
 				45C9DA1E19C51382004BE31A /* PluginManager+LoadingPlugins.swift in Sources */,
 				45C9DA0D19C4D859004BE31A /* Constants.swift in Sources */,
+				4567A58519C52036004978FF /* PluginDataController.swift in Sources */,
 				45C9DA1919C50CFB004BE31A /* TestConstants.swift in Sources */,
 				459A8E9F19C4C56200BE6A72 /* PluginManager.swift in Sources */,
 				459A8E0C19C4B2B300BE6A72 /* Plugin.swift in Sources */,
