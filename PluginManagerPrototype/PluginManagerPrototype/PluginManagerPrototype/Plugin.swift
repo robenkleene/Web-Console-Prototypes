@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class Plugin: NSObject {
+class Plugin: WCLPlugin {
     private let pluginNameKey = "WCName"
     private let bundle: NSBundle
     var name: String {

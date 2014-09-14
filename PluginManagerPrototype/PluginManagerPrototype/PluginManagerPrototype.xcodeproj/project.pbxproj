@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		452D271919C525600085CDAF /* WCLPlugin+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 452D271519C525600085CDAF /* WCLPlugin+Validation.m */; };
+		452D271A19C525600085CDAF /* WCLPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 452D271719C525600085CDAF /* WCLPlugin.m */; };
 		4567A58519C52036004978FF /* PluginDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567A58419C52036004978FF /* PluginDataController.swift */; };
 		459A8DEF19C4B14E00BE6A72 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459A8DEE19C4B14E00BE6A72 /* main.swift */; };
 		459A8DF119C4B14E00BE6A72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459A8DF019C4B14E00BE6A72 /* AppDelegate.swift */; };
@@ -74,6 +76,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		452D271519C525600085CDAF /* WCLPlugin+Validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WCLPlugin+Validation.m"; sourceTree = "<group>"; };
+		452D271619C525600085CDAF /* WCLPlugin+Validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WCLPlugin+Validation.h"; sourceTree = "<group>"; };
+		452D271719C525600085CDAF /* WCLPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPlugin.m; sourceTree = "<group>"; };
+		452D271819C525600085CDAF /* WCLPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPlugin.h; sourceTree = "<group>"; };
+		452D271F19C528940085CDAF /* PluginManagerPrototype-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PluginManagerPrototype-Bridging-Header.h"; sourceTree = "<group>"; };
+		452D272019C529F50085CDAF /* WCLWebConsoleConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLWebConsoleConstants.h; sourceTree = "<group>"; };
 		4567A58419C52036004978FF /* PluginDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginDataController.swift; sourceTree = "<group>"; };
 		459A8DE919C4B14E00BE6A72 /* PluginManagerPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PluginManagerPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		459A8DED19C4B14E00BE6A72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -140,6 +148,11 @@
 		459A8DEB19C4B14E00BE6A72 /* PluginManagerPrototype */ = {
 			isa = PBXGroup;
 			children = (
+				452D272019C529F50085CDAF /* WCLWebConsoleConstants.h */,
+				452D271519C525600085CDAF /* WCLPlugin+Validation.m */,
+				452D271619C525600085CDAF /* WCLPlugin+Validation.h */,
+				452D271719C525600085CDAF /* WCLPlugin.m */,
+				452D271819C525600085CDAF /* WCLPlugin.h */,
 				459A8DF019C4B14E00BE6A72 /* AppDelegate.swift */,
 				459A8DF219C4B14E00BE6A72 /* Images.xcassets */,
 				459A8DF419C4B14E00BE6A72 /* MainMenu.xib */,
@@ -150,6 +163,7 @@
 				45C9DA1819C50CFB004BE31A /* TestConstants.swift */,
 				45C9DA1D19C51382004BE31A /* PluginManager+LoadingPlugins.swift */,
 				4567A58419C52036004978FF /* PluginDataController.swift */,
+				452D271F19C528940085CDAF /* PluginManagerPrototype-Bridging-Header.h */,
 			);
 			path = PluginManagerPrototype;
 			sourceTree = "<group>";
@@ -310,7 +324,9 @@
 				4567A58519C52036004978FF /* PluginDataController.swift in Sources */,
 				45C9DA1919C50CFB004BE31A /* TestConstants.swift in Sources */,
 				459A8E9F19C4C56200BE6A72 /* PluginManager.swift in Sources */,
+				452D271919C525600085CDAF /* WCLPlugin+Validation.m in Sources */,
 				459A8E0C19C4B2B300BE6A72 /* Plugin.swift in Sources */,
+				452D271A19C525600085CDAF /* WCLPlugin.m in Sources */,
 				459A8DF119C4B14E00BE6A72 /* AppDelegate.swift in Sources */,
 				459A8DEF19C4B14E00BE6A72 /* main.swift in Sources */,
 			);
@@ -435,6 +451,7 @@
 				INFOPLIST_FILE = PluginManagerPrototype/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PluginManagerPrototype/PluginManagerPrototype-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -446,6 +463,7 @@
 				INFOPLIST_FILE = PluginManagerPrototype/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PluginManagerPrototype/PluginManagerPrototype-Bridging-Header.h";
 			};
 			name = Release;
 		};
