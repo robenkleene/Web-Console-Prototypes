@@ -19,7 +19,7 @@ class PluginManagerPrototypeTests: XCTestCase {
         super.setUp()
         PluginManager.sharedInstance.loadPlugins()
     }
-//
+
 //    override func tearDown() {
 //        // Put teardown code here. This method is called after the invocation of each test method in the class.
 //        super.tearDown()
@@ -27,8 +27,6 @@ class PluginManagerPrototypeTests: XCTestCase {
     
     func testPlugin() {
         let testPlugin = PluginManager.sharedInstance.plugin(testPluginName)
-//        let testPlugin = pluginManagerSharedInstance.plugin(testPluginName)
-
         XCTAssert(testPlugin!.name == testPluginName, "Pass")
     }
 }
