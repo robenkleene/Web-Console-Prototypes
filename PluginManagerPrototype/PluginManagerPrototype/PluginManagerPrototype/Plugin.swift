@@ -9,8 +9,8 @@
 import Cocoa
 
 class Plugin: NSObject {
-    let pluginNameKey = "WCName"
-    let bundle: NSBundle
+    private let pluginNameKey = "WCName"
+    private let bundle: NSBundle
     var name: String {
         get {
             return bundle.infoDictionary[pluginNameKey] as NSString

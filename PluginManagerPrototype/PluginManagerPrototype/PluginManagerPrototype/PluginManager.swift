@@ -8,10 +8,19 @@
 
 import Cocoa
 
-let pluginManagerSharedInstance = PluginManager()
-
 class PluginManager: NSObject {
-    lazy var nameToPlugin = [String : Plugin]()
+    class var sharedInstance : PluginManager {
+        struct Singleton {
+            static let instance : PluginManager = PluginManager()
+        }
+        return Singleton.instance
+    }
+    
+    var nameToPlugin: [String : Plugin]
+    override init() {
+        self.nameToPlugin = [String : Plugin]()
+    }
+    
     func addedPlugin(path: String) -> Plugin? {
         if let plugin = Plugin.pluginWithPath(path) {
             nameToPlugin[plugin.name] = plugin
@@ -20,11 +29,12 @@ class PluginManager: NSObject {
     }
 
     func plugin(name: String) -> Plugin? {
-        return nameToPlugin[name]
+        let plugin = nameToPlugin[name]
+        return plugin
     }
     
     func plugins() -> [Plugin] {
-        // TOODO Why can't I do something like this? `return nameToPlugin.values as [Plugin]`
+        // TODO Why can't I do something like this? `return nameToPlugin.values as [Plugin]`
         
         var plugins = [Plugin]()
         let values = nameToPlugin.values
@@ -34,57 +44,3 @@ class PluginManager: NSObject {
         return plugins
     }
 }
-
-extension PluginManager {
-    struct Constants {
-        static let pluginsPathComponent = "PlugIns"
-    }
-    
-    func loadPlugins() {
-        let pluginsPaths = self.dynamicType.pluginsPaths()
-        for pluginPath in pluginsPaths {
-            loadPlugins(pluginPath)
-        }
-    }
-    
-    private func loadPlugins(pluginsPath: String) {
-        let pluginFileExtension = ".\(pluginsFileExtension)"
-        let pluginPredicate = NSPredicate(format: "self ENDSWITH \(pluginFileExtension)")
-        if let paths = NSFileManager.defaultManager().contentsOfDirectoryAtPath(pluginsPath, error:nil) {
-            let pluginPathComponents = paths.filter {
-                pluginPredicate.evaluateWithObject($0)
-            }
-            for pluginPathComponent in pluginPathComponents {
-                if let pluginPathComponenet = pluginPathComponent as? String {
-                    let pluginPath = pluginsPath.stringByAppendingPathComponent(pluginPathComponenet)
-                    addedPlugin(pluginPath)
-                }
-            }
-        }
-        
-    }
-    
-    private class func pluginsPaths() -> Array<String> {
-        var pluginsPaths = [String]()
-        if let path = builtInPluginsPath() {
-            pluginsPaths.append(path)
-        }
-        if let path = applicationSupportPluginsPath() {
-            pluginsPaths.append(path)
-        }
-        return pluginsPaths
-    }
-    
-    private class func builtInPluginsPath() -> String? {
-        return NSBundle.mainBundle().builtInPlugInsPath
-    }
-    
-    private class func applicationSupportPluginsPath() -> String? {
-        let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)[0] as String
-        let nameKey = kCFBundleNameKey as NSString
-        let applicationName = NSBundle.mainBundle().infoDictionary[nameKey] as NSString
-        
-        return applicationSupportPath.stringByAppendingPathComponent(applicationName).stringByAppendingPathComponent(Constants.pluginsPathComponent)
-    }
-}
-

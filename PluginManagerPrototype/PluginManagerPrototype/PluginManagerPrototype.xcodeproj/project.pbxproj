@@ -33,6 +33,12 @@
 		45C9DA1519C4E5B9004BE31A /* HTML.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E5F19C4BC2900BE6A72 /* HTML.wcplugin */; };
 		45C9DA1619C4E5BC004BE31A /* Git.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E6019C4BC2900BE6A72 /* Git.wcplugin */; };
 		45C9DA1719C4E5C0004BE31A /* Coffee.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 459A8E6119C4BC2900BE6A72 /* Coffee.wcplugin */; };
+		45C9DA1919C50CFB004BE31A /* TestConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C9DA1819C50CFB004BE31A /* TestConstants.swift */; };
+		45C9DA1A19C5127E004BE31A /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459A8E9E19C4C56200BE6A72 /* PluginManager.swift */; };
+		45C9DA1B19C5128D004BE31A /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459A8E0B19C4B2B300BE6A72 /* Plugin.swift */; };
+		45C9DA1C19C512DF004BE31A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C9DA0C19C4D859004BE31A /* Constants.swift */; };
+		45C9DA1E19C51382004BE31A /* PluginManager+LoadingPlugins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C9DA1D19C51382004BE31A /* PluginManager+LoadingPlugins.swift */; };
+		45C9DA1F19C513A7004BE31A /* PluginManager+LoadingPlugins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C9DA1D19C51382004BE31A /* PluginManager+LoadingPlugins.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +94,8 @@
 		459A8E6119C4BC2900BE6A72 /* Coffee.wcplugin */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Coffee.wcplugin; path = ../Plugins/Coffee.wcplugin; sourceTree = "<group>"; };
 		459A8E9E19C4C56200BE6A72 /* PluginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginManager.swift; sourceTree = "<group>"; };
 		45C9DA0C19C4D859004BE31A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		45C9DA1819C50CFB004BE31A /* TestConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestConstants.swift; sourceTree = "<group>"; };
+		45C9DA1D19C51382004BE31A /* PluginManager+LoadingPlugins.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PluginManager+LoadingPlugins.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +145,8 @@
 				459A8E0B19C4B2B300BE6A72 /* Plugin.swift */,
 				459A8E9E19C4C56200BE6A72 /* PluginManager.swift */,
 				45C9DA0C19C4D859004BE31A /* Constants.swift */,
+				45C9DA1819C50CFB004BE31A /* TestConstants.swift */,
+				45C9DA1D19C51382004BE31A /* PluginManager+LoadingPlugins.swift */,
 			);
 			path = PluginManagerPrototype;
 			sourceTree = "<group>";
@@ -292,7 +302,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45C9DA1E19C51382004BE31A /* PluginManager+LoadingPlugins.swift in Sources */,
 				45C9DA0D19C4D859004BE31A /* Constants.swift in Sources */,
+				45C9DA1919C50CFB004BE31A /* TestConstants.swift in Sources */,
 				459A8E9F19C4C56200BE6A72 /* PluginManager.swift in Sources */,
 				459A8E0C19C4B2B300BE6A72 /* Plugin.swift in Sources */,
 				459A8DF119C4B14E00BE6A72 /* AppDelegate.swift in Sources */,
@@ -304,7 +316,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45C9DA1B19C5128D004BE31A /* Plugin.swift in Sources */,
+				45C9DA1A19C5127E004BE31A /* PluginManager.swift in Sources */,
 				459A8E0219C4B14E00BE6A72 /* PluginManagerPrototypeTests.swift in Sources */,
+				45C9DA1C19C512DF004BE31A /* Constants.swift in Sources */,
+				45C9DA1F19C513A7004BE31A /* PluginManager+LoadingPlugins.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
