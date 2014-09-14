@@ -27,6 +27,6 @@ class PluginManagerPrototypeTests: XCTestCase {
     
     func testPlugin() {
         let testPlugin = PluginManager.sharedInstance.plugin(testPluginName)
-        XCTAssert(testPlugin!.name == testPluginName, "Pass")
+        XCTAssert(testPlugin!.name == testPluginName, "The test Plugin's name should match the test plugin name")
     }
 }
