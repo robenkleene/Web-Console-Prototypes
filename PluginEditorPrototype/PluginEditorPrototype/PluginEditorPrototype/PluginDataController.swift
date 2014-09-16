@@ -14,7 +14,7 @@ class PluginDataController: NSObject {
         var plugins = [Plugin]()
         let pluginsPaths = PluginPaths.paths
         for pluginsPath in pluginsPaths {
-            let pluginPaths = self.dynamicType.pluginPathsAtPluginsPath(pluginsPath)
+            let pluginPaths = self.dynamicType.pathsForPluginsAtPath(pluginsPath)
             let newPlugins = self.dynamicType.pluginsAtPluginPaths(pluginPaths)
             plugins += newPlugins
         }
@@ -48,34 +48,4 @@ class PluginDataController: NSObject {
             }
         }
     }
-
-    private class func pluginPathsAtPluginsPath(pluginsPath: String) -> [String] {
-        var pluginPaths = [String]()
-        
-        if let pathContents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(pluginsPath, error:nil) {
-            let pluginFileExtension = ".\(pluginsFileExtension)"
-            let pluginPredicate = NSPredicate(format: "self ENDSWITH %@", pluginFileExtension)
-            let pluginPathComponents = pathContents.filter {
-                pluginPredicate.evaluateWithObject($0)
-            }
-            for pluginPathComponent in pluginPathComponents {
-                if let pluginPathComponenet = pluginPathComponent as? String {
-                    let pluginPath = pluginsPath.stringByAppendingPathComponent(pluginPathComponenet)
-                }
-            }
-        }
-
-        return pluginPaths
-    }
-    
-    private class func pluginsAtPluginPaths(pluginPaths: [String]) -> [Plugin] {
-        var plugins = [Plugin]()
-        for pluginPath in pluginPaths {
-            if let plugin = Plugin.pluginWithPath(pluginPath) {
-                plugins.append(plugin)
-            }
-        }
-        return plugins
-    }
-
 }
