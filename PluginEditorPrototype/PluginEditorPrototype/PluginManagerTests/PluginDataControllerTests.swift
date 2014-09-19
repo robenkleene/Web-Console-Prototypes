@@ -63,11 +63,18 @@ class PluginDataControllerTests: XCTestCase {
     }
     
     func testExistingPlugins() {
-        // Mock the plugins path to exclude the application support path
-        
-        // Manually load all the plugins in the relevant folders
+        class TestPluginDataController: PluginDataController {
+            override let pluginsPaths = [PluginsDirectory.BuiltIn.path()] // Exclude the Application Support Path
+        }
 
-        // Test the counts are equal
+        let testPluginDataController = TestPluginDataController()
+        let plugins = testPluginDataController.existingPlugins()
+        
+        let pluginsPath = NSBundle.mainBundle().builtInPlugInsPath!
+        let pluginPaths = PluginDataController.pathsForPluginsAtPath(pluginsPath)
+
+        XCTAssert(!plugins.isEmpty, "The plugins should not be empty")
+        XCTAssert(plugins.count == pluginPaths.count, "The plugins count should match the plugin paths count")
     }
 
 }

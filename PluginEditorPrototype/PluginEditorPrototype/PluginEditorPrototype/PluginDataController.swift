@@ -28,7 +28,7 @@ enum PluginsDirectory {
 }
 
 class PluginDataController: NSObject {
-    let pluginsPaths = [PluginsDirectory.ApplicationSupport.path(), PluginsDirectory.BuiltIn.path()]
+    let pluginsPaths = [PluginsDirectory.BuiltIn.path(), PluginsDirectory.ApplicationSupport.path()]
     
     func existingPlugins() -> [Plugin] {
         var plugins = [Plugin]()
