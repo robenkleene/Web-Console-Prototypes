@@ -8,6 +8,55 @@
 
 import Cocoa
 
+//enum PluginsPath: String {
+//    private struct Constants {
+//        static let pluginsPathComponent = "PlugIns"
+//    }
+//    
+//    case ApplicationSupport = "test"
+//    case BuiltIn = {
+//    return NSBundle.mainBundle().builtInPlugInsPath
+//    }
+//}
+
+private struct Constants {
+    static let pluginsPathComponent = "PlugIns"
+}
+
+enum PluginsDirectory {
+    case ApplicationSupport
+    case BuiltIn
+    func path() -> String {
+
+        switch self {
+        case .ApplicationSupport:
+            let pluginsPathComponent = "PlugIns"
+            let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)[0] as String
+            let nameKey = kCFBundleNameKey as NSString
+            let applicationName = NSBundle.mainBundle().infoDictionary[nameKey] as NSString
+            return applicationSupportPath
+                .stringByAppendingPathComponent(applicationName)
+                .stringByAppendingPathComponent(pluginsPathComponent)
+        case .BuiltIn:
+            return NSBundle.mainBundle().builtInPlugInsPath!
+        }
+    }
+}
+
+
+
+//enum PluginsPath: String {
+//    case ApplicationSupport = {
+//        let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)[0] as String
+//        let nameKey = kCFBundleNameKey as NSString
+//        let applicationName = NSBundle.mainBundle().infoDictionary[nameKey] as NSString
+//        return applicationSupportPath.stringByAppendingPathComponent(applicationName).stringByAppendingPathComponent(Constants.pluginsPathComponent)
+//    }
+//    case BuiltIn = {
+//        return NSBundle.mainBundle().builtInPlugInsPath
+//    }
+//}
+
 class PluginDataController: NSObject {
     
     func existingPlugins() -> [Plugin] {
