@@ -7,52 +7,64 @@
 //
 
 #import "WCLKeyToObjectController.h"
-#import "WCLPlugin.h"
-#import "WCLPlugin+Validation.h"
 
 @interface WCLKeyToObjectController ()
-@property (nonatomic, strong, readonly) NSMutableDictionary *nameToPluginDictionary;
+@property (nonatomic, strong, readonly) NSMutableDictionary *keyToObjectDictionary;
+@property (nonatomic, strong, readonly) NSString *key;
 @end
 
 @implementation WCLKeyToObjectController
 
-static void *WCLNameToPluginControllerContext;
+static void *WCLKeyToObjectControllerContext;
 
-@synthesize nameToPluginDictionary = _nameToPluginDictionary;
+@synthesize keyToObjectDictionary = _keyToObjectDictionary;
 
-- (instancetype)initWithObjects:(NSArray *)plugins
+- (instancetype)initWithKey:(NSString *)key
 {
     self = [super init];
     if (self) {
-        [self addObjectsFromArray:plugins];
+        _key = key;
     }
     return self;
 }
 
-- (void)addObject:(WCLPlugin *)plugin
+- (instancetype)initWithKey:(NSString *)key objects:(NSArray *)objects
 {
-    NSAssert(self.nameToPluginDictionary[plugin.name] == nil, @"Attemped to add a plugin with an existing name.");
-
-    self.nameToPluginDictionary[plugin.name] = plugin;
-    [plugin addObserver:self
-             forKeyPath:WCLPluginNameKey
-                options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
-                context:&WCLNameToPluginControllerContext];
+    self = [self initWithKey:key];
+    if (self) {
+        [self addObjectsFromArray:objects];
+    }
+    return self;
 }
 
-- (void)removeObject:(WCLPlugin *)plugin
+- (void)addObject:(id)object
 {
-    [self.nameToPluginDictionary removeObjectForKey:plugin.name];
-	[plugin removeObserver:self
-                forKeyPath:WCLPluginNameKey
-                   context:&WCLNameToPluginControllerContext];
+    NSString *value = [object valueForKey:self.key];
+    
+    NSAssert(self.keyToObjectDictionary[value] == nil, @"Attemped to add an object with an existing key value.");
+
+    self.keyToObjectDictionary[value] = object;
+    [object addObserver:self
+             forKeyPath:self.key
+                options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+                context:&WCLKeyToObjectControllerContext];
+}
+
+- (void)removeObject:(id)object
+{
+    NSString *value = [object valueForKey:self.key];
+    
+    [self.keyToObjectDictionary removeObjectForKey:value];
+	[object removeObserver:self
+                forKeyPath:self.key
+                   context:&WCLKeyToObjectControllerContext];
 }
 
 - (void)dealloc
 {
-    NSArray *plugins = [self allObjects];
-    for (WCLPlugin *plugin in plugins) {
-        [self removeObject:plugin];
+    NSArray *objects = [self allObjects];
+    for (id object in objects) {
+        [self removeObject:object];
     }
 }
 
@@ -61,7 +73,7 @@ static void *WCLNameToPluginControllerContext;
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if (context != &WCLNameToPluginControllerContext) {
+    if (context != &WCLKeyToObjectControllerContext) {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
@@ -71,65 +83,60 @@ static void *WCLNameToPluginControllerContext;
         return;
     }
     
-    if (![keyPath isEqualToString:WCLPluginNameKey]) {
+    if (![keyPath isEqualToString:self.key]) {
         return;
     }
 
-    NSString *oldName = change[NSKeyValueChangeOldKey];
-    NSString *newName = change[NSKeyValueChangeNewKey];
-
-    if (![object isKindOfClass:[WCLPlugin class]]) {
-        return;
-    }
+    NSString *oldValue = change[NSKeyValueChangeOldKey];
+    NSString *newValue = change[NSKeyValueChangeNewKey];
     
-    WCLPlugin *plugin = (WCLPlugin *)object;
-    [self.nameToPluginDictionary removeObjectForKey:oldName];
-    self.nameToPluginDictionary[newName] = plugin;
+    [self.keyToObjectDictionary removeObjectForKey:oldValue];
+    self.keyToObjectDictionary[newValue] = object;
 }
 
 
 
 #pragma mark Convienence Methods
 
-- (void)addObjectsFromArray:(NSArray *)plugins
+- (void)addObjectsFromArray:(NSArray *)objects
 {
-    for (WCLPlugin *plugin in plugins) {
-        [self addObject:plugin];
+    for (id object in objects) {
+        [self addObject:object];
     }
 }
 
-- (void)removeObjectsFromArray:(NSArray *)plugins
+- (void)removeObjectsFromArray:(NSArray *)objects
 {
-    for (WCLPlugin *plugin in plugins) {
-        [self removeObject:plugin];
+    for (id object in objects) {
+        [self removeObject:object];
     }
 }
 
 
 #pragma mark Accessing Plugins
 
-- (WCLPlugin *)objectWithName:(NSString *)name
+- (id)objectWithName:(NSString *)name
 {
-    return self.nameToPluginDictionary[name];
+    return self.keyToObjectDictionary[name];
 }
 
 - (NSArray *)allObjects
 {
-    return [self.nameToPluginDictionary allValues];
+    return [self.keyToObjectDictionary allValues];
 }
 
 
 #pragma mark Properties
 
-- (NSMutableDictionary *)nameToPluginDictionary
+- (NSMutableDictionary *)keyToObjectDictionary
 {
-    if (_nameToPluginDictionary) {
-        return _nameToPluginDictionary;
+    if (_keyToObjectDictionary) {
+        return _keyToObjectDictionary;
     }
 
-    _nameToPluginDictionary = [NSMutableDictionary dictionary];
+    _keyToObjectDictionary = [NSMutableDictionary dictionary];
 
-    return _nameToPluginDictionary;
+    return _keyToObjectDictionary;
 }
 
 @end

@@ -7,3 +7,4 @@
 //
 
 let pluginsFileExtension = "wcplugin"
+let pluginNameKey = WCLPluginNameKey

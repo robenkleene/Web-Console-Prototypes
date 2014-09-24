@@ -8,14 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class WCLPlugin;
-
 @interface WCLKeyToObjectController : NSObject
-- (instancetype)initWithObjects:(NSArray *)plugins;
+- (instancetype)initWithKey:(NSString *)key;
+- (instancetype)initWithKey:(NSString *)key objects:(NSArray *)objects;
+- (void)addObject:(id)object;
+- (void)removeObject:(id)object;
 - (void)addObjectsFromArray:(NSArray *)plugins;
-- (void)addObject:(WCLPlugin *)plugin;
-- (void)removeObject:(WCLPlugin *)plugin;
 - (void)removeObjectsFromArray:(NSArray *)plugins;
-- (WCLPlugin *)objectWithName:(NSString *)name;
+- (id)objectWithName:(NSString *)name;
 - (NSArray *)allObjects;
 @end

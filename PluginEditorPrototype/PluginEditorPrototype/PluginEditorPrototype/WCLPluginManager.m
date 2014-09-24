@@ -137,8 +137,8 @@
         return _nameToPluginController;
     }
 
-    _nameToPluginController = [[WCLKeyToObjectController alloc] init];
-    [_nameToPluginController addObjectsFromArray:[self.pluginDataController existingPlugins]];
+    _nameToPluginController = [[WCLKeyToObjectController alloc] initWithKey:WCLPluginNameKey
+                                                                    objects:[self.pluginDataController existingPlugins]];
 
     return _nameToPluginController;
 }

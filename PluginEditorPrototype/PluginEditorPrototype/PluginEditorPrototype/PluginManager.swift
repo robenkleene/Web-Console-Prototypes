@@ -13,7 +13,7 @@ class PluginManager: NSObject {
     let pluginDataController = PluginDataController()
     
     override init() {
-        self.nameToPluginController = WCLKeyToObjectController(objects: pluginDataController.existingPlugins())
+        self.nameToPluginController = WCLKeyToObjectController(key: pluginNameKey, objects: pluginDataController.existingPlugins())
     }
 //    func pluginWithName(name: String) -> Plugin? {
 //        return self.nameToPluginController.pluginWithName(name)
