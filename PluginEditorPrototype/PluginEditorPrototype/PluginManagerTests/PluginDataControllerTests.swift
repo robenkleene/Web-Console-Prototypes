@@ -55,7 +55,7 @@ class PluginDataControllerClassTests: XCTestCase {
 
 
 class PluginDataControllerTests: XCTestCase {
-    let pluginDataController = PluginDataController([PluginsDirectory.BuiltIn.path()])
+    let pluginDataController = PluginDataController(testPluginPaths)
     
     override func setUp() {
         super.setUp()
@@ -70,14 +70,14 @@ class PluginDataControllerTests: XCTestCase {
     func testExistingPlugins() {
         let plugins = pluginDataController.existingPlugins()
         
-        let pluginsPath = NSBundle.mainBundle().builtInPlugInsPath!
-        let pluginPaths = PluginDataController.pathsForPluginsAtPath(pluginsPath)
+        let pluginPaths = PluginDataController.pathsForPluginsAtPaths(testPluginPaths)
         
         XCTAssert(!plugins.isEmpty, "The plugins should not be empty")
         XCTAssert(plugins.count == pluginPaths.count, "The plugins count should match the plugin paths count")
     }
     
     func testNewPluginFromPlugin() {
+        let pluginManager = PluginManager(testPluginPaths)
         
     }
 

@@ -35,13 +35,8 @@ class PluginDataController {
     }
 
     func existingPlugins() -> [Plugin] {
-        var plugins = [Plugin]()
-        for pluginsPath in pluginsPaths {
-            let pluginPaths = self.dynamicType.pathsForPluginsAtPath(pluginsPath)
-            let newPlugins = self.dynamicType.pluginsAtPluginPaths(pluginPaths)
-            plugins += newPlugins
-        }
-        return plugins
+        let pluginPaths = self.dynamicType.pathsForPluginsAtPaths(pluginsPaths)
+        return self.dynamicType.pluginsAtPluginPaths(pluginPaths)
     }
 
     func newPluginFromPlugin(plugin: Plugin) -> Plugin? {

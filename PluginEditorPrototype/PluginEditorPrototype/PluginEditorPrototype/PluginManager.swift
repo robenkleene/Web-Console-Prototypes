@@ -19,13 +19,13 @@ class PluginManager {
         return Singleton.instance
     }
     
-    init(paths: [String]) {
+    init(_ paths: [String]) {
         self.pluginDataController = PluginDataController(paths)
         self.nameToPluginController = WCLKeyToObjectController(key: pluginNameKey, objects: pluginDataController.existingPlugins())
     }
     
     convenience init() {
-        self.init(paths: [PluginsDirectory.BuiltIn.path(), PluginsDirectory.ApplicationSupport.path()])
+        self.init([PluginsDirectory.BuiltIn.path(), PluginsDirectory.ApplicationSupport.path()])
     }
 
     func pluginWithName(name: String) -> Plugin? {

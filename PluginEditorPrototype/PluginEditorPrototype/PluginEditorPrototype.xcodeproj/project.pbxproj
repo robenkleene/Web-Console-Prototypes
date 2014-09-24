@@ -73,6 +73,7 @@
 		45A5EEEA18DA7231002657DF /* WCLFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45A5EEE818DA7231002657DF /* WCLFilesViewController.xib */; };
 		45AC08ED18DF277A002550CF /* WCLFileExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AC08EC18DF277A002550CF /* WCLFileExtension.m */; };
 		45D21F0A18C80932001AFE36 /* WCLPluginManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D21F0918C80932001AFE36 /* WCLPluginManagerController.m */; };
+		45F4235E19D3896F007F5BC3 /* TestConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F4235D19D3896F007F5BC3 /* TestConstants.swift */; };
 		45F892EB18CFF10D00B89515 /* WCLFileExtensionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892EA18CFF10D00B89515 /* WCLFileExtensionController.m */; };
 		45F892EE18D12A6300B89515 /* WCLKeyToObjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892ED18D12A6300B89515 /* WCLKeyToObjectController.m */; };
 		45F892F118D12A8500B89515 /* WCLPluginDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892F018D12A8500B89515 /* WCLPluginDataController.m */; };
@@ -203,6 +204,7 @@
 		45AC08EC18DF277A002550CF /* WCLFileExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLFileExtension.m; sourceTree = "<group>"; };
 		45D21F0818C80932001AFE36 /* WCLPluginManagerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPluginManagerController.h; sourceTree = "<group>"; };
 		45D21F0918C80932001AFE36 /* WCLPluginManagerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginManagerController.m; sourceTree = "<group>"; };
+		45F4235D19D3896F007F5BC3 /* TestConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestConstants.swift; sourceTree = "<group>"; };
 		45F892E918CFF10D00B89515 /* WCLFileExtensionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLFileExtensionController.h; sourceTree = "<group>"; };
 		45F892EA18CFF10D00B89515 /* WCLFileExtensionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLFileExtensionController.m; sourceTree = "<group>"; };
 		45F892EC18D12A6300B89515 /* WCLKeyToObjectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLKeyToObjectController.h; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 			children = (
 				452D273419C7AB190085CDAF /* PluginDataControllerTests.swift */,
 				452D273219C7AB190085CDAF /* Supporting Files */,
+				45F4235D19D3896F007F5BC3 /* TestConstants.swift */,
 			);
 			path = PluginManagerTests;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				452D274019C7B0AB0085CDAF /* Constants.swift in Sources */,
 				452D273D19C7AFC70085CDAF /* PluginDataController+PluginPaths.swift in Sources */,
 				451A85E219D2409E00C92D47 /* PluginManager.swift in Sources */,
+				45F4235E19D3896F007F5BC3 /* TestConstants.swift in Sources */,
 				452D273E19C7AFCA0085CDAF /* PluginDataController.swift in Sources */,
 				452D273F19C7B0760085CDAF /* Plugin.swift in Sources */,
 				452D273519C7AB190085CDAF /* PluginDataControllerTests.swift in Sources */,

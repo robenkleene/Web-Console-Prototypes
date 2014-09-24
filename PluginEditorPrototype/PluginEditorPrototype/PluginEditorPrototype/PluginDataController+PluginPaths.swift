@@ -9,10 +9,10 @@
 import Foundation
 
 extension PluginDataController {
-    class func pathsForPluginsAtPath(pluginsPath: String) -> [String] {
+    class func pathsForPluginsAtPath(paths: String) -> [String] {
         var pluginPaths = [String]()
         
-        if let pathContents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(pluginsPath, error:nil) {
+        if let pathContents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(paths, error:nil) {
             let pluginFileExtension = ".\(pluginsFileExtension)"
             let pluginPredicate = NSPredicate(format: "self ENDSWITH %@", pluginFileExtension)
             let pluginPathComponents = pathContents.filter {
@@ -20,12 +20,20 @@ extension PluginDataController {
             }
             for pluginPathComponent in pluginPathComponents {
                 if let pluginPathComponenet = pluginPathComponent as? String {
-                    let pluginPath = pluginsPath.stringByAppendingPathComponent(pluginPathComponenet)
+                    let pluginPath = paths.stringByAppendingPathComponent(pluginPathComponenet)
                     pluginPaths.append(pluginPath)
                 }
             }
         }
         
+        return pluginPaths
+    }
+    
+    class func pathsForPluginsAtPaths(paths: [String]) -> [String] {
+        var pluginPaths = [String]()
+        for path in paths {
+            pluginPaths += self.pathsForPluginsAtPath(path)
+        }
         return pluginPaths
     }
     
