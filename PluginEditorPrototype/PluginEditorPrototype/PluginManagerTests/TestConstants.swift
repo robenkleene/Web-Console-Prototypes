@@ -7,3 +7,4 @@
 //
 
 let testPluginPaths = [PluginsDirectory.BuiltIn.path()]
+let testPluginName = "HTML"
