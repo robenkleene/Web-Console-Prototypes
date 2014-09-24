@@ -8,14 +8,27 @@
 
 import Cocoa
 
-class PluginManager: NSObject {
-    let nameToPluginController: WCLKeyToObjectController
-    let pluginDataController = PluginDataController()
+class PluginManager {
+    private let nameToPluginController: WCLKeyToObjectController
+    private let pluginDataController: PluginDataController
     
-    override init() {
+    class var sharedInstance : PluginManager {
+        struct Singleton {
+            static let instance : PluginManager = PluginManager()
+        }
+        return Singleton.instance
+    }
+    
+    init(paths: [String]) {
+        self.pluginDataController = PluginDataController(paths)
         self.nameToPluginController = WCLKeyToObjectController(key: pluginNameKey, objects: pluginDataController.existingPlugins())
     }
-//    func pluginWithName(name: String) -> Plugin? {
-//        return self.nameToPluginController.pluginWithName(name)
-//    }
+    
+    convenience init() {
+        self.init(paths: [PluginsDirectory.BuiltIn.path(), PluginsDirectory.ApplicationSupport.path()])
+    }
+
+    func pluginWithName(name: String) -> Plugin? {
+        return self.nameToPluginController.objectWithName(name) as? Plugin
+    }
 }

@@ -30,12 +30,8 @@ enum PluginsDirectory {
 class PluginDataController {
     let pluginsPaths = [String]()
 
-    init(paths: [String]) {
+    init(_ paths: [String]) {
         self.pluginsPaths = paths
-    }
-
-    convenience init() {
-        self.init(paths: [PluginsDirectory.BuiltIn.path(), PluginsDirectory.ApplicationSupport.path()])
     }
 
     func existingPlugins() -> [Plugin] {

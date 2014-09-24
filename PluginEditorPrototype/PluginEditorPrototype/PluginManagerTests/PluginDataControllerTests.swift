@@ -9,8 +9,7 @@
 import Cocoa
 import XCTest
 
-class PluginDataControllerTests: XCTestCase {
-    
+class PluginDataControllerClassTests: XCTestCase {
     
     func testPluginPaths() {
         let pluginsPath = NSBundle.mainBundle().builtInPlugInsPath!
@@ -55,12 +54,9 @@ class PluginDataControllerTests: XCTestCase {
 }
 
 
-class TestPluginDataControllerTests: XCTestCase {
+class PluginDataControllerTests: XCTestCase {
+    let pluginDataController = PluginDataController([PluginsDirectory.BuiltIn.path()])
     
-    class TestPluginDataController: PluginDataController {
-    }
-    let testPluginDataController = TestPluginDataController(paths: [PluginsDirectory.BuiltIn.path()])
-
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -72,7 +68,7 @@ class TestPluginDataControllerTests: XCTestCase {
     }
 
     func testExistingPlugins() {
-        let plugins = testPluginDataController.existingPlugins()
+        let plugins = pluginDataController.existingPlugins()
         
         let pluginsPath = NSBundle.mainBundle().builtInPlugInsPath!
         let pluginPaths = PluginDataController.pathsForPluginsAtPath(pluginsPath)
