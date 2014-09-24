@@ -11,15 +11,6 @@ import XCTest
 
 class PluginDataControllerTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
     
     func testPluginPaths() {
         let pluginsPath = NSBundle.mainBundle().builtInPlugInsPath!
@@ -61,20 +52,37 @@ class PluginDataControllerTests: XCTestCase {
             .stringByAppendingPathComponent(pluginsPathComponent)
         XCTAssert(applicationSupportPluginsPath == PluginsDirectory.ApplicationSupport.path(), "The paths should match")
     }
-    
-    func testExistingPlugins() {
-        class TestPluginDataController: PluginDataController {
-            override let pluginsPaths = [PluginsDirectory.BuiltIn.path()] // Exclude the Application Support Path
-        }
+}
 
-        let testPluginDataController = TestPluginDataController()
+
+class TestPluginDataControllerTests: XCTestCase {
+    
+    class TestPluginDataController: PluginDataController {
+    }
+    let testPluginDataController = TestPluginDataController(paths: [PluginsDirectory.BuiltIn.path()])
+
+    override func setUp() {
+        super.setUp()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+
+    func testExistingPlugins() {
         let plugins = testPluginDataController.existingPlugins()
         
         let pluginsPath = NSBundle.mainBundle().builtInPlugInsPath!
         let pluginPaths = PluginDataController.pathsForPluginsAtPath(pluginsPath)
-
+        
         XCTAssert(!plugins.isEmpty, "The plugins should not be empty")
         XCTAssert(plugins.count == pluginPaths.count, "The plugins count should match the plugin paths count")
+    }
+    
+    func testNewPluginFromPlugin() {
+        
     }
 
 }

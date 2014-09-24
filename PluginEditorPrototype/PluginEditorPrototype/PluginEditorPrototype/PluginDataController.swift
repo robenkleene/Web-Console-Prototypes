@@ -27,9 +27,17 @@ enum PluginsDirectory {
     }
 }
 
-class PluginDataController: NSObject {
-    let pluginsPaths = [PluginsDirectory.BuiltIn.path(), PluginsDirectory.ApplicationSupport.path()]
-    
+class PluginDataController {
+    let pluginsPaths = [String]()
+
+    init(paths: [String]) {
+        self.pluginsPaths = paths
+    }
+
+    convenience init() {
+        self.init(paths: [PluginsDirectory.BuiltIn.path(), PluginsDirectory.ApplicationSupport.path()])
+    }
+
     func existingPlugins() -> [Plugin] {
         var plugins = [Plugin]()
         for pluginsPath in pluginsPaths {
@@ -38,5 +46,10 @@ class PluginDataController: NSObject {
             plugins += newPlugins
         }
         return plugins
+    }
+
+    func newPluginFromPlugin(plugin: Plugin) -> Plugin? {
+        println("Plugin.bundle.bundleURL = \(plugin.bundle.bundleURL)")
+        return nil
     }
 }

@@ -6,21 +6,30 @@
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
 //
 
-#import "WCLNameToPluginController.h"
+#import "WCLKeyToObjectController.h"
 #import "WCLPlugin.h"
 #import "WCLPlugin+Validation.h"
 
-@interface WCLNameToPluginController ()
+@interface WCLKeyToObjectController ()
 @property (nonatomic, strong, readonly) NSMutableDictionary *nameToPluginDictionary;
 @end
 
-@implementation WCLNameToPluginController
+@implementation WCLKeyToObjectController
 
 static void *WCLNameToPluginControllerContext;
 
 @synthesize nameToPluginDictionary = _nameToPluginDictionary;
 
-- (void)addPlugin:(WCLPlugin *)plugin
+- (instancetype)initWithObjects:(NSArray *)plugins
+{
+    self = [super init];
+    if (self) {
+        [self addObjectsFromArray:plugins];
+    }
+    return self;
+}
+
+- (void)addObject:(WCLPlugin *)plugin
 {
     NSAssert(self.nameToPluginDictionary[plugin.name] == nil, @"Attemped to add a plugin with an existing name.");
 
@@ -31,7 +40,7 @@ static void *WCLNameToPluginControllerContext;
                 context:&WCLNameToPluginControllerContext];
 }
 
-- (void)removePlugin:(WCLPlugin *)plugin
+- (void)removeObject:(WCLPlugin *)plugin
 {
     [self.nameToPluginDictionary removeObjectForKey:plugin.name];
 	[plugin removeObserver:self
@@ -41,9 +50,9 @@ static void *WCLNameToPluginControllerContext;
 
 - (void)dealloc
 {
-    NSArray *plugins = [self allPlugins];
+    NSArray *plugins = [self allObjects];
     for (WCLPlugin *plugin in plugins) {
-        [self removePlugin:plugin];
+        [self removeObject:plugin];
     }
 }
 
@@ -82,29 +91,29 @@ static void *WCLNameToPluginControllerContext;
 
 #pragma mark Convienence Methods
 
-- (void)addPluginsFromArray:(NSArray *)plugins
+- (void)addObjectsFromArray:(NSArray *)plugins
 {
     for (WCLPlugin *plugin in plugins) {
-        [self addPlugin:plugin];
+        [self addObject:plugin];
     }
 }
 
-- (void)removePluginsFromArray:(NSArray *)plugins
+- (void)removeObjectsFromArray:(NSArray *)plugins
 {
     for (WCLPlugin *plugin in plugins) {
-        [self removePlugin:plugin];
+        [self removeObject:plugin];
     }
 }
 
 
 #pragma mark Accessing Plugins
 
-- (WCLPlugin *)pluginWithName:(NSString *)name
+- (WCLPlugin *)objectWithName:(NSString *)name
 {
     return self.nameToPluginDictionary[name];
 }
 
-- (NSArray *)allPlugins
+- (NSArray *)allObjects
 {
     return [self.nameToPluginDictionary allValues];
 }

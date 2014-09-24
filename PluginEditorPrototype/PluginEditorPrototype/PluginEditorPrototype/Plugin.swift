@@ -10,7 +10,7 @@ import Cocoa
 
 class Plugin: NSObject {
     private let pluginNameKey = "WCName"
-    private let bundle: NSBundle
+    let bundle: NSBundle
     var name: String {
         set {
             // TODO Implement

@@ -8,12 +8,12 @@
 
 #import "WCLPluginManager.h"
 #import "WCLPluginDataController.h"
-#import "WCLNameToPluginController.h"
+#import "WCLKeyToObjectController.h"
 #import "WCLPlugin.h"
 
 @interface WCLPluginManager ()
 @property (nonatomic, strong, readonly) WCLPluginDataController *pluginDataController;
-@property (nonatomic, strong, readonly) WCLNameToPluginController *nameToPluginController;
+@property (nonatomic, strong, readonly) WCLKeyToObjectController *nameToPluginController;
 @end
 
 @implementation WCLPluginManager
@@ -47,14 +47,14 @@
         newPlugin = [self.pluginDataController newPlugin];
     }
     
-    [self.nameToPluginController addPlugin:newPlugin];
+    [self.nameToPluginController addObject:newPlugin];
     return newPlugin;
 }
 
 - (WCLPlugin *)newPluginFromPlugin:(WCLPlugin *)plugin
 {
     WCLPlugin *newPlugin = [self.pluginDataController newPluginFromPlugin:plugin];
-    [self.nameToPluginController addPlugin:newPlugin];
+    [self.nameToPluginController addObject:newPlugin];
     return newPlugin;
 }
 
@@ -64,18 +64,18 @@
         self.defaultNewPlugin = nil;
     }
     
-    [self.nameToPluginController removePlugin:plugin];
+    [self.nameToPluginController removeObject:plugin];
     [self.pluginDataController deletePlugin:plugin];
 }
 
 - (WCLPlugin *)pluginWithName:(NSString *)name
 {
-    return [self.nameToPluginController pluginWithName:name];
+    return [self.nameToPluginController objectWithName:name];
 }
 
 - (NSArray *)plugins
 {
-    return [self.nameToPluginController allPlugins];
+    return [self.nameToPluginController allObjects];
 }
 
 #pragma mark Properties
@@ -131,14 +131,14 @@
     return nil;
 }
 
-- (WCLNameToPluginController *)nameToPluginController
+- (WCLKeyToObjectController *)nameToPluginController
 {
     if (_nameToPluginController) {
         return _nameToPluginController;
     }
 
-    _nameToPluginController = [[WCLNameToPluginController alloc] init];
-    [_nameToPluginController addPluginsFromArray:[self.pluginDataController existingPlugins]];
+    _nameToPluginController = [[WCLKeyToObjectController alloc] init];
+    [_nameToPluginController addObjectsFromArray:[self.pluginDataController existingPlugins]];
 
     return _nameToPluginController;
 }
