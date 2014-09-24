@@ -2,6 +2,10 @@
 
 ## `plist` Backed Plugins
 
+* [ ] Do test where I load plugins from multiple paths
+	* It should return twice as many plugin paths but half as many plugins
+	* This isn't a great test, instead its better to have two separate directories
+	* Write this test after I have a way to create temporary plugin
 * [ ] Abstract the nameToPluginController to nameToObjectController
 * [ ] Key to object controller
 * [ ] First write `- (WCLPlugin *)newPluginFromPlugin:(WCLPlugin *)plugin`
