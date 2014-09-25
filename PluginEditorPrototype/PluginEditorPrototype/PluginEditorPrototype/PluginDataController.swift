@@ -29,7 +29,7 @@ enum PluginsDirectory {
 
 class PluginDataController {
     let pluginsPaths = [String]()
-
+    
     init(_ paths: [String]) {
         self.pluginsPaths = paths
     }
