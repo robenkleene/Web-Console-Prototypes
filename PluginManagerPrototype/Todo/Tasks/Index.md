@@ -2,6 +2,10 @@
 
 ## `plist` Backed Plugins
 
+* [ ] Build functionality around cleaning up the temp directory and then asserting if it had to clean up
+	* Can force this by setting break point in a test, which will leave a left over temp directory
+* [ ] Can I do nested test cases?
+	* Only one of my cases needs the temporary directory
 * [ ] Do test where I load plugins from multiple paths
 	* It should return twice as many plugin paths but half as many plugins
 	* This isn't a great test, instead its better to have two separate directories
