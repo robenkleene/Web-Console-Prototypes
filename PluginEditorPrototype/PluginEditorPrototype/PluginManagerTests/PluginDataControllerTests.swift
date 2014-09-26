@@ -56,7 +56,11 @@ class PluginDataControllerClassTests: XCTestCase {
 
 class PluginDataControllerTests: XCTestCase {
     let pluginDataController = PluginDataController(testPluginPaths)
-    let temporaryDirectoryPathPrefix = "/var/folders"
+    struct Constants {
+        static let temporaryDirectoryPathPrefix = "/var/folders"
+    }
+    
+
     var temporaryDirectoryPath: String?
 
     class func isValidTemporaryDirectoryPath (path: String?) -> Bool {
@@ -82,8 +86,11 @@ class PluginDataControllerTests: XCTestCase {
                     let path = temporaryDirectory
                         .stringByAppendingPathComponent(bundleIdenetifier)
                         .stringByAppendingPathComponent(className)
-                    // Do a manual clean up here
-                    
+                    if NSFileManager.defaultManager().fileExistsAtPath(path) {
+                        let success = self.dynamicType.safelyRemoveTemporaryDirectoryAtPath(path)
+                        XCTAssertTrue(success, "Removing the temporary directory should have succeeded")
+                        XCTAssertTrue(false, "A temporary directory had to be cleaned up")
+                    }
                     XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(path), "A file should not exist at the path")
                     var error: NSError?
                     NSFileManager
@@ -101,8 +108,21 @@ class PluginDataControllerTests: XCTestCase {
         XCTAssertTrue(self.dynamicType.isValidTemporaryDirectoryPath(temporaryDirectoryPath), "The temporary directory path should be valid")
     }
     
+    class func safelyRemoveTemporaryDirectoryAtPath(path: String) -> Bool {
+        if !path.hasPrefix(Constants.temporaryDirectoryPathPrefix) {
+            return false
+        }
+        
+        var error: NSError?
+        let removed = NSFileManager.defaultManager().removeItemAtPath(path, error: &error)
+        if !removed || error != nil {
+            return false
+        }
+
+        return true
+    }
+    
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
 
         XCTAssertTrue(self.dynamicType.isValidTemporaryDirectoryPath(temporaryDirectoryPath), "The temporary directory path should be valid")
@@ -113,17 +133,16 @@ class PluginDataControllerTests: XCTestCase {
                 XCTAssert(contents.isEmpty, "The contents should be empty")
                 XCTAssertNil(error, "The error should be nil")
             }
-            XCTAssertTrue(path.hasPrefix(temporaryDirectoryPathPrefix), "The path should have the temporary directory path prefix")
-            
-            let removed = NSFileManager.defaultManager().removeItemAtPath(path, error: &error)
-            XCTAssertTrue(removed, "Removed should be true")
-            XCTAssertNil(error, "The eror should be nil")
-        }
 
+            let success = self.dynamicType.safelyRemoveTemporaryDirectoryAtPath(path)
+            XCTAssertTrue(success, "Removing the temporary directory should have succeeded")
+        }
+        
         XCTAssertFalse(self.dynamicType.isValidTemporaryDirectoryPath(temporaryDirectoryPath), "The temporary directory path should be invalid")
         if let path = temporaryDirectoryPath {
             XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(path), "A file should not exist at the path")
         }
+        
     }
 
     func testExistingPlugins() {
