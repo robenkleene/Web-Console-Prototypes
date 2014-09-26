@@ -27,6 +27,8 @@
 		452D273F19C7B0760085CDAF /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452D272419C66EE40085CDAF /* Plugin.swift */; };
 		452D274019C7B0AB0085CDAF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452D272A19C670E40085CDAF /* Constants.swift */; };
 		45539B0219D4E80E0017B892 /* TemporaryDirectoryTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0119D4E80E0017B892 /* TemporaryDirectoryTestCase.swift */; };
+		45539B0419D4F5790017B892 /* PluginCopyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0319D4F5790017B892 /* PluginCopyController.swift */; };
+		45539B0519D4F5790017B892 /* PluginCopyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0319D4F5790017B892 /* PluginCopyController.swift */; };
 		4567DB4318B03A7A00CBBD29 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB4218B03A7A00CBBD29 /* Cocoa.framework */; };
 		4567DB4D18B03A7A00CBBD29 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB4B18B03A7A00CBBD29 /* InfoPlist.strings */; };
 		4567DB4F18B03A7A00CBBD29 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB4E18B03A7A00CBBD29 /* main.m */; };
@@ -149,6 +151,7 @@
 		452D273419C7AB190085CDAF /* PluginDataControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDataControllerTests.swift; sourceTree = "<group>"; };
 		452D273B19C7AEFC0085CDAF /* PluginDataController+PluginPaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PluginDataController+PluginPaths.swift"; sourceTree = "<group>"; };
 		45539B0119D4E80E0017B892 /* TemporaryDirectoryTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryDirectoryTestCase.swift; sourceTree = "<group>"; };
+		45539B0319D4F5790017B892 /* PluginCopyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginCopyController.swift; sourceTree = "<group>"; };
 		4567DB3F18B03A7A00CBBD29 /* PluginEditorPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PluginEditorPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4567DB4218B03A7A00CBBD29 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4567DB4518B03A7A00CBBD29 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -365,6 +368,7 @@
 				45A5EEE818DA7231002657DF /* WCLFilesViewController.xib */,
 				4567DB4918B03A7A00CBBD29 /* Supporting Files */,
 				452D272319C66EE40085CDAF /* PluginDataController.swift */,
+				45539B0319D4F5790017B892 /* PluginCopyController.swift */,
 				452D273B19C7AEFC0085CDAF /* PluginDataController+PluginPaths.swift */,
 				451A85E019D2409E00C92D47 /* PluginManager.swift */,
 				45F892F218D12AFD00B89515 /* WCLPluginManager.h */,
@@ -633,6 +637,7 @@
 				452D273F19C7B0760085CDAF /* Plugin.swift in Sources */,
 				452D273519C7AB190085CDAF /* PluginDataControllerTests.swift in Sources */,
 				451A85E519D2444D00C92D47 /* NameToPluginController.swift in Sources */,
+				45539B0519D4F5790017B892 /* PluginCopyController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -653,6 +658,7 @@
 				45F892EB18CFF10D00B89515 /* WCLFileExtensionController.m in Sources */,
 				4567DB8918B1C08800CBBD29 /* WCLPlugin.m in Sources */,
 				45F892F418D12AFD00B89515 /* WCLPluginManager.m in Sources */,
+				45539B0419D4F5790017B892 /* PluginCopyController.swift in Sources */,
 				451A85E419D2444D00C92D47 /* NameToPluginController.swift in Sources */,
 				452D272819C66EE40085CDAF /* Plugin.swift in Sources */,
 				452D273C19C7AEFC0085CDAF /* PluginDataController+PluginPaths.swift in Sources */,

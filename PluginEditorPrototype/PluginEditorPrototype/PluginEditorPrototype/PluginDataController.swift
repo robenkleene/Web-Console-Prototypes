@@ -25,10 +25,16 @@ enum PluginsDirectory {
             return NSBundle.mainBundle().builtInPlugInsPath!
         }
     }
+    func URL() -> NSURL {
+        return NSURL(fileURLWithPath: self.path())
+    }
+
 }
 
 class PluginDataController {
     let pluginsPaths = [String]()
+    lazy var pluginCopyController = PluginCopyController()
+    lazy var copyPluginDirectory = PluginsDirectory.ApplicationSupport
     
     init(_ paths: [String]) {
         self.pluginsPaths = paths
@@ -39,8 +45,11 @@ class PluginDataController {
         return self.dynamicType.pluginsAtPluginPaths(pluginPaths)
     }
 
-    func newPluginFromPlugin(plugin: Plugin) -> Plugin? {
-        println("Plugin.bundle.bundleURL = \(plugin.bundle.bundleURL)")
-        return nil
+    func newPluginFromPlugin(plugin: Plugin) {
+        newPluginFromPlugin(plugin, inDirectoryAtURL: copyPluginDirectory.URL())
+    }
+
+    private func newPluginFromPlugin(plugin: Plugin, inDirectoryAtURL dstURL: NSURL) {
+        pluginCopyController.copyPlugin(plugin, toURL: dstURL)
     }
 }
