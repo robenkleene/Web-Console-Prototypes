@@ -41,6 +41,6 @@ class DirectoryTests: XCTestCase {
         let applicationName = NSBundle.mainBundle().infoDictionary[nameKey] as NSString
         let cachesPath = cachesDirectory
             .stringByAppendingPathComponent(applicationName)
-        XCTAssert(cachesPath == Directory.Caches.path(), "The paths should match")        
+        XCTAssert(cachesPath == Directory.Caches.path(), "The paths should match")
     }
 }
