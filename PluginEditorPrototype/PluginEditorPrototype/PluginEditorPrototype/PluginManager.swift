@@ -25,7 +25,7 @@ class PluginManager {
     }
     
     convenience init() {
-        self.init([PluginsDirectory.BuiltIn.path(), PluginsDirectory.ApplicationSupport.path()])
+        self.init([Directory.BuiltInPlugins.path(), Directory.ApplicationSupportPlugins.path()])
     }
 
     func pluginWithName(name: String) -> Plugin? {

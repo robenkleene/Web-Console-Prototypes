@@ -37,20 +37,6 @@ class PluginDataControllerClassTests: XCTestCase {
         XCTAssert(plugins.count == testPluginsCount, "The plugins count should equal the test plugins count")
     }
     
-    func testBuiltInPluginsPath() {
-        XCTAssert(PluginsDirectory.BuiltIn.path() == NSBundle.mainBundle().builtInPlugInsPath!, "The paths should match")
-    }
-    
-    func testApplicationSupportPluginsPath() {
-        let pluginsPathComponent = "PlugIns"
-        let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)[0] as String
-        let nameKey = kCFBundleNameKey as NSString
-        let applicationName = NSBundle.mainBundle().infoDictionary[nameKey] as NSString
-        let applicationSupportPluginsPath = applicationSupportPath
-            .stringByAppendingPathComponent(applicationName)
-            .stringByAppendingPathComponent(pluginsPathComponent)
-        XCTAssert(applicationSupportPluginsPath == PluginsDirectory.ApplicationSupport.path(), "The paths should match")
-    }
 }
 
 

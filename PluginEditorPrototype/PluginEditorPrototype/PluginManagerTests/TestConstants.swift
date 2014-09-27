@@ -6,5 +6,5 @@
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
 //
 
-let testPluginPaths = [PluginsDirectory.BuiltIn.path()]
+let testPluginPaths = [Directory.BuiltInPlugins.path()]
 let testPluginName = "HTML"
