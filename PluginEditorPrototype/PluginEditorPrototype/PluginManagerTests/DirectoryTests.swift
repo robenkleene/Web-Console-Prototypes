@@ -36,6 +36,11 @@ class DirectoryTests: XCTestCase {
     }
 
     func testCachesPath() {
-        
+        let cachesDirectory = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
+        let nameKey = kCFBundleNameKey as NSString
+        let applicationName = NSBundle.mainBundle().infoDictionary[nameKey] as NSString
+        let cachesPath = cachesDirectory
+            .stringByAppendingPathComponent(applicationName)
+        XCTAssert(cachesPath == Directory.Caches.path(), "The paths should match")        
     }
 }

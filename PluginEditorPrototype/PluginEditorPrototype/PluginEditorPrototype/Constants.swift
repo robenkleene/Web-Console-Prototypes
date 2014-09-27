@@ -11,14 +11,18 @@ let pluginNameKey = WCLPluginNameKey
 let applicationName = NSBundle.mainBundle().infoDictionary[kCFBundleNameKey as NSString] as NSString
 
 enum Directory {
+    case Caches
     case ApplicationSupport
     case ApplicationSupportPlugins
     case BuiltInPlugins
     func path() -> String {
         switch self {
+        case .Caches:
+            let cachesDirectory = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
+            return cachesDirectory.stringByAppendingPathComponent(applicationName)
         case .ApplicationSupport:
-            let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)[0] as String
-            return applicationSupportPath.stringByAppendingPathComponent(applicationName)
+            let applicationSupportDirectory = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)[0] as String
+            return applicationSupportDirectory.stringByAppendingPathComponent(applicationName)
         case .ApplicationSupportPlugins:
             let pluginsPathComponent = "PlugIns"
             return Directory.ApplicationSupport.path().stringByAppendingPathComponent(pluginsPathComponent)

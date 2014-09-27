@@ -16,9 +16,9 @@ class PluginCopyController {
     init() {
 //        Directory.ApplicationSupport.path()
         
-        let cachesDirectory = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
-        let cachesPath = cachesDirectory.stringByAppendingPathComponent(applicationName)
-        println("cachesPath = \(cachesPath)")
+//        let cachesDirectory = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
+//        let cachesPath = cachesDirectory.stringByAppendingPathComponent(applicationName)
+//        println("cachesPath = \(cachesPath)")
     }
 
     func copyPlugin(plugin: Plugin, toURL dstURL: NSURL) -> Plugin? {
