@@ -2,7 +2,17 @@
 
 ## `plist` Backed Plugins
 
+* [ ] Write a method that shares the unique name finding logic between finding folder paths and plugin names
+	* First convert the existing method to swift
+	* Then replace the implementation in WCLPlugin+Validation with this implementation
+	* Then write an implementation that also works with file paths
+		* Write tests for this
+* [ ] Then write tests for it
+* [ ] Then use that method to test the copy and cleanup stuff
 * [ ] Test new caches path
+* [ ] The plugin data controller should watch the plugin path
+* [ ] Add deleting on start up and tests for it
+	* Recreating a directory should work afterwords
 * [ ] Consolidate directory tests
 * [ ] Get a proper caches folder ready
 * [ ] Build functionality around cleaning up the temp directory and then asserting if it had to clean up
