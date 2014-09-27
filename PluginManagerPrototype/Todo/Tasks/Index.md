@@ -2,6 +2,9 @@
 
 ## `plist` Backed Plugins
 
+* [ ] Test new caches path
+* [ ] Consolidate directory tests
+* [ ] Get a proper caches folder ready
 * [ ] Build functionality around cleaning up the temp directory and then asserting if it had to clean up
 	* Can force this by setting break point in a test, which will leave a left over temp directory
 * [ ] Can I do nested test cases?
