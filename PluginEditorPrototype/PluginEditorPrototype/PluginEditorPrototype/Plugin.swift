@@ -13,7 +13,7 @@ class Plugin: NSObject {
     struct ClassConstants {
         static let pluginNameKey = "WCName"
         static let pluginIdentifierKey = "WCUUID"
-        static let infoDictionaryPathComponent = "Info.plist"
+        static let infoDictionaryPathComponent = "Contents".stringByAppendingPathComponent("Info.plist")
     }
     let bundle: NSBundle
     var infoDictionary: [NSObject : AnyObject]
