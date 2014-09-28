@@ -40,6 +40,8 @@ class PluginCopyController {
         self.dynamicType.copyItemAtURL(pluginURL, toDirectoryURL: copyTempDirectoryURL, withFilename: uuid.UUIDString)
         
         // Update the plist identifier and name
+        // Load the plugin
+        // Update the identifier and name via the plugin API
         // Change value for the identifier
         // Change value for the name
 

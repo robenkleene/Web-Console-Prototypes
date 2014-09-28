@@ -8,31 +8,18 @@
 
 import Cocoa
 
-class Plugin: NSObject {
-    private let pluginNameKey = "WCName"
-    let bundle: NSBundle
-    var name: String {
-        set {
-            // TODO Implement
-        }
-        get {
-            return bundle.infoDictionary[pluginNameKey] as NSString
-        }
-    }
-    
-    private init(_ bundle: NSBundle) {
-        self.bundle = bundle
-    }
 
-    class func pluginWithPath(path: String) -> Plugin? {
-        if let bundle = NSBundle(path: path) as NSBundle? {
-            let plugin = Plugin(bundle)
-            if (countElements(plugin.name) > 0) {
-               return plugin
-            }
-        }
-        println("Failed to load a plugin at path \(path)")
-        return nil
+class Plugin: NSObject {
+    struct ClassConstants {
+        static let pluginNameKey = "WCName"
+        static let pluginIdentifierKey = "WCUUID"
     }
-    
+    let bundle: NSBundle
+    var name: String
+    var identifier: String
+    init(bundle: NSBundle, identifier: String, name: String) {
+        self.bundle = bundle
+        self.name = name
+        self.identifier = identifier
+    }
 }

@@ -9,7 +9,7 @@
 import XCTest
 
 class TemporaryDirectoryTestCase: XCTestCase {
-    struct Constants {
+    struct ClassConstants {
         static let temporaryDirectoryPathPrefix = "/var/folders"
     }
     var temporaryDirectoryPath: String?
@@ -23,7 +23,7 @@ class TemporaryDirectoryTestCase: XCTestCase {
     }
     
     class func safelyRemoveTemporaryDirectoryAtPath(path: String) -> Bool {
-        if !path.hasPrefix(Constants.temporaryDirectoryPathPrefix) {
+        if !path.hasPrefix(ClassConstants.temporaryDirectoryPathPrefix) {
             return false
         }
         

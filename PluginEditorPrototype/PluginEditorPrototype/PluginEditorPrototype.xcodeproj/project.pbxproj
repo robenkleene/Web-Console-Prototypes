@@ -31,6 +31,9 @@
 		45539B0519D4F5790017B892 /* PluginCopyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0319D4F5790017B892 /* PluginCopyController.swift */; };
 		45605E8519D72A750033A8AD /* DirectoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45605E8419D72A750033A8AD /* DirectoryTests.swift */; };
 		45605E8719D74A1D0033A8AD /* PluginCopyControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45605E8619D74A1D0033A8AD /* PluginCopyControllerTests.swift */; };
+		45605E8919D86A020033A8AD /* PluginsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45605E8819D86A020033A8AD /* PluginsTests.swift */; };
+		45605E8B19D878A30033A8AD /* Plugin+Initialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45605E8A19D878A30033A8AD /* Plugin+Initialization.swift */; };
+		45605E8C19D879260033A8AD /* Plugin+Initialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45605E8A19D878A30033A8AD /* Plugin+Initialization.swift */; };
 		4567DB4318B03A7A00CBBD29 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB4218B03A7A00CBBD29 /* Cocoa.framework */; };
 		4567DB4D18B03A7A00CBBD29 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB4B18B03A7A00CBBD29 /* InfoPlist.strings */; };
 		4567DB4F18B03A7A00CBBD29 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB4E18B03A7A00CBBD29 /* main.m */; };
@@ -156,6 +159,8 @@
 		45539B0319D4F5790017B892 /* PluginCopyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginCopyController.swift; sourceTree = "<group>"; };
 		45605E8419D72A750033A8AD /* DirectoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryTests.swift; sourceTree = "<group>"; };
 		45605E8619D74A1D0033A8AD /* PluginCopyControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginCopyControllerTests.swift; sourceTree = "<group>"; };
+		45605E8819D86A020033A8AD /* PluginsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginsTests.swift; sourceTree = "<group>"; };
+		45605E8A19D878A30033A8AD /* Plugin+Initialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Plugin+Initialization.swift"; sourceTree = "<group>"; };
 		4567DB3F18B03A7A00CBBD29 /* PluginEditorPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PluginEditorPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4567DB4218B03A7A00CBBD29 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4567DB4518B03A7A00CBBD29 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -288,6 +293,7 @@
 				45539B0119D4E80E0017B892 /* TemporaryDirectoryTestCase.swift */,
 				45605E8419D72A750033A8AD /* DirectoryTests.swift */,
 				45605E8619D74A1D0033A8AD /* PluginCopyControllerTests.swift */,
+				45605E8819D86A020033A8AD /* PluginsTests.swift */,
 			);
 			path = PluginManagerTests;
 			sourceTree = "<group>";
@@ -356,6 +362,7 @@
 				4567DB5D18B03A7A00CBBD29 /* Images.xcassets */,
 				4567DB5A18B03A7A00CBBD29 /* PluginEditorPrototype.xcdatamodeld */,
 				452D272419C66EE40085CDAF /* Plugin.swift */,
+				45605E8A19D878A30033A8AD /* Plugin+Initialization.swift */,
 				4567DB8718B1C08800CBBD29 /* WCLPlugin.h */,
 				4567DB8818B1C08800CBBD29 /* WCLPlugin.m */,
 				457F7B6118D5286E0034F6D5 /* WCLPlugin+Validation.h */,
@@ -644,6 +651,8 @@
 				45605E8719D74A1D0033A8AD /* PluginCopyControllerTests.swift in Sources */,
 				452D273F19C7B0760085CDAF /* Plugin.swift in Sources */,
 				452D273519C7AB190085CDAF /* PluginDataControllerTests.swift in Sources */,
+				45605E8C19D879260033A8AD /* Plugin+Initialization.swift in Sources */,
+				45605E8919D86A020033A8AD /* PluginsTests.swift in Sources */,
 				451A85E519D2444D00C92D47 /* NameToPluginController.swift in Sources */,
 				45539B0519D4F5790017B892 /* PluginCopyController.swift in Sources */,
 			);
@@ -675,6 +684,7 @@
 				452D272719C66EE40085CDAF /* PluginDataController.swift in Sources */,
 				457F7B6318D5286E0034F6D5 /* WCLPlugin+Validation.m in Sources */,
 				4567DB4F18B03A7A00CBBD29 /* main.m in Sources */,
+				45605E8B19D878A30033A8AD /* Plugin+Initialization.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
