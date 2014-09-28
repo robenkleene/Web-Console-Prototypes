@@ -2,10 +2,11 @@
 
 ## `plist` Backed Plugins
 
+* [ ] Figure out how to `spyOn` methods to prevent logging noise
 * [ ] Test plugin name and identifier save
-	* [ ] Make sure KVO works for this 
+	* [ ] Make sure KVO works for this? 
 * [ ] Write the reverse, so the plugin and identifier changes can be propagated up
-	* Make sure KVO works for this
+	* Make sure KVO works for this?
 * [ ] Prevent invalid filenames from being valid plugin names
 	* Test that an invalid filename isn't returned as a valid plugin name (use `fileURLWithPath`)
 * [ ] Make it so if the plugin's plist is moved out from under it, the plugin becomes invalid
