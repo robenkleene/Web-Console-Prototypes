@@ -7,6 +7,8 @@
 	* Then replace the implementation in WCLPlugin+Validation with this implementation
 	* Then write an implementation that also works with file paths
 		* Write tests for this
+* [ ] Prevent invalid filenames from being valid plugin names
+	* Test that an invalid filename isn't returned as a valid plugin name (use `fileURLWithPath`)
 * [ ] Then write tests for it
 * [ ] Then use that method to test the copy and cleanup stuff
 * [ ] Test new caches path
