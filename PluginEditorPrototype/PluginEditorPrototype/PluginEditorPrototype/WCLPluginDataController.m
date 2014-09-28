@@ -30,7 +30,6 @@
     plugin.identifier = [[NSUUID UUID] UUIDString];
     [plugin renameWithUniqueName];
 
-
     NSError *error;
     NSLog(@"saving after adding plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {
