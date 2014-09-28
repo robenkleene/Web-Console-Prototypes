@@ -19,13 +19,33 @@ class Plugin: NSObject {
     var infoDictionary: [NSObject : AnyObject]
     var name: String {
         didSet {
-            
+            infoDictionary[ClassConstants.pluginNameKey] = identifier
+            save()
         }
     }
     var identifier: String {
         didSet {
-            
+            infoDictionary[ClassConstants.pluginIdentifierKey] = identifier
+            save()
         }
+    }
+    func save() {
+        let infoDictionaryURL = self.dynamicType.infoDictionaryURL(self.bundle)
+        var error: NSError?
+        self.dynamicType.writeDictionary(infoDictionary, toURL: infoDictionaryURL, error: &error)
+    }
+    class func writeDictionary(dictionary: [NSObject : AnyObject], toURL url: NSURL, error: NSErrorPointer) {
+        let writableDictionary = NSDictionary(dictionary: dictionary)
+        let success = writableDictionary.writeToURL(url, atomically: true)
+        if !success && error != nil {
+            if let path = url.path {
+                let errorString = NSLocalizedString("Failed to write to dictionary at path \(path).", comment: "Failed to write to dictionary")
+                error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.toRaw())
+            }
+        }
+    }
+    class func infoDictionaryURL(bundle: NSBundle) -> NSURL {
+        return bundle.bundleURL.URLByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
     }
     init(bundle: NSBundle, infoDictionary: [NSObject : AnyObject], identifier: String, name: String) {
         self.infoDictionary = infoDictionary

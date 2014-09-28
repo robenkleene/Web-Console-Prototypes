@@ -18,7 +18,6 @@ extension Plugin {
                         return Plugin(bundle: bundle, infoDictionary: infoDictionary, identifier: identifier, name: name)
                     }
                 }
-                return nil
             }
         }
         
@@ -33,14 +32,14 @@ extension Plugin {
 
         if error != nil {
             let errorString = NSLocalizedString("Bundle is invalid at path \(path).", comment: "Invalid plugin bundle error")
-            error.memory = self.pluginInitError(errorString)
+            error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.toRaw())
         }
         
         return nil
     }
     
     class func validInfoDictionary(bundle: NSBundle, error: NSErrorPointer) -> [NSObject : AnyObject]? {
-        let url = bundle.bundleURL.URLByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
+        let url = self.infoDictionaryURL(bundle)
         let infoDictionary: NSMutableDictionary? = NSMutableDictionary(contentsOfURL: url)
         if infoDictionary != nil {
             return infoDictionary
@@ -49,7 +48,7 @@ extension Plugin {
         if error != nil {
             if let path = url.path {
                 let errorString = NSLocalizedString("Info.plist is invalid at path \(path).", comment: "Invalid plugin Info.plist error")
-                error.memory = self.pluginInitError(errorString)
+                error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.toRaw())
             }
         }
         
@@ -65,7 +64,7 @@ extension Plugin {
         
         if error != nil {
             let errorString = NSLocalizedString("Plugin name is invalid \(infoDictionary).", comment: "Invalid plugin name error")
-            error.memory = self.pluginInitError(errorString)
+            error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.toRaw())
         }
         
         return nil
@@ -81,16 +80,9 @@ extension Plugin {
 
         if error != nil {
             let errorString = NSLocalizedString("Plugin UUID is invalid \(infoDictionary).", comment: "Invalid plugin UUID error")
-            error.memory = self.pluginInitError(errorString)
+            error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.toRaw())
         }
         
         return nil
     }
-
-    class func pluginInitError(errorString: String) -> NSError {
-        let userInfo = [NSLocalizedDescriptionKey: errorString]
-        return NSError(domain: errorDomain, code: ErrorCode.PluginError.toRaw(), userInfo: userInfo)
-    }
-
-
 }
