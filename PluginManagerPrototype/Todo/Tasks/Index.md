@@ -9,6 +9,8 @@
 		* Write tests for this
 * [ ] Prevent invalid filenames from being valid plugin names
 	* Test that an invalid filename isn't returned as a valid plugin name (use `fileURLWithPath`)
+* [ ] Make it so if the plugin's plist is moved out from under it, the plugin becomes invalid
+	* Write tests for this
 * [ ] Then write tests for it
 * [ ] Then use that method to test the copy and cleanup stuff
 * [ ] Test new caches path
