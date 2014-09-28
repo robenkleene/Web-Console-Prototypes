@@ -9,6 +9,11 @@
 let pluginsFileExtension = "wcplugin"
 let pluginNameKey = WCLPluginNameKey
 let applicationName = NSBundle.mainBundle().infoDictionary[kCFBundleNameKey as NSString] as NSString
+let errorDomain = NSBundle.mainBundle().bundleIdentifier! as NSString
+
+enum ErrorCode: Int {
+    case PluginError = -42
+}
 
 enum Directory {
     case Caches

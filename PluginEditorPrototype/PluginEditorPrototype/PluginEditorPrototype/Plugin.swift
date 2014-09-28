@@ -13,11 +13,22 @@ class Plugin: NSObject {
     struct ClassConstants {
         static let pluginNameKey = "WCName"
         static let pluginIdentifierKey = "WCUUID"
+        static let infoDictionaryPathComponent = "Info.plist"
     }
     let bundle: NSBundle
-    var name: String
-    var identifier: String
-    init(bundle: NSBundle, identifier: String, name: String) {
+    var infoDictionary: [NSObject : AnyObject]
+    var name: String {
+        didSet {
+            
+        }
+    }
+    var identifier: String {
+        didSet {
+            
+        }
+    }
+    init(bundle: NSBundle, infoDictionary: [NSObject : AnyObject], identifier: String, name: String) {
+        self.infoDictionary = infoDictionary
         self.bundle = bundle
         self.name = name
         self.identifier = identifier
