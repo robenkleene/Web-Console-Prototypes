@@ -23,7 +23,7 @@ class PluginCopyControllerTests: XCTestCase {
         var error: NSError?
         var contents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path, error:&error)
         XCTAssertNil(error, "The error should be nil")
-        XCTAssert(!contents!.isEmpty, "The contents should be empty")
+        XCTAssertFalse(contents!.isEmpty, "The contents should not be empty")
         
         pluginCopyController.cleanUp()
 
@@ -31,6 +31,10 @@ class PluginCopyControllerTests: XCTestCase {
         error = nil
         contents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path, error:&error)
         XCTAssertNil(error, "The error should be nil")
-        XCTAssert(contents!.isEmpty, "The contents should be empty")
+        XCTAssertTrue(contents!.isEmpty, "The contents should be empty")
+    }
+
+    func testCopyPlugin() {
+        
     }
 }

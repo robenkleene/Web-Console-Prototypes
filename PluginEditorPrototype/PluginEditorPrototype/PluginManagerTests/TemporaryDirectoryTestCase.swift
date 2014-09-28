@@ -15,7 +15,7 @@ class TemporaryDirectoryTestCase: XCTestCase {
     var temporaryDirectoryPath: String?
     
     class func isValidTemporaryDirectoryPath (path: String?) -> Bool {
-        var isDir : ObjCBool = false
+        var isDir: ObjCBool = false
         if let path = path as String! {
             return NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isDir) && isDir
         }

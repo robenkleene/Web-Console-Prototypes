@@ -39,17 +39,19 @@ class PluginCopyController {
         let pluginURL = plugin.bundle.bundleURL
         self.dynamicType.copyItemAtURL(pluginURL, toDirectoryURL: copyTempDirectoryURL, withFilename: uuid.UUIDString)
         
-        // Update the plist and filename
-        
-        // Copy to the destination
+        // Update the plist identifier and name
+        // Change value for the identifier
+        // Change value for the name
+
+        // Move to the destination & rename syncronously
         
         return nil
     }
     
     private class func copyItemAtURL(url: NSURL, toDirectoryURL directoryURL: NSURL, withFilename filename: String) {
-        // TODO Should show error messages and fail gracefully instead of asserting
+        // TODO Should show error messages instead of asserting
         
-        var isDir : ObjCBool = false
+        var isDir: ObjCBool = false
         let exists = NSFileManager.defaultManager()
             .fileExistsAtPath(directoryURL.path!,
                 isDirectory: &isDir)

@@ -53,10 +53,10 @@ class PluginDataControllerTests: TemporaryDirectoryTestCase {
     }
     
     func testNewPluginFromPlugin() {
-        let pluginManager = PluginManager(testPluginPaths)
-        let plugin = pluginManager.pluginWithName(testPluginName)
-        
-        pluginDataController.newPluginFromPlugin(plugin!)
+//        let pluginManager = PluginManager(testPluginPaths)
+//        let plugin = pluginManager.pluginWithName(testPluginName)
+//        
+//        pluginDataController.newPluginFromPlugin(plugin!)
     }
 
 }
