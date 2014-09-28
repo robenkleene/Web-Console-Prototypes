@@ -9,6 +9,13 @@
 import Foundation
 
 extension Plugin {
+    class func pluginWithURL(url: NSURL) -> Plugin? {
+        if let path = url.path {
+            return self.pluginWithPath(path)
+        }
+        return nil
+    }
+    
     class func pluginWithPath(path: String) -> Plugin? {
         var error: NSError?
         if let bundle = self.validBundle(path, error: &error) {

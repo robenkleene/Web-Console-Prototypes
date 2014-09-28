@@ -34,23 +34,40 @@ class PluginCopyController {
         }
     }
     
-    func copyPlugin(plugin: Plugin, toURL destinationURL: NSURL) -> Plugin? {
+    func copyPlugin(plugin: Plugin, toDirectoryAtURL destinationDirectoryURL: NSURL) -> Plugin? {
         let uuid = NSUUID()
+        let filename = NSUUID().UUIDString
         let pluginURL = plugin.bundle.bundleURL
-        self.dynamicType.copyItemAtURL(pluginURL, toDirectoryURL: copyTempDirectoryURL, withFilename: uuid.UUIDString)
-        
-        // Update the plist identifier and name
-        // Load the plugin
-        // Update the identifier and name via the plugin API
-        // Change value for the identifier
-        // Change value for the name
+        let newPluginURL = self.dynamicType.urlOfItemCopiedFromURL(pluginURL, toDirectoryURL: copyTempDirectoryURL, withFilename: filename)
 
-        // Move to the destination & rename syncronously
+        if let plugin = Plugin.pluginWithURL(newPluginURL) {
+            // TODO Get this code using the real unique name code
+            plugin.name = "Test Name"
+            plugin.identifier = uuid.UUIDString
+
+            let destinationPluginURL = destinationDirectoryURL.URLByAppendingPathComponent(filename)
+            var error: NSError?
+            let moveSuccess = NSFileManager.defaultManager().moveItemAtURL(newPluginURL, toURL: destinationPluginURL, error: &error)
+            if !moveSuccess || error != nil {
+                println("Failed to move a plugin directory to \(destinationPluginURL) \(error)")
+            }
+
+            // Rename based on plugin name if possible
+            let renamedPluginURL = destinationPluginURL.URLByDeletingLastPathComponent!.URLByAppendingPathComponent(plugin.name)
+            let renameSuccess = NSFileManager.defaultManager().moveItemAtURL(destinationPluginURL, toURL: renamedPluginURL, error: &error) // Failure delibrately ignored
+            if !renameSuccess || error != nil {
+                println("Failed to move a plugin directory to \(renamedPluginURL) \(error)")
+            }
+            
+            return plugin
+        }
+        
+        // TODO Log an error here and delete the newPluginURL?
         
         return nil
     }
     
-    private class func copyItemAtURL(url: NSURL, toDirectoryURL directoryURL: NSURL, withFilename filename: String) {
+    private class func urlOfItemCopiedFromURL(url: NSURL, toDirectoryURL directoryURL: NSURL, withFilename filename: String) -> NSURL {
         // TODO Should show error messages instead of asserting
         
         var isDir: ObjCBool = false
@@ -78,5 +95,7 @@ class PluginCopyController {
                 toURL: destinationURL,
                 error: &error)
         assert(copySuccess && error == nil, "The copy should succeed")
+
+        return destinationURL
     }
 }

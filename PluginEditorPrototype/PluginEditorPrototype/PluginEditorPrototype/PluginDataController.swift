@@ -29,6 +29,6 @@ class PluginDataController {
     }
 
     private func newPluginFromPlugin(plugin: Plugin, inDirectoryAtURL dstURL: NSURL) {
-        pluginCopyController.copyPlugin(plugin, toURL: dstURL)
+        pluginCopyController.copyPlugin(plugin, toDirectoryAtURL: dstURL)
     }
 }
