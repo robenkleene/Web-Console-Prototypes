@@ -12,7 +12,7 @@ import XCTest
 class PluginCopyControllerTests: XCTestCase {
     let pluginCopyController = PluginCopyController()
     
-    func testCleanup() {
+    func testCleanUp() {
         let pluginManager = PluginManager(testPluginPaths)
         let plugin = pluginManager.pluginWithName(testPluginName)
         
