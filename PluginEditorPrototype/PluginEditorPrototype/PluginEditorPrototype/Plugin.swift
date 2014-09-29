@@ -19,7 +19,7 @@ class Plugin: NSObject {
     var infoDictionary: [NSObject : AnyObject]
     var name: String {
         didSet {
-            infoDictionary[ClassConstants.pluginNameKey] = identifier
+            infoDictionary[ClassConstants.pluginNameKey] = name
             save()
         }
     }

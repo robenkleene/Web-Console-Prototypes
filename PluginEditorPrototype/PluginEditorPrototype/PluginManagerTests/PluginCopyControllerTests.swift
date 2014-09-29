@@ -30,10 +30,22 @@ class PluginCopyControllerTests: XCTestCase {
         XCTAssertNotNil(testPlugin, "The plugin should not be nil")
         XCTAssertNotEqual(plugin!.name, testPlugin!.name, "The test plugin's name should not equal the plugin's name")
         XCTAssertNotEqual(plugin!.identifier, testPlugin!.identifier, "The test plugin's identifier should not equal the plugin's name")
+
+        println("testPlugin.bundle.bundlePath = \(testPlugin!.bundle.bundlePath)")
+
+        // Assert that the new plugins properties can be changed
+        
+        
+        // Assert that after moving the bundle its URL is still accurate
+        
+        
+        // Assert the directory matches the name
+        
+
         
         // TODO How to resolve issues around a plugins new URL? E.g., I've loaded the plugin and then change its URL
         
-        // TODO Assert the path is right
+        println("break")
     }
     
     func testCleanUp() {

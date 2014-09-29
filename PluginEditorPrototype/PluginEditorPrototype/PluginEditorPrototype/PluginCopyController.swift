@@ -36,7 +36,7 @@ class PluginCopyController {
     
     func copyPlugin(plugin: Plugin, toDirectoryAtURL destinationDirectoryURL: NSURL) -> Plugin? {
         let uuid = NSUUID()
-        let filename = NSUUID().UUIDString
+        let filename = uuid.UUIDString
         let pluginURL = plugin.bundle.bundleURL
         let newPluginURL = self.dynamicType.urlOfItemCopiedFromURL(pluginURL, toDirectoryURL: copyTempDirectoryURL, withFilename: filename)
 
