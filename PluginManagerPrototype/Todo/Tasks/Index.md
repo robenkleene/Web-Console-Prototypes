@@ -2,6 +2,12 @@
 
 ## `plist` Backed Plugins
 
+* [ ] Each time a bundle moves its path needs to be updated
+	* Can this be implemented with file system watching?
+* [ ] Make a logger that logs to console?
+	* Add can be overridden to suppress logs while running tests
+	* Ideally it can also confirm that the call happened? Probably not worth it
+* [ ] Expect the log message to be called
 * [ ] Figure out how to `spyOn` methods to prevent logging noise
 * [ ] Test plugin name and identifier save
 	* [ ] Make sure KVO works for this? 
