@@ -2,7 +2,9 @@
 
 ## `plist` Backed Plugins
 
+* [ ] Create file system prototype project
 * [ ] Each time a bundle moves its path needs to be updated
+	* Use `func fileReferenceURL() -> NSURL?` to store the reference to 
 	* Can this be implemented with file system watching?
 * [ ] Make a logger that logs to console?
 	* Add can be overridden to suppress logs while running tests
@@ -41,6 +43,10 @@
 * [ ] Then use the above to create a bundle in a temporary location, that I can then use that bundle to test the read write methods
 	* Use `NSCachesDirectory` as the temporary location?
 * [ ] For now this will just copy without doing anything fancy, once I have editable properties, I can start making the plugin be a subclass of `WCLPlugin`
+
+## Clean up
+
+* Use `internal` for testing private methods? [Testing Privates (or rather, internals)](http://owensd.io/2014/07/21/testing-privates.html)
 
 ### Class Design
 
