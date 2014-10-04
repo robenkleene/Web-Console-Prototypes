@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
 //
 
-let pluginsFileExtension = "wcplugin"
+let pluginFileExtension = "wcplugin"
 let pluginNameKey = WCLPluginNameKey
-let applicationName = NSBundle.mainBundle().infoDictionary[kCFBundleNameKey as NSString] as NSString
+let applicationName = NSBundle.mainBundle().infoDictionary![kCFBundleNameKey as NSString] as NSString
 let errorDomain = NSBundle.mainBundle().bundleIdentifier! as NSString
 
 enum ErrorCode: Int {
@@ -36,6 +36,6 @@ enum Directory {
         }
     }
     func URL() -> NSURL {
-        return NSURL(fileURLWithPath: self.path())
+        return NSURL(fileURLWithPath: self.path())!
     }
 }

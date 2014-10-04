@@ -13,15 +13,16 @@ extension PluginDataController {
         var pluginPaths = [String]()
         
         if let pathContents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(paths, error:nil) {
-            let pluginFileExtension = ".\(pluginsFileExtension)"
-            let pluginPredicate = NSPredicate(format: "self ENDSWITH %@", pluginFileExtension)
-            let pluginPathComponents = pathContents.filter {
-                pluginPredicate.evaluateWithObject($0)
-            }
-            for pluginPathComponent in pluginPathComponents {
-                if let pluginPathComponenet = pluginPathComponent as? String {
-                    let pluginPath = paths.stringByAppendingPathComponent(pluginPathComponenet)
-                    pluginPaths.append(pluginPath)
+            let fileExtension = ".\(pluginFileExtension)"
+            if let pluginPredicate = NSPredicate(format: "self ENDSWITH %@", fileExtension) {
+                let pluginPathComponents = pathContents.filter {
+                    pluginPredicate.evaluateWithObject($0)
+                }
+                for pluginPathComponent in pluginPathComponents {
+                    if let pluginPathComponenet = pluginPathComponent as? String {
+                        let pluginPath = paths.stringByAppendingPathComponent(pluginPathComponenet)
+                        pluginPaths.append(pluginPath)
+                    }
                 }
             }
         }

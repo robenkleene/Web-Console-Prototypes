@@ -46,26 +46,24 @@ class TemporaryDirectoryTestCase: XCTestCase {
         
         if let temporaryDirectory = NSTemporaryDirectory() as String? {
             if let bundleIdenetifier = NSBundle.mainBundle().bundleIdentifier as String? {
-                if let className = self.className {
-                    let path = temporaryDirectory
-                        .stringByAppendingPathComponent(bundleIdenetifier)
-                        .stringByAppendingPathComponent(className)
-                    if NSFileManager.defaultManager().fileExistsAtPath(path) {
-                        let success = self.dynamicType.safelyRemoveTemporaryDirectoryAtPath(path)
-                        XCTAssertTrue(success, "Removing the temporary directory should have succeeded")
-                        XCTAssertTrue(false, "A temporary directory had to be cleaned up")
-                    }
-                    XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(path), "A file should not exist at the path")
-                    var error: NSError?
-                    NSFileManager
-                        .defaultManager()
-                        .createDirectoryAtPath(path,
-                            withIntermediateDirectories: true,
-                            attributes: nil,
-                            error: &error)
-                    XCTAssertNil(error, "The error should be nil")
-                    temporaryDirectoryPath = path
+                let path = temporaryDirectory
+                    .stringByAppendingPathComponent(bundleIdenetifier)
+                    .stringByAppendingPathComponent(className)
+                if NSFileManager.defaultManager().fileExistsAtPath(path) {
+                    let success = self.dynamicType.safelyRemoveTemporaryDirectoryAtPath(path)
+                    XCTAssertTrue(success, "Removing the temporary directory should have succeeded")
+                    XCTAssertTrue(false, "A temporary directory had to be cleaned up")
                 }
+                XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(path), "A file should not exist at the path")
+                var error: NSError?
+                NSFileManager
+                    .defaultManager()
+                    .createDirectoryAtPath(path,
+                        withIntermediateDirectories: true,
+                        attributes: nil,
+                        error: &error)
+                XCTAssertNil(error, "The error should be nil")
+                temporaryDirectoryPath = path
             }
         }
         

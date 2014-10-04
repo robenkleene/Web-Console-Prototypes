@@ -40,7 +40,7 @@ class Plugin: NSObject {
         if !success && error != nil {
             if let path = url.path {
                 let errorString = NSLocalizedString("Failed to write to dictionary at path \(path).", comment: "Failed to write to dictionary")
-                error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.toRaw())
+                error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
             }
         }
     }

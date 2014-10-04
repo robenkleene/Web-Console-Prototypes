@@ -150,7 +150,7 @@
 		451DAFDA18D7E57000AACC86 /* WCLKeyValueObservingTestsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLKeyValueObservingTestsHelper.h; sourceTree = "<group>"; };
 		451DAFDB18D7E57000AACC86 /* WCLKeyValueObservingTestsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLKeyValueObservingTestsHelper.m; sourceTree = "<group>"; };
 		452D272319C66EE40085CDAF /* PluginDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginDataController.swift; sourceTree = "<group>"; };
-		452D272419C66EE40085CDAF /* Plugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
+		452D272419C66EE40085CDAF /* Plugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Plugin.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		452D272919C66F3E0085CDAF /* PluginEditorPrototype-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PluginEditorPrototype-Bridging-Header.h"; sourceTree = "<group>"; };
 		452D272A19C670E40085CDAF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		452D273019C7AB190085CDAF /* PluginManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PluginManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,7 +162,7 @@
 		45605E8419D72A750033A8AD /* DirectoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryTests.swift; sourceTree = "<group>"; };
 		45605E8619D74A1D0033A8AD /* PluginCopyControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginCopyControllerTests.swift; sourceTree = "<group>"; };
 		45605E8819D86A020033A8AD /* PluginTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginTests.swift; sourceTree = "<group>"; };
-		45605E8A19D878A30033A8AD /* Plugin+Initialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Plugin+Initialization.swift"; sourceTree = "<group>"; };
+		45605E8A19D878A30033A8AD /* Plugin+Initialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Plugin+Initialization.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4567DB3F18B03A7A00CBBD29 /* PluginEditorPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PluginEditorPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4567DB4218B03A7A00CBBD29 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4567DB4518B03A7A00CBBD29 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };

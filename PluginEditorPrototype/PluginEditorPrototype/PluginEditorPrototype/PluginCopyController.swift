@@ -85,7 +85,7 @@ class PluginCopyController {
             assert(createSuccess && error == nil, "The create should succeed")
         }
         else {
-            assert(isDir, "The file should be a directory")
+            assert(isDir ? true : false, "The file should be a directory")
         }
         
         let destinationURL = directoryURL.URLByAppendingPathComponent(filename)

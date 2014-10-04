@@ -39,7 +39,7 @@ extension Plugin {
 
         if error != nil {
             let errorString = NSLocalizedString("Bundle is invalid at path \(path).", comment: "Invalid plugin bundle error")
-            error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.toRaw())
+            error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
         }
         
         return nil
@@ -55,7 +55,7 @@ extension Plugin {
         if error != nil {
             if let path = url.path {
                 let errorString = NSLocalizedString("Info.plist is invalid at path \(path).", comment: "Invalid plugin Info.plist error")
-                error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.toRaw())
+                error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
             }
         }
         
@@ -71,7 +71,7 @@ extension Plugin {
         
         if error != nil {
             let errorString = NSLocalizedString("Plugin name is invalid \(infoDictionary).", comment: "Invalid plugin name error")
-            error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.toRaw())
+            error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
         }
         
         return nil
@@ -87,7 +87,7 @@ extension Plugin {
 
         if error != nil {
             let errorString = NSLocalizedString("Plugin UUID is invalid \(infoDictionary).", comment: "Invalid plugin UUID error")
-            error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.toRaw())
+            error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
         }
         
         return nil
