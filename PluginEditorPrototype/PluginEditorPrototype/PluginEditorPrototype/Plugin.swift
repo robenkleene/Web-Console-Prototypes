@@ -34,6 +34,8 @@ class Plugin: NSObject {
         var error: NSError?
         self.dynamicType.writeDictionary(infoDictionary, toURL: infoDictionaryURL, error: &error)
     }
+    
+    
     class func writeDictionary(dictionary: [NSObject : AnyObject], toURL url: NSURL, error: NSErrorPointer) {
         let writableDictionary = NSDictionary(dictionary: dictionary)
         let success = writableDictionary.writeToURL(url, atomically: true)

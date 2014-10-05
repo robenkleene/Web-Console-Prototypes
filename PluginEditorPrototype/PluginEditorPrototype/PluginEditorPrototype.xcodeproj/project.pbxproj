@@ -52,15 +52,6 @@
 		4567DB9118B26DD000CBBD29 /* WCLPluginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB8F18B26DD000CBBD29 /* WCLPluginViewController.xib */; };
 		4567DB9518B26E5800CBBD29 /* WCLEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB9318B26E5800CBBD29 /* WCLEnvironmentViewController.m */; };
 		4567DB9618B26E5800CBBD29 /* WCLEnvironmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB9418B26E5800CBBD29 /* WCLEnvironmentViewController.xib */; };
-		456D1A4518F382E000955EDC /* Coffee.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 456D1A4418F382E000955EDC /* Coffee.wcplugin */; };
-		456D1A4718F382E900955EDC /* Git.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 456D1A4618F382E900955EDC /* Git.wcplugin */; };
-		456D1A4F18F382F400955EDC /* HTML.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 456D1A4818F382F400955EDC /* HTML.wcplugin */; };
-		456D1A5018F382F400955EDC /* IRB.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 456D1A4918F382F400955EDC /* IRB.wcplugin */; };
-		456D1A5118F382F400955EDC /* Markdown.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 456D1A4A18F382F400955EDC /* Markdown.wcplugin */; };
-		456D1A5218F382F400955EDC /* Node.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 456D1A4B18F382F400955EDC /* Node.wcplugin */; };
-		456D1A5318F382F400955EDC /* Search.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 456D1A4C18F382F400955EDC /* Search.wcplugin */; };
-		456D1A5418F382F400955EDC /* Shared Resources.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 456D1A4D18F382F400955EDC /* Shared Resources.wcplugin */; };
-		456D1A5518F382F400955EDC /* Shared Test Resources.wcplugin in Resources */ = {isa = PBXBuildFile; fileRef = 456D1A4E18F382F400955EDC /* Shared Test Resources.wcplugin */; };
 		456D1A5718F3834000955EDC /* HTML.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4818F382F400955EDC /* HTML.wcplugin */; };
 		456D1A5818F3834C00955EDC /* IRB.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4918F382F400955EDC /* IRB.wcplugin */; };
 		456D1A5918F3834C00955EDC /* Markdown.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4A18F382F400955EDC /* Markdown.wcplugin */; };
@@ -603,19 +594,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				4567DB9118B26DD000CBBD29 /* WCLPluginViewController.xib in Resources */,
-				456D1A5518F382F400955EDC /* Shared Test Resources.wcplugin in Resources */,
 				4567DB9618B26E5800CBBD29 /* WCLEnvironmentViewController.xib in Resources */,
-				456D1A5418F382F400955EDC /* Shared Resources.wcplugin in Resources */,
-				456D1A5118F382F400955EDC /* Markdown.wcplugin in Resources */,
-				456D1A4518F382E000955EDC /* Coffee.wcplugin in Resources */,
-				456D1A4718F382E900955EDC /* Git.wcplugin in Resources */,
-				456D1A5018F382F400955EDC /* IRB.wcplugin in Resources */,
 				4567DB7D18B044B700CBBD29 /* WCLPreferencesWindowController.xib in Resources */,
-				456D1A4F18F382F400955EDC /* HTML.wcplugin in Resources */,
-				456D1A5218F382F400955EDC /* Node.wcplugin in Resources */,
 				45A5EEEA18DA7231002657DF /* WCLFilesViewController.xib in Resources */,
 				4567DB4D18B03A7A00CBBD29 /* InfoPlist.strings in Resources */,
-				456D1A5318F382F400955EDC /* Search.wcplugin in Resources */,
 				4567DB5E18B03A7A00CBBD29 /* Images.xcassets in Resources */,
 				4567DB5318B03A7A00CBBD29 /* Credits.rtf in Resources */,
 				4567DB5918B03A7A00CBBD29 /* MainMenu.xib in Resources */,
