@@ -2,6 +2,10 @@
 
 * Create external processes (e.g., by running script) and confirm that the appropriate events happen
 
+## Implementation
+
+1. Watch the path to the `Info.plist` if that changes, then reload the bundle.
+
 ## Cases
 
 ### A plugin's folder gets renamed
@@ -10,6 +14,8 @@ The plugin's bundle should reload.
 
 1. Detect the file system change
 2. Reload the bundle
+
+Why should a plugin reload when it's folder gets renamed? This will simply confirm that the plugin's bundle and `Info.plist` are valid.
 
 ### A plugin gets added to a plugin folder
 
