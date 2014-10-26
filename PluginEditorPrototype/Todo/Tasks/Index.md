@@ -2,10 +2,8 @@
 
 ## Todo
 
-* Fix Tests
 * Start creating `PluginDataController` that implements `NSFilePresenter`
 * Make sure the all the `didSet` for plugin setters don't get called during initialization
-* Fix code signing exceptions
 
 ### Plugin Changes
 
