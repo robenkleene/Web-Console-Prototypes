@@ -20,7 +20,7 @@ Why should a plugin reload when it's folder gets renamed? This will simply confi
 ### A plugin gets added to a plugin folder
 
 The plugin should be added.
-	
+
 1. Detect the newly added directory
 2. Load the plugin, but only if the plugin isn't already loaded, otherwise the plugin will loads itself (per a plugin's folder gets renamed).
 
