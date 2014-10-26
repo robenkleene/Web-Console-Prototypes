@@ -13,9 +13,10 @@ class Plugin: NSObject {
     struct ClassConstants {
         static let pluginNameKey = "WCName"
         static let pluginIdentifierKey = "WCUUID"
+        static let pluginCommandKey = "WCCommand"
         static let infoDictionaryPathComponent = "Contents".stringByAppendingPathComponent("Info.plist")
     }
-    let bundle: NSBundle
+    internal let bundle: NSBundle
     var infoDictionary: [NSObject : AnyObject]
     var name: String {
         didSet {
@@ -29,13 +30,33 @@ class Plugin: NSObject {
             save()
         }
     }
-    func save() {
-        let infoDictionaryURL = self.dynamicType.infoDictionaryURL(self.bundle)
+    var command: String? {
+        didSet {
+            infoDictionary[ClassConstants.pluginCommandKey] = command
+            save()
+        }
+    }
+    var commandPath: String? {
+        get {
+            if let resourcePath = resourcePath {
+                if let command = command {
+                    return resourcePath.stringByAppendingPathComponent(command)
+                }
+            }
+            return nil
+        }
+    }
+    private var resourcePath: String? {
+        get {
+            return bundle.resourcePath
+        }
+    }
+    
+    private func save() {
+        let infoDictionaryURL = self.dynamicType.infoDictionaryURL(bundle)
         var error: NSError?
         self.dynamicType.writeDictionary(infoDictionary, toURL: infoDictionaryURL, error: &error)
     }
-    
-    
     class func writeDictionary(dictionary: [NSObject : AnyObject], toURL url: NSURL, error: NSErrorPointer) {
         let writableDictionary = NSDictionary(dictionary: dictionary)
         let success = writableDictionary.writeToURL(url, atomically: true)
@@ -49,10 +70,11 @@ class Plugin: NSObject {
     class func infoDictionaryURL(bundle: NSBundle) -> NSURL {
         return bundle.bundleURL.URLByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
     }
-    init(bundle: NSBundle, infoDictionary: [NSObject : AnyObject], identifier: String, name: String) {
+    init(bundle: NSBundle, infoDictionary: [NSObject : AnyObject], identifier: String, name: String, command: String?) {
         self.infoDictionary = infoDictionary
         self.bundle = bundle
         self.name = name
         self.identifier = identifier
+        self.command = command
     }
 }

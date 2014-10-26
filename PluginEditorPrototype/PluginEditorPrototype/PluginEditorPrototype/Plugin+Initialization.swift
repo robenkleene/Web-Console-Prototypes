@@ -18,11 +18,12 @@ extension Plugin {
     
     class func pluginWithPath(path: String) -> Plugin? {
         var error: NSError?
-        if let bundle = self.validBundle(path, error: &error) {
-            if let infoDictionary = self.validInfoDictionary(bundle, error: &error) {
-                if let identifier = self.validIdentifier(infoDictionary, error: &error) {
-                    if let name = self.validName(infoDictionary, error: &error) {
-                        return Plugin(bundle: bundle, infoDictionary: infoDictionary, identifier: identifier, name: name)
+        if let bundle = validBundle(path, error: &error) {
+            if let infoDictionary = validInfoDictionary(bundle, error: &error) {
+                if let identifier = validIdentifier(infoDictionary, error: &error) {
+                    if let name = validName(infoDictionary, error: &error) {
+                        let command = validCommand(infoDictionary, error: &error)
+                        return Plugin(bundle: bundle, infoDictionary: infoDictionary, identifier: identifier, name: name, command: command)
                     }
                 }
             }
@@ -36,7 +37,7 @@ extension Plugin {
         if let bundle = NSBundle(path: path) as NSBundle? {
             return bundle
         }
-
+        
         if error != nil {
             let errorString = NSLocalizedString("Bundle is invalid at path \(path).", comment: "Invalid plugin bundle error")
             error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
@@ -51,7 +52,7 @@ extension Plugin {
         if infoDictionary != nil {
             return infoDictionary
         }
-
+        
         if error != nil {
             if let path = url.path {
                 let errorString = NSLocalizedString("Info.plist is invalid at path \(path).", comment: "Invalid plugin Info.plist error")
@@ -62,6 +63,22 @@ extension Plugin {
         return nil
     }
 
+    // TODO: A plugin command can be nil
+    class func validCommand(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
+        if let command = infoDictionary[ClassConstants.pluginCommandKey] as NSString? {
+            if command.length > 0 {
+                return command
+            }
+        }
+        
+        if error != nil {
+            let errorString = NSLocalizedString("Plugin command is invalid \(infoDictionary).", comment: "Invalid plugin command error")
+            error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
+        }
+        
+        return nil
+    }
+    
     class func validName(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
         if let name = infoDictionary[ClassConstants.pluginNameKey] as NSString? {
             if name.length > 0 {
@@ -84,7 +101,7 @@ extension Plugin {
                 return uuidString
             }
         }
-
+        
         if error != nil {
             let errorString = NSLocalizedString("Plugin UUID is invalid \(infoDictionary).", comment: "Invalid plugin UUID error")
             error.memory = NSError.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
