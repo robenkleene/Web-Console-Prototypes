@@ -169,6 +169,7 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
     // Test that the saved frame now equals the destination frame
     savedFrame = [[self class] savedFrameForPreferencesWindow];
     BOOL framesMatch = [[self class] windowFrameWithToolbar:destinationFrame matchesWindowFrameWithoutToolbar:savedFrame];
+
     XCTAssertTrue(framesMatch, @"The saved frame should equal the destination frame.");
 
     // Show new Preferences window and test it has the saved frame
@@ -264,11 +265,11 @@ NS_INLINE BOOL NSRectEqualToRect (NSRect rect1, NSRect rect2)
 {
     // NSWindow's setFrameUsingName: and saveFrameUsingName: methods adjust for the toolbar
     
-    static NSInteger toolbarHeight = 56;
+    static NSInteger toolbarHeight = 55;
     NSRect comparisonRect = NSMakeRect(windowFrameWithoutToolbar.origin.x,
                                        windowFrameWithoutToolbar.origin.y - toolbarHeight,
                                        windowFrameWithoutToolbar.size.width,
-                                       windowFrameWithoutToolbar.size.height + toolbarHeight);
+                                       windowFrameWithoutToolbar.size.height + toolbarHeight);    
     return NSRectEqualToRect(comparisonRect, windowFrameWithToolbar);
 }
 
