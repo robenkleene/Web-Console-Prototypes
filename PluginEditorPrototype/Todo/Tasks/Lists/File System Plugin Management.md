@@ -2,11 +2,20 @@
 
 ## Todo
 
+
+## Implementation Notes
+
 Figure out a way to reconcile my goals for `testCopyPlugin`, with the current implementation that copies the plugin to the caches directory.
 
 `testCopyPlugin` should instead be used as the basis for starting tests for the `PluginDirectoryManager`. The tests should make sure that the `PluginDirectoryManager` performs the correct callbacks when a plugin is moved.
 
+* Research `NSFilePresenter` in iOS 8
+
+### Implementation Steps
+
 1. In the `EventsDemo` project, create a working example of the `PluginDirectoryManager`, and test that it performs the correct callbacks below. 
+    * Test that editing the plugin in another application (e.g., BBEdit) works as expected.
+    * But really it looks like the C APIs are going to be more viable.
 2. Migrate the `PluginDirectoryManager` and the `testCopyPlugin` test from the `FileSystem` project into `PluginEditorPrototype`.
 3. Start adapting the `testCopyPlugin` test into a test that the correct `PluginDirectoryManagerDelegate` delegate callbacks get called for the appropriate events.
 
