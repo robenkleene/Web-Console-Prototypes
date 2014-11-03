@@ -48,6 +48,10 @@ class TemporaryDirectoryTestCase: XCTestCase {
         var error: NSError?
         let removed = NSFileManager.defaultManager().removeItemAtPath(path, error: &error)
         if !removed || error != nil {
+            println("Warning: A temporary item failed to be removed at path \(path)")
+            if (error != nil) {
+                println("Error removing temporary item at path \(path) \(error)")
+            }
             return false
         }
         
@@ -69,7 +73,8 @@ class TemporaryDirectoryTestCase: XCTestCase {
             if NSFileManager.defaultManager().fileExistsAtPath(path) {
                 let success = self.dynamicType.safelyRemoveTemporaryItemAtPath(path)
                 XCTAssertTrue(success, "Removing the temporary directory should have succeeded")
-                XCTAssertTrue(false, "A temporary directory had to be cleaned up") // TODO This should probably be a log message not an assert
+//                XCTAssertTrue(false, "A temporary directory had to be cleaned up") // TODO This should probably be a log message not an assert
+                println("Warning: A temporary directory had to be cleaned up at path \(path)")
             }
             XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(path), "A file should not exist at the path")
             var error: NSError?
@@ -95,6 +100,11 @@ class TemporaryDirectoryTestCase: XCTestCase {
         if let path = temporaryDirectoryPath {
             var error: NSError?
             if let contents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path, error:&error) {
+
+                println("Warning: A temporary directory was not empty during tear down at path \(path)")
+                // This is an assert because it is evidence that a plugin isn't cleaning up after itself.
+                // On next run the setup will clean it up, so the assert helps identify when a test isn't
+                // cleaning up without hindering future runs.
                 XCTAssert(contents.isEmpty, "The contents should be empty")
                 XCTAssertNil(error, "The error should be nil")
             }
@@ -107,6 +117,7 @@ class TemporaryDirectoryTestCase: XCTestCase {
         if let path = temporaryDirectoryPath {
             XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(path), "A file should not exist at the path")
         }
-        
+
+        println("temporaryDirectoryPath = \(temporaryDirectoryPath)")
     }
 }
