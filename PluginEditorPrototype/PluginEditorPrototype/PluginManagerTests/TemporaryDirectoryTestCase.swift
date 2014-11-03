@@ -73,7 +73,7 @@ class TemporaryDirectoryTestCase: XCTestCase {
             if NSFileManager.defaultManager().fileExistsAtPath(path) {
                 let success = self.dynamicType.safelyRemoveTemporaryItemAtPath(path)
                 XCTAssertTrue(success, "Removing the temporary directory should have succeeded")
-//                XCTAssertTrue(false, "A temporary directory had to be cleaned up") // TODO This should probably be a log message not an assert
+                // This is not an assert in order to make it easier to fix tests that aren't cleaning up after themselves.
                 println("Warning: A temporary directory had to be cleaned up at path \(path)")
             }
             XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(path), "A file should not exist at the path")
@@ -86,9 +86,8 @@ class TemporaryDirectoryTestCase: XCTestCase {
                     error: &error)
             XCTAssertNil(error, "The error should be nil")
             temporaryDirectoryPath = path
-
         }
-        
+
         XCTAssertTrue(self.dynamicType.isValidTemporaryDirectoryPath(temporaryDirectoryPath), "The temporary directory path should be valid")
     }
     
@@ -100,14 +99,15 @@ class TemporaryDirectoryTestCase: XCTestCase {
         if let path = temporaryDirectoryPath {
             var error: NSError?
             if let contents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path, error:&error) {
-
-                println("Warning: A temporary directory was not empty during tear down at path \(path)")
+                if !contents.isEmpty {
+                    println("Warning: A temporary directory was not empty during tear down at path \(path)")
+                }
                 // This is an assert because it is evidence that a plugin isn't cleaning up after itself.
                 // On next run the setup will clean it up, so the assert helps identify when a test isn't
                 // cleaning up without hindering future runs.
                 XCTAssert(contents.isEmpty, "The contents should be empty")
-                XCTAssertNil(error, "The error should be nil")
             }
+            XCTAssertNil(error, "The error should be nil")
             
             let success = self.dynamicType.safelyRemoveTemporaryItemAtPath(path)
             XCTAssertTrue(success, "Removing the temporary directory should have succeeded")
