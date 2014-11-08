@@ -42,7 +42,7 @@ class Plugin: NSObject {
         
         if error != nil {
             let errorString = NSLocalizedString("Bundle is invalid at path \(path).", comment: "Invalid plugin bundle error")
-            error.memory = ErrorHelper.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
+            error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
         }
         
         return nil
@@ -58,7 +58,7 @@ class Plugin: NSObject {
         if error != nil {
             if let path = url.path {
                 let errorString = NSLocalizedString("Info.plist is invalid at path \(path).", comment: "Invalid plugin Info.plist error")
-                error.memory = ErrorHelper.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
+                error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
             }
         }
         
@@ -75,7 +75,7 @@ class Plugin: NSObject {
         
         if error != nil {
             let errorString = NSLocalizedString("Plugin command is invalid \(infoDictionary).", comment: "Invalid plugin command error")
-            error.memory = ErrorHelper.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
+            error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
         }
         
         return nil
@@ -90,7 +90,7 @@ class Plugin: NSObject {
         
         if error != nil {
             let errorString = NSLocalizedString("Plugin name is invalid \(infoDictionary).", comment: "Invalid plugin name error")
-            error.memory = ErrorHelper.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
+            error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
         }
         
         return nil
@@ -106,7 +106,7 @@ class Plugin: NSObject {
         
         if error != nil {
             let errorString = NSLocalizedString("Plugin UUID is invalid \(infoDictionary).", comment: "Invalid plugin UUID error")
-            error.memory = ErrorHelper.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
+            error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
         }
         
         return nil
@@ -114,6 +114,7 @@ class Plugin: NSObject {
     // TODO END extension Plugin+Initialization
     
     struct ClassConstants {
+        static let errorCode = -43
         static let pluginNameKey = "WCName"
         static let pluginIdentifierKey = "WCUUID"
         static let pluginCommandKey = "WCCommand"
@@ -166,7 +167,7 @@ class Plugin: NSObject {
         if !success && error != nil {
             if let path = url.path {
                 let errorString = NSLocalizedString("Failed to write to dictionary at path \(path).", comment: "Failed to write to dictionary")
-                error.memory = ErrorHelper.errorWithDescription(errorString, code: ErrorCode.PluginError.rawValue)
+                error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
             }
         }
     }
