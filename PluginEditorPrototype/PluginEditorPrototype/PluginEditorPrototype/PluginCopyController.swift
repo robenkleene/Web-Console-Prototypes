@@ -41,7 +41,7 @@ class PluginCopyController {
         let copiedPluginURL = self.dynamicType.urlOfItemCopiedFromURL(pluginURL, toDirectoryURL: copyTempDirectoryURL, withFilename: filename)
 
         if let plugin = Plugin.pluginWithURL(copiedPluginURL) {
-            // TODO Get this code using the real unique name code
+            // TODO: Get this code using the real unique name code
             plugin.name = "Test Name"
             plugin.identifier = uuid.UUIDString
 
@@ -64,13 +64,13 @@ class PluginCopyController {
             return renamedPluginURL
         }
         
-        // TODO Log an error here and delete the newPluginURL?
+        // TODO: Log an error here and delete the newPluginURL?
         
         return nil
     }
     
     private class func urlOfItemCopiedFromURL(url: NSURL, toDirectoryURL directoryURL: NSURL, withFilename filename: String) -> NSURL {
-        // TODO Should show error messages instead of asserting
+        // TODO: Should show error messages instead of asserting
         
         var isDir: ObjCBool = false
         let exists = NSFileManager.defaultManager()

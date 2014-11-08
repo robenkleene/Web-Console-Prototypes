@@ -60,10 +60,10 @@ class PluginCopyControllerTests: XCTestCase {
         XCTAssertTrue(contents!.isEmpty, "The contents should be empty")
     }
 
-    // TODO If there is already an existing plugin the resulting directory name should be the same as the plugins UUID
+    // TODO: If there is already an existing plugin the resulting directory name should be the same as the plugins UUID
 }
 
 //class PluginCopyControllerTests: XCTestCase {
 
 
-// TODO Copy to test directory
+// TODO: Copy to test directory

@@ -11,7 +11,7 @@ import Cocoa
 
 
 class PluginDataController {
-    // TODO BEGIN extension PluginDataController+PluginPaths
+    // TODO: EXTENSION BEGIN PluginDataController+PluginPaths
     class func pathsForPluginsAtPath(paths: String) -> [String] {
         var pluginPaths = [String]()
         

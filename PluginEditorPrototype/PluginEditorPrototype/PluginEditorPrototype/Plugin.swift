@@ -10,7 +10,7 @@ import Cocoa
 
 
 class Plugin: NSObject {
-    // TODO BEGIN extension Plugin+Initialization
+    // TODO: EXTENSION BEGIN Plugin+Initialization
     class func pluginWithURL(url: NSURL) -> Plugin? {
         if let path = url.path {
             return self.pluginWithPath(path)
@@ -111,7 +111,7 @@ class Plugin: NSObject {
         
         return nil
     }
-    // TODO END extension Plugin+Initialization
+    // TODO: EXTENSION END Plugin+Initialization
     
     struct ClassConstants {
         static let errorCode = -43
@@ -120,7 +120,7 @@ class Plugin: NSObject {
         static let pluginCommandKey = "WCCommand"
         static let infoDictionaryPathComponent = "Contents".stringByAppendingPathComponent("Info.plist")
     }
-    internal let bundle: NSBundle
+    let bundle: NSBundle // TODO: EXTENSION This should be marked internal and the tests that need it should use an extension to access it
     var infoDictionary: [NSObject : AnyObject]
     var name: String {
         didSet {
