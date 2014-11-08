@@ -2,6 +2,10 @@
 
 ## Todo
 
+* Make `copyPlugin` return a file URL instead of a plugin. Document why I'm doing this: Since the `PluginDataController` is responsible for reloading plugins, the `PluginCopyController` cannot assure that the returned plugin is valid (it is only loading the moved plugin as a shortcut to writing to its `plist`).
+* Refactor the `testRenamePluginDirectory` test
+    * This should now be a `PluginDirectoryManager` test
+    * After moving the plugin, test that the `PluginDirectoryManager` callbacks fire
 
 ## Implementation Notes
 
