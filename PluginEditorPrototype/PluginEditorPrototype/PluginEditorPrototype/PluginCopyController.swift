@@ -34,20 +34,20 @@ class PluginCopyController {
         }
     }
     
-    func copyPlugin(plugin: Plugin, toDirectoryAtURL destinationDirectoryURL: NSURL) -> Plugin? {
+    func copyPlugin(plugin: Plugin, toDirectoryAtURL destinationDirectoryURL: NSURL) -> NSURL? {
         let uuid = NSUUID()
         let filename = uuid.UUIDString
         let pluginURL = plugin.bundle.bundleURL
-        let newPluginURL = self.dynamicType.urlOfItemCopiedFromURL(pluginURL, toDirectoryURL: copyTempDirectoryURL, withFilename: filename)
+        let copiedPluginURL = self.dynamicType.urlOfItemCopiedFromURL(pluginURL, toDirectoryURL: copyTempDirectoryURL, withFilename: filename)
 
-        if let plugin = Plugin.pluginWithURL(newPluginURL) {
+        if let plugin = Plugin.pluginWithURL(copiedPluginURL) {
             // TODO Get this code using the real unique name code
             plugin.name = "Test Name"
             plugin.identifier = uuid.UUIDString
 
             let destinationPluginURL = destinationDirectoryURL.URLByAppendingPathComponent(filename)
             var error: NSError?
-            let moveSuccess = NSFileManager.defaultManager().moveItemAtURL(newPluginURL, toURL: destinationPluginURL, error: &error)
+            let moveSuccess = NSFileManager.defaultManager().moveItemAtURL(copiedPluginURL, toURL: destinationPluginURL, error: &error)
             if !moveSuccess || error != nil {
                 println("Failed to move a plugin directory to \(destinationPluginURL) \(error)")
             }
@@ -59,7 +59,9 @@ class PluginCopyController {
                 println("Failed to move a plugin directory to \(renamedPluginURL) \(error)")
             }
             
-            return plugin
+            // Return a file URL rather than the plugin because this plugin isn't watched on the file system yet
+            // Instantiating the plugin is just a shortcut to editing the plugins properties
+            return renamedPluginURL
         }
         
         // TODO Log an error here and delete the newPluginURL?
