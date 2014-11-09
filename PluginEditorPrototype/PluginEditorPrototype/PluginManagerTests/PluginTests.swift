@@ -37,7 +37,7 @@ class PluginTests: TemporaryPluginTestCase {
             XCTAssertTrue(moveSuccess, "The move should succeed")
             XCTAssertNil(error, "The error should be nil")
             
-            // TODO: Refactor this test, reloading the plugin should be handled with the PluginDirectoryManager
+            // TODO: Refactor this test, reloading the plugin should be handled with the PluginsDirectoryManager
             let newCommandPath = temporaryPlugin.commandPath!
             println("newCommandPath = \(newCommandPath)")
             //            let newContents = NSString(contentsOfFile:newCommandPath, encoding:NSUTF8StringEncoding, error:&error) as String!
