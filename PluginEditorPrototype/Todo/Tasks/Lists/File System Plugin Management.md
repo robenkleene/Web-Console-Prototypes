@@ -2,10 +2,11 @@
 
 ## Todo
 
-* Refactor the `testRenamePluginDirectory` test
-    * This should now be a `PluginDirectoryManager` test
-    * After moving the plugin, test that the `PluginDirectoryManager` callbacks fire
-* Review `TODO: EXTENSION BEGIN`, perhaps these can be moved back to extensions now that the derived data has been deleted?
+* Build tests for `PluginDirectoryManager` assuring that all callbacks work
+* Use the `dispatch_source_create` method for creating the callbacks
+    * An example implementation is in the `EventsDemo` project
+* Look at `fsevents_callback` in the `ImageViewer` project, this breaks file system events down the callbacks I need (e.g., `fileWasAdded`)
+
 
 ## Implementation
 
@@ -46,3 +47,13 @@ Moving an `Info.plist` should only invalidate the plugin if it was moved from a 
 1. If the item did move into a plugin directory, load the plugin and create a `PluginDirectoryManager` if one doesn't already exist
 2. If the `Info.plist` did move, reload the plugin
 3. If the `Info.plist` did change, reload the plugin
+
+## Resources
+
+[Low-Level Concurrency APIs - Concurrent Programming - objc.io issue #2](http://www.objc.io/issue-2/low-level-concurrency-apis.html):
+
+> Watching Files
+
+[Monitoring Files With GCD Being Edited With A Text Editor](http://www.davidhamrick.com/2011/10/13/Monitoring-Files-With-GCD-Being-Edited-With-A-Text-Editor.html)
+
+[MacOSX - ImageViewer](http://blog.pcitron.fr/tools/macosx-imageviewer/)
