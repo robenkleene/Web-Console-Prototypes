@@ -29,9 +29,8 @@
 		45539B0519D4F5790017B892 /* PluginCopyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0319D4F5790017B892 /* PluginCopyController.swift */; };
 		45605E8519D72A750033A8AD /* DirectoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45605E8419D72A750033A8AD /* DirectoryTests.swift */; };
 		45605E8719D74A1D0033A8AD /* PluginCopyControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45605E8619D74A1D0033A8AD /* PluginCopyControllerTests.swift */; };
-		4563D5551A103DDD000B5F4C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4563D5541A103DDD000B5F4C /* CoreServices.framework */; };
 		4563D5581A10403C000B5F4C /* WCLPluginsDirectoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4563D5571A10403C000B5F4C /* WCLPluginsDirectoryManager.m */; };
-		4567DB4318B03A7A00CBBD29 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB4218B03A7A00CBBD29 /* Cocoa.framework */; };
+		4563D5591A104EE1000B5F4C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB4218B03A7A00CBBD29 /* Cocoa.framework */; };
 		4567DB4D18B03A7A00CBBD29 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB4B18B03A7A00CBBD29 /* InfoPlist.strings */; };
 		4567DB4F18B03A7A00CBBD29 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB4E18B03A7A00CBBD29 /* main.m */; };
 		4567DB5318B03A7A00CBBD29 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB5118B03A7A00CBBD29 /* Credits.rtf */; };
@@ -165,7 +164,6 @@
 		45539B0319D4F5790017B892 /* PluginCopyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginCopyController.swift; sourceTree = "<group>"; };
 		45605E8419D72A750033A8AD /* DirectoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryTests.swift; sourceTree = "<group>"; };
 		45605E8619D74A1D0033A8AD /* PluginCopyControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginCopyControllerTests.swift; sourceTree = "<group>"; };
-		4563D5541A103DDD000B5F4C /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		4563D5561A10403C000B5F4C /* WCLPluginsDirectoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPluginsDirectoryManager.h; sourceTree = "<group>"; };
 		4563D5571A10403C000B5F4C /* WCLPluginsDirectoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginsDirectoryManager.m; sourceTree = "<group>"; };
 		4567DB3F18B03A7A00CBBD29 /* PluginEditorPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PluginEditorPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -262,8 +260,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4563D5551A103DDD000B5F4C /* CoreServices.framework in Frameworks */,
-				4567DB4318B03A7A00CBBD29 /* Cocoa.framework in Frameworks */,
+				4563D5591A104EE1000B5F4C /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,7 +347,6 @@
 		4567DB4118B03A7A00CBBD29 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4563D5541A103DDD000B5F4C /* CoreServices.framework */,
 				4567DB4218B03A7A00CBBD29 /* Cocoa.framework */,
 				4567DB6418B03A7A00CBBD29 /* XCTest.framework */,
 				4567DB4418B03A7A00CBBD29 /* Other Frameworks */,
