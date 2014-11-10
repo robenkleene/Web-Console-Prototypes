@@ -22,14 +22,12 @@ class PluginsDirectoryManagerExpectationHelper: PluginsDirectoryManagerDelegate 
 }
 
 class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
-    func testPluginsDirectoryManager() {
+    func testMovePlugin() {
         if let temporaryDirectoryURL = temporaryDirectoryURL {
             if let temporaryPlugin = temporaryPlugin {
                 let pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryDirectoryURL)
                 
                 let expectation = expectationWithDescription("Plugins Directory Event")
-
-                
 
                 // Move the plugin
                 var error: NSError?
@@ -60,4 +58,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
             }
         }
     }
+
+    // TODO: Gets notified moving the file
+    // TODO: Gets notified modifying the plist
 }
