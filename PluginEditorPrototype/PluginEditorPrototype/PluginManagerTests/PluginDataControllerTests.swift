@@ -40,7 +40,7 @@ class PluginDataControllerClassTests: XCTestCase {
 }
 
 
-class PluginDataControllerTests: TemporaryDirectoryTestCase {
+class PluginDataControllerTests: XCTestCase {
     let pluginDataController = PluginDataController(testPluginPaths)
 
     func testExistingPlugins() {

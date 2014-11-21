@@ -122,6 +122,11 @@ class Plugin: NSObject {
     }
     let bundle: NSBundle // TODO: EXTENSION This should be marked internal and the tests that need it should use an extension to access it
     var infoDictionary: [NSObject : AnyObject]
+    var infoDictionaryURL: NSURL {
+        get {
+            return self.dynamicType.infoDictionaryURL(bundle)
+        }
+    }
     var name: String {
         didSet {
             infoDictionary[ClassConstants.pluginNameKey] = name
@@ -157,7 +162,7 @@ class Plugin: NSObject {
     }
     
     private func save() {
-        let infoDictionaryURL = self.dynamicType.infoDictionaryURL(bundle)
+        let infoDictionaryURL = self.infoDictionaryURL
         var error: NSError?
         self.dynamicType.writeDictionary(infoDictionary, toURL: infoDictionaryURL, error: &error)
     }
