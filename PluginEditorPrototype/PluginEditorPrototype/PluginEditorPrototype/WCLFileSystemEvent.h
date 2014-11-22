@@ -9,5 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface WCLFileSystemEvent : NSObject
-+ (instancetype)fileSystemEventWithPath:(NSString *)path eventFlags:(FSEventStreamEventFlags)eventFlags;
++ (instancetype)fileSystemEventWithPath:(NSString *)path
+                             eventFlags:(FSEventStreamEventFlags)eventFlags
+                                eventId:(FSEventStreamEventId)eventId;
 @end

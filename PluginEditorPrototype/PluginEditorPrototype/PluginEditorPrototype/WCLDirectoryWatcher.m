@@ -35,7 +35,9 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
 //        printf("Change %llu in %s, flags %u\n", eventIds[i], paths[i], (unsigned int)eventFlags[i]);
         
         //        WCLFileSystemEvent *fileSystemEvent =
-        WCLFileSystemEvent *fileSystemEvent = [WCLFileSystemEvent fileSystemEventWithPath:path eventFlags:eventFlags[i]];
+        WCLFileSystemEvent *fileSystemEvent = [WCLFileSystemEvent fileSystemEventWithPath:path
+                                                                               eventFlags:eventFlags[i]
+                                                                                  eventId:eventIds[i]];
         [directoryWatcher handleFileSystemEvent:fileSystemEvent];
     }
 }
@@ -79,7 +81,7 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
                                       pathsRef,
                                       kFSEventStreamEventIdSinceNow,
                                       0,
-                                      kFSEventStreamCreateFlagFileEvents);
+                                      kFSEventStreamCreateFlagIgnoreSelf | kFSEventStreamCreateFlagFileEvents);
     FSEventStreamScheduleWithRunLoop(self.stream,
                                      CFRunLoopGetCurrent(),
                                      kCFRunLoopDefaultMode);

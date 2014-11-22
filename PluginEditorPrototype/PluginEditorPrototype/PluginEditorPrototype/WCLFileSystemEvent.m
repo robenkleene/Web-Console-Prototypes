@@ -132,22 +132,29 @@ static inline NSString *NSStringFromFSEventFlags(FSEventStreamEventFlags eventFl
 @interface WCLFileSystemEvent ()
 @property (nonatomic, strong) NSString *path;
 @property (nonatomic, assign) FSEventStreamEventFlags eventFlags;
-- (id)initWithPath:(NSString *)path eventFlags:(FSEventStreamEventFlags)eventFlags;
+@property (nonatomic, assign) FSEventStreamEventId eventId;
 @end
 
 @implementation WCLFileSystemEvent
 
-+ (instancetype)fileSystemEventWithPath:(NSString *)path eventFlags:(FSEventStreamEventFlags)eventFlags
++ (instancetype)fileSystemEventWithPath:(NSString *)path
+                             eventFlags:(FSEventStreamEventFlags)eventFlags
+                             eventId:(FSEventStreamEventId)eventId
 {
-    return [[WCLFileSystemEvent alloc] initWithPath:path eventFlags:eventFlags];
+    return [[WCLFileSystemEvent alloc] initWithPath:path
+                                         eventFlags:eventFlags
+                                            eventId:eventId];
 }
 
-- (id)initWithPath:(NSString *)path eventFlags:(FSEventStreamEventFlags)eventFlags
+- (id)initWithPath:(NSString *)path
+        eventFlags:(FSEventStreamEventFlags)eventFlags
+           eventId:(FSEventStreamEventId)eventId
 {
     self = [super init];
     if (self) {
         _path = path;
         _eventFlags = eventFlags;
+        _eventId = eventId;
     }
     return self;
 }
@@ -157,6 +164,7 @@ static inline NSString *NSStringFromFSEventFlags(FSEventStreamEventFlags eventFl
     NSMutableString *descriptionExtension = [NSMutableString string];
     
     [descriptionExtension appendFormat:@"; self.path = %@", self.path];
+    [descriptionExtension appendFormat:@"; eventId = %llu", self.eventId];
     NSString *flags = NSStringFromFSEventFlags(self.eventFlags);
     [descriptionExtension appendFormat:@"; flags = %@", flags];
 
