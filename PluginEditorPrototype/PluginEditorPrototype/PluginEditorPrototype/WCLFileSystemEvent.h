@@ -12,4 +12,6 @@
 + (instancetype)fileSystemEventWithPath:(NSString *)path
                              eventFlags:(FSEventStreamEventFlags)eventFlags
                                 eventId:(FSEventStreamEventId)eventId;
+- (BOOL)fileWasCreated;
+@property (nonatomic, strong) NSString *path;
 @end

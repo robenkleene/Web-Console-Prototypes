@@ -9,60 +9,54 @@
 import Cocoa
 import XCTest
 
-class WCLDirectoryWatcherTests: TemporaryDirectoryTestCase {
+class WCLDirectoryWatcherTestManager: NSObject, WCLDirectoryWatcherDelegate {
+    var fileWasCreatedAtPathHandlers: Array<((path: NSString) -> Void)>
+    override init() {
+        self.fileWasCreatedAtPathHandlers = Array<((path: NSString) -> Void)>()
+    }
 
+    func directoryWatcher(directoryWatcher: AnyObject!, fileWasCreatedAtPath path: String!) {
+        assert(fileWasCreatedAtPathHandlers.count > 0, "There should be at least one handler")
+        
+        if (fileWasCreatedAtPathHandlers.count > 0) {
+            let handler = fileWasCreatedAtPathHandlers.removeAtIndex(0)
+            handler(path: path)
+        }
+    }
+
+    func addFileWasCreatedAtPathHandler(handler: ((path: NSString) -> Void)) {
+        fileWasCreatedAtPathHandlers.append(handler)
+    }
+}
+
+class WCLDirectoryWatcherTests: TemporaryDirectoryTestCase {
 
     func testFileSystemEvent() {
         if let temporaryDirectoryURL = temporaryDirectoryURL {
-
-            println("temporaryDirectoryURL = \(temporaryDirectoryURL)")
             
             // Start watching the directory
             let directoryWatcher = WCLDirectoryWatcher(URL: temporaryDirectoryURL)
-
-            let expectation = expectationWithDescription("File System Event")
+            let directoryWatcherTestManager = WCLDirectoryWatcherTestManager()
+            directoryWatcher.delegate = directoryWatcherTestManager
             
-            // Do something that will create a predictable file system event
-            if let testFilePath = temporaryDirectoryURL.path?.stringByAppendingPathComponent("testfile.txt") {
-                // Setup the task
-                let task = NSTask()
-                task.launchPath = "/usr/bin/touch"
+            if let testFilePath = temporaryDirectoryURL.path?.stringByAppendingPathComponent(testFilename) {
+                let expectation = expectationWithDescription("directoryWatcher:fileWasCreatedAtPath:")
+                directoryWatcherTestManager.addFileWasCreatedAtPathHandler({ (path) -> Void in
+                    if (path.stringByResolvingSymlinksInPath == testFilePath.stringByResolvingSymlinksInPath) {
+                        expectation.fulfill()
+                    }
+                })
 
-                println("\(testFilePath)")
-                
-                task.arguments = [testFilePath]
-                //                [task setCurrentDirectoryPath:directoryPath];
-                
-                // Standard Output
-                task.standardOutput = NSPipe()
-                task.standardOutput.fileHandleForReading.readabilityHandler = { (file: NSFileHandle!) -> Void in
-                    let data = file.availableData
-                    if let output: String! = NSString(data: data, encoding: NSUTF8StringEncoding) {
-                        println("standardOutput \(output)")
-                    }
-                }
-                
-                task.standardError = NSPipe()
-                task.standardError.fileHandleForReading.readabilityHandler = { (file: NSFileHandle!) -> Void in
-                    let data = file.availableData
-                    if let output: String! = NSString(data: data, encoding: NSUTF8StringEncoding) {
-                        println("standardError \(output)")
-                    }
-                }
-                
-                task.terminationHandler = { (task: NSTask!) -> Void in
-                    task.standardOutput.fileHandleForReading.readabilityHandler = nil
-                    task.standardError.fileHandleForReading.readabilityHandler = nil
-                    println("Termination handler")
-                }
-                
-                task.launch()
+                SubprocessFileSystemModifier.createFileAtPath(testFilePath)
+            
+                waitForExpectationsWithTimeout(defaultTimeout, handler: { error in
+                    // Clean Up
+                    var error: NSError?
+                    let success = NSFileManager.defaultManager().removeItemAtPath(testFilePath, error: &error)
+                    assert(success && error == nil, "The remove should succeed")
+                })
             }
             
-            waitForExpectationsWithTimeout(defaultTimeout, handler: { error in
-                println("Expectation")
-            })
-
         }
     }
 

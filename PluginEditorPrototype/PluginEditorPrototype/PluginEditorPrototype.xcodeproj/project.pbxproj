@@ -25,6 +25,7 @@
 		452D273F19C7B0760085CDAF /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452D272419C66EE40085CDAF /* Plugin.swift */; };
 		452D274019C7B0AB0085CDAF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452D272A19C670E40085CDAF /* Constants.swift */; };
 		453DDF7F1A1EBDC7007F1443 /* WCLDirectoryWatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453DDF7E1A1EBDC7007F1443 /* WCLDirectoryWatcherTests.swift */; };
+		453DDF811A2104DA007F1443 /* SubprocessFileSystemModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453DDF801A2104DA007F1443 /* SubprocessFileSystemModifier.swift */; };
 		45539B0219D4E80E0017B892 /* TemporaryDirectoryTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0119D4E80E0017B892 /* TemporaryDirectoryTestCase.swift */; };
 		45539B0419D4F5790017B892 /* PluginCopyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0319D4F5790017B892 /* PluginCopyController.swift */; };
 		45539B0519D4F5790017B892 /* PluginCopyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0319D4F5790017B892 /* PluginCopyController.swift */; };
@@ -164,6 +165,7 @@
 		452D273319C7AB190085CDAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		452D273419C7AB190085CDAF /* PluginDataControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDataControllerTests.swift; sourceTree = "<group>"; };
 		453DDF7E1A1EBDC7007F1443 /* WCLDirectoryWatcherTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WCLDirectoryWatcherTests.swift; sourceTree = "<group>"; };
+		453DDF801A2104DA007F1443 /* SubprocessFileSystemModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubprocessFileSystemModifier.swift; sourceTree = "<group>"; };
 		45539B0119D4E80E0017B892 /* TemporaryDirectoryTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryDirectoryTestCase.swift; sourceTree = "<group>"; };
 		45539B0319D4F5790017B892 /* PluginCopyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginCopyController.swift; sourceTree = "<group>"; };
 		45605E8419D72A750033A8AD /* DirectoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryTests.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 				452D273419C7AB190085CDAF /* PluginDataControllerTests.swift */,
 				45539B0119D4E80E0017B892 /* TemporaryDirectoryTestCase.swift */,
 				453DDF7E1A1EBDC7007F1443 /* WCLDirectoryWatcherTests.swift */,
+				453DDF801A2104DA007F1443 /* SubprocessFileSystemModifier.swift */,
 				452D273219C7AB190085CDAF /* Supporting Files */,
 				45F4235D19D3896F007F5BC3 /* TestConstants.swift */,
 				45605E8419D72A750033A8AD /* DirectoryTests.swift */,
@@ -679,6 +682,7 @@
 				458FD69519D8A45B00D4898A /* NSError+Helper.swift in Sources */,
 				452D273519C7AB190085CDAF /* PluginDataControllerTests.swift in Sources */,
 				451A85E519D2444D00C92D47 /* NameToPluginController.swift in Sources */,
+				453DDF811A2104DA007F1443 /* SubprocessFileSystemModifier.swift in Sources */,
 				45539B0519D4F5790017B892 /* PluginCopyController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

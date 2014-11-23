@@ -59,6 +59,12 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
 - (void)handleFileSystemEvent:(WCLFileSystemEvent *)fileSystemEvent
 {
     NSLog(@"fileSystemEvent = %@", fileSystemEvent);
+    
+    if ([fileSystemEvent fileWasCreated]) {
+        if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasCreatedAtPath:)]) {
+            [self.delegate directoryWatcher:self fileWasCreatedAtPath:fileSystemEvent.path];
+        }
+    }
 }
 
 - (void)watchPath:(NSString *)path

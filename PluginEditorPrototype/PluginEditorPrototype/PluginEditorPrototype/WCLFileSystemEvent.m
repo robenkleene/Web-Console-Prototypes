@@ -130,9 +130,8 @@ static inline NSString *NSStringFromFSEventFlags(FSEventStreamEventFlags eventFl
 #pragma mark - WCLFileSystemEvent
 
 @interface WCLFileSystemEvent ()
-@property (nonatomic, strong) NSString *path;
-@property (nonatomic, assign) FSEventStreamEventFlags eventFlags;
 @property (nonatomic, assign) FSEventStreamEventId eventId;
+@property (nonatomic, assign) FSEventStreamEventFlags eventFlags;
 @end
 
 @implementation WCLFileSystemEvent
@@ -158,6 +157,20 @@ static inline NSString *NSStringFromFSEventFlags(FSEventStreamEventFlags eventFl
     }
     return self;
 }
+
+#pragma mark - Event Type
+
+- (BOOL)fileWasCreated
+{
+    return [self containsEventFlag:kFSEventStreamEventFlagItemCreated];
+}
+
+- (BOOL)containsEventFlag:(int)eventFlag
+{
+    return (self.eventFlags & eventFlag) == eventFlag;
+}
+
+#pragma mark - Description
 
 - (NSString *)description
 {

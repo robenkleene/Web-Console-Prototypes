@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class WCLDirectoryWatcher;
+
+@protocol WCLDirectoryWatcherDelegate <NSObject>
+@optional
+- (void)directoryWatcher:(WCLDirectoryWatcher *)directoryWatcher fileWasCreatedAtPath:(NSString *)path;
+@end
+
 @interface WCLDirectoryWatcher : NSObject
 - (id)initWithURL:(NSURL *)url;
+@property (nonatomic, weak) id<WCLDirectoryWatcherDelegate> delegate;
 @end
