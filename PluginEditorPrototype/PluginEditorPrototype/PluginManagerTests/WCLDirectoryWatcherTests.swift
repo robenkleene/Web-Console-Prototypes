@@ -11,8 +11,10 @@ import XCTest
 
 class WCLDirectoryWatcherTestManager: NSObject, WCLDirectoryWatcherDelegate {
     var fileWasCreatedAtPathHandlers: Array<((path: NSString) -> Void)>
+    var fileWasModifiedAtPathHandlers: Array<((path: NSString) -> Void)>
     override init() {
         self.fileWasCreatedAtPathHandlers = Array<((path: NSString) -> Void)>()
+        self.fileWasModifiedAtPathHandlers = Array<((path: NSString) -> Void)>()
     }
 
     func directoryWatcher(directoryWatcher: AnyObject!, fileWasCreatedAtPath path: String!) {
@@ -27,6 +29,11 @@ class WCLDirectoryWatcherTestManager: NSObject, WCLDirectoryWatcherDelegate {
     func addFileWasCreatedAtPathHandler(handler: ((path: NSString) -> Void)) {
         fileWasCreatedAtPathHandlers.append(handler)
     }
+
+    func addFileWasModifiedAtPathHandler(handler: ((path: NSString) -> Void)) {
+        fileWasCreatedAtPathHandlers.append(handler)
+    }
+
 }
 
 class WCLDirectoryWatcherTests: TemporaryDirectoryTestCase {
@@ -40,24 +47,38 @@ class WCLDirectoryWatcherTests: TemporaryDirectoryTestCase {
             directoryWatcher.delegate = directoryWatcherTestManager
             
             if let testFilePath = temporaryDirectoryURL.path?.stringByAppendingPathComponent(testFilename) {
-                let expectation = expectationWithDescription("directoryWatcher:fileWasCreatedAtPath:")
+
+                let fileWasCreatedExpectation = expectationWithDescription("directoryWatcher:fileWasCreatedAtPath:")
                 directoryWatcherTestManager.addFileWasCreatedAtPathHandler({ (path) -> Void in
                     if (path.stringByResolvingSymlinksInPath == testFilePath.stringByResolvingSymlinksInPath) {
-                        expectation.fulfill()
+                        fileWasCreatedExpectation.fulfill()
+                    }
+                })
+                let fileWasModifiedExpectation = expectationWithDescription("directoryWatcher:fileWasModifiedAtPath:")
+                directoryWatcherTestManager.addFileWasModifiedAtPathHandler({ (path) -> Void in
+                    if (path.stringByResolvingSymlinksInPath == testFilePath.stringByResolvingSymlinksInPath) {
+                        fileWasModifiedExpectation.fulfill()
                     }
                 })
 
                 SubprocessFileSystemModifier.createFileAtPath(testFilePath)
-            
+                SubprocessFileSystemModifier.appendToFileAtPath(testFilePath, contents: testFileContents)
+                
+                // TODO: Add editing a file at path
+                
+                // TODO: Add deleting a file at path
+                
                 waitForExpectationsWithTimeout(defaultTimeout, handler: { error in
                     // Clean Up
-                    var error: NSError?
-                    let success = NSFileManager.defaultManager().removeItemAtPath(testFilePath, error: &error)
-                    assert(success && error == nil, "The remove should succeed")
+//                    var error: NSError?
+//                    let success = NSFileManager.defaultManager().removeItemAtPath(testFilePath, error: &error)
+//                    assert(success && error == nil, "The remove should succeed")
                 })
             }
-            
         }
     }
-
 }
+
+// TODO: Test creating and modifying a file at once
+
+// TODO: Test that events don't happen when using NSFileManager (e.g., ignore events from this process)

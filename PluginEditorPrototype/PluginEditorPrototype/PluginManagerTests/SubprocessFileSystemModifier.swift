@@ -17,6 +17,23 @@ class SubprocessFileSystemModifier {
         SubprocessFileSystemModifier.runTask(task)
     }
     
+    class func appendToFileAtPath(path: NSString, contents: String) {
+        let echoTask = NSTask()
+        echoTask.launchPath = "/bin/echo"
+        echoTask.arguments = [contents]
+        let pipe = NSPipe()
+        echoTask.standardOutput = pipe
+
+        let teeTask = NSTask()
+        teeTask.launchPath = "/usr/bin/tee"
+        teeTask.arguments = [path]
+        teeTask.standardInput = pipe
+        teeTask.standardOutput = NSPipe() // Suppress stdout
+        
+        teeTask.launch()
+        echoTask.launch()
+    }
+    
     class func runTask(task: NSTask) {
         task.standardOutput = NSPipe()
         task.standardOutput.fileHandleForReading.readabilityHandler = { (file: NSFileHandle!) -> Void in
