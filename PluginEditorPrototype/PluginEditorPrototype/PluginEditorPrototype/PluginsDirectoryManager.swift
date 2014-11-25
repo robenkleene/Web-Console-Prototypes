@@ -8,17 +8,16 @@
 
 import Foundation
 
-protocol PluginsDirectoryManagerDelegate {
-// infoDictionaryWasCreatedOrModified
-// infoDictionaryWasRemoved
-    optional func directoryWillChange(directoryURL: NSURL)
-}
+//protocol PluginsDirectoryManagerDelegate {
+//// infoDictionaryWasCreatedOrModified
+//// infoDictionaryWasRemoved
+//    optional func directoryWillChange(directoryURL: NSURL)
+//}
 
-class PluginsDirectoryManager: WCLPluginsDirectoryManager {
-    var delegate: PluginsDirectoryManagerDelegate?
+class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
+//    var delegate: PluginsDirectoryManagerDelegate?
 
-    override init(pluginsDirectoryURL: NSURL) {
-        super.init(pluginsDirectoryURL: pluginsDirectoryURL)
+    init(pluginsDirectoryURL: NSURL) {
 
     }
 }

@@ -9,17 +9,17 @@
 import Foundation
 import XCTest
 
-class PluginsDirectoryManagerExpectationHelper: PluginsDirectoryManagerDelegate {
-    let expectation: XCTestExpectation
-    init(_ expectation: XCTestExpectation) {
-        self.expectation = expectation
-    }
-
-    func directoryWillChange(directoryURL: NSURL) {
-        println("Fulfilled")
-        expectation.fulfill()
-    }
-}
+//class PluginsDirectoryManagerExpectationHelper: PluginsDirectoryManagerDelegate {
+//    let expectation: XCTestExpectation
+//    init(_ expectation: XCTestExpectation) {
+//        self.expectation = expectation
+//    }
+//
+//    func directoryWillChange(directoryURL: NSURL) {
+//        println("Fulfilled")
+//        expectation.fulfill()
+//    }
+//}
 
 class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
     func renameItemAtURL(srcURL: NSURL, toName newFilename: NSString) {
