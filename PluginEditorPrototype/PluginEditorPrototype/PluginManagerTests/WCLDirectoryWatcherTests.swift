@@ -99,7 +99,11 @@ class WCLDirectoryWatcherTests: TemporaryDirectoryTestCase {
                         fileWasRemovedExpectation.fulfill()
                     }
                 })
+
+                // Remove file
                 SubprocessFileSystemModifier.removeFileAtPath(testFilePath)
+
+                // Wait for expectation
                 waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
 
                 
@@ -209,6 +213,66 @@ class WCLDirectoryWatcherTests: TemporaryDirectoryTestCase {
         }
     }
 
+    func testFileManager() {
+        if let temporaryDirectoryURL = temporaryDirectoryURL {
+            
+            // Start watching the directory
+            let directoryWatcher = WCLDirectoryWatcher(URL: temporaryDirectoryURL)
+            let directoryWatcherTestManager = WCLDirectoryWatcherTestManager()
+            directoryWatcher.delegate = directoryWatcherTestManager
+            
+            if let testFilePath = temporaryDirectoryURL.path?.stringByAppendingPathComponent(testFilename) {
+                
+                // Test Create
+                
+                // Create expectation
+                let fileWasCreatedOrModifiedExpectation = expectationWithDescription("File was created")
+                directoryWatcherTestManager.addFileWasCreatedOrModifiedAtPathHandler({ path -> Void in
+                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) ==  testFilePath) {
+                        fileWasCreatedOrModifiedExpectation.fulfill()
+                    }
+                })
+                
+                // Test create a second file with NSFileManager
+                let testFilePathTwo = testFilePath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(testFilenameTwo)
+                let contentsData = testFileContents.dataUsingEncoding(NSUTF8StringEncoding)
+                NSFileManager.defaultManager().createFileAtPath(testFilePathTwo, contents: contentsData, attributes: nil)
+                
+                // Create file
+                SubprocessFileSystemModifier.createFileAtPath(testFilePath)
+                
+                // Wait for expectation
+                waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+
+
+                // Test Remove
+                
+                // Remove Expectation
+                let fileWasRemovedExpectation = expectationWithDescription("File was removed")
+                directoryWatcherTestManager.addFileWasRemovedAtPathHandler({ path -> Void in
+                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) ==  testFilePath) {
+                        fileWasRemovedExpectation.fulfill()
+                    }
+                })
+                
+                // Test remove the second file with NSFileManager
+                var error: NSError?
+                let result = NSFileManager.defaultManager().removeItemAtPath(testFilePathTwo, error: &error)
+                XCTAssertTrue(result, "The move should have succeeded")
+                XCTAssertNil(error, "The error shoudl be nil")
+                
+                // Remove file
+                SubprocessFileSystemModifier.removeFileAtPath(testFilePath)
+                
+                // Wait for expectation
+                waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+            }
+        }
+    }
+    
+    // TODO: Test NSFileManager dispatched doesn't cause the error either
+
+    
 }
 
 // TODO: Test that events don't happen when using NSFileManager (e.g., ignore events from this process)
