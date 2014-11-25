@@ -11,4 +11,5 @@ let testPluginPaths = [Directory.BuiltInPlugins.path()]
 let testPluginName = "HTML"
 
 let testFilename = "test.txt"
+let testFilenameTwo = "test2.txt"
 let testFileContents = "test"

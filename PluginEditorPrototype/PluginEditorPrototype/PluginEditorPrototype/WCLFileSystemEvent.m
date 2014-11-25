@@ -175,6 +175,11 @@ static inline NSString *NSStringFromFSEventFlags(FSEventStreamEventFlags eventFl
     return [self containsEventFlag:kFSEventStreamEventFlagItemRemoved];
 }
 
+- (BOOL)fileWasRenamed
+{
+    return [self containsEventFlag:kFSEventStreamEventFlagItemRenamed];
+}
+
 - (BOOL)containsEventFlag:(int)eventFlag
 {
     return (self.eventFlags & eventFlag) == eventFlag;

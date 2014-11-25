@@ -29,6 +29,13 @@ class SubprocessFileSystemModifier {
         SubprocessFileSystemModifier.runTask(task)
     }
     
+    class func moveFileAtPath(path: NSString, toPath destinationPath: NSString) {
+        let task = NSTask()
+        task.launchPath = "/bin/mv"
+        task.arguments = [path, destinationPath]
+        SubprocessFileSystemModifier.runTask(task)
+    }
+    
     class func writeToFileAtPath(path: NSString, contents: String) {
         let echoTask = NSTask()
         echoTask.launchPath = "/bin/echo"
