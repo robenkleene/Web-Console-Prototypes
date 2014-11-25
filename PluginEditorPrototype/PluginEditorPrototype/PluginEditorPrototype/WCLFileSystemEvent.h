@@ -13,5 +13,7 @@
                              eventFlags:(FSEventStreamEventFlags)eventFlags
                                 eventId:(FSEventStreamEventId)eventId;
 - (BOOL)fileWasCreated;
+- (BOOL)fileWasModified;
+- (BOOL)fileWasRemoved;
 @property (nonatomic, strong) NSString *path;
 @end

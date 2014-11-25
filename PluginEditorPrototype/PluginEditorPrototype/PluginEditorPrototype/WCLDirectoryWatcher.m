@@ -58,11 +58,25 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
 
 - (void)handleFileSystemEvent:(WCLFileSystemEvent *)fileSystemEvent
 {
-    NSLog(@"fileSystemEvent = %@", fileSystemEvent);
+//    NSLog(@"fileSystemEvent = %@", fileSystemEvent);
+
+    NSString *path = fileSystemEvent.path;
     
-    if ([fileSystemEvent fileWasCreated]) {
-        if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasCreatedAtPath:)]) {
-            [self.delegate directoryWatcher:self fileWasCreatedAtPath:fileSystemEvent.path];
+    // File system events are simplified into to possible events:
+    // 1. A file was created or modified
+    // 2. A file was removed
+    // More granularity is not possible because FSEvent flags are cumulative since
+    // the path was started being watched.
+    
+    if ([fileSystemEvent fileWasRemoved] &&
+        ![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:nil]) {
+        if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasRemovedAtPath:)]) {
+            [self.delegate directoryWatcher:self fileWasRemovedAtPath:path];
+        }
+    } else if (([fileSystemEvent fileWasCreated] || [fileSystemEvent fileWasModified]) &&
+               [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:nil]) {
+        if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasCreatedOrModifiedAtPath:)]) {
+            [self.delegate directoryWatcher:self fileWasCreatedOrModifiedAtPath:path];
         }
     }
 }

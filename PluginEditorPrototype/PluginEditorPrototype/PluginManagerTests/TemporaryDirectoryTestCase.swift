@@ -23,7 +23,18 @@ class TemporaryDirectoryTestCase: XCTestCase {
         }
     }
     
-    class func isValidTemporaryDirectoryPath (path: String?) -> Bool {
+    class func resolveTemporaryDirectoryPath(path: NSString) -> NSString {
+        // Remove the "/private" path component because FSEvents returns paths iwth this prefix
+        let testPathPrefix = "/private".stringByAppendingPathComponent(ClassConstants.temporaryDirectoryPathPrefix)
+        let pathPrefixRange = path.rangeOfString(testPathPrefix);
+        if (pathPrefixRange.location == 0) {
+            return path.stringByReplacingCharactersInRange(pathPrefixRange, withString: ClassConstants.temporaryDirectoryPathPrefix)
+        }
+        
+        return path
+    }
+    
+    class func isValidTemporaryDirectoryPath(path: String?) -> Bool {
         var isDir: ObjCBool = false
         if let path = path as String! {
             return NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isDir) && isDir
@@ -117,7 +128,5 @@ class TemporaryDirectoryTestCase: XCTestCase {
         if let path = temporaryDirectoryPath {
             XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(path), "A file should not exist at the path")
         }
-
-        println("temporaryDirectoryPath = \(temporaryDirectoryPath)")
     }
 }

@@ -16,8 +16,20 @@ class SubprocessFileSystemModifier {
         task.arguments = [path]
         SubprocessFileSystemModifier.runTask(task)
     }
+
+    class func removeFileAtPath(path: NSString) {
+        if (path.rangeOfString("*").location != NSNotFound) {
+            assert(false, "The path shoudl not contain a wildcard")
+            return
+        }
+        
+        let task = NSTask()
+        task.launchPath = "/bin/rm"
+        task.arguments = [path]
+        SubprocessFileSystemModifier.runTask(task)
+    }
     
-    class func appendToFileAtPath(path: NSString, contents: String) {
+    class func writeToFileAtPath(path: NSString, contents: String) {
         let echoTask = NSTask()
         echoTask.launchPath = "/bin/echo"
         echoTask.arguments = [contents]
