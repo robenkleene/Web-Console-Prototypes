@@ -309,16 +309,16 @@
 			isa = PBXGroup;
 			children = (
 				45D02C5F1A072E6100778F3A /* PluginTests.swift */,
+				45605E8419D72A750033A8AD /* DirectoryTests.swift */,
+				452D273419C7AB190085CDAF /* PluginDataControllerTests.swift */,
+				45605E8619D74A1D0033A8AD /* PluginCopyControllerTests.swift */,
 				4590E5361A0EABFA000C9890 /* PluginsDirectoryManagerTests.swift */,
 				4590E5381A0EAC58000C9890 /* TemporaryPluginTestCase.swift */,
-				452D273419C7AB190085CDAF /* PluginDataControllerTests.swift */,
-				45539B0119D4E80E0017B892 /* TemporaryDirectoryTestCase.swift */,
 				453DDF7E1A1EBDC7007F1443 /* WCLDirectoryWatcherTests.swift */,
-				453DDF801A2104DA007F1443 /* SubprocessFileSystemModifier.swift */,
+				45539B0119D4E80E0017B892 /* TemporaryDirectoryTestCase.swift */,
 				452D273219C7AB190085CDAF /* Supporting Files */,
+				453DDF801A2104DA007F1443 /* SubprocessFileSystemModifier.swift */,
 				45F4235D19D3896F007F5BC3 /* TestConstants.swift */,
-				45605E8419D72A750033A8AD /* DirectoryTests.swift */,
-				45605E8619D74A1D0033A8AD /* PluginCopyControllerTests.swift */,
 				45D02C601A072E6100778F3A /* XCTest+BundleResources.swift */,
 			);
 			path = PluginManagerTests;
