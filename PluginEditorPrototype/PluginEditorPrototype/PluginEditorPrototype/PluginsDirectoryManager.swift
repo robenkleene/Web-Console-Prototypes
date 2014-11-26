@@ -21,19 +21,35 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
     }
     
     let directoryWatcher: WCLDirectoryWatcher
+    let pluginsDirectoryURL: NSURL
     init(pluginsDirectoryURL: NSURL) {
+        self.pluginsDirectoryURL = pluginsDirectoryURL
         self.directoryWatcher = WCLDirectoryWatcher(URL: pluginsDirectoryURL)
+        super.init()
+        self.directoryWatcher.delegate = self
     }
 
     func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasRemovedAtPath path: String!) {
-        // TODO: Assert that the path matches the watched path
+        assert(self.pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
         
         println("fileWasRemovedAtPath path = \(path)")
     }
 
     func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasCreatedOrModifiedAtPath path: String!) {
-        // TODO: Assert that the path matches the watched path
+        assert(self.pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
         
         println("fileWasCreatedOrModifiedAtPath path = \(path)")
     }
+
+    func pathIsSubpathOfPluginsDirectory(path: NSString) -> Bool {
+        if let pluginsDirectoryPath = pluginsDirectoryURL.path {
+            let pathPrefixRange = path.rangeOfString(pluginsDirectoryPath)
+            let basePathLength = pathPrefixRange.location + pathPrefixRange.length
+            let basePathRange = NSRange(location: 0, length: basePathLength)
+            let basePath = path.substringWithRange(basePathRange)
+            return basePath.stringByStandardizingPath == (pluginsDirectoryPath.stringByStandardizingPath)
+        }
+        return false
+    }
+    
 }
