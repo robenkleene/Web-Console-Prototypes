@@ -31,42 +31,43 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
     }
     
     
-//    func testMovePlugin() {
-//        if let temporaryDirectoryURL = temporaryDirectoryURL {
-//            if let temporaryPlugin = temporaryPlugin {
-//                let pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryDirectoryURL)
-//                
-//                let expectation = expectationWithDescription("Plugins Directory Event")
-//
-//                // Move the plugin
-//                var error: NSError?
-//                let newPluginFilename = temporaryPlugin.identifier
-//                let oldPluginURL = temporaryPlugin.bundle.bundleURL
-//                let newPluginURL = oldPluginURL.URLByDeletingLastPathComponent!.URLByAppendingPathComponent(newPluginFilename)
-//
-//                println("newPluginURL = \(newPluginURL)")
-//                
-//                let moveSuccess = NSFileManager.defaultManager().moveItemAtURL(oldPluginURL, toURL: newPluginURL, error: &error)
+    func testMovePlugin() {
+        if let temporaryDirectoryURL = temporaryDirectoryURL {
+            if let temporaryPlugin = temporaryPlugin {
+                let pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryDirectoryURL)
+
+                // Move the plugin
+                var error: NSError?
+                let pluginPath = temporaryPlugin.bundle.bundlePath
+                let newPluginFilename = temporaryPlugin.identifier
+                let newPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(newPluginFilename)
+
+                println("oldPluginPath = \(pluginPath)")
+                println("newPluginPath = \(newPluginPath)")
+                
+                SubprocessFileSystemModifier.moveFileAtPath(pluginPath, toPath: newPluginPath)
+                
+//                let moveSuccess = NSFileManager.defaultManager().moveItemAtURL(oldPluginPath, toURL: newPluginURL, error: &error)
 //                XCTAssertTrue(moveSuccess, "The move should succeed")
 //                XCTAssertNil(error, "The error should be nil")
-//
+
 //                // Move it again
 //                error = nil
 //                let moveSuccess2 = NSFileManager.defaultManager().moveItemAtURL(newPluginURL, toURL: oldPluginURL, error: &error)
 //                XCTAssertTrue(moveSuccess2, "The move should succeed")
 //                XCTAssertNil(error, "The error should be nil")
-//
-//                
-//                waitForExpectationsWithTimeout(defaultTimeout, handler: { error in
-//                    println("Expectation")
-//                })
-//                
-//                // TODO: Instantiate a plugin directory manager for the parent directory
-//                // TODO: Move the `info.plist`
-//                // TODO: Confirm that the right call backs fire
-//            }
-//        }
-//    }
+
+                let expectation = expectationWithDescription("Plugins Directory Event")
+                waitForExpectationsWithTimeout(defaultTimeout, handler: { error in
+                    println("Expectation")
+                })
+                
+                // TODO: Instantiate a plugin directory manager for the parent directory
+                // TODO: Move the `info.plist`
+                // TODO: Confirm that the right call backs fire
+            }
+        }
+    }
 
     func testRenameInfoDictionaryPath() {
         if let temporaryDirectoryURL = temporaryDirectoryURL {
