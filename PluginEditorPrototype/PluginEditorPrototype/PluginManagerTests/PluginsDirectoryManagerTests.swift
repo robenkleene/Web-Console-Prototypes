@@ -47,8 +47,9 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 
                 let testPaths = [temporaryPluginPath as NSString, temporaryPluginPath.stringByAppendingString("/") as NSString]
                 let testSubpaths = [temporaryDirectoryPath  as NSString, temporaryDirectoryPath.stringByAppendingString("/") as NSString]
-
                 let testRange = PluginsPathHelper.rangeInPath(testPaths[0], untilSubpath: testSubpaths[0])
+                let testPathComponents = PluginsPathHelper.pathComponentsOfPath(testPaths[0], afterSubpath: testSubpaths[0]) as NSArray!
+                
                 for testPath: NSString in testPaths {
                     for testSubpath: NSString in testSubpaths {
                         println("testPath = \(testPath)")
@@ -57,14 +58,19 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                         XCTAssertTrue(range.location != NSNotFound, "The range should have been found")
                         XCTAssertTrue(compareSubpathFromRangeEqualsSubpath(path: testPath, range: range, subpath: testSubpath), "The subpath from the range should equal the subpath")
                         XCTAssertTrue(compareRangesEqual(rangeOne: testRange, rangeTwo: range), "The ranges should be equal")
+                        let subpath = PluginsPathHelper.subpathFromPath(testPath, untilSubpath: testSubpath) as NSString!
+                        XCTAssertEqual(subpath.stringByStandardizingPath, testSubpath.stringByStandardizingPath, "The subpaths should be equal")
+                        XCTAssertTrue(PluginsPathHelper.path(testPath, containsSubpath: testSubpath), "The path should contain the subpath")
+
+                        let pathComponents = PluginsPathHelper.pathComponentsOfPath(testPath, afterSubpath: testSubpath) as NSArray!
+                        XCTAssertEqual(pathComponents, testPathComponents, "The path components should equal the test path components")
+                        
+                        println("pathComponents = \(pathComponents)")
                     }
                 }
                 
                 // Test which version should be used, with or without slash
                 // Test inverses of having "/" that should also match
-                
-                // Test plugin path has temporary directory as subpath
-                
                 
                 // class func rangeInPath(path: NSString, untilSubpath subpath: NSString) -> NSRange
 
@@ -73,7 +79,8 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                 // class func pathComponentsOfPath(path: NSString, afterSubpath subpath: NSString) -> NSArray?
             
                 // class func path(path: NSString, containsSubpath subpath: NSString) -> Bool
-            
+
+                // Test negative cases just like above, things that should fail
             }
         }
     }

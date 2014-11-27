@@ -31,10 +31,6 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
     char **paths = eventPaths;
     for (i = 0; i < numEvents; i++) {
         NSString *path = [NSString stringWithFormat:@"%s", paths[i]];
-        
-//        printf("Change %llu in %s, flags %u\n", eventIds[i], paths[i], (unsigned int)eventFlags[i]);
-        
-        //        WCLFileSystemEvent *fileSystemEvent =
         WCLFileSystemEvent *fileSystemEvent = [WCLFileSystemEvent fileSystemEventWithPath:path
                                                                                eventFlags:eventFlags[i]
                                                                                   eventId:eventIds[i]];

@@ -40,16 +40,20 @@ class PluginsPathHelper {
     }
     
     class func pathComponentsOfPath(path: NSString, afterSubpath subpath: NSString) -> NSArray? {
-        let range = rangeInPath(path, untilSubpath: subpath)
+        let normalizedPath = path.stringByStandardizingPath as NSString
+        let range = rangeInPath(normalizedPath, untilSubpath: subpath)
         if (range.location == NSNotFound) {
             return nil
         }
-        let pathComponent = path.substringFromIndex(path.length)
+
+println("path = \(path)")
+        let pathComponent = normalizedPath.substringFromIndex(range.length)
+println("pathComponent = \(pathComponent)")
         return pathComponent.pathComponents
     }
 
     class func path(path: NSString, containsSubpath subpath: NSString) -> Bool {
-        if let pathUntilSubpath = PluginsPathHelper.subpathFromPath(path, untilSubpath: subpath) {
+        if let pathUntilSubpath = subpathFromPath(path, untilSubpath: subpath) {
             return pathUntilSubpath.stringByStandardizingPath == subpath.stringByStandardizingPath
         }
         return false
