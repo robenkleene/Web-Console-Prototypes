@@ -38,14 +38,15 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                 let comparePathToSubpath:(path: NSString, subpath: NSString) -> (NSRange) = {
                     (path, subpath) -> (NSRange) in
                     let range = PluginsPathHelper.rangeInPath(path, untilSubpath: subpath)
-                    XCTAssertTrue(range.location != NSNotFound, "The range location should not be NSNotFound")
-
-                    let subpath = temporaryPluginPath.substringWithRange(range) as NSString
-                    let matches = subpath.stringByStandardizingPath == temporaryDirectoryPath.stringByStandardizingPath
+                    let subpathFromRange = path.substringWithRange(range) as NSString
+                    let matches = subpathFromRange.stringByStandardizingPath == subpath.stringByStandardizingPath
                     XCTAssertTrue(matches, "The standardized paths should be equal")
                     
                     return (range)
                 }
+//                let compareRangeOfPathEqualsSubpath:(path: NSString, range: NSRange, subpath: NSString) {
+//                    
+//                }
                 let compareRangesEqual:(rangeOne: NSRange, rangeTwo: NSRange) -> Bool = {
                     (rangeOne, rangeTwo) -> Bool in
                     return rangeOne.location == rangeTwo.location && rangeOne.length == rangeTwo.length
@@ -54,10 +55,14 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                 let (rangeTwo) = comparePathToSubpath(path: temporaryPluginPath.stringByAppendingString("/"), subpath: temporaryDirectoryPath)
                 let (rangeThree) = comparePathToSubpath(path: temporaryPluginPath.stringByAppendingString("/"), subpath: temporaryDirectoryPath.stringByAppendingString("/"))
                 let (rangeFour) = comparePathToSubpath(path: temporaryPluginPath, subpath: temporaryDirectoryPath.stringByAppendingString("/"))
+                XCTAssertTrue(rangeOne.location != NSNotFound, "The range should have been found")
                 XCTAssertTrue(compareRangesEqual(rangeOne: rangeOne, rangeTwo: rangeTwo) , "The ranges should be equal")
                 XCTAssertTrue(compareRangesEqual(rangeOne: rangeOne, rangeTwo: rangeThree) , "The ranges should be equal")
                 XCTAssertTrue(compareRangesEqual(rangeOne: rangeOne, rangeTwo: rangeFour) , "The ranges should be equal")
-                   
+                
+
+                
+                
                 // Test which version should be used, with or without slash
                 // Test inverses of having "/" that should also match
                 
