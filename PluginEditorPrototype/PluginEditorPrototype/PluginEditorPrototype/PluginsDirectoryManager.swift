@@ -8,18 +8,16 @@
 
 import Foundation
 
-//protocol PluginsDirectoryManagerDelegate {
-//// infoDictionaryWasCreatedOrModified
-//// infoDictionaryWasRemoved
-//    optional func directoryWillChange(directoryURL: NSURL)
-//}
+@objc protocol PluginsDirectoryManagerDelegate {
+    optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, infoDictionaryWasCreatedOrModifiedAtPath path: NSString)
+    optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, infoDictionaryWasRemovedAtPath path: NSString)
+}
 
 class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
-//    var delegate: PluginsDirectoryManagerDelegate?
     struct ClassConstants {
-//        static let infoDictionaryPathComponent = ""
+        static let infoDictionaryPathComponent = "Contents/Info.plist"
     }
-    
+    var delegate: PluginsDirectoryManagerDelegate?
     let directoryWatcher: WCLDirectoryWatcher
     let pluginsDirectoryURL: NSURL
     init(pluginsDirectoryURL: NSURL) {
@@ -38,9 +36,15 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
     func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasCreatedOrModifiedAtPath path: String!) {
         assert(self.pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
         
+        // TODO: Get the base path, add one path component
+        
         println("fileWasCreatedOrModifiedAtPath path = \(path)")
     }
 
+    func infoDictionaryIsSubdirectoryOfPath(path: NSString) -> Bool {
+        return false
+    }
+    
     func pathIsSubpathOfPluginsDirectory(path: NSString) -> Bool {
         if let pluginsDirectoryPath = pluginsDirectoryURL.path {
             let pathPrefixRange = path.rangeOfString(pluginsDirectoryPath)
@@ -51,5 +55,36 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         }
         return false
     }
+    
+    // TODO: EXTENSION BEGIN NSString+PluginDirectoryPaths
+    // Can swift do inline extensions? This is probably only appropriate if this can be an extension that only this class can see
+    func rangeInPath(path: NSString, untilSubpath subpath: NSString) -> NSRange {
+        let subpathRange = path.rangeOfString(subpath)
+        if (subpathRange.location == NSNotFound) {
+            return subpathRange
+        }
+        let untilSubpathLength = subpathRange.location + subpathRange.length
+        let untilSubpathRange = NSRange(location: 0, length: untilSubpathLength)
+        return untilSubpathRange
+    }
+    
+    func subpathFromPath(path: NSString, untilSubpath subpath: NSString) -> NSString? {
+        let range = rangeInPath(path, untilSubpath: subpath)
+        if (range.location == NSNotFound) {
+            return nil
+        }
+        let untilSubpath = path.substringWithRange(range)
+        return untilSubpath
+    }
+    
+    func pathComponentsOfPath(path: NSString, afterSubpath subpath: NSString) -> NSArray? {
+        let range = rangeInPath(path, untilSubpath: subpath)
+        if (range.location == NSNotFound) {
+            return nil
+        }
+        let pathComponent = path.substringFromIndex(path.length)
+        return pathComponent.pathComponents
+    }
+    // TODO: EXTENSION END NSString+PluginDirectoryPaths
     
 }

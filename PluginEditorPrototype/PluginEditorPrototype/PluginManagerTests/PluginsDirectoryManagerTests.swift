@@ -57,10 +57,10 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 //                XCTAssertTrue(moveSuccess2, "The move should succeed")
 //                XCTAssertNil(error, "The error should be nil")
 
-                let expectation = expectationWithDescription("Plugins Directory Event")
-                waitForExpectationsWithTimeout(defaultTimeout, handler: { error in
-                    println("Expectation")
-                })
+//                let expectation = expectationWithDescription("Plugins Directory Event")
+//                waitForExpectationsWithTimeout(defaultTimeout, handler: { error in
+//                    println("Expectation")
+//                })
                 
                 // TODO: Instantiate a plugin directory manager for the parent directory
                 // TODO: Move the `info.plist`
