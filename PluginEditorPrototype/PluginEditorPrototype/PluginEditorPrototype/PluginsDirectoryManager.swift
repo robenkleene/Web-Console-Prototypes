@@ -13,6 +13,50 @@ import Foundation
     optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, infoDictionaryWasRemovedAtPath path: NSString)
 }
 
+// TODO: EXTENSION BEGIN NSString+PluginDirectoryPaths
+// Can swift do inline extensions? This is probably only appropriate if this can be an extension that only this class can see
+class PluginsPathHelper {
+
+    class func rangeInPath(path: NSString, untilSubpath subpath: NSString) -> NSRange {
+        // Normalize the subpath so the same range is always returned regardless of the format of the subpath (e.g., number of slashes)
+        let normalizedSubpath = subpath.stringByStandardizingPath
+        
+        let subpathRange = path.rangeOfString(normalizedSubpath)
+        if (subpathRange.location == NSNotFound) {
+            return subpathRange
+        }
+        let untilSubpathLength = subpathRange.location + subpathRange.length
+        let untilSubpathRange = NSRange(location: 0, length: untilSubpathLength)
+        return untilSubpathRange
+    }
+    
+    class func subpathFromPath(path: NSString, untilSubpath subpath: NSString) -> NSString? {
+        let range = rangeInPath(path, untilSubpath: subpath)
+        if (range.location == NSNotFound) {
+            return nil
+        }
+        let pathUntilSubpath = path.substringWithRange(range)
+        return pathUntilSubpath
+    }
+    
+    class func pathComponentsOfPath(path: NSString, afterSubpath subpath: NSString) -> NSArray? {
+        let range = rangeInPath(path, untilSubpath: subpath)
+        if (range.location == NSNotFound) {
+            return nil
+        }
+        let pathComponent = path.substringFromIndex(path.length)
+        return pathComponent.pathComponents
+    }
+
+    class func path(path: NSString, containsSubpath subpath: NSString) -> Bool {
+        if let pathUntilSubpath = PluginsPathHelper.subpathFromPath(path, untilSubpath: subpath) {
+            return pathUntilSubpath.stringByStandardizingPath == subpath.stringByStandardizingPath
+        }
+        return false
+    }
+}
+// TODO: EXTENSION END NSString+PluginDirectoryPaths
+
 class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
     struct ClassConstants {
         static let infoDictionaryPathComponent = "Contents/Info.plist"
@@ -45,6 +89,7 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         return false
     }
     
+    // TODO: Replace with PluginsPathHelper.path(path, containsSubpath)
     func pathIsSubpathOfPluginsDirectory(path: NSString) -> Bool {
         if let pluginsDirectoryPath = pluginsDirectoryURL.path {
             let pathPrefixRange = path.rangeOfString(pluginsDirectoryPath)
@@ -55,36 +100,4 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         }
         return false
     }
-    
-    // TODO: EXTENSION BEGIN NSString+PluginDirectoryPaths
-    // Can swift do inline extensions? This is probably only appropriate if this can be an extension that only this class can see
-    func rangeInPath(path: NSString, untilSubpath subpath: NSString) -> NSRange {
-        let subpathRange = path.rangeOfString(subpath)
-        if (subpathRange.location == NSNotFound) {
-            return subpathRange
-        }
-        let untilSubpathLength = subpathRange.location + subpathRange.length
-        let untilSubpathRange = NSRange(location: 0, length: untilSubpathLength)
-        return untilSubpathRange
-    }
-    
-    func subpathFromPath(path: NSString, untilSubpath subpath: NSString) -> NSString? {
-        let range = rangeInPath(path, untilSubpath: subpath)
-        if (range.location == NSNotFound) {
-            return nil
-        }
-        let untilSubpath = path.substringWithRange(range)
-        return untilSubpath
-    }
-    
-    func pathComponentsOfPath(path: NSString, afterSubpath subpath: NSString) -> NSArray? {
-        let range = rangeInPath(path, untilSubpath: subpath)
-        if (range.location == NSNotFound) {
-            return nil
-        }
-        let pathComponent = path.substringFromIndex(path.length)
-        return pathComponent.pathComponents
-    }
-    // TODO: EXTENSION END NSString+PluginDirectoryPaths
-    
 }

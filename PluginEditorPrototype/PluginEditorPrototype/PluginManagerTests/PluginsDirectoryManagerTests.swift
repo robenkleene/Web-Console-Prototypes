@@ -30,7 +30,52 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
         XCTAssertNil(error, "The error should be nil")
     }
     
-    
+    func testPluginPathHelpers() {
+        if let temporaryDirectoryPath = temporaryDirectoryURL?.path {
+            if let temporaryPlugin = temporaryPlugin {
+                let temporaryPluginPath = temporaryPlugin.bundle.bundlePath as NSString
+
+                let comparePathToSubpath:(path: NSString, subpath: NSString) -> (NSRange) = {
+                    (path, subpath) -> (NSRange) in
+                    let range = PluginsPathHelper.rangeInPath(path, untilSubpath: subpath)
+                    XCTAssertTrue(range.location != NSNotFound, "The range location should not be NSNotFound")
+
+                    let subpath = temporaryPluginPath.substringWithRange(range) as NSString
+                    let matches = subpath.stringByStandardizingPath == temporaryDirectoryPath.stringByStandardizingPath
+                    XCTAssertTrue(matches, "The standardized paths should be equal")
+                    
+                    return (range)
+                }
+                let compareRangesEqual:(rangeOne: NSRange, rangeTwo: NSRange) -> Bool = {
+                    (rangeOne, rangeTwo) -> Bool in
+                    return rangeOne.location == rangeTwo.location && rangeOne.length == rangeTwo.length
+                }
+                let (rangeOne) = comparePathToSubpath(path: temporaryPluginPath, subpath: temporaryDirectoryPath)
+                let (rangeTwo) = comparePathToSubpath(path: temporaryPluginPath.stringByAppendingString("/"), subpath: temporaryDirectoryPath)
+                let (rangeThree) = comparePathToSubpath(path: temporaryPluginPath.stringByAppendingString("/"), subpath: temporaryDirectoryPath.stringByAppendingString("/"))
+                let (rangeFour) = comparePathToSubpath(path: temporaryPluginPath, subpath: temporaryDirectoryPath.stringByAppendingString("/"))
+                XCTAssertTrue(compareRangesEqual(rangeOne: rangeOne, rangeTwo: rangeTwo) , "The ranges should be equal")
+                XCTAssertTrue(compareRangesEqual(rangeOne: rangeOne, rangeTwo: rangeThree) , "The ranges should be equal")
+                XCTAssertTrue(compareRangesEqual(rangeOne: rangeOne, rangeTwo: rangeFour) , "The ranges should be equal")
+                   
+                // Test which version should be used, with or without slash
+                // Test inverses of having "/" that should also match
+                
+                // Test plugin path has temporary directory as subpath
+                
+                
+                // class func rangeInPath(path: NSString, untilSubpath subpath: NSString) -> NSRange
+
+                // class func subpathFromPath(path: NSString, untilSubpath subpath: NSString) -> NSString?
+
+                // class func pathComponentsOfPath(path: NSString, afterSubpath subpath: NSString) -> NSArray?
+            
+                // class func path(path: NSString, containsSubpath subpath: NSString) -> Bool
+            
+            }
+        }
+    }
+
     func testMovePlugin() {
         if let temporaryDirectoryURL = temporaryDirectoryURL {
             if let temporaryPlugin = temporaryPlugin {
@@ -45,7 +90,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                 println("oldPluginPath = \(pluginPath)")
                 println("newPluginPath = \(newPluginPath)")
                 
-                SubprocessFileSystemModifier.moveFileAtPath(pluginPath, toPath: newPluginPath)
+//                SubprocessFileSystemModifier.moveFileAtPath(pluginPath, toPath: newPluginPath)
                 
 //                let moveSuccess = NSFileManager.defaultManager().moveItemAtURL(oldPluginPath, toURL: newPluginURL, error: &error)
 //                XCTAssertTrue(moveSuccess, "The move should succeed")
@@ -92,7 +137,6 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
         }
     }
 
-    
     // TODO: Gets notified moving the file
     // TODO: Gets notified modifying the plist
 }
