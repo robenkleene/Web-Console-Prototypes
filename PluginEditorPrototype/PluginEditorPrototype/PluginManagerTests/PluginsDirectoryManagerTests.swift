@@ -35,33 +35,30 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
             if let temporaryPlugin = temporaryPlugin {
                 let temporaryPluginPath = temporaryPlugin.bundle.bundlePath as NSString
 
-                let comparePathToSubpath:(path: NSString, subpath: NSString) -> (NSRange) = {
-                    (path, subpath) -> (NSRange) in
-                    let range = PluginsPathHelper.rangeInPath(path, untilSubpath: subpath)
+                let compareSubpathFromRangeEqualsSubpath:(path: NSString, range: NSRange, subpath: NSString) -> Bool = {
+                    (path, range, subpath) -> Bool in
                     let subpathFromRange = path.substringWithRange(range) as NSString
-                    let matches = subpathFromRange.stringByStandardizingPath == subpath.stringByStandardizingPath
-                    XCTAssertTrue(matches, "The standardized paths should be equal")
-                    
-                    return (range)
+                    return subpathFromRange.stringByStandardizingPath == subpath.stringByStandardizingPath
                 }
-//                let compareRangeOfPathEqualsSubpath:(path: NSString, range: NSRange, subpath: NSString) {
-//                    
-//                }
                 let compareRangesEqual:(rangeOne: NSRange, rangeTwo: NSRange) -> Bool = {
                     (rangeOne, rangeTwo) -> Bool in
                     return rangeOne.location == rangeTwo.location && rangeOne.length == rangeTwo.length
                 }
-                let (rangeOne) = comparePathToSubpath(path: temporaryPluginPath, subpath: temporaryDirectoryPath)
-                let (rangeTwo) = comparePathToSubpath(path: temporaryPluginPath.stringByAppendingString("/"), subpath: temporaryDirectoryPath)
-                let (rangeThree) = comparePathToSubpath(path: temporaryPluginPath.stringByAppendingString("/"), subpath: temporaryDirectoryPath.stringByAppendingString("/"))
-                let (rangeFour) = comparePathToSubpath(path: temporaryPluginPath, subpath: temporaryDirectoryPath.stringByAppendingString("/"))
-                XCTAssertTrue(rangeOne.location != NSNotFound, "The range should have been found")
-                XCTAssertTrue(compareRangesEqual(rangeOne: rangeOne, rangeTwo: rangeTwo) , "The ranges should be equal")
-                XCTAssertTrue(compareRangesEqual(rangeOne: rangeOne, rangeTwo: rangeThree) , "The ranges should be equal")
-                XCTAssertTrue(compareRangesEqual(rangeOne: rangeOne, rangeTwo: rangeFour) , "The ranges should be equal")
-                
 
-                
+                let testPaths = [temporaryPluginPath as NSString, temporaryPluginPath.stringByAppendingString("/") as NSString]
+                let testSubpaths = [temporaryDirectoryPath  as NSString, temporaryDirectoryPath.stringByAppendingString("/") as NSString]
+
+                let testRange = PluginsPathHelper.rangeInPath(testPaths[0], untilSubpath: testSubpaths[0])
+                for testPath: NSString in testPaths {
+                    for testSubpath: NSString in testSubpaths {
+                        println("testPath = \(testPath)")
+                        println("testSubpath = \(testSubpath)")
+                        let range = PluginsPathHelper.rangeInPath(testPath, untilSubpath: testSubpath)
+                        XCTAssertTrue(range.location != NSNotFound, "The range should have been found")
+                        XCTAssertTrue(compareSubpathFromRangeEqualsSubpath(path: testPath, range: range, subpath: testSubpath), "The subpath from the range should equal the subpath")
+                        XCTAssertTrue(compareRangesEqual(rangeOne: testRange, rangeTwo: range), "The ranges should be equal")
+                    }
+                }
                 
                 // Test which version should be used, with or without slash
                 // Test inverses of having "/" that should also match
