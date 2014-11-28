@@ -49,6 +49,8 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                 let testSubpaths = [temporaryDirectoryPath  as NSString, temporaryDirectoryPath.stringByAppendingString("/") as NSString]
                 let testRange = PluginsPathHelper.rangeInPath(testPaths[0], untilSubpath: testSubpaths[0])
                 let testPathComponents = PluginsPathHelper.pathComponentsOfPath(testPaths[0], afterSubpath: testSubpaths[0]) as NSArray!
+                XCTAssertEqual(testPathComponents.count, 1, "The path components count should equal one")
+                let temporaryPluginPathComponent = "\(testPluginName).\(pluginFileExtension)" as NSString
                 
                 for testPath: NSString in testPaths {
                     for testSubpath: NSString in testSubpaths {
@@ -64,8 +66,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 
                         let pathComponents = PluginsPathHelper.pathComponentsOfPath(testPath, afterSubpath: testSubpath) as NSArray!
                         XCTAssertEqual(pathComponents, testPathComponents, "The path components should equal the test path components")
-                        
-                        println("pathComponents = \(pathComponents)")
+                        XCTAssertEqual(pathComponents[0] as NSString, temporaryPluginPathComponent, "The path component should equal the temporary plugin path component")
                     }
                 }
                 

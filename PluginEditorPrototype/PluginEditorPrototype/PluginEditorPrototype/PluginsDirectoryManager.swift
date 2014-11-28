@@ -45,11 +45,21 @@ class PluginsPathHelper {
         if (range.location == NSNotFound) {
             return nil
         }
-
-println("path = \(path)")
         let pathComponent = normalizedPath.substringFromIndex(range.length)
-println("pathComponent = \(pathComponent)")
-        return pathComponent.pathComponents
+        let pathComponents = pathComponent.pathComponents
+
+        if (pathComponents.count == 0) {
+            return pathComponents
+        }
+        
+        if (pathComponents[0] == "/") {
+            // Remove the first slash if it exists
+            var mutablePathComponents = NSMutableArray(array: pathComponents)
+            mutablePathComponents.removeObjectAtIndex(0)
+            return mutablePathComponents
+        }
+
+        return pathComponents
     }
 
     class func path(path: NSString, containsSubpath subpath: NSString) -> Bool {
