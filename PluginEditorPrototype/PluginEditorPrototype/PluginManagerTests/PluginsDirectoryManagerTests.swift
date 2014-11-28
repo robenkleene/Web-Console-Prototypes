@@ -54,8 +54,6 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                 
                 for testPath: NSString in testPaths {
                     for testSubpath: NSString in testSubpaths {
-                        println("testPath = \(testPath)")
-                        println("testSubpath = \(testSubpath)")
                         let range = PluginsPathHelper.rangeInPath(testPath, untilSubpath: testSubpath)
                         XCTAssertTrue(range.location != NSNotFound, "The range should have been found")
                         XCTAssertTrue(compareSubpathFromRangeEqualsSubpath(path: testPath, range: range, subpath: testSubpath), "The subpath from the range should equal the subpath")
