@@ -21,6 +21,56 @@ import XCTest
 //    }
 //}
 
+class PluginsDirectoryManagerPluginPathHelpersTestCase: TemporaryPluginTestCase {
+    func isRange(range: NSRange, equalToRange comparisonRange: NSRange) -> Bool {
+        return range.location == comparisonRange.location && range.length == comparisonRange.length
+    }
+    
+    func testPathsWithSlashes() {
+        if let temporaryDirectoryPath = temporaryDirectoryURL?.path {
+            if let temporaryPlugin = temporaryPlugin {
+                let temporaryPluginPath = temporaryPlugin.bundle.bundlePath as NSString
+                
+                let testPaths = [temporaryPluginPath as NSString, temporaryPluginPath.stringByAppendingString(testSlashPathComponent) as NSString]
+                let testSubpaths = [temporaryDirectoryPath  as NSString, temporaryDirectoryPath.stringByAppendingString(testSlashPathComponent) as NSString]
+                let testRange = PluginsPathHelper.rangeInPath(testPaths[0], untilSubpath: testSubpaths[0])
+                let testPathComponents = PluginsPathHelper.pathComponentsOfPath(testPaths[0], afterSubpath: testSubpaths[0]) as NSArray!
+                let temporaryPluginPathComponent = "\(testPluginName).\(pluginFileExtension)" as NSString
+                XCTAssertEqual(testPathComponents.count, 1, "The path components count should equal one")
+                for testPath: NSString in testPaths {
+                    for testSubpath: NSString in testSubpaths {
+                        let range = PluginsPathHelper.rangeInPath(testPath, untilSubpath: testSubpath)
+                        XCTAssertTrue(range.location != NSNotFound, "The range should have been found")
+                        let subpathFromRange = testPath.substringWithRange(range) as NSString
+                        XCTAssertEqual(subpathFromRange.stringByStandardizingPath, testSubpath.stringByStandardizingPath, "The standardized paths should be equal")
+                        XCTAssertTrue(isRange(range, equalToRange: testRange), "The ranges should be equal")
+                        let subpath = PluginsPathHelper.subpathFromPath(testPath, untilSubpath: testSubpath) as NSString!
+                        XCTAssertEqual(subpath.stringByStandardizingPath, testSubpath.stringByStandardizingPath, "The subpaths should be equal")
+                        XCTAssertTrue(PluginsPathHelper.path(testPath, containsSubpath: testSubpath), "The path should contain the subpath")
+                        let pathComponents = PluginsPathHelper.pathComponentsOfPath(testPath, afterSubpath: testSubpath) as NSArray!
+                        XCTAssertEqual(pathComponents, testPathComponents, "The path components should equal the test path components")
+                        XCTAssertEqual(pathComponents[0] as NSString, temporaryPluginPathComponent, "The path component should equal the temporary plugin path component")
+                    }
+                }
+            }
+        }
+    }
+    
+    // TODO: Test which version should be used, with or without slash
+    // TODO: Test inverses of having "/" that should also match
+    
+    // TODO: class func rangeInPath(path: NSString, untilSubpath subpath: NSString) -> NSRange
+    
+    // TODO: class func subpathFromPath(path: NSString, untilSubpath subpath: NSString) -> NSString?
+    
+    // TODO: class func pathComponentsOfPath(path: NSString, afterSubpath subpath: NSString) -> NSArray?
+    
+    // TODO: class func path(path: NSString, containsSubpath subpath: NSString) -> Bool
+    
+    // TODO: Test negative cases just like above, things that should fail
+}
+
+
 class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
     func renameItemAtURL(srcURL: NSURL, toName newFilename: NSString) {
         var error: NSError?
@@ -30,59 +80,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
         XCTAssertNil(error, "The error should be nil")
     }
     
-    func testPluginPathHelpers() {
-        if let temporaryDirectoryPath = temporaryDirectoryURL?.path {
-            if let temporaryPlugin = temporaryPlugin {
-                let temporaryPluginPath = temporaryPlugin.bundle.bundlePath as NSString
 
-                let compareSubpathFromRangeEqualsSubpath:(path: NSString, range: NSRange, subpath: NSString) -> Bool = {
-                    (path, range, subpath) -> Bool in
-                    let subpathFromRange = path.substringWithRange(range) as NSString
-                    return subpathFromRange.stringByStandardizingPath == subpath.stringByStandardizingPath
-                }
-                let compareRangesEqual:(rangeOne: NSRange, rangeTwo: NSRange) -> Bool = {
-                    (rangeOne, rangeTwo) -> Bool in
-                    return rangeOne.location == rangeTwo.location && rangeOne.length == rangeTwo.length
-                }
-
-                let testPaths = [temporaryPluginPath as NSString, temporaryPluginPath.stringByAppendingString("/") as NSString]
-                let testSubpaths = [temporaryDirectoryPath  as NSString, temporaryDirectoryPath.stringByAppendingString("/") as NSString]
-                let testRange = PluginsPathHelper.rangeInPath(testPaths[0], untilSubpath: testSubpaths[0])
-                let testPathComponents = PluginsPathHelper.pathComponentsOfPath(testPaths[0], afterSubpath: testSubpaths[0]) as NSArray!
-                XCTAssertEqual(testPathComponents.count, 1, "The path components count should equal one")
-                let temporaryPluginPathComponent = "\(testPluginName).\(pluginFileExtension)" as NSString
-                
-                for testPath: NSString in testPaths {
-                    for testSubpath: NSString in testSubpaths {
-                        let range = PluginsPathHelper.rangeInPath(testPath, untilSubpath: testSubpath)
-                        XCTAssertTrue(range.location != NSNotFound, "The range should have been found")
-                        XCTAssertTrue(compareSubpathFromRangeEqualsSubpath(path: testPath, range: range, subpath: testSubpath), "The subpath from the range should equal the subpath")
-                        XCTAssertTrue(compareRangesEqual(rangeOne: testRange, rangeTwo: range), "The ranges should be equal")
-                        let subpath = PluginsPathHelper.subpathFromPath(testPath, untilSubpath: testSubpath) as NSString!
-                        XCTAssertEqual(subpath.stringByStandardizingPath, testSubpath.stringByStandardizingPath, "The subpaths should be equal")
-                        XCTAssertTrue(PluginsPathHelper.path(testPath, containsSubpath: testSubpath), "The path should contain the subpath")
-
-                        let pathComponents = PluginsPathHelper.pathComponentsOfPath(testPath, afterSubpath: testSubpath) as NSArray!
-                        XCTAssertEqual(pathComponents, testPathComponents, "The path components should equal the test path components")
-                        XCTAssertEqual(pathComponents[0] as NSString, temporaryPluginPathComponent, "The path component should equal the temporary plugin path component")
-                    }
-                }
-                
-                // Test which version should be used, with or without slash
-                // Test inverses of having "/" that should also match
-                
-                // class func rangeInPath(path: NSString, untilSubpath subpath: NSString) -> NSRange
-
-                // class func subpathFromPath(path: NSString, untilSubpath subpath: NSString) -> NSString?
-
-                // class func pathComponentsOfPath(path: NSString, afterSubpath subpath: NSString) -> NSArray?
-            
-                // class func path(path: NSString, containsSubpath subpath: NSString) -> Bool
-
-                // Test negative cases just like above, things that should fail
-            }
-        }
-    }
 
     func testMovePlugin() {
         if let temporaryDirectoryURL = temporaryDirectoryURL {

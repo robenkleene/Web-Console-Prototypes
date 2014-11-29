@@ -13,3 +13,6 @@ let testPluginName = "HTML"
 let testFilename = "test.txt"
 let testFilenameTwo = "test2.txt"
 let testFileContents = "test"
+
+let testMissingFilePathComponent = "None"
+let testSlashPathComponent = "/"
