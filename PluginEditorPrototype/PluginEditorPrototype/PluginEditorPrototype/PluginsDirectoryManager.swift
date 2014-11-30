@@ -9,8 +9,8 @@
 import Foundation
 
 @objc protocol PluginsDirectoryManagerDelegate {
-    optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, infoDictionaryWasCreatedOrModifiedAtPath path: NSString)
-    optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, infoDictionaryWasRemovedAtPath path: NSString)
+    optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasCreatedOrModifiedAtPath path: NSString)
+    optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasRemovedAtPath path: NSString)
 }
 
 // TODO: EXTENSION BEGIN NSString+PluginDirectoryPaths
@@ -62,6 +62,20 @@ class PluginsPathHelper {
         return pathComponents
     }
 
+    class func pathComponent(pathComponent: NSString, containsSubpathComponent subpathComponent: NSString) -> Bool {
+        let pathComponents = pathComponent.pathComponents
+        let subpathComponents = subpathComponent.pathComponents
+        for index in 0..<pathComponents.count {
+            let pathComponent = pathComponents[index] as NSString
+            let subpathComponent = subpathComponents[index] as NSString
+            
+            if (!pathComponent.isEqualToString(subpathComponent)) {
+                return false
+            }
+        }
+        return true
+    }
+    
     class func path(path: NSString, containsSubpath subpath: NSString) -> Bool {
         if let pathUntilSubpath = subpathFromPath(path, untilSubpath: subpath) {
             return pathUntilSubpath.stringByStandardizingPath == subpath.stringByStandardizingPath
@@ -88,6 +102,10 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
     func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasRemovedAtPath path: String!) {
         assert(self.pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
         
+        // TODO: Remove the directory form the path components
+        // TODO: Do the comparison tests
+        // TODO: If the comparison test passes, fire the delegate method
+        
         println("fileWasRemovedAtPath path = \(path)")
     }
 
@@ -103,8 +121,28 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         return false
     }
     
-    // TODO: Replace with PluginsPathHelper.path(path, containsSubpath)
+    func pathIsInfoDictionaryPath(path: NSString) -> Bool {
+        // TODO: Major problem with this, I have to match each individual path compontent
+        if let subpath = pluginsDirectoryURL.path {
+            if let pathComponents = PluginsPathHelper.pathComponentsOfPath(path, afterSubpath: subpath) {
+                if (pathComponents.count > 0) {
+                    if let pathComponent = pathComponents[0] as? NSString {
+                        let pluginDirectoryPath = subpath.stringByAppendingPathComponent(pathComponent)
+                    }
+                }
+            }
+        }
+
+        return false
+    }
+    
     func pathIsSubpathOfPluginsDirectory(path: NSString) -> Bool {
+        // TODO: Replace with PluginsPathHelper.path(path, containsSubpath), code to do so:
+//        if let subpath = pluginsDirectoryURL.path {
+//            return PluginsPathHelper.path(path, containsSubpath: subpath)
+//        }
+//        return false
+
         if let pluginsDirectoryPath = pluginsDirectoryURL.path {
             let pathPrefixRange = path.rangeOfString(pluginsDirectoryPath)
             let basePathLength = pathPrefixRange.location + pathPrefixRange.length
