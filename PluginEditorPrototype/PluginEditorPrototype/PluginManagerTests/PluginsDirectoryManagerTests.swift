@@ -56,7 +56,6 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                 pluginsDirectoryManager.delegate = pluginsDirectoryManagerTestManager
                 
                 // Move the plugin
-                var error: NSError?
                 let pluginPath = temporaryPlugin.bundle.bundlePath
                 let newPluginFilename = temporaryPlugin.identifier
                 let newPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(newPluginFilename)
@@ -97,33 +96,79 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                 })
                 SubprocessFileSystemModifier.moveFileAtPath(newPluginPath, toPath: pluginPath)
                 waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+            }
+        }
+    }
+    
+    func testCopyAndRemovePlugin() {
+        if let temporaryDirectoryURL = temporaryDirectoryURL {
+            if let temporaryPlugin = temporaryPlugin {
+                let pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryDirectoryURL)
+                let pluginsDirectoryManagerTestManager = PluginsDirectoryManagerTestManager()
+                pluginsDirectoryManager.delegate = pluginsDirectoryManagerTestManager
                 
-                // TODO: Create a delete test from this
+                // Copy the plugin
+                let pluginPath = temporaryPlugin.bundle.bundlePath
+                let newPluginFilename = temporaryPlugin.identifier
+                let newPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(newPluginFilename)
+
+                
+                // Create expectations
+                // 1. For the info.plist
+                // 2. For the contents directory
+                // 3. For the plugin directory
+                let createExpectationOne = expectationWithDescription("Info dictionary was created one")
+                pluginsDirectoryManagerTestManager.addFileWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
+                        createExpectationOne.fulfill()
+                    }
+                })
+
+                let createExpectationTwo = expectationWithDescription("Info dictionary was created two")
+                pluginsDirectoryManagerTestManager.addFileWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
+                        createExpectationTwo.fulfill()
+                    }
+                })
+
+                let createExpectationThree = expectationWithDescription("Info dictionary was created three")
+                pluginsDirectoryManagerTestManager.addFileWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
+                        createExpectationThree.fulfill()
+                    }
+                })
+
+                SubprocessFileSystemModifier.copyFileAtPath(pluginPath, toPath: newPluginPath)
+                
+                // Wait for expectations
+                waitForExpectationsWithTimeout(0.5, handler: nil)
+                
+                // Clean up
+
                 // Remove expectations
                 // 1. For the info.plist
                 // 2. For the contents directory
-                // 3. For the
-// Code for deleting a plugin
-//                let removeExpectationOne = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
-//                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
-//                        removeExpectationOne.fulfill()
-//                    }
-//                })
-//                let removeExpectationTwo = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
-//                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
-//                        removeExpectationTwo.fulfill()
-//                    }
-//                })
-//                let removeExpectationThree = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
-//                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
-//                        removeExpectationThree.fulfill()
-//                    }
-//                })
-//                SubprocessFileSystemModifier.removeDirectoryAtPath(newPluginPath)
-//                waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+                // 3. For the plugin directory
+                let removeExpectationOne = expectationWithDescription("Info dictionary was removed again")
+                pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
+                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
+                        removeExpectationOne.fulfill()
+                    }
+                })
+                let removeExpectationTwo = expectationWithDescription("Info dictionary was removed again")
+                pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
+                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
+                        removeExpectationTwo.fulfill()
+                    }
+                })
+                let removeExpectationThree = expectationWithDescription("Info dictionary was removed again")
+                pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
+                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
+                        removeExpectationThree.fulfill()
+                    }
+                })
+                SubprocessFileSystemModifier.removeDirectoryAtPath(newPluginPath)
+                waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
             }
         }
     }

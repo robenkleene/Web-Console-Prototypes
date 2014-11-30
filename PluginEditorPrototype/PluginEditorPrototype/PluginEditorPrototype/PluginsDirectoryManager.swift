@@ -118,6 +118,11 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         if (self.pathIsInfoDictionaryPath(path)) {
             if let pluginPath = self.pluginPathFromPath(path) {
                 let infoDictionaryPath = pluginPath.stringByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
+
+// TODO: in the current implementation fileExists can be false here which will cause a failure, custom handling for rename should prevent this
+//                let fileExists = NSFileManager.defaultManager().fileExistsAtPath(infoDictionaryPath)
+//                println("fileExists = \(fileExists)")
+
                 if (NSFileManager.defaultManager().fileExistsAtPath(infoDictionaryPath)) {
                     delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasCreatedOrModifiedAtPath: pluginPath)
                 }
@@ -143,7 +148,8 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
             if let pathComponents = PluginsPathHelper.pathComponentsOfPath(path, afterSubpath: subpath) {
                 if (pathComponents.count > 0) {
                     var pluginSubpathComponents = pathComponents as Array
-                    return pluginSubpathComponents.removeAtIndex(0) as? NSString
+                    let pathComponent = pluginSubpathComponents.removeAtIndex(0) as? NSString
+                    return pathComponent
                 }
             }
         }
@@ -157,7 +163,8 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
                     var pluginSubpathComponents = pathComponents as Array
                     pluginSubpathComponents.removeAtIndex(0)
                     let pluginSubpathComponent = NSString.pathWithComponents(pluginSubpathComponents)
-                    return PluginsPathHelper.pathComponent(pluginSubpathComponent, containsSubpathComponent: ClassConstants.infoDictionaryPathComponent)
+                    let containsSubpathComponent = PluginsPathHelper.pathComponent(pluginSubpathComponent, containsSubpathComponent: ClassConstants.infoDictionaryPathComponent)
+                    return containsSubpathComponent
                 }
             }
         }

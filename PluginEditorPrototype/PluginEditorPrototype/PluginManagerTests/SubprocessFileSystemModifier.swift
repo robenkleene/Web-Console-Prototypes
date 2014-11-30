@@ -45,6 +45,14 @@ class SubprocessFileSystemModifier {
         task.arguments = ["-r", path]
         SubprocessFileSystemModifier.runTask(task)
     }
+
+    class func copyFileAtPath(path: NSString, toPath destinationPath: NSString) {
+        let task = NSTask()
+        task.launchPath = "/bin/cp"
+        task.arguments = ["-r", path, destinationPath]
+        SubprocessFileSystemModifier.runTask(task)
+    }
+
     
     class func moveFileAtPath(path: NSString, toPath destinationPath: NSString) {
         let task = NSTask()
