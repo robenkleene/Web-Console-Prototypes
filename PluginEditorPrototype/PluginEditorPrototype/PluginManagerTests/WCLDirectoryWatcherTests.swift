@@ -17,7 +17,7 @@ class WCLDirectoryWatcherTestManager: NSObject, WCLDirectoryWatcherDelegate {
         self.fileWasRemovedAtPathHandlers = Array<((path: NSString) -> Void)>()
     }
 
-    func directoryWatcher(directoryWatcher: AnyObject!, fileWasCreatedOrModifiedAtPath path: String!) {
+    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasCreatedOrModifiedAtPath path: String!) {
         assert(fileWasCreatedOrModifiedAtPathHandlers.count > 0, "There should be at least one handler")
         
         if (fileWasCreatedOrModifiedAtPathHandlers.count > 0) {

@@ -19,13 +19,30 @@ class SubprocessFileSystemModifier {
 
     class func removeFileAtPath(path: NSString) {
         if (path.rangeOfString("*").location != NSNotFound) {
-            assert(false, "The path shoudl not contain a wildcard")
+            assert(false, "The path should not contain a wildcard")
             return
         }
         
         let task = NSTask()
         task.launchPath = "/bin/rm"
         task.arguments = [path]
+        SubprocessFileSystemModifier.runTask(task)
+    }
+    
+    class func removeDirectoryAtPath(path: NSString) {
+        if (path.rangeOfString("*").location != NSNotFound) {
+            assert(false, "The path should not contain a wildcard")
+            return
+        }
+
+        if (!path.hasPrefix("/var/folders/")) {
+            assert(false, "The path should be a temporary directory")
+            return
+        }
+
+        let task = NSTask()
+        task.launchPath = "/bin/rm"
+        task.arguments = ["-r", path]
         SubprocessFileSystemModifier.runTask(task)
     }
     
