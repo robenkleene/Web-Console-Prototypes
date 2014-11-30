@@ -110,8 +110,6 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
                 }
             }
         }
-        
-        println("fileWasRemovedAtPath path = \(path)")
     }
 
     func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasCreatedOrModifiedAtPath path: String!) {
@@ -125,28 +123,11 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
                 }
             }
         }
-        
-        println("fileWasCreatedOrModifiedAtPath path = \(path)")
     }
 
     func infoDictionaryIsSubdirectoryOfPath(path: NSString) -> Bool {
         return false
     }
-    
-//    func pathIsInfoDictionaryPath(path: NSString) -> Bool {
-//        // TODO: Major problem with this, I have to match each individual path compontent
-//        if let subpath = pluginsDirectoryURL.path {
-//            if let pathComponents = PluginsPathHelper.pathComponentsOfPath(path, afterSubpath: subpath) {
-//                if (pathComponents.count > 0) {
-//                    if let pathComponent = pathComponents[0] as? NSString {
-//                        let pluginDirectoryPath = subpath.stringByAppendingPathComponent(pathComponent)
-//                    }
-//                }
-//            }
-//        }
-//
-//        return false
-//    }
 
     func pluginPathFromPath(path: NSString) -> NSString? {
         if let pluginPathComponent = pluginPathComponentFromPath(path) {
@@ -185,18 +166,8 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
     }
     
     func pathIsSubpathOfPluginsDirectory(path: NSString) -> Bool {
-        // TODO: Replace with PluginsPathHelper.path(path, containsSubpath), code to do so:
-//        if let subpath = pluginsDirectoryURL.path {
-//            return PluginsPathHelper.path(path, containsSubpath: subpath)
-//        }
-//        return false
-
-        if let pluginsDirectoryPath = pluginsDirectoryURL.path {
-            let pathPrefixRange = path.rangeOfString(pluginsDirectoryPath)
-            let basePathLength = pathPrefixRange.location + pathPrefixRange.length
-            let basePathRange = NSRange(location: 0, length: basePathLength)
-            let basePath = path.substringWithRange(basePathRange)
-            return basePath.stringByStandardizingPath == (pluginsDirectoryPath.stringByStandardizingPath)
+        if let subpath = pluginsDirectoryURL.path {
+            return PluginsPathHelper.path(path, containsSubpath: subpath)
         }
         return false
     }

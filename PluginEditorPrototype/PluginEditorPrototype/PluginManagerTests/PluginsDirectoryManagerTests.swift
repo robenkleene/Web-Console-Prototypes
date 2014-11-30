@@ -61,11 +61,6 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                 let newPluginFilename = temporaryPlugin.identifier
                 let newPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(newPluginFilename)
 
-                println("oldPluginPath = \(pluginPath)")
-                println("newPluginPath = \(newPluginPath)")
-
-                SubprocessFileSystemModifier.moveFileAtPath(pluginPath, toPath: newPluginPath)
-
                 let removeExpectation = expectationWithDescription("Info dictionary was removed")
                 pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
                     if (self.dynamicType.resolveTemporaryDirectoryPath(path) == pluginPath) {
@@ -80,9 +75,10 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                     }
                 })
                 
+                SubprocessFileSystemModifier.moveFileAtPath(pluginPath, toPath: newPluginPath)
+
                 // Wait for expectations
                 waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
-
 
                 // Clean up
                 // Copy the plugin back to it's original path so the tearDown delete of the temporary plugin succeeds
