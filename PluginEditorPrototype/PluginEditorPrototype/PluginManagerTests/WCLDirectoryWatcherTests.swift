@@ -44,7 +44,7 @@ class WCLDirectoryWatcherTestManager: NSObject, WCLDirectoryWatcherDelegate {
     }
 }
 
-class WCLDirectoryWatcherTests: TemporaryDirectoryTestCase {
+class WCLDirectoryWatcherTestCase: TemporaryDirectoryTestCase {
     var directoryWatcher: WCLDirectoryWatcher?
     var directoryWatcherTestManager: WCLDirectoryWatcherTestManager?
     
@@ -56,13 +56,16 @@ class WCLDirectoryWatcherTests: TemporaryDirectoryTestCase {
             directoryWatcher?.delegate = directoryWatcherTestManager
         }
     }
-
+    
     override func tearDown() {
         directoryWatcherTestManager = nil
         directoryWatcher?.delegate = nil
         directoryWatcher = nil
         super.tearDown()
     }
+}
+
+class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
     
     func createFileAtPathWithConfirmation(path: NSString) {
         let fileWasCreatedOrModifiedExpectation = expectationWithDescription("File was created")
@@ -152,7 +155,7 @@ class WCLDirectoryWatcherTests: TemporaryDirectoryTestCase {
             
             // Test Modify
             modifyFileAtPathWithConfirmation(testFilePathTwo)
-
+            
             // Test Move Again
             moveFileAtPathWithConfirmation(testFilePathTwo, destinationPath: testFilePath)
 
@@ -165,6 +168,8 @@ class WCLDirectoryWatcherTests: TemporaryDirectoryTestCase {
             removeFileAtPathWithConfirmation(testFilePath)
         }
     }
+    
+    // TODO: If we can distinguish between move and modify events, then do more tests with more ordering variations (e.g., modify before move)
 
     func testFileManager() {
         if let testFilePath = temporaryDirectoryURL?.path?.stringByAppendingPathComponent(testFilename) {
