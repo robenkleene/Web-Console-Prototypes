@@ -169,10 +169,27 @@ class WCLDirectoryWatcherTestCase: TemporaryDirectoryTestCase {
             }
         })
         // Move
-        SubprocessFileSystemModifier.moveFileAtPath(path, toPath: destinationPath)
+        SubprocessFileSystemModifier.moveItemAtPath(path, toPath: destinationPath)
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
     func moveDirectoryAtPathWithConfirmation(path: NSString, destinationPath: NSString) {
+        // Remove original
+        let directoryWasRemovedExpectation = expectationWithDescription("Directory was removed with move")
+        directoryWatcherTestManager?.addDirectoryWasRemovedAtPathHandler({ returnedPath -> Void in
+            if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
+                directoryWasRemovedExpectation.fulfill()
+            }
+        })
+        // Create new
+        let directoryWasCreatedExpectation = expectationWithDescription("Directory was created with move")
+        directoryWatcherTestManager?.addDirectoryWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
+            if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == destinationPath) {
+                directoryWasCreatedExpectation.fulfill()
+            }
+        })
+        // Move
+        SubprocessFileSystemModifier.moveItemAtPath(path, toPath: destinationPath)
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
 }
 
@@ -205,7 +222,60 @@ class WCLDirectoryWatcherDirectoryTests: WCLDirectoryWatcherTestCase {
             removeDirectoryAtPathWithConfirmation(testDirectoryPath)
         }
     }
+
+    func testMoveDirectory() {
+        if let testDirectoryPath = temporaryDirectoryURL?.path?.stringByAppendingPathComponent(testDirectoryName) {
+            
+            // Test Create
+            createDirectoryAtPathWithConfirmation(testDirectoryPath)
+
+            // Test Move
+            let testDirectoryPathTwo = testDirectoryPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(testDirectoryNameTwo)
+            moveDirectoryAtPathWithConfirmation(testDirectoryPath, destinationPath: testDirectoryPathTwo)
+            
+            // Test Move Again
+            moveDirectoryAtPathWithConfirmation(testDirectoryPathTwo, destinationPath: testDirectoryPath)
+
+            // Clean up
+                
+            // Test Remove
+            removeDirectoryAtPathWithConfirmation(testDirectoryPath)
+        }
+    }
+
+    func testMoveDirectoryContainingFile() {
+        if let testDirectoryPath = temporaryDirectoryURL?.path?.stringByAppendingPathComponent(testDirectoryName) {
+            let testFilePath = testDirectoryPath.stringByAppendingPathComponent(testFilename)
+
+            // Test Create Directory
+            createDirectoryAtPathWithConfirmation(testDirectoryPath)
+            
+            // Test Create File
+            createFileAtPathWithConfirmation(testFilePath)
+            
+            // Test Move
+            let testDirectoryPathTwo = testDirectoryPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(testDirectoryNameTwo)
+            moveDirectoryAtPathWithConfirmation(testDirectoryPath, destinationPath: testDirectoryPathTwo)
+            
+            // Test Modify File
+            let testFilePathTwo = testDirectoryPathTwo.stringByAppendingPathComponent(testFilename)
+            modifyFileAtPathWithConfirmation(testFilePathTwo)
+            
+            // Test Move Again
+            moveDirectoryAtPathWithConfirmation(testDirectoryPathTwo, destinationPath: testDirectoryPath)
+            
+            // Clean up
+
+            // Test Remove File
+            removeFileAtPathWithConfirmation(testFilePath)
+
+            // Test Remove
+            removeDirectoryAtPathWithConfirmation(testDirectoryPath)
+            
+        }
+    }
 }
+
 
 class WCLDirectoryWatcherFileTests: WCLDirectoryWatcherTestCase {
 
@@ -257,9 +327,6 @@ class WCLDirectoryWatcherFileTests: WCLDirectoryWatcherTestCase {
         }
     }
     
-    // TODO: Test creating and moving files in subdirectories
-    // TODO: If we can distinguish between move and modify events, then do more tests with more ordering variations (e.g., modify before move)
-
     func testFileManager() {
         if let testFilePath = temporaryDirectoryURL?.path?.stringByAppendingPathComponent(testFilename) {
             // Test Create

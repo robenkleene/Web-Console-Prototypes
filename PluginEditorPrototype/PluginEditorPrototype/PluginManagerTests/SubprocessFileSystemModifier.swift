@@ -61,7 +61,7 @@ class SubprocessFileSystemModifier {
     }
 
     
-    class func moveFileAtPath(path: NSString, toPath destinationPath: NSString) {
+    class func moveItemAtPath(path: NSString, toPath destinationPath: NSString) {
         let task = NSTask()
         task.launchPath = "/bin/mv"
         task.arguments = [path, destinationPath]

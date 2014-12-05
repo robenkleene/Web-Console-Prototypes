@@ -75,7 +75,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 //                    }
 //                })
 //                
-//                SubprocessFileSystemModifier.moveFileAtPath(pluginPath, toPath: newPluginPath)
+//                SubprocessFileSystemModifier.moveItemAtPath(pluginPath, toPath: newPluginPath)
 //
 //                // Wait for expectations
 //                waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
@@ -95,7 +95,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 //                        createExpectationTwo.fulfill()
 //                    }
 //                })
-//                SubprocessFileSystemModifier.moveFileAtPath(newPluginPath, toPath: pluginPath)
+//                SubprocessFileSystemModifier.moveItemAtPath(newPluginPath, toPath: pluginPath)
 //                waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
 //            }
 //        }
