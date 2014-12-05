@@ -17,6 +17,13 @@ class SubprocessFileSystemModifier {
         SubprocessFileSystemModifier.runTask(task)
     }
 
+    class func createDirectoryAtPath(path: NSString) {
+        let task = NSTask()
+        task.launchPath = "/bin/mkdir"
+        task.arguments = [path]
+        SubprocessFileSystemModifier.runTask(task)
+    }
+
     class func removeFileAtPath(path: NSString) {
         if (path.rangeOfString("*").location != NSNotFound) {
             assert(false, "The path should not contain a wildcard")

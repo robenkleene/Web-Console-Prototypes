@@ -185,6 +185,11 @@ static inline NSString *NSStringFromFSEventFlags(FSEventStreamEventFlags eventFl
     return [self containsEventFlag:kFSEventStreamEventFlagItemIsFile];
 }
 
+- (BOOL)itemIsDirectory
+{
+    return [self containsEventFlag:kFSEventStreamEventFlagItemIsDir];
+}
+
 - (BOOL)containsEventFlag:(int)eventFlag
 {
     return (self.eventFlags & eventFlag) == eventFlag;

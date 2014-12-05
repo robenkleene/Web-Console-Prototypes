@@ -18,4 +18,5 @@
 - (BOOL)itemWasRemoved;
 - (BOOL)itemWasRenamed;
 - (BOOL)itemIsFile;
+- (BOOL)itemIsDirectory;
 @end

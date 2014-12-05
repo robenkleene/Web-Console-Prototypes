@@ -70,11 +70,14 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
     
     BOOL isDir = NO;
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir];
-    NSAssert(isDir != [fileSystemEvent itemIsFile], @"The item should either be a file or a directory");
+    if (fileExists) {
+        NSAssert(isDir != [fileSystemEvent itemIsFile], @"The item should either be a file or a directory");
+        NSAssert(isDir == [fileSystemEvent itemIsDirectory], @"The directory status should match");
+    }
     if (([fileSystemEvent itemWasRemoved] ||
          [fileSystemEvent itemWasRenamed]) &&
         !fileExists) {
-        if (isDir) {
+        if ([fileSystemEvent itemIsDirectory]) {
             if ([self.delegate respondsToSelector:@selector(directoryWatcher:directoryWasRemovedAtPath:)]) {
                 [self.delegate directoryWatcher:self directoryWasRemovedAtPath:path];
             }
@@ -87,7 +90,7 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
                 [fileSystemEvent itemWasModified] ||
                 [fileSystemEvent itemWasRenamed]) &&
                fileExists) {
-        if (isDir) {
+        if ([fileSystemEvent itemIsDirectory]) {
             if ([self.delegate respondsToSelector:@selector(directoryWatcher:directoryWasCreatedOrModifiedAtPath:)]) {
                 [self.delegate directoryWatcher:self directoryWasCreatedOrModifiedAtPath:path];
             }

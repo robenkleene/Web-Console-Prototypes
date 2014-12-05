@@ -12,6 +12,7 @@ let testPluginName = "HTML"
 
 let testPluginPathComponent = "\(testPluginName).\(pluginFileExtension)"
 
+let testDirectoryName = "test"
 let testFilename = "test.txt"
 let testFilenameTwo = "test2.txt"
 let testFileContents = "test"
