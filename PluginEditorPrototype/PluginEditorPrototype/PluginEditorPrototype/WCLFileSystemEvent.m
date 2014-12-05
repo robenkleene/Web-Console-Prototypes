@@ -180,10 +180,17 @@ static inline NSString *NSStringFromFSEventFlags(FSEventStreamEventFlags eventFl
     return [self containsEventFlag:kFSEventStreamEventFlagItemRenamed];
 }
 
+- (BOOL)itemIsFile
+{
+    return [self containsEventFlag:kFSEventStreamEventFlagItemIsFile];
+}
+
 - (BOOL)containsEventFlag:(int)eventFlag
 {
     return (self.eventFlags & eventFlag) == eventFlag;
 }
+
+
 
 #pragma mark - Description
 

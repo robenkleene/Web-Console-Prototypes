@@ -17,4 +17,5 @@
 - (BOOL)itemWasModified;
 - (BOOL)itemWasRemoved;
 - (BOOL)itemWasRenamed;
+- (BOOL)itemIsFile;
 @end

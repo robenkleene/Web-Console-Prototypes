@@ -68,18 +68,33 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
     // 2. For the new file
     // Therefore a rename event can either be a remove or create/modify
     
+    BOOL isDir = NO;
+    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir];
+    NSAssert(isDir != [fileSystemEvent itemIsFile], @"The item should either be a file or a directory");
     if (([fileSystemEvent itemWasRemoved] ||
          [fileSystemEvent itemWasRenamed]) &&
-        ![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:nil]) {
-        if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasRemovedAtPath:)]) {
-            [self.delegate directoryWatcher:self fileWasRemovedAtPath:path];
+        !fileExists) {
+        if (isDir) {
+            if ([self.delegate respondsToSelector:@selector(directoryWatcher:directoryWasRemovedAtPath:)]) {
+                [self.delegate directoryWatcher:self directoryWasRemovedAtPath:path];
+            }
+        } else {
+            if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasRemovedAtPath:)]) {
+                [self.delegate directoryWatcher:self fileWasRemovedAtPath:path];
+            }            
         }
     } else if (([fileSystemEvent itemWasCreated] ||
                 [fileSystemEvent itemWasModified] ||
                 [fileSystemEvent itemWasRenamed]) &&
-               [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:nil]) {
-        if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasCreatedOrModifiedAtPath:)]) {
-            [self.delegate directoryWatcher:self fileWasCreatedOrModifiedAtPath:path];
+               fileExists) {
+        if (isDir) {
+            if ([self.delegate respondsToSelector:@selector(directoryWatcher:directoryWasCreatedOrModifiedAtPath:)]) {
+                [self.delegate directoryWatcher:self directoryWasCreatedOrModifiedAtPath:path];
+            }
+        } else {
+            if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasCreatedOrModifiedAtPath:)]) {
+                [self.delegate directoryWatcher:self fileWasCreatedOrModifiedAtPath:path];
+            }
         }
     }
 }

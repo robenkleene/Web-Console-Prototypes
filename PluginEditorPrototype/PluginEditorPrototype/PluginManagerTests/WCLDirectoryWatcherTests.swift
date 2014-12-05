@@ -208,6 +208,7 @@ class WCLDirectoryWatcherFileTests: WCLDirectoryWatcherTestCase {
         }
     }
     
+    // TODO: Test creating and moving files in subdirectories
     // TODO: If we can distinguish between move and modify events, then do more tests with more ordering variations (e.g., modify before move)
 
     func testFileManager() {
