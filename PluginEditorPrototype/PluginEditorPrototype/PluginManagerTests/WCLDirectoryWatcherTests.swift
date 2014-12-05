@@ -179,23 +179,30 @@ class WCLDirectoryWatcherTestCase: TemporaryDirectoryTestCase {
 class WCLDirectoryWatcherDirectoryTests: WCLDirectoryWatcherTestCase {
     func testCreateWriteAndRemoveDirectory() {
         if let testDirectoryPath = temporaryDirectoryURL?.path?.stringByAppendingPathComponent(testDirectoryName) {
+            let testFilePath = testDirectoryPath.stringByAppendingPathComponent(testFilename)
 
-            // Test Create
+            // Test Create Directory
             createDirectoryAtPathWithConfirmation(testDirectoryPath)
             
-//            // Test Modify
-//            modifyFileAtPathWithConfirmation(testFilePath)
+            // Test Create File
+            createFileAtPathWithConfirmation(testFilePath)
+
+            // Test Modify File
+            modifyFileAtPathWithConfirmation(testFilePath)
+
+            // Test Remove File
+            removeFileAtPathWithConfirmation(testFilePath)
             
-            // Test Remove
+            // Test Remove Directory
             removeDirectoryAtPathWithConfirmation(testDirectoryPath)
 
-//            // Test Create again
-//            createFileAtPathWithConfirmation(testFilePath)
+            // Test Create Directory Again
+            createDirectoryAtPathWithConfirmation(testDirectoryPath)
             
             // Clean up
 
-//            // Test Remove again
-//            removeFileAtPathWithConfirmation(testFilePath)
+            // Test Remove Directory Again
+            removeDirectoryAtPathWithConfirmation(testDirectoryPath)
         }
     }
 }
