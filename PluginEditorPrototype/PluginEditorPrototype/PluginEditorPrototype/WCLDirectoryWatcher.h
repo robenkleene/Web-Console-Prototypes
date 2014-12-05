@@ -12,8 +12,8 @@
 
 @protocol WCLDirectoryWatcherDelegate <NSObject>
 @optional
-- (void)directoryWatcher:(WCLDirectoryWatcher *)directoryWatcher itemWasCreatedOrModifiedAtPath:(NSString *)path;
-- (void)directoryWatcher:(WCLDirectoryWatcher *)directoryWatcher itemWasRemovedAtPath:(NSString *)path;
+- (void)directoryWatcher:(WCLDirectoryWatcher *)directoryWatcher fileWasCreatedOrModifiedAtPath:(NSString *)path;
+- (void)directoryWatcher:(WCLDirectoryWatcher *)directoryWatcher fileWasRemovedAtPath:(NSString *)path;
 @end
 
 @interface WCLDirectoryWatcher : NSObject

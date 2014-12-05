@@ -71,15 +71,15 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
     if (([fileSystemEvent itemWasRemoved] ||
          [fileSystemEvent itemWasRenamed]) &&
         ![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:nil]) {
-        if ([self.delegate respondsToSelector:@selector(directoryWatcher:itemWasRemovedAtPath:)]) {
-            [self.delegate directoryWatcher:self itemWasRemovedAtPath:path];
+        if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasRemovedAtPath:)]) {
+            [self.delegate directoryWatcher:self fileWasRemovedAtPath:path];
         }
     } else if (([fileSystemEvent itemWasCreated] ||
                 [fileSystemEvent itemWasModified] ||
                 [fileSystemEvent itemWasRenamed]) &&
                [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:nil]) {
-        if ([self.delegate respondsToSelector:@selector(directoryWatcher:itemWasCreatedOrModifiedAtPath:)]) {
-            [self.delegate directoryWatcher:self itemWasCreatedOrModifiedAtPath:path];
+        if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasCreatedOrModifiedAtPath:)]) {
+            [self.delegate directoryWatcher:self fileWasCreatedOrModifiedAtPath:path];
         }
     }
 }

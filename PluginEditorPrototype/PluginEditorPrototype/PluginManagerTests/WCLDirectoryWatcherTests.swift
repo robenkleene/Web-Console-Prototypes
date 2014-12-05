@@ -10,37 +10,37 @@ import Cocoa
 import XCTest
 
 class WCLDirectoryWatcherTestManager: NSObject, WCLDirectoryWatcherDelegate {
-    var itemWasCreatedOrModifiedAtPathHandlers: Array<((path: NSString) -> Void)>
-    var itemWasRemovedAtPathHandlers: Array<((path: NSString) -> Void)>
+    var fileWasCreatedOrModifiedAtPathHandlers: Array<((path: NSString) -> Void)>
+    var fileWasRemovedAtPathHandlers: Array<((path: NSString) -> Void)>
     override init() {
-        self.itemWasCreatedOrModifiedAtPathHandlers = Array<((path: NSString) -> Void)>()
-        self.itemWasRemovedAtPathHandlers = Array<((path: NSString) -> Void)>()
+        self.fileWasCreatedOrModifiedAtPathHandlers = Array<((path: NSString) -> Void)>()
+        self.fileWasRemovedAtPathHandlers = Array<((path: NSString) -> Void)>()
     }
 
-    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, itemWasCreatedOrModifiedAtPath path: String!) {
-        assert(itemWasCreatedOrModifiedAtPathHandlers.count > 0, "There should be at least one handler")
+    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasCreatedOrModifiedAtPath path: String!) {
+        assert(fileWasCreatedOrModifiedAtPathHandlers.count > 0, "There should be at least one handler")
         
-        if (itemWasCreatedOrModifiedAtPathHandlers.count > 0) {
-            let handler = itemWasCreatedOrModifiedAtPathHandlers.removeAtIndex(0)
+        if (fileWasCreatedOrModifiedAtPathHandlers.count > 0) {
+            let handler = fileWasCreatedOrModifiedAtPathHandlers.removeAtIndex(0)
             handler(path: path)
         }
     }
     
-    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, itemWasRemovedAtPath path: String!) {
-        assert(itemWasRemovedAtPathHandlers.count > 0, "There should be at least one handler")
+    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasRemovedAtPath path: String!) {
+        assert(fileWasRemovedAtPathHandlers.count > 0, "There should be at least one handler")
         
-        if (itemWasRemovedAtPathHandlers.count > 0) {
-            let handler = itemWasRemovedAtPathHandlers.removeAtIndex(0)
+        if (fileWasRemovedAtPathHandlers.count > 0) {
+            let handler = fileWasRemovedAtPathHandlers.removeAtIndex(0)
             handler(path: path)
         }
     }
 
     func addItemWasCreatedOrModifiedAtPathHandler(handler: ((path: NSString) -> Void)) {
-        itemWasCreatedOrModifiedAtPathHandlers.append(handler)
+        fileWasCreatedOrModifiedAtPathHandlers.append(handler)
     }
 
     func addItemWasRemovedAtPathHandler(handler: ((path: NSString) -> Void)) {
-        itemWasRemovedAtPathHandlers.append(handler)
+        fileWasRemovedAtPathHandlers.append(handler)
     }
 }
 
