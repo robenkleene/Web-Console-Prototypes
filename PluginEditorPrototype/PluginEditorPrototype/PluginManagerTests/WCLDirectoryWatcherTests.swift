@@ -63,21 +63,35 @@ class WCLDirectoryWatcherTestCase: TemporaryDirectoryTestCase {
         directoryWatcher = nil
         super.tearDown()
     }
-}
 
-class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
+    // MARK: Create
+    func createDirectoryAtPathWithConfirmation(path: NSString) {
+        
+    }
     
     func createFileAtPathWithConfirmation(path: NSString) {
+        createItemAtPathWithConfirmation(path, asDirectory: false)
+    }
+    
+    func createItemAtPathWithConfirmation(path: NSString, asDirectory: Bool) {
         let fileWasCreatedOrModifiedExpectation = expectationWithDescription("File was created")
         directoryWatcherTestManager?.addItemWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 fileWasCreatedOrModifiedExpectation.fulfill()
             }
         })
-        SubprocessFileSystemModifier.createFileAtPath(path)
+        
+        if asDirectory {
+            
+        } else {
+            SubprocessFileSystemModifier.createFileAtPath(path)
+        }
+        
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
-
+    
+    
+    // MARK: Modify
     func modifyFileAtPathWithConfirmation(path: NSString) {
         let fileWasModifiedExpectation = expectationWithDescription("File was modified")
         directoryWatcherTestManager?.addItemWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
@@ -86,10 +100,22 @@ class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
             }
         })
         SubprocessFileSystemModifier.writeToFileAtPath(path, contents: testFileContents)
+        
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
     
+    
+    // MARK: Remove
+    
     func removeFileAtPathWithConfirmation(path: NSString) {
+        removeItemAtPathWithConfirmation(path, asDirectory: false)
+    }
+    
+    func removeDirectoryAtPathWithConfirmation(path: NSString) {
+    }
+    
+    
+    func removeItemAtPathWithConfirmation(path: NSString, asDirectory: Bool) {
         // Remove Expectation
         let fileWasRemovedExpectation = expectationWithDescription("File was removed")
         directoryWatcherTestManager?.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
@@ -97,8 +123,18 @@ class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
                 fileWasRemovedExpectation.fulfill()
             }
         })
-        SubprocessFileSystemModifier.removeFileAtPath(path)
+        
+        if asDirectory {
+            
+        } else {
+            SubprocessFileSystemModifier.removeFileAtPath(path)
+        }
+        
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+    }
+    
+    // MARK: Move
+    func moveDirectoryAtPathWithConfirmation(path: NSString, destinationPath: NSString) {
     }
     
     func moveFileAtPathWithConfirmation(path: NSString, destinationPath: NSString) {
@@ -120,7 +156,10 @@ class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
         SubprocessFileSystemModifier.moveFileAtPath(path, toPath: destinationPath)
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
-    
+}
+
+class WCLDirectoryWatcherFileTests: WCLDirectoryWatcherTestCase {
+
     func testCreateWriteAndRemoveFile() {
         if let testFilePath = temporaryDirectoryURL?.path?.stringByAppendingPathComponent(testFilename) {
 
