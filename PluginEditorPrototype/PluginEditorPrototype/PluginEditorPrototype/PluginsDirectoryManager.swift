@@ -99,7 +99,7 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         self.directoryWatcher.delegate = self
     }
 
-    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasRemovedAtPath path: String!) {
+    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, itemWasRemovedAtPath path: String!) {
         assert(self.pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
         
         if (self.pathIsInfoDictionaryPath(path)) {
@@ -112,7 +112,7 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         }
     }
 
-    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasCreatedOrModifiedAtPath path: String!) {
+    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, itemWasCreatedOrModifiedAtPath path: String!) {
         assert(self.pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
         
         if (self.pathIsInfoDictionaryPath(path)) {

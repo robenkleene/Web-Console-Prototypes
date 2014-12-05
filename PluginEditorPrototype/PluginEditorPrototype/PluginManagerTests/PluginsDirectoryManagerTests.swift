@@ -36,11 +36,11 @@ class PluginsDirectoryManagerTestManager: PluginsDirectoryManagerDelegate {
         }
     }
 
-    func addFileWasCreatedOrModifiedAtPathHandler(handler: ((path: NSString) -> Void)) {
+    func addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler(handler: ((path: NSString) -> Void)) {
         pluginInfoDictionaryWasCreatedOrModifiedAtPathHandlers.append(handler)
     }
     
-    func addFileWasRemovedAtPathHandler(handler: ((path: NSString) -> Void)) {
+    func addPluginInfoDictionoaryWasRemovedAtPathHandler(handler: ((path: NSString) -> Void)) {
         pluginInfoDictionaryWasRemovedAtPathHandlers.append(handler)
     }
 }
@@ -61,14 +61,14 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                 let newPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(newPluginFilename)
 
                 let removeExpectation = expectationWithDescription("Info dictionary was removed")
-                pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
+                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPathHandler({ (path) -> Void in
                     if (self.dynamicType.resolveTemporaryDirectoryPath(path) == pluginPath) {
                         removeExpectation.fulfill()
                     }
                 })
                 
                 let createExpectation = expectationWithDescription("Info dictionary was created")
-                pluginsDirectoryManagerTestManager.addFileWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
                     if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
                         createExpectation.fulfill()
                     }
@@ -82,14 +82,14 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
                 // Clean up
                 // Copy the plugin back to it's original path so the tearDown delete of the temporary plugin succeeds
                 let removeExpectationTwo = expectationWithDescription("Info dictionary was removed again")
-                pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
+                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPathHandler({ (path) -> Void in
                     if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
                         removeExpectationTwo.fulfill()
                     }
                 })
                 
                     let createExpectationTwo = expectationWithDescription("Info dictionary was created again")
-                pluginsDirectoryManagerTestManager.addFileWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
                     if (self.dynamicType.resolveTemporaryDirectoryPath(path) == pluginPath) {
                         createExpectationTwo.fulfill()
                     }
@@ -119,21 +119,21 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 //                // 2. For the contents directory
 //                // 3. For the plugin directory
 //                let createExpectationOne = expectationWithDescription("Info dictionary was created one")
-//                pluginsDirectoryManagerTestManager.addFileWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        createExpectationOne.fulfill()
 //                    }
 //                })
 //
 //                let createExpectationTwo = expectationWithDescription("Info dictionary was created two")
-//                pluginsDirectoryManagerTestManager.addFileWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        createExpectationTwo.fulfill()
 //                    }
 //                })
 //
 //                let createExpectationThree = expectationWithDescription("Info dictionary was created three")
-//                pluginsDirectoryManagerTestManager.addFileWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        createExpectationThree.fulfill()
 //                    }
@@ -151,19 +151,19 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 //                // 2. For the contents directory
 //                // 3. For the plugin directory
 //                let removeExpectationOne = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        removeExpectationOne.fulfill()
 //                    }
 //                })
 //                let removeExpectationTwo = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        removeExpectationTwo.fulfill()
 //                    }
 //                })
 //                let removeExpectationThree = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addFileWasRemovedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        removeExpectationThree.fulfill()
 //                    }

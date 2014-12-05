@@ -54,7 +54,7 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
 
 - (void)handleFileSystemEvent:(WCLFileSystemEvent *)fileSystemEvent
 {
-//    NSLog(@"fileSystemEvent = %@", fileSystemEvent);
+    NSLog(@"fileSystemEvent = %@", fileSystemEvent);
 
     NSString *path = fileSystemEvent.path;
     
@@ -68,18 +68,18 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
     // 2. For the new file
     // Therefore a rename event can either be a remove or create/modify
     
-    if (([fileSystemEvent fileWasRemoved] ||
-         [fileSystemEvent fileWasRenamed]) &&
+    if (([fileSystemEvent itemWasRemoved] ||
+         [fileSystemEvent itemWasRenamed]) &&
         ![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:nil]) {
-        if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasRemovedAtPath:)]) {
-            [self.delegate directoryWatcher:self fileWasRemovedAtPath:path];
+        if ([self.delegate respondsToSelector:@selector(directoryWatcher:itemWasRemovedAtPath:)]) {
+            [self.delegate directoryWatcher:self itemWasRemovedAtPath:path];
         }
-    } else if (([fileSystemEvent fileWasCreated] ||
-                [fileSystemEvent fileWasModified] ||
-                [fileSystemEvent fileWasRenamed]) &&
+    } else if (([fileSystemEvent itemWasCreated] ||
+                [fileSystemEvent itemWasModified] ||
+                [fileSystemEvent itemWasRenamed]) &&
                [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:nil]) {
-        if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasCreatedOrModifiedAtPath:)]) {
-            [self.delegate directoryWatcher:self fileWasCreatedOrModifiedAtPath:path];
+        if ([self.delegate respondsToSelector:@selector(directoryWatcher:itemWasCreatedOrModifiedAtPath:)]) {
+            [self.delegate directoryWatcher:self itemWasCreatedOrModifiedAtPath:path];
         }
     }
 }

@@ -10,37 +10,37 @@ import Cocoa
 import XCTest
 
 class WCLDirectoryWatcherTestManager: NSObject, WCLDirectoryWatcherDelegate {
-    var fileWasCreatedOrModifiedAtPathHandlers: Array<((path: NSString) -> Void)>
-    var fileWasRemovedAtPathHandlers: Array<((path: NSString) -> Void)>
+    var itemWasCreatedOrModifiedAtPathHandlers: Array<((path: NSString) -> Void)>
+    var itemWasRemovedAtPathHandlers: Array<((path: NSString) -> Void)>
     override init() {
-        self.fileWasCreatedOrModifiedAtPathHandlers = Array<((path: NSString) -> Void)>()
-        self.fileWasRemovedAtPathHandlers = Array<((path: NSString) -> Void)>()
+        self.itemWasCreatedOrModifiedAtPathHandlers = Array<((path: NSString) -> Void)>()
+        self.itemWasRemovedAtPathHandlers = Array<((path: NSString) -> Void)>()
     }
 
-    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasCreatedOrModifiedAtPath path: String!) {
-        assert(fileWasCreatedOrModifiedAtPathHandlers.count > 0, "There should be at least one handler")
+    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, itemWasCreatedOrModifiedAtPath path: String!) {
+        assert(itemWasCreatedOrModifiedAtPathHandlers.count > 0, "There should be at least one handler")
         
-        if (fileWasCreatedOrModifiedAtPathHandlers.count > 0) {
-            let handler = fileWasCreatedOrModifiedAtPathHandlers.removeAtIndex(0)
+        if (itemWasCreatedOrModifiedAtPathHandlers.count > 0) {
+            let handler = itemWasCreatedOrModifiedAtPathHandlers.removeAtIndex(0)
             handler(path: path)
         }
     }
     
-    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasRemovedAtPath path: String!) {
-        assert(fileWasRemovedAtPathHandlers.count > 0, "There should be at least one handler")
+    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, itemWasRemovedAtPath path: String!) {
+        assert(itemWasRemovedAtPathHandlers.count > 0, "There should be at least one handler")
         
-        if (fileWasRemovedAtPathHandlers.count > 0) {
-            let handler = fileWasRemovedAtPathHandlers.removeAtIndex(0)
+        if (itemWasRemovedAtPathHandlers.count > 0) {
+            let handler = itemWasRemovedAtPathHandlers.removeAtIndex(0)
             handler(path: path)
         }
     }
 
-    func addFileWasCreatedOrModifiedAtPathHandler(handler: ((path: NSString) -> Void)) {
-        fileWasCreatedOrModifiedAtPathHandlers.append(handler)
+    func addItemWasCreatedOrModifiedAtPathHandler(handler: ((path: NSString) -> Void)) {
+        itemWasCreatedOrModifiedAtPathHandlers.append(handler)
     }
 
-    func addFileWasRemovedAtPathHandler(handler: ((path: NSString) -> Void)) {
-        fileWasRemovedAtPathHandlers.append(handler)
+    func addItemWasRemovedAtPathHandler(handler: ((path: NSString) -> Void)) {
+        itemWasRemovedAtPathHandlers.append(handler)
     }
 }
 
@@ -69,7 +69,7 @@ class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
     
     func createFileAtPathWithConfirmation(path: NSString) {
         let fileWasCreatedOrModifiedExpectation = expectationWithDescription("File was created")
-        directoryWatcherTestManager?.addFileWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
+        directoryWatcherTestManager?.addItemWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 fileWasCreatedOrModifiedExpectation.fulfill()
             }
@@ -80,7 +80,7 @@ class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
 
     func modifyFileAtPathWithConfirmation(path: NSString) {
         let fileWasModifiedExpectation = expectationWithDescription("File was modified")
-        directoryWatcherTestManager?.addFileWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
+        directoryWatcherTestManager?.addItemWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 fileWasModifiedExpectation.fulfill()
             }
@@ -92,7 +92,7 @@ class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
     func removeFileAtPathWithConfirmation(path: NSString) {
         // Remove Expectation
         let fileWasRemovedExpectation = expectationWithDescription("File was removed")
-        directoryWatcherTestManager?.addFileWasRemovedAtPathHandler({ returnedPath -> Void in
+        directoryWatcherTestManager?.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 fileWasRemovedExpectation.fulfill()
             }
@@ -104,14 +104,14 @@ class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
     func moveFileAtPathWithConfirmation(path: NSString, destinationPath: NSString) {
         // Remove original
         let fileWasRemovedExpectation = expectationWithDescription("File was removed with move")
-        directoryWatcherTestManager?.addFileWasRemovedAtPathHandler({ returnedPath -> Void in
+        directoryWatcherTestManager?.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 fileWasRemovedExpectation.fulfill()
             }
         })
         // Create new
         let fileWasCreatedExpectation = expectationWithDescription("File was created with move")
-        directoryWatcherTestManager?.addFileWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
+        directoryWatcherTestManager?.addItemWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == destinationPath) {
                 fileWasCreatedExpectation.fulfill()
             }
@@ -177,7 +177,7 @@ class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
             
             // Create expectation
             let fileWasCreatedOrModifiedExpectation = expectationWithDescription("File was created")
-            directoryWatcherTestManager?.addFileWasCreatedOrModifiedAtPathHandler({ path -> Void in
+            directoryWatcherTestManager?.addItemWasCreatedOrModifiedAtPathHandler({ path -> Void in
                 if (self.dynamicType.resolveTemporaryDirectoryPath(path) ==  testFilePath) {
                     fileWasCreatedOrModifiedExpectation.fulfill()
                 }
@@ -199,7 +199,7 @@ class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
             
             // Remove Expectation
             let fileWasRemovedExpectation = expectationWithDescription("File was removed")
-            directoryWatcherTestManager?.addFileWasRemovedAtPathHandler({ path -> Void in
+            directoryWatcherTestManager?.addItemWasRemovedAtPathHandler({ path -> Void in
                 if (self.dynamicType.resolveTemporaryDirectoryPath(path) ==  testFilePath) {
                     fileWasRemovedExpectation.fulfill()
                 }
@@ -227,7 +227,7 @@ class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
             
             // Create expectation
             let fileWasCreatedOrModifiedExpectation = expectationWithDescription("File was created")
-            directoryWatcherTestManager?.addFileWasCreatedOrModifiedAtPathHandler({ path -> Void in
+            directoryWatcherTestManager?.addItemWasCreatedOrModifiedAtPathHandler({ path -> Void in
                 if (self.dynamicType.resolveTemporaryDirectoryPath(path) ==  testFilePath) {
                     fileWasCreatedOrModifiedExpectation.fulfill()
                 }
@@ -253,7 +253,7 @@ class WCLDirectoryWatcherFileTestCase: WCLDirectoryWatcherTestCase {
             
             // Remove Expectation
             let fileWasRemovedExpectation = expectationWithDescription("File was removed")
-            directoryWatcherTestManager?.addFileWasRemovedAtPathHandler({ path -> Void in
+            directoryWatcherTestManager?.addItemWasRemovedAtPathHandler({ path -> Void in
                 if (self.dynamicType.resolveTemporaryDirectoryPath(path) ==  testFilePath) {
                     fileWasRemovedExpectation.fulfill()
                 }

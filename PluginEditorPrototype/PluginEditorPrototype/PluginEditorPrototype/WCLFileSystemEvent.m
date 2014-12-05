@@ -160,22 +160,22 @@ static inline NSString *NSStringFromFSEventFlags(FSEventStreamEventFlags eventFl
 
 #pragma mark - Event Type
 
-- (BOOL)fileWasCreated
+- (BOOL)itemWasCreated
 {
     return [self containsEventFlag:kFSEventStreamEventFlagItemCreated];
 }
 
-- (BOOL)fileWasModified
+- (BOOL)itemWasModified
 {
     return [self containsEventFlag:kFSEventStreamEventFlagItemModified];
 }
 
-- (BOOL)fileWasRemoved
+- (BOOL)itemWasRemoved
 {
     return [self containsEventFlag:kFSEventStreamEventFlagItemRemoved];
 }
 
-- (BOOL)fileWasRenamed
+- (BOOL)itemWasRenamed
 {
     return [self containsEventFlag:kFSEventStreamEventFlagItemRenamed];
 }
