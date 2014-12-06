@@ -188,7 +188,7 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
     }
 
     func testInvalidPluginFileHeirarchy() {
-        if let pluginsDirectoryPath = temporaryDirectoryURL?.path {            
+        if let pluginsDirectoryPath = temporaryDirectoryURL?.path {
             // Create an invalid contents directory in the plugins path, this should not cause a callback
             let testInvalidPluginContentsDirectoryPath = pluginsDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
             let createInvalidPluginContentsDirectoryExpectation = expectationWithDescription("Create plugin contents directory")
