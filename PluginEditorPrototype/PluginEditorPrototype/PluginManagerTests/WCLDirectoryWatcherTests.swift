@@ -274,6 +274,10 @@ class WCLDirectoryWatcherDirectoryTests: WCLDirectoryWatcherTestCase {
             
         }
     }
+
+    // TODO: Create tests where I create a file at a path, and then I create a directory at the same path
+    // TODO: Create tests where I create a directory at a path, and then I create a file at the same path
+    // For the above, it looks like I won't be able to distinguish between remove events for directories or files
 }
 
 
