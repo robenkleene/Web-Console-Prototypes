@@ -365,7 +365,7 @@ class WCLDirectoryWatcherFileTests: WCLDirectoryWatcherTestCase {
             var error: NSError?
             let result = NSFileManager.defaultManager().removeItemAtPath(testFilePathTwo, error: &error)
             XCTAssertTrue(result, "The move should have succeeded")
-            XCTAssertNil(error, "The error shoudl be nil")
+            XCTAssertNil(error, "The error should be nil")
             
             // Remove file
             SubprocessFileSystemModifier.removeFileAtPath(testFilePath)
