@@ -85,9 +85,9 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 }
 
 class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
-    func testCreateFile() {
+    func testValidPluginFileHeirarchy() {
         if let pluginsDirectoryPath = temporaryDirectoryURL?.path {
-
+            
             // Create a directory in the plugins directory, this should not cause a callback
             let testPluginDirectoryPath = pluginsDirectoryPath.stringByAppendingPathComponent(testDirectoryName)
             let createPluginDirectoryPathExpectation = expectationWithDescription("Create plugin directory")
@@ -106,9 +106,9 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
             
             // Create the contents directory, this should not cause a callback
             let testPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
-            let createTestPluginContentsDirectoryExpectation = expectationWithDescription("Create plugin contents directory")
+            let createPluginContentsDirectoryExpectation = expectationWithDescription("Create plugin contents directory")
             SubprocessFileSystemModifier.createDirectoryAtPath(testPluginContentsDirectoryPath, handler: {
-                createTestPluginContentsDirectoryExpectation.fulfill()
+                createPluginContentsDirectoryExpectation.fulfill()
             })
             waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
             
@@ -136,9 +136,7 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
             })
             waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
 
-            
-            // TODO: Put a breakpoint here and make sure the file heirarchy looks like it should
-            // TODO: Create a file at the testPluginInfoDictionaryPathComponent (i.e., not in the plugin directory), this should not trigger a callback
+
             // TODO: Create the info.plist in the contents directory, this should cause a callback
             // TODO: Create a directory at info.plist in the contents directory, this should not cause a callback
             // TODO: Move the resources directory, this should not cause a callback
@@ -169,10 +167,7 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
             waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
 
             // Remove the contents directory, this should cause a callback
-//            let removeTestPluginContentsDirectoryExpectation = expectationWithDescription("Create plugin contents directory")
-//            SubprocessFileSystemModifier.removeDirectoryAtPath(testPluginContentsDirectoryPath, handler: {
-//                removeTestPluginContentsDirectoryExpectation.fulfill()
-//            })
+            // because this could be the delete after move of a valid plugin's contents directory
             createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
             SubprocessFileSystemModifier.removeDirectoryAtPath(testPluginContentsDirectoryPath)
             waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
@@ -185,12 +180,45 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
             waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
             
             // Remove the directory in the plugins directory, this should cause a callback
-//            let removePluginDirectoryPathExpectation = expectationWithDescription("Create plugin directory")
-//            SubprocessFileSystemModifier.removeDirectoryAtPath(testPluginDirectoryPath, handler: {
-//                removePluginDirectoryPathExpectation.fulfill()
-//            })
+            // because this could be the delete after move of a valid plugin
             createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
             SubprocessFileSystemModifier.removeDirectoryAtPath(testPluginDirectoryPath)
+            waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        }
+    }
+
+    func testInvalidPluginFileHeirarchy() {
+        if let pluginsDirectoryPath = temporaryDirectoryURL?.path {            
+            // Create an invalid contents directory in the plugins path, this should not cause a callback
+            let testInvalidPluginContentsDirectoryPath = pluginsDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
+            let createInvalidPluginContentsDirectoryExpectation = expectationWithDescription("Create plugin contents directory")
+            SubprocessFileSystemModifier.createDirectoryAtPath(testInvalidPluginContentsDirectoryPath, handler: {
+                createInvalidPluginContentsDirectoryExpectation.fulfill()
+            })
+            waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+
+            // Create a info dictionary in the invalid contents directory, this should not cause a callback
+            let testInvalidInfoDictionaryPath = testInvalidPluginContentsDirectoryPath.stringByAppendingPathComponent(testPluginInfoDictionaryFilename)
+            let createInvalidInfoDictionaryExpectation = expectationWithDescription("Create invalid info dictionary")
+            SubprocessFileSystemModifier.createFileAtPath(testInvalidInfoDictionaryPath, handler: {
+                createInvalidInfoDictionaryExpectation.fulfill()
+            })
+            waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+            
+
+            // Clean Up
+            
+            // Remove the info dictionary in the invalid contents directory, this should not cause a callback
+            let removeInvalidInfoDictionaryExpectation = expectationWithDescription("Remove invalid info dictionary")
+            SubprocessFileSystemModifier.removeFileAtPath(testInvalidInfoDictionaryPath, handler: {
+                removeInvalidInfoDictionaryExpectation.fulfill()
+            })
+            waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+            
+            // Remove the invalid contents directory in the plugins path, this should cause a callback
+            // because this could be the delete after move of a valid plugin
+            createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testInvalidPluginContentsDirectoryPath)
+            SubprocessFileSystemModifier.removeDirectoryAtPath(testInvalidPluginContentsDirectoryPath)
             waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         }
     }
