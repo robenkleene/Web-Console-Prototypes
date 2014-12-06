@@ -103,8 +103,8 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
     // TODO: Add directory was modified
     // TODO: Re-write fileWasRemoved
     
-    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasRemovedAtPath path: String!) {
-        assert(self.pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
+    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, directoryWasRemovedAtPath path: String!) {
+        assert(pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
         
         if (self.pathIsInfoDictionaryPath(path)) {
             if let pluginPath = self.pluginPathFromPath(path) {
@@ -116,8 +116,8 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         }
     }
 
-    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasCreatedOrModifiedAtPath path: String!) {
-        assert(self.pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
+    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, directoryWasCreatedOrModifiedAtPath path: String!) {
+        assert(pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
         
         if (self.pathIsInfoDictionaryPath(path)) {
             if let pluginPath = self.pluginPathFromPath(path) {
@@ -141,7 +141,8 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
     func pluginPathFromPath(path: NSString) -> NSString? {
         if let pluginPathComponent = pluginPathComponentFromPath(path) {
             if let subpath = pluginsDirectoryURL.path {
-                return subpath.stringByAppendingPathComponent(pluginPathComponent)
+                let pluginPath = subpath.stringByAppendingPathComponent(pluginPathComponent)
+                return pluginPath
             }
         }
         return nil
