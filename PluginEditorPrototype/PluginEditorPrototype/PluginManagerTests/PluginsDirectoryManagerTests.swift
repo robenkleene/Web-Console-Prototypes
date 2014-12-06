@@ -137,12 +137,16 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
             waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
 
 
-            // TODO: Create the info.plist in the contents directory, this should cause a callback
-            // TODO: Create a directory at info.plist in the contents directory, this should not cause a callback
-            // TODO: Create a file at the contents directory, this should not case a callback
+            // Create an info dictionary in the contents directory, this should cause a callback
+            let testInfoDictionaryFilePath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testPluginInfoDictionaryFilename)
+            createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(testPluginDirectoryPath)
+            SubprocessFileSystemModifier.createFileAtPath(testInfoDictionaryFilePath)
+            waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
 
-            // TODO: Move the resources directory, this should not cause a callback
-            // TODO: Move the contents directory, this should cause two callbacks
+            // Remove the info dictionary in the contents directory, this should cause a callback
+            createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
+            SubprocessFileSystemModifier.removeFileAtPath(testInfoDictionaryFilePath)
+            waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
 
 
             // Clean up
@@ -207,7 +211,6 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
             })
             waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
             
-
             // Clean Up
             
             // Remove the info dictionary in the invalid contents directory, this should not cause a callback
@@ -224,6 +227,13 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
             waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         }
     }
+
+    // TODO: Create a directory at info.plist in the contents directory, this should not cause a callback
+    // TODO: Create a file at the contents directory, this should not case a callback
+    
+    // TODO: Move the resources directory, this should not cause a callback
+    // TODO: Move the contents directory, this should cause two callbacks
+
 }
 
 class PluginsDirectoryManagerPluginsTests: TemporaryPluginTestCase {
