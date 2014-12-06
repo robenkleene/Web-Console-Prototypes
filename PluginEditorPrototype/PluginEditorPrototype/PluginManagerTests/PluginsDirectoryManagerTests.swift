@@ -60,7 +60,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
     override func tearDown() {
         pluginsDirectoryManagerTestManager = nil
         pluginsDirectoryManager?.delegate = nil
-        pluginsDirectoryManager?.delegate = nil
+        pluginsDirectoryManager = nil
         super.tearDown()
     }
 
@@ -139,6 +139,8 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
 
             // TODO: Create the info.plist in the contents directory, this should cause a callback
             // TODO: Create a directory at info.plist in the contents directory, this should not cause a callback
+            // TODO: Create a file at the contents directory, this should not case a callback
+
             // TODO: Move the resources directory, this should not cause a callback
             // TODO: Move the contents directory, this should cause two callbacks
 
