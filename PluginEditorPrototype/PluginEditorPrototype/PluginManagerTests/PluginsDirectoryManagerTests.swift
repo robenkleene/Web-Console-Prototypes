@@ -10,43 +10,95 @@ import Foundation
 import XCTest
 
 class PluginsDirectoryManagerTestManager: PluginsDirectoryManagerDelegate {
-    var pluginInfoDictionaryWasCreatedOrModifiedAtPathHandlers: Array<(path: NSString) -> Void>
-    var pluginInfoDictionaryWasRemovedAtPathHandlers: Array<(path: NSString) -> Void>
+    var pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers: Array<(path: NSString) -> Void>
+    var pluginInfoDictionaryWasRemovedAtPluginPathHandlers: Array<(path: NSString) -> Void>
     init () {
-        self.pluginInfoDictionaryWasCreatedOrModifiedAtPathHandlers = Array<(path: NSString) -> Void>()
-        self.pluginInfoDictionaryWasRemovedAtPathHandlers = Array<(path: NSString) -> Void>()
+        self.pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers = Array<(path: NSString) -> Void>()
+        self.pluginInfoDictionaryWasRemovedAtPluginPathHandlers = Array<(path: NSString) -> Void>()
     }
 
-    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasCreatedOrModifiedAtPath path: NSString) {
-        assert(pluginInfoDictionaryWasCreatedOrModifiedAtPathHandlers.count > 0, "There should be at least one handler")
+    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath path: NSString) {
+        assert(pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers.count > 0, "There should be at least one handler")
         
-        if (pluginInfoDictionaryWasCreatedOrModifiedAtPathHandlers.count > 0) {
-            let handler = pluginInfoDictionaryWasCreatedOrModifiedAtPathHandlers.removeAtIndex(0)
+        if (pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers.count > 0) {
+            let handler = pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers.removeAtIndex(0)
             handler(path: path)
         }
 
     }
 
-    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasRemovedAtPath path: NSString) {
-        assert(pluginInfoDictionaryWasRemovedAtPathHandlers.count > 0, "There should be at least one handler")
+    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasRemovedAtPluginPath path: NSString) {
+        assert(pluginInfoDictionaryWasRemovedAtPluginPathHandlers.count > 0, "There should be at least one handler")
         
-        if (pluginInfoDictionaryWasRemovedAtPathHandlers.count > 0) {
-            let handler = pluginInfoDictionaryWasRemovedAtPathHandlers.removeAtIndex(0)
+        if (pluginInfoDictionaryWasRemovedAtPluginPathHandlers.count > 0) {
+            let handler = pluginInfoDictionaryWasRemovedAtPluginPathHandlers.removeAtIndex(0)
             handler(path: path)
         }
     }
 
-    func addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler(handler: ((path: NSString) -> Void)) {
-        pluginInfoDictionaryWasCreatedOrModifiedAtPathHandlers.append(handler)
+    func addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler(handler: ((path: NSString) -> Void)) {
+        pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers.append(handler)
     }
     
-    func addPluginInfoDictionoaryWasRemovedAtPathHandler(handler: ((path: NSString) -> Void)) {
-        pluginInfoDictionaryWasRemovedAtPathHandlers.append(handler)
+    func addPluginInfoDictionaryWasRemovedAtPluginPathHandler(handler: ((path: NSString) -> Void)) {
+        pluginInfoDictionaryWasRemovedAtPluginPathHandlers.append(handler)
     }
 }
 
-
 class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
+    var pluginsDirectoryManager: PluginsDirectoryManager?
+    var pluginsDirectoryManagerTestManager: PluginsDirectoryManagerTestManager?
+    
+    override func setUp() {
+        super.setUp()
+        if let temporaryDirectoryURL = temporaryDirectoryURL {
+            pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryDirectoryURL)
+            pluginsDirectoryManagerTestManager = PluginsDirectoryManagerTestManager()
+            pluginsDirectoryManager?.delegate = pluginsDirectoryManagerTestManager
+        }
+    }
+    
+    override func tearDown() {
+        pluginsDirectoryManagerTestManager = nil
+        pluginsDirectoryManager?.delegate = nil
+        pluginsDirectoryManager?.delegate = nil
+        super.tearDown()
+    }
+
+//    func waitForPluginInfoDictionoaryWasRemovedAtPath(path: NSString) {
+//        let pluginInfoDictionaryWasRemovedExpectation = expectationWithDescription("Plugin info dictionary was removed")
+//        pluginsDirectoryManager?.addPluginInfoDictionoaryWasRemovedAtPluginPathHandler({ returnedPath -> Void in
+//            if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
+//                directoryWasRemovedExpectation.fulfill()
+//            }
+//        })
+//    }
+//
+//    func waitForPluginInfoDictionaryWasCreatedOrModifiedAtPath(path: NSString) {
+//        
+//    }
+}
+
+class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
+    func testCreateFile() {
+        if let testDirectoryPath = temporaryDirectoryURL?.path?.stringByAppendingPathComponent(testDirectoryName) {
+            let testFilePath = testDirectoryPath.stringByAppendingPathComponent(testFilename)
+            
+            // TODO: Create a file at testFilename, this should not trigger a callback
+            
+            // TODO: Create a directory at the testDirectoryName, this should trigger a callback
+
+            // TODO: Create a file at the testPluginInfoDictionaryPathComponent, this should not trigger a callback
+            
+            // TODO: Create a file at the testPluginInfoDictionaryPathComponent in the testDirectoryName, this should trigger a callback
+
+            // TODO: Create a directory at the testPluginInfoDictionaryPathComponent in the testDirectoryName, this hsould not trigger a callback
+
+        }
+    }
+}
+
+class PluginsDirectoryManagerPluginsTests: TemporaryPluginTestCase {
 
     // TODO: Puth this back when directory modified events are handled correctly
 //    func testMovePlugin() {
@@ -62,14 +114,14 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 //                let newPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(newPluginFilename)
 //
 //                let removeExpectation = expectationWithDescription("Info dictionary was removed")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == pluginPath) {
 //                        removeExpectation.fulfill()
 //                    }
 //                })
 //                
 //                let createExpectation = expectationWithDescription("Info dictionary was created")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        createExpectation.fulfill()
 //                    }
@@ -83,14 +135,14 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 //                // Clean up
 //                // Copy the plugin back to it's original path so the tearDown delete of the temporary plugin succeeds
 //                let removeExpectationTwo = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        removeExpectationTwo.fulfill()
 //                    }
 //                })
 //                
 //                    let createExpectationTwo = expectationWithDescription("Info dictionary was created again")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == pluginPath) {
 //                        createExpectationTwo.fulfill()
 //                    }
@@ -120,21 +172,21 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 //                // 2. For the contents directory
 //                // 3. For the plugin directory
 //                let createExpectationOne = expectationWithDescription("Info dictionary was created one")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        createExpectationOne.fulfill()
 //                    }
 //                })
 //
 //                let createExpectationTwo = expectationWithDescription("Info dictionary was created two")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        createExpectationTwo.fulfill()
 //                    }
 //                })
 //
 //                let createExpectationThree = expectationWithDescription("Info dictionary was created three")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        createExpectationThree.fulfill()
 //                    }
@@ -152,19 +204,19 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 //                // 2. For the contents directory
 //                // 3. For the plugin directory
 //                let removeExpectationOne = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        removeExpectationOne.fulfill()
 //                    }
 //                })
 //                let removeExpectationTwo = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        removeExpectationTwo.fulfill()
 //                    }
 //                })
 //                let removeExpectationThree = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        removeExpectationThree.fulfill()
 //                    }
@@ -178,11 +230,11 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
     // TODO: Test multiple move events?
     // TODO: Test potential false positive directories
     
-    func testMoveInfoDictionaryPath() {
-        if let temporaryDirectoryURL = temporaryDirectoryURL {
-            if let temporaryPlugin = temporaryPlugin {
-                let pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryDirectoryURL)
-                
+//    func testMoveInfoDictionaryPath() {
+//        if let temporaryDirectoryURL = temporaryDirectoryURL {
+//            if let temporaryPlugin = temporaryPlugin {
+//                let pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryDirectoryURL)
+    
 //                let expectation = expectationWithDescription("Plugins Directory Event")
                 
                 // Move the plist
@@ -197,9 +249,9 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 //                waitForExpectationsWithTimeout(defaultTimeout, handler: { error in
 //                    println("Expectation")
 //                })
-            }
-        }
-    }
+//            }
+//        }
+//    }
 
     // TODO: Gets notified moving the file
     // TODO: Gets notified modifying the plist

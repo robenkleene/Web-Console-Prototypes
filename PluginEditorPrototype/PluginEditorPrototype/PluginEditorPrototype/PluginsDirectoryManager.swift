@@ -9,8 +9,8 @@
 import Foundation
 
 @objc protocol PluginsDirectoryManagerDelegate {
-    optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasCreatedOrModifiedAtPath path: NSString)
-    optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasRemovedAtPath path: NSString)
+    optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath path: NSString)
+    optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasRemovedAtPluginPath path: NSString)
 }
 
 // TODO: EXTENSION BEGIN NSString+PluginDirectoryPaths
@@ -99,6 +99,10 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         self.directoryWatcher.delegate = self
     }
 
+    // TODO: Add directory was removed
+    // TODO: Add directory was modified
+    // TODO: Re-write fileWasRemoved
+    
     func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasRemovedAtPath path: String!) {
         assert(self.pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
         
@@ -106,7 +110,7 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
             if let pluginPath = self.pluginPathFromPath(path) {
                 let infoDictionaryPath = pluginPath.stringByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
                 if (!NSFileManager.defaultManager().fileExistsAtPath(infoDictionaryPath)) {
-                    delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasRemovedAtPath: pluginPath)
+                    delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasRemovedAtPluginPath: pluginPath)
                 }
             }
         }
@@ -124,7 +128,7 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
 //                println("fileExists = \(fileExists)")
 
                 if (NSFileManager.defaultManager().fileExistsAtPath(infoDictionaryPath)) {
-                    delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasCreatedOrModifiedAtPath: pluginPath)
+                    delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath: pluginPath)
                 }
             }
         }

@@ -58,19 +58,19 @@ class WCLDirectoryWatcherTestManager: NSObject, WCLDirectoryWatcherDelegate {
         }
     }
 
-    func addFileWasCreatedOrModifiedAtPathHandler(handler: ((path: NSString) -> Void)) {
+    func addFileWasCreatedOrModifiedAtPathHandler(handler: (path: NSString) -> Void) {
         fileWasCreatedOrModifiedAtPathHandlers.append(handler)
     }
 
-    func addFileWasRemovedAtPathHandler(handler: ((path: NSString) -> Void)) {
+    func addFileWasRemovedAtPathHandler(handler: (path: NSString) -> Void) {
         fileWasRemovedAtPathHandlers.append(handler)
     }
 
-    func addDirectoryWasCreatedOrModifiedAtPathHandler(handler: ((path: NSString) -> Void)) {
+    func addDirectoryWasCreatedOrModifiedAtPathHandler(handler: (path: NSString) -> Void) {
         directoryWasCreatedOrModifiedAtPathHandlers.append(handler)
     }
 
-    func addDirectoryWasRemovedAtPathHandler(handler: ((path: NSString) -> Void)) {
+    func addDirectoryWasRemovedAtPathHandler(handler: (path: NSString) -> Void) {
         directoryWasRemovedAtPathHandlers.append(handler)
     }
 
@@ -332,7 +332,7 @@ class WCLDirectoryWatcherFileTests: WCLDirectoryWatcherTestCase {
             // Test Create
             
             // Create expectation
-            let fileWasCreatedOrModifiedExpectation = expectationWithDescription("File was created")
+            let fileWasCreatedOrModifiedExpectation = expectationWithDescription("File was created at \(testFilePath)")
             directoryWatcherTestManager?.addFileWasCreatedOrModifiedAtPathHandler({ path -> Void in
                 if (self.dynamicType.resolveTemporaryDirectoryPath(path) ==  testFilePath) {
                     fileWasCreatedOrModifiedExpectation.fulfill()

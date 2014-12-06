@@ -20,4 +20,4 @@ let testFileContents = "test"
 
 let testMissingFilePathComponent = "None"
 let testSlashPathComponent = "/"
-let testPathComponent = "Contents/Info.plist"
+let testPluginInfoDictionaryPathComponent = "Contents/Info.plist"
