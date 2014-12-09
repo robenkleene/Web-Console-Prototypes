@@ -70,27 +70,20 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
     
     BOOL isDir = NO;
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir];
-    if (fileExists) {
-        NSAssert(isDir != [fileSystemEvent itemIsFile], @"The item should either be a file or a directory");
-        NSAssert(isDir == [fileSystemEvent itemIsDirectory], @"The directory status should match");
-    }
     if (([fileSystemEvent itemWasRemoved] ||
          [fileSystemEvent itemWasRenamed]) &&
         !fileExists) {
-        if ([fileSystemEvent itemIsDirectory]) {
-            if ([self.delegate respondsToSelector:@selector(directoryWatcher:directoryWasRemovedAtPath:)]) {
-                [self.delegate directoryWatcher:self directoryWasRemovedAtPath:path];
-            }
-        } else {
-            if ([self.delegate respondsToSelector:@selector(directoryWatcher:fileWasRemovedAtPath:)]) {
-                [self.delegate directoryWatcher:self fileWasRemovedAtPath:path];
-            }            
+        // We can't distinguish between files and directories being removed since flags are cumulative.
+        // If a file was replace at a path that once had a directory, or vice versa, then the file system
+        // event will have both flags.
+        if ([self.delegate respondsToSelector:@selector(directoryWatcher:itemWasRemovedAtPath:)]) {
+            [self.delegate directoryWatcher:self itemWasRemovedAtPath:path];
         }
     } else if (([fileSystemEvent itemWasCreated] ||
                 [fileSystemEvent itemWasModified] ||
                 [fileSystemEvent itemWasRenamed]) &&
                fileExists) {
-        if ([fileSystemEvent itemIsDirectory]) {
+        if (isDir) {
             if ([self.delegate respondsToSelector:@selector(directoryWatcher:directoryWasCreatedOrModifiedAtPath:)]) {
                 [self.delegate directoryWatcher:self directoryWasCreatedOrModifiedAtPath:path];
             }
