@@ -114,11 +114,6 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         self.directoryWatcher.delegate = self
     }
 
-    // TODO: Add directory was removed
-    // TODO: Add directory was modified
-    // TODO: Re-write fileWasRemoved
-    
-
     // MARK: WCLDirectoryWatcherDelegate
     
     func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, directoryWasCreatedOrModifiedAtPath path: String!) {
@@ -126,14 +121,6 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
 
         if pathContainsInfoDictionarySubpath(path) {
             processPotentialInfoDictionaryCreatedOrModifiedAtPath(path)
-        }
-    }
-    
-    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, directoryWasRemovedAtPath path: String!) {
-        assert(pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
-        
-        if pathContainsInfoDictionarySubpath(path) {
-            processPotentialInfoDictionaryWasRemovedAtPath(path)
         }
     }
 
@@ -145,10 +132,10 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         }
     }
 
-    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasRemovedAtPath path: String!) {
+    func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, itemWasRemovedAtPath path: String!) {
         assert(pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
-
-        if pathIsInfoDictionaryPath(path) {
+        
+        if pathContainsInfoDictionarySubpath(path) {
             processPotentialInfoDictionaryWasRemovedAtPath(path)
         }
     }
