@@ -37,7 +37,7 @@ class SubprocessFileSystemModifier {
         removeFileAtPath(path, handler: nil)
     }
     class func removeFileAtPath(path: NSString, handler: (Void -> Void)?) {
-        if (path.rangeOfString("*").location != NSNotFound) {
+        if path.rangeOfString("*").location != NSNotFound {
             assert(false, "The path should not contain a wildcard")
             return
         }
@@ -52,11 +52,11 @@ class SubprocessFileSystemModifier {
         removeDirectoryAtPath(path, handler: nil)
     }
     class func removeDirectoryAtPath(path: NSString, handler: (Void -> Void)?) {
-        if (path.rangeOfString("*").location != NSNotFound) {
+        if path.rangeOfString("*").location != NSNotFound {
             assert(false, "The path should not contain a wildcard")
             return
         }
-        if (!path.hasPrefix("/var/folders/")) {
+        if !path.hasPrefix("/var/folders/") {
             assert(false, "The path should be a temporary directory")
             return
         }
@@ -66,17 +66,42 @@ class SubprocessFileSystemModifier {
         SubprocessFileSystemModifier.runTask(task, handler)
     }
 
-    // MARK: copyFileAtPath
-    class func copyFileAtPath(path: NSString, toPath destinationPath: NSString) {
-        copyFileAtPath(path, toPath: destinationPath, handler: nil)
+    // MARK: copyDirectoryAtPath
+    class func copyDirectoryAtPath(path: NSString, toPath destinationPath: NSString) {
+        copyDirectoryAtPath(path, toPath: destinationPath, handler: nil)
     }
-    class func copyFileAtPath(path: NSString, toPath destinationPath: NSString, handler: (Void -> Void)?) {
+    class func copyDirectoryAtPath(path: NSString, toPath destinationPath: NSString, handler: (Void -> Void)?) {
+        if path.rangeOfString("*").location != NSNotFound {
+            assert(false, "The path should not contain a wildcard")
+            return
+        }
+        if destinationPath.rangeOfString("*").location != NSNotFound {
+            assert(false, "The destination path should not contain a wildcard")
+            return
+        }
+        if !path.hasPrefix("/var/folders/") {
+            assert(false, "The path should be a temporary directory")
+            return
+        }
+        if !destinationPath.hasPrefix("/var/folders/") {
+            assert(false, "The destination path should be a temporary directory")
+            return
+        }
+        if path.hasSuffix("/") {
+            assert(false, "The path should not end with a slash")
+            return
+        }
+        if destinationPath.hasSuffix("/") {
+            assert(false, "The path should not end with a slash")
+            return
+        }
+        
         let task = NSTask()
         task.launchPath = "/bin/cp"
-        task.arguments = ["-r", path, destinationPath]
+        task.arguments = ["-R", path, destinationPath]
         SubprocessFileSystemModifier.runTask(task, handler)
     }
-
+    
     // MARK: moveItemAtPath
     class func moveItemAtPath(path: NSString, toPath destinationPath: NSString) {
         moveItemAtPath(path, toPath: destinationPath, handler: nil)
