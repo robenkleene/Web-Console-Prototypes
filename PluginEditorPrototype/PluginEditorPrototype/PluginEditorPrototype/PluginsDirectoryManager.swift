@@ -120,7 +120,11 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         assert(pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
 
         if pathContainsInfoDictionarySubpath(path) {
-            processPotentialInfoDictionaryCreatedOrModifiedAtPath(path)
+            if let pluginPath = pluginPathFromPath(path) {
+                if infoDictionaryExistsAtPluginPath(pluginPath) {
+                    delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath: pluginPath)
+                }
+            }
         }
     }
 
@@ -128,7 +132,11 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         assert(pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
     
         if pathIsInfoDictionaryPath(path) {
-            processPotentialInfoDictionaryCreatedOrModifiedAtPath(path)
+            if let pluginPath = pluginPathFromPath(path) {
+                if infoDictionaryExistsAtPluginPath(pluginPath) {
+                    delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath: pluginPath)
+                }
+            }
         }
     }
 
@@ -136,39 +144,22 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
         assert(pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
         
         if pathContainsInfoDictionarySubpath(path) {
-            processPotentialInfoDictionaryWasRemovedAtPath(path)
-        }
-    }
-    
-
-    // MARK: Processing Info Dictionary Events
-
-    func processPotentialInfoDictionaryWasRemovedAtPath(path: NSString) {
-        if let pluginPath = self.pluginPathFromPath(path) {
-            let infoDictionaryPath = pluginPath.stringByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
-            if (!NSFileManager.defaultManager().fileExistsAtPath(infoDictionaryPath)) {
-                delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasRemovedAtPluginPath: pluginPath)
+            if let pluginPath = pluginPathFromPath(path) {
+                if !infoDictionaryExistsAtPluginPath(pluginPath) {
+                    delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasRemovedAtPluginPath: pluginPath)
+                }
             }
         }
     }
-    
-    func processPotentialInfoDictionaryCreatedOrModifiedAtPath(path: NSString) {
-        if let pluginPath = self.pluginPathFromPath(path) {
-            let infoDictionaryPath = pluginPath.stringByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
-            
-            // TODO: in the current implementation fileExists can be false here which will cause a failure, custom handling for rename should prevent this
-            //                let fileExists = NSFileManager.defaultManager().fileExistsAtPath(infoDictionaryPath)
-            //                println("fileExists = \(fileExists)")
-            
-            if (NSFileManager.defaultManager().fileExistsAtPath(infoDictionaryPath)) {
-                delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath: pluginPath)
-            }
-        }
-    }
-
 
     // MARK: Helpers
 
+    func infoDictionaryExistsAtPluginPath(pluginPath: NSString) -> Bool {
+        let infoDictionaryPath = pluginPath.stringByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
+        let fileExists = NSFileManager.defaultManager().fileExistsAtPath(infoDictionaryPath)
+        return fileExists
+    }
+    
     func infoDictionaryIsSubdirectoryOfPath(path: NSString) -> Bool {
         return false
     }
