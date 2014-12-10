@@ -374,12 +374,37 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
         removeDirectoryAtPathWithConfirmation(testPluginDirectoryPath)
     }
 
-//    func testDirectoryForInfoDictionary() {
-//        // TODO: Create a directory at info.plist in the contents directory, this should not cause a callback
-            // Actually it probably does cause one, which is fine
-//    }
+    func testDirectoryForInfoDictionary() {
+        // Create a directory in the plugins directory, this should not cause a callback
+        let testPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryName)
+        createDirectoryAtPathWithConfirmation(testPluginDirectoryPath)
+        
+        // Create the contents directory, this should not cause a callback
+        let testPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
+        createDirectoryAtPathWithConfirmation(testPluginContentsDirectoryPath)
+        
+        // Create a directory for the info dictionary, this should not cause a callback
+        let testPluginInfoDictionaryDirectoryPath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testPluginInfoDictionaryFilename)
+        createDirectoryAtPathWithConfirmation(testPluginInfoDictionaryDirectoryPath)
+        
+        // Clean Up
 
-    // TODO: Test file for plugins directory
+        // Create a directory for the info dictionary, this should cause a callback
+        createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
+        removeDirectoryAtPathWithConfirmation(testPluginInfoDictionaryDirectoryPath)
+        
+        // Remove the contents directory, this should cause a callback
+        // because this could be the delete after move of a valid plugin's contents directory
+        createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
+        removeDirectoryAtPathWithConfirmation(testPluginContentsDirectoryPath)
+        
+        // Remove the directory in the plugins directory, this should cause a callback
+        // because this could be the delete after move of a valid plugin
+        createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
+        removeDirectoryAtPathWithConfirmation(testPluginDirectoryPath)
+    }
+
+    // TODO: Test file for plugin directory
     // TODO: Move the resources directory, this should not cause a callback
     // TODO: Move the contents directory, this should cause two callbacks
     // TODO: Use those two new functions for these: createValidPluginFileHeirarchy, removeValidPluginFileHeirarchy

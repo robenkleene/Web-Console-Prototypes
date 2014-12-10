@@ -156,8 +156,9 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
 
     func infoDictionaryExistsAtPluginPath(pluginPath: NSString) -> Bool {
         let infoDictionaryPath = pluginPath.stringByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
-        let fileExists = NSFileManager.defaultManager().fileExistsAtPath(infoDictionaryPath)
-        return fileExists
+        var isDir: ObjCBool = false
+        let fileExists = NSFileManager.defaultManager().fileExistsAtPath(infoDictionaryPath, isDirectory: &isDir)
+        return fileExists && !isDir
     }
     
     func infoDictionaryIsSubdirectoryOfPath(path: NSString) -> Bool {
