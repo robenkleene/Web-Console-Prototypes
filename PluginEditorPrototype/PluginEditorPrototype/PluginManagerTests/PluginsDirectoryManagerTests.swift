@@ -436,9 +436,36 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
         moveDirectoryAtPathWithConfirmation(testRenamedPluginResourcesDirectoryPath, destinationPath: testPluginResourcesDirectoryPath)
         removeValidPluginFileHeirarchy()
     }
-    
-    // TODO: Move the contents directory, this should cause two callbacks
-    // TODO: Use those two new functions for these: createValidPluginFileHeirarchy, removeValidPluginFileHeirarchy
+
+    func testMoveContentsDirectory() {
+        createValidPluginFileHeirarchy()
+        let testPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryName)
+        let testPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
+        let testRenamedPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testDirectoryName)
+        createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
+        moveDirectoryAtPathWithConfirmation(testPluginContentsDirectoryPath, destinationPath: testRenamedPluginContentsDirectoryPath)
+        
+        // Clean up
+        createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(testPluginDirectoryPath)
+        moveDirectoryAtPathWithConfirmation(testRenamedPluginContentsDirectoryPath, destinationPath: testPluginContentsDirectoryPath)
+        removeValidPluginFileHeirarchy()
+    }
+
+    func testMovePluginDirectory() {
+        createValidPluginFileHeirarchy()
+        let testPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryName)
+        let testRenamedPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryNameTwo)
+        createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
+        createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(testRenamedPluginDirectoryPath)
+        moveDirectoryAtPathWithConfirmation(testPluginDirectoryPath, destinationPath: testRenamedPluginDirectoryPath)
+        
+        // Clean up
+        createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testRenamedPluginDirectoryPath)
+        createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(testPluginDirectoryPath)
+        moveDirectoryAtPathWithConfirmation(testRenamedPluginDirectoryPath, destinationPath: testPluginDirectoryPath)
+        removeValidPluginFileHeirarchy()
+    }
+
 }
 
 class PluginsDirectoryManagerPluginsTests: TemporaryPluginTestCase {
