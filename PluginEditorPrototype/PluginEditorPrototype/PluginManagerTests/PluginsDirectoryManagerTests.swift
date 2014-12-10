@@ -211,11 +211,31 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
 
+    // MARK: Move
+    func moveDirectoryAtPathWithConfirmation(path: NSString, destinationPath: NSString) {
+        // Remove original
+        let directoryWasRemovedExpectation = expectationWithDescription("Directory was removed with move")
+        pluginsDirectoryManagerTestManager?.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
+            if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
+                directoryWasRemovedExpectation.fulfill()
+            }
+        })
+        // Create new
+        let directoryWasCreatedExpectation = expectationWithDescription("Directory was created with move")
+        pluginsDirectoryManagerTestManager?.addDirectoryWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
+            if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == destinationPath) {
+                directoryWasCreatedExpectation.fulfill()
+            }
+        })
+        // Move
+        SubprocessFileSystemModifier.moveItemAtPath(path, toPath: destinationPath)
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+    }
+
 }
 
 class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
 
-    // TODO: These tests all have to be temporarily disabled and re-worked after sorting out issues around not being able to distinbuish between remove directory and file events
     func createValidPluginFileHeirarchy() {
         // Create a directory in the plugins directory, this should not cause a callback
         let testPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryName)
@@ -340,7 +360,7 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
         createFileAtPathWithConfirmation(testInvalidInfoDictionaryPath)
         
 
-        // Clean Up
+        // Clean up
         
         // Remove the info dictionary in the invalid contents directory, this should not cause a callback
         removeFileAtPathWithConfirmation(testInvalidInfoDictionaryPath)
@@ -361,7 +381,7 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
         createFileAtPathWithConfirmation(testPluginContentsFilePath)
 
 
-        // Clean Up
+        // Clean up
         
         // Remove the contents directory, this should cause a callback
         // because this could be the delete after move of a valid plugin's contents directory
@@ -387,7 +407,7 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
         let testPluginInfoDictionaryDirectoryPath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testPluginInfoDictionaryFilename)
         createDirectoryAtPathWithConfirmation(testPluginInfoDictionaryDirectoryPath)
         
-        // Clean Up
+        // Clean up
 
         // Create a directory for the info dictionary, this should cause a callback
         createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
@@ -404,8 +424,19 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
         removeDirectoryAtPathWithConfirmation(testPluginDirectoryPath)
     }
 
-    // TODO: Test file for plugin directory
-    // TODO: Move the resources directory, this should not cause a callback
+    func testMoveResourcesDirectory() {
+        createValidPluginFileHeirarchy()
+        let testPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryName)
+        let testPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
+        let testPluginResourcesDirectoryPath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testPluginResourcesDirectoryName)
+        let testRenamedPluginResourcesDirectoryPath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testDirectoryName)
+        moveDirectoryAtPathWithConfirmation(testPluginResourcesDirectoryPath, destinationPath: testRenamedPluginResourcesDirectoryPath)
+
+        // Clean up
+        moveDirectoryAtPathWithConfirmation(testRenamedPluginResourcesDirectoryPath, destinationPath: testPluginResourcesDirectoryPath)
+        removeValidPluginFileHeirarchy()
+    }
+    
     // TODO: Move the contents directory, this should cause two callbacks
     // TODO: Use those two new functions for these: createValidPluginFileHeirarchy, removeValidPluginFileHeirarchy
 }
