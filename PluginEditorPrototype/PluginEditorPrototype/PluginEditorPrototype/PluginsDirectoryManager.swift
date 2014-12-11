@@ -119,39 +119,102 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate {
     func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, directoryWasCreatedOrModifiedAtPath path: String!) {
         assert(pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
 
-        if pathContainsInfoDictionarySubpath(path) {
-            if let pluginPath = pluginPathFromPath(path) {
-                if infoDictionaryExistsAtPluginPath(pluginPath) {
-                    delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath: pluginPath)
-                }
-            }
+        if let pluginPath = pluginPathFromPath(path) {
+            handleDirectoryWasCreatedOrModifiedAtPluginPath(pluginPath, path: path)
         }
     }
 
     func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, fileWasCreatedOrModifiedAtPath path: String!) {
         assert(pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
     
-        if pathIsInfoDictionaryPath(path) {
-            if let pluginPath = pluginPathFromPath(path) {
-                if infoDictionaryExistsAtPluginPath(pluginPath) {
-                    delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath: pluginPath)
-                }
-            }
+        if let pluginPath = pluginPathFromPath(path) {
+            handleFileWasCreatedOrModifiedAtPluginPath(pluginPath, path: path)
         }
     }
 
     func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, itemWasRemovedAtPath path: String!) {
         assert(pathIsSubpathOfPluginsDirectory(path), "The path should be a subpath of the plugins directory")
         
-        if pathContainsInfoDictionarySubpath(path) {
-            if let pluginPath = pluginPathFromPath(path) {
-                if !infoDictionaryExistsAtPluginPath(pluginPath) {
-                    delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasRemovedAtPluginPath: pluginPath)
-                }
-            }
+        if let pluginPath = pluginPathFromPath(path) {
+            handleItemWasRemovedAtPluginPath(pluginPath, path: path)
         }
     }
 
+    // MARK: PluginsDirectoryManagerEventHandlerDelegate
+    func pluginsDirectoryManagerEventHandler(pluginsDirectoryManagerEventHandler: PluginsDirectoryManagerEventHandler,
+        handleCreatedOrModifiedEventsAtPluginPath pluginPath: NSString,
+        createdOrModifiedDirectoryPaths directoryPaths: [NSString]?,
+        createdOrModifiedFilePaths filePaths: [NSString]?) {
+        
+    }
+    func pluginsDirectoryManagerEventHandler(pluginsDirectoryManagerEventHandler: PluginsDirectoryManagerEventHandler,
+        handleRemovedEventsAtPluginPath pluginPath: NSString,
+        removedItemPaths itemPaths: [NSString]?) {
+    
+    }
+
+    // MARK: Evaluating Events
+
+    func shouldFireInfoDictionaryWasCreatedOrModifiedAtPluginPath(pluginPath: NSString,
+        forDirectoryCreatedOrModifiedAtPath path: NSString) -> Bool
+    {
+        if pathContainsInfoDictionarySubpath(path) {
+            if infoDictionaryExistsAtPluginPath(pluginPath) {
+                return true
+            }
+        }
+        return false
+    }
+
+    func shouldFireInfoDictionaryWasCreatedOrModifiedAtPluginPath(pluginPath: NSString,
+        forFileCreatedOrModifiedAtPath path: NSString) -> Bool
+    {
+        if pathIsInfoDictionaryPath(path) {
+            if infoDictionaryExistsAtPluginPath(pluginPath) {
+                return true
+            }
+        }
+        return false
+    }
+
+    func shouldFireInfoDictionaryWasRemovedAtPluginPath(pluginPath: NSString,
+        forItemRemovedAtPath path: NSString) -> Bool
+    {
+        if pathContainsInfoDictionarySubpath(path) {
+            if !infoDictionaryExistsAtPluginPath(pluginPath) {
+                return true
+            }
+        }
+        return false
+    }
+    
+
+    // MARK: Handling Events
+    
+    func handleDirectoryWasCreatedOrModifiedAtPluginPath(pluginPath: NSString, path: NSString) {
+        if shouldFireInfoDictionaryWasCreatedOrModifiedAtPluginPath(pluginPath,
+            forDirectoryCreatedOrModifiedAtPath: path)
+        {
+            delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath: pluginPath)
+        }
+    }
+    
+    func handleFileWasCreatedOrModifiedAtPluginPath(pluginPath: NSString, path: NSString) {
+        if shouldFireInfoDictionaryWasCreatedOrModifiedAtPluginPath(pluginPath,
+            forFileCreatedOrModifiedAtPath: path)
+        {
+            delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath: pluginPath)
+        }
+    }
+    
+    func handleItemWasRemovedAtPluginPath(pluginPath: NSString, path: NSString) {
+        if shouldFireInfoDictionaryWasRemovedAtPluginPath(pluginPath,
+            forItemRemovedAtPath: path)
+        {
+            delegate?.pluginsDirectoryManager?(self, pluginInfoDictionaryWasRemovedAtPluginPath: pluginPath)
+        }
+    }
+    
     // MARK: Helpers
 
     func infoDictionaryExistsAtPluginPath(pluginPath: NSString) -> Bool {
