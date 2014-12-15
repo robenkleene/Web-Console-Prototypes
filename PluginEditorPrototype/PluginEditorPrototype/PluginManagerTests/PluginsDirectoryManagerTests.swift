@@ -143,9 +143,9 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
     
     override func tearDown() {
         pluginsDirectoryPath = nil
-        pluginsDirectoryManagerTestManager = nil
         pluginsDirectoryManager?.delegate = nil
-        pluginsDirectoryManager = nil
+        pluginsDirectoryManagerTestManager = nil
+        pluginsDirectoryManager = nil // Make sure this happens after setting its delegate to nil
         super.tearDown()
     }
 

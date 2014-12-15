@@ -34,7 +34,7 @@ class PluginsDirectoryEventHandler: NSObject {
     var pluginPathToCreatedOrModifiedFilePaths: [NSString : [NSString]]
     var pluginPathToCreatedOrModifiedDirectoryPaths: [NSString : [NSString]]
     var pluginPathToRemovedItemPaths: [NSString : [NSString]]
-    var delegate: PluginsDirectoryEventHandlerDelegate?
+    weak var delegate: PluginsDirectoryEventHandlerDelegate?
     
     override init() {
         self.pluginPathToCreatedOrModifiedFilePaths = [NSString : [NSString]]()
