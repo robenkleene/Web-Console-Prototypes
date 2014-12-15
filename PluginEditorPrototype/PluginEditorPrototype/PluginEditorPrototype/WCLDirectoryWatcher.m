@@ -27,6 +27,9 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
                                                 const FSEventStreamEventId eventIds[])
 {
     WCLDirectoryWatcher *directoryWatcher = (__bridge WCLDirectoryWatcher *)clientCallBackInfo;
+
+    NSLog(@"[EVENTGROUP] %zu Events", numEvents);
+    
     int i;
     char **paths = eventPaths;
     for (i = 0; i < numEvents; i++) {
@@ -54,7 +57,7 @@ void wcl_plugin_directory_event_stream_callback(ConstFSEventStreamRef streamRef,
 
 - (void)handleFileSystemEvent:(WCLFileSystemEvent *)fileSystemEvent
 {
-    NSLog(@"fileSystemEvent = %@", fileSystemEvent);
+    NSLog(@"%@ fileSystemEvent = %@", self, fileSystemEvent);
 
     NSString *path = fileSystemEvent.path;
     

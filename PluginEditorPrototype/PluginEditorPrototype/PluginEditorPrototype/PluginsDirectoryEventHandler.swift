@@ -36,6 +36,10 @@ class PluginsDirectoryEventHandler: NSObject {
     var pluginPathToRemovedItemPaths: [NSString : [NSString]]
     weak var delegate: PluginsDirectoryEventHandlerDelegate?
     
+    struct ClassConstants {
+        static let fileEventDelay = 0.3
+    }
+    
     override init() {
         self.pluginPathToCreatedOrModifiedFilePaths = [NSString : [NSString]]()
         self.pluginPathToCreatedOrModifiedDirectoryPaths = [NSString : [NSString]]()
@@ -51,7 +55,7 @@ class PluginsDirectoryEventHandler: NSObject {
         } else {
             pluginPathToCreatedOrModifiedDirectoryPaths[pluginPath] = [path]
 
-            fireCreatedOrModifiedEventsAtPluginPath(pluginPath) // TODO: Perform selector after delay
+            fireCreatedOrModifiedEventsAfterDelayForPluginPath(pluginPath)
         }
     }
 
@@ -62,7 +66,7 @@ class PluginsDirectoryEventHandler: NSObject {
         } else {
             pluginPathToCreatedOrModifiedFilePaths[pluginPath] = [path]
 
-            fireCreatedOrModifiedEventsAtPluginPath(pluginPath) // TODO: Perform selector after delay
+            fireCreatedOrModifiedEventsAfterDelayForPluginPath(pluginPath)
         }
     }
 
@@ -73,10 +77,26 @@ class PluginsDirectoryEventHandler: NSObject {
         } else {
             pluginPathToRemovedItemPaths[pluginPath] = [path]
 
-            fireRemovedEventsAtPluginPath(pluginPath) // TODO: Perform selector after delay
+            fireRemovedEventsAfterDelayForPluginPath(pluginPath)
         }
     }
 
+    func fireCreatedOrModifiedEventsAfterDelayForPluginPath(pluginPath: NSString) {
+        let delay = ClassConstants.fileEventDelay * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue(), {
+            self.fireCreatedOrModifiedEventsAtPluginPath(pluginPath)
+        })
+    }
+    
+    func fireRemovedEventsAfterDelayForPluginPath(pluginPath: NSString) {
+        let delay = ClassConstants.fileEventDelay * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue(), {
+            self.fireRemovedEventsAtPluginPath(pluginPath)
+        })
+    }
+    
     // MARK: Firing Handlers
     
     func fireCreatedOrModifiedEventsAtPluginPath(pluginPath: NSString) {

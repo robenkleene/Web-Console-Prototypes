@@ -104,7 +104,7 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate, PluginsDir
     struct ClassConstants {
         static let infoDictionaryPathComponent = "Contents/Info.plist"
     }
-    var delegate: PluginsDirectoryManagerDelegate?
+    weak var delegate: PluginsDirectoryManagerDelegate?
     let pluginsDirectoryEventHandler: PluginsDirectoryEventHandler
     let directoryWatcher: WCLDirectoryWatcher
     let pluginsDirectoryURL: NSURL

@@ -16,7 +16,7 @@ import XCTest
 }
 
 class TestPluginsDirectoryManager: PluginsDirectoryManager {
-    var fileDelegate: TestPluginsDirectoryManagerDelegate?
+    weak var fileDelegate: TestPluginsDirectoryManagerDelegate?
     override var delegate: PluginsDirectoryManagerDelegate? {
         get {
             return fileDelegate
