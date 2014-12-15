@@ -236,7 +236,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginTestCase {
 
 class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
 
-    func createValidPluginFileHeirarchy() {
+    func createValidPluginFileHierarchy() {
         // Create a directory in the plugins directory, this should not cause a callback
         let testPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryName)
         createDirectoryAtPathWithConfirmation(testPluginDirectoryPath)
@@ -259,7 +259,7 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
         createFileAtPathWithConfirmation(testInfoDictionaryFilePath)
     }
 
-    func removeValidPluginFileHeirarchy() {
+    func removeValidPluginFileHierarchy() {
         let testPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryName)
         let testPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
         let testPluginResourcesDirectoryPath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testPluginResourcesDirectoryName)
@@ -288,7 +288,7 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
     }
 
     
-    func testValidPluginFileHeirarchy() {
+    func testValidPluginFileHierarchy() {
 
         // Create a directory in the plugins directory, this should not cause a callback
         let testPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryName)
@@ -350,7 +350,7 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
         removeDirectoryAtPathWithConfirmation(testPluginDirectoryPath)
     }
 
-    func testInvalidPluginFileHeirarchy() {
+    func testInvalidPluginFileHierarchy() {
         // Create an invalid contents directory in the plugins path, this should not cause a callback
         let testInvalidPluginContentsDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testPluginContentsDirectoryName)
         createDirectoryAtPathWithConfirmation(testInvalidPluginContentsDirectoryPath)
@@ -425,7 +425,7 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
     }
 
     func testMoveResourcesDirectory() {
-        createValidPluginFileHeirarchy()
+        createValidPluginFileHierarchy()
         let testPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryName)
         let testPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
         let testPluginResourcesDirectoryPath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testPluginResourcesDirectoryName)
@@ -434,11 +434,11 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
 
         // Clean up
         moveDirectoryAtPathWithConfirmation(testRenamedPluginResourcesDirectoryPath, destinationPath: testPluginResourcesDirectoryPath)
-        removeValidPluginFileHeirarchy()
+        removeValidPluginFileHierarchy()
     }
 
     func testMoveContentsDirectory() {
-        createValidPluginFileHeirarchy()
+        createValidPluginFileHierarchy()
         let testPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryName)
         let testPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
         let testRenamedPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testDirectoryName)
@@ -448,11 +448,11 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
         // Clean up
         createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(testPluginDirectoryPath)
         moveDirectoryAtPathWithConfirmation(testRenamedPluginContentsDirectoryPath, destinationPath: testPluginContentsDirectoryPath)
-        removeValidPluginFileHeirarchy()
+        removeValidPluginFileHierarchy()
     }
 
     func testMovePluginDirectory() {
-        createValidPluginFileHeirarchy()
+        createValidPluginFileHierarchy()
         let testPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryName)
         let testRenamedPluginDirectoryPath = pluginsDirectoryPath!.stringByAppendingPathComponent(testDirectoryNameTwo)
         createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
@@ -463,13 +463,42 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
         createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testRenamedPluginDirectoryPath)
         createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(testPluginDirectoryPath)
         moveDirectoryAtPathWithConfirmation(testRenamedPluginDirectoryPath, destinationPath: testPluginDirectoryPath)
-        removeValidPluginFileHeirarchy()
+        removeValidPluginFileHierarchy()
     }
 
+    // TODO: Refactor hierarchy creators to take a path
+    // TODO: Test copy from an unwatched directory to the watched directory
+    // TODO: Test move from the unwatched directory to the watched directory
+    // TODO: Test move from the watched directory to the unwatched directory
+    // TODO: Test copy from the watched directory to the unwatched directory
+    
+    // TODO: Make a subdirectory of `temporaryDirectoryURL` a subdirectory here
 }
 
 class PluginsDirectoryManagerPluginsTests: TemporaryPluginTestCase {
-
+    
+//    func testCopyAndDeletePlugin() {
+//        if let temporaryDirectoryURL = temporaryDirectoryURL {
+//            if let temporaryPlugin = temporaryPlugin {
+//                // TODO: Make a subdirectory of `temporaryDirectoryURL`, and put the plugin in that directory
+//
+//                
+//                let pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryDirectoryURL)
+//                let pluginPath = temporaryPlugin.bundle.bundlePath
+//                let newPluginFilename = temporaryPlugin.identifier
+//                let newPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(newPluginFilename)
+//
+//                let copyExpectation = expectationWithDescription("Copy plugin")
+//                SubprocessFileSystemModifier.copyDirectoryAtPath(pluginPath, toPath: newPluginPath, handler: {
+//                    copyExpectation.fulfill()
+//                })
+//                waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+//
+//            }
+//        }
+//    }
+    
+    
     // TODO: Puth this back when directory modified events are handled correctly
 //    func testMovePlugin() {
 //        if let temporaryDirectoryURL = temporaryDirectoryURL {
@@ -482,9 +511,9 @@ class PluginsDirectoryManagerPluginsTests: TemporaryPluginTestCase {
 //                let pluginPath = temporaryPlugin.bundle.bundlePath
 //                let newPluginFilename = temporaryPlugin.identifier
 //                let newPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(newPluginFilename)
-//
+//                
 //                let removeExpectation = expectationWithDescription("Info dictionary was removed")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPluginPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasRemovedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == pluginPath) {
 //                        removeExpectation.fulfill()
 //                    }
@@ -498,20 +527,20 @@ class PluginsDirectoryManagerPluginsTests: TemporaryPluginTestCase {
 //                })
 //                
 //                SubprocessFileSystemModifier.moveItemAtPath(pluginPath, toPath: newPluginPath)
-//
+//                
 //                // Wait for expectations
 //                waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
-//
+//                
 //                // Clean up
 //                // Copy the plugin back to it's original path so the tearDown delete of the temporary plugin succeeds
 //                let removeExpectationTwo = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPluginPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasRemovedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        removeExpectationTwo.fulfill()
 //                    }
 //                })
 //                
-//                    let createExpectationTwo = expectationWithDescription("Info dictionary was created again")
+//                let createExpectationTwo = expectationWithDescription("Info dictionary was created again")
 //                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == pluginPath) {
 //                        createExpectationTwo.fulfill()
@@ -562,10 +591,12 @@ class PluginsDirectoryManagerPluginsTests: TemporaryPluginTestCase {
 //                    }
 //                })
 //
-//                SubprocessFileSystemModifier.copyFileAtPath(pluginPath, toPath: newPluginPath)
+//                SubprocessFileSystemModifier.copyDirectoryAtPath(pluginPath, toPath: newPluginPath)
 //                
 //                // Wait for expectations
-//                waitForExpectationsWithTimeout(0.5, handler: nil)
+//                waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+//                
+//                println("[MARK] Starting Cleanup")
 //                
 //                // Clean up
 //
@@ -574,19 +605,19 @@ class PluginsDirectoryManagerPluginsTests: TemporaryPluginTestCase {
 //                // 2. For the contents directory
 //                // 3. For the plugin directory
 //                let removeExpectationOne = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPluginPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasRemovedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        removeExpectationOne.fulfill()
 //                    }
 //                })
 //                let removeExpectationTwo = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPluginPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasRemovedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        removeExpectationTwo.fulfill()
 //                    }
 //                })
 //                let removeExpectationThree = expectationWithDescription("Info dictionary was removed again")
-//                pluginsDirectoryManagerTestManager.addPluginInfoDictionoaryWasRemovedAtPluginPathHandler({ (path) -> Void in
+//                pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasRemovedAtPluginPathHandler({ (path) -> Void in
 //                    if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
 //                        removeExpectationThree.fulfill()
 //                    }
