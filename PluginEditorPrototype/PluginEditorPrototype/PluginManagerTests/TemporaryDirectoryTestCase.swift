@@ -9,18 +9,16 @@
 import XCTest
 
 class TemporaryDirectoryTestCase: XCTestCase {
+    var temporaryDirectoryPath: String!
+    var temporaryDirectoryURL: NSURL! {
+        get {
+            return NSURL(fileURLWithPath:temporaryDirectoryPath)
+        }
+    }
+
     struct ClassConstants {
         static let bundleIdentifier = NSBundle.mainBundle().bundleIdentifier!
         static let temporaryDirectoryPathPrefix = "/var/folders"
-    }
-    var temporaryDirectoryPath: String?
-    var temporaryDirectoryURL: NSURL? {
-        get {
-            if let temporaryDirectoryPath = temporaryDirectoryPath {
-                return NSURL(fileURLWithPath:temporaryDirectoryPath)
-            }
-            return nil
-        }
     }
     
     class func resolveTemporaryDirectoryPath(path: NSString) -> NSString {
@@ -34,12 +32,10 @@ class TemporaryDirectoryTestCase: XCTestCase {
         return path
     }
     
-    class func isValidTemporaryDirectoryPath(path: String?) -> Bool {
+    class func isValidTemporaryDirectoryPath(path: NSString) -> Bool {
         var isDir: ObjCBool = false
-        if let path = path as String! {
-            return NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isDir) && isDir
-        }
-        return false
+
+        return NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isDir) && isDir
     }
     
     func removeTemporaryItemWithName(name: String) -> Bool {
@@ -71,12 +67,7 @@ class TemporaryDirectoryTestCase: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        
-        XCTAssertFalse(self.dynamicType.isValidTemporaryDirectoryPath(temporaryDirectoryPath), "The temporary directory path should be invalid")
-        if let temporaryDirectoryPath = temporaryDirectoryPath {
-            XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(temporaryDirectoryPath), "A file should not exist at the temporary directory path")
-        }
-        
+
         if let temporaryDirectory = NSTemporaryDirectory() as String? {
             let path = temporaryDirectory
                 .stringByAppendingPathComponent(ClassConstants.bundleIdentifier)
@@ -107,26 +98,26 @@ class TemporaryDirectoryTestCase: XCTestCase {
         
         XCTAssertTrue(self.dynamicType.isValidTemporaryDirectoryPath(temporaryDirectoryPath), "The temporary directory path should be valid")
         
-        if let path = temporaryDirectoryPath {
-            var error: NSError?
-            if let contents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path, error:&error) {
-                if !contents.isEmpty {
-                    println("Warning: A temporary directory was not empty during tear down at path \(path)")
-                }
-                // This is an assert because it is evidence that a plugin isn't cleaning up after itself.
-                // On next run the setup will clean it up, so the assert helps identify when a test isn't
-                // cleaning up without hindering future runs.
-                XCTAssert(contents.isEmpty, "The contents should be empty")
+        // Confirm the contents of the temporary directory is empty
+        var error: NSError?
+        if let contents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(temporaryDirectoryPath, error:&error) {
+            if !contents.isEmpty {
+                println("Warning: A temporary directory was not empty during tear down at path \(temporaryDirectoryPath)")
             }
-            XCTAssertNil(error, "The error should be nil")
-            
-            let success = self.dynamicType.safelyRemoveTemporaryItemAtPath(path)
-            XCTAssertTrue(success, "Removing the temporary directory should have succeeded")
+            // This is an assert because it is evidence that a plugin isn't cleaning up after itself.
+            // On next run the setup will clean it up, so the assert helps identify when a test isn't
+            // cleaning up without hindering future runs.
+            XCTAssert(contents.isEmpty, "The contents should be empty")
         }
-        
+        XCTAssertNil(error, "The error should be nil")
+
+        // Remove the temporary directory
+        let success = self.dynamicType.safelyRemoveTemporaryItemAtPath(temporaryDirectoryPath)
+        XCTAssertTrue(success, "Removing the temporary directory should have succeeded")
+
+        // Confirm the temporary directory is removed
         XCTAssertFalse(self.dynamicType.isValidTemporaryDirectoryPath(temporaryDirectoryPath), "The temporary directory path should be invalid")
-        if let path = temporaryDirectoryPath {
-            XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(path), "A file should not exist at the path")
-        }
+        XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(temporaryDirectoryPath), "A file should not exist at the path")
+        temporaryDirectoryPath = nil
     }
 }

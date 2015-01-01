@@ -1,5 +1,5 @@
 //
-//  TemporaryPluginTestCase.swift
+//  TemporaryPluginsTestCase.swift
 //  PluginEditorPrototype
 //
 //  Created by Roben Kleene on 11/8/14.
@@ -9,8 +9,14 @@
 import Foundation
 import XCTest
 
-class TemporaryPluginTestCase: TemporaryDirectoryTestCase {
-    var temporaryPlugin: Plugin?
+class TemporaryPluginsTestCase: TemporaryDirectoryTestCase {
+    var temporaryPlugin: Plugin!
+    var temporaryPluginsDirectoryURL: NSURL!
+    var temporaryPluginsDirectoryPath: NSString! {
+        get {
+            return temporaryPluginsDirectoryURL.path
+        }
+    }
     
     override func setUp() {
         super.setUp()
@@ -18,14 +24,30 @@ class TemporaryPluginTestCase: TemporaryDirectoryTestCase {
         if let pluginURL = URLForResource(testPluginName, withExtension:pluginFileExtension) {
             if let plugin = Plugin.pluginWithURL(pluginURL) {
                 if let filename = plugin.name.stringByAppendingPathExtension(pluginFileExtension) {
-                    if let temporaryDirectoryURL = temporaryDirectoryURL {
-                        let temporaryPluginURL = temporaryDirectoryURL.URLByAppendingPathComponent(filename)
-                        var error: NSError?
-                        let moveSuccess = NSFileManager.defaultManager().copyItemAtURL(pluginURL, toURL: temporaryPluginURL, error: &error)
-                        XCTAssertTrue(moveSuccess, "The move should succeed")
-                        XCTAssertNil(error, "The error should be nil")
-                        temporaryPlugin = Plugin.pluginWithURL(temporaryPluginURL)
-                    }
+                    // Create the plugins directory
+                    temporaryPluginsDirectoryURL = temporaryDirectoryURL
+                        .URLByAppendingPathComponent(pluginsDirectoryPathComponent)
+                    var createDirectoryError: NSError?
+                    let createSuccess = NSFileManager
+                            .defaultManager()
+                            .createDirectoryAtURL(temporaryPluginsDirectoryURL,
+                                withIntermediateDirectories: false,
+                                attributes: nil,
+                                error: &createDirectoryError)
+                    XCTAssertTrue(createSuccess, "The create should succeed")
+                    XCTAssertNil(createDirectoryError, "The error should be nil")
+                    
+                    // Create the plugin directory
+                    let temporaryPluginURL = temporaryPluginsDirectoryURL.URLByAppendingPathComponent(filename)
+                    var movePluginError: NSError?
+                    let moveSuccess = NSFileManager
+                        .defaultManager()
+                        .copyItemAtURL(pluginURL,
+                            toURL: temporaryPluginURL,
+                            error: &movePluginError)
+                    XCTAssertTrue(moveSuccess, "The move should succeed")
+                    XCTAssertNil(movePluginError, "The error should be nil")
+                    temporaryPlugin = Plugin.pluginWithURL(temporaryPluginURL)
                 }
             }
         }
@@ -34,11 +56,13 @@ class TemporaryPluginTestCase: TemporaryDirectoryTestCase {
     }
     
     override func tearDown() {
-        if let temporaryPlugin = temporaryPlugin {
-            let filename = temporaryPlugin.bundle.bundlePath.lastPathComponent
-            let success = removeTemporaryItemWithName(filename)
-            XCTAssertTrue(success, "Removing the temporary directory should have succeeded")
-        }
+        temporaryPlugin = nil
+        temporaryPluginsDirectoryURL = nil
+        
+        // Remove the plugins directory (containing the plugin)
+        let success = removeTemporaryItemWithName(pluginsDirectoryPathComponent)
+        XCTAssertTrue(success, "Removing the plugins directory should have succeeded")
+
         super.tearDown()
     }
 }

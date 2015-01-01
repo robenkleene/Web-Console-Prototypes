@@ -10,6 +10,7 @@ let pluginFileExtension = "wcplugin"
 let pluginNameKey = WCLPluginNameKey
 let applicationName = NSBundle.mainBundle().infoDictionary![kCFBundleNameKey as NSString] as NSString
 let errorDomain = NSBundle.mainBundle().bundleIdentifier! as NSString
+let pluginsDirectoryPathComponent = "PlugIns"
 
 enum Directory {
     case Caches
@@ -25,8 +26,7 @@ enum Directory {
             let applicationSupportDirectory = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)[0] as String
             return applicationSupportDirectory.stringByAppendingPathComponent(applicationName)
         case .ApplicationSupportPlugins:
-            let pluginsPathComponent = "PlugIns"
-            return Directory.ApplicationSupport.path().stringByAppendingPathComponent(pluginsPathComponent)
+            return Directory.ApplicationSupport.path().stringByAppendingPathComponent(pluginsDirectoryPathComponent)
         case .BuiltInPlugins:
             return NSBundle.mainBundle().builtInPlugInsPath!
         }

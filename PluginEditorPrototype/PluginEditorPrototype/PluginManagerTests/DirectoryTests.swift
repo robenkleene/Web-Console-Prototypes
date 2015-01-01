@@ -25,13 +25,12 @@ class DirectoryTests: XCTestCase {
     }
     
     func testApplicationSupportPluginsPath() {
-        let pluginsPathComponent = "PlugIns"
         let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)[0] as String
         let nameKey = kCFBundleNameKey as NSString
         let applicationName = NSBundle.mainBundle().infoDictionary![nameKey] as NSString
         let applicationSupportPluginsPath = applicationSupportPath
             .stringByAppendingPathComponent(applicationName)
-            .stringByAppendingPathComponent(pluginsPathComponent)
+            .stringByAppendingPathComponent(pluginsDirectoryPathComponent)
         XCTAssert(applicationSupportPluginsPath == Directory.ApplicationSupportPlugins.path(), "The paths should match")
     }
 
