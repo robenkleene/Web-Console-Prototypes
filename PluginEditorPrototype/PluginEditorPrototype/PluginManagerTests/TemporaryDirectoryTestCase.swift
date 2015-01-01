@@ -38,31 +38,30 @@ class TemporaryDirectoryTestCase: XCTestCase {
         return NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isDir) && isDir
     }
     
-    func removeTemporaryItemWithName(name: String) -> Bool {
-        if let temporaryDirectoryPath = temporaryDirectoryPath {
-            let path = temporaryDirectoryPath.stringByAppendingPathComponent(name)
-            return self.dynamicType.safelyRemoveTemporaryItemAtPath(path)
+    func removeTemporaryItemAtPathComponent(pathComponent: NSString) -> Bool {
+        let path = temporaryDirectoryPath.stringByAppendingPathComponent(pathComponent)
+        return self.dynamicType.safelyRemoveTemporaryItemAtPath(path)
+    }
+
+    func removeTemporaryItemAtPath(path: NSString) -> Bool {
+        if !path.hasPrefix(temporaryDirectoryPath) {
+            XCTAssert(false, "Attempted to delete a temporary item that is not in the temporary directory.")
+            return false
         }
-        
-        return false
+        return self.dynamicType.safelyRemoveTemporaryItemAtPath(path)
     }
     
     private class func safelyRemoveTemporaryItemAtPath(path: String) -> Bool {
         if !path.hasPrefix(ClassConstants.temporaryDirectoryPathPrefix) {
+            XCTAssert(false, "Attempted to delete a temporary item at a path that does not have the temporary directory path prefix.")
             return false
         }
         
         var error: NSError?
-        let removed = NSFileManager.defaultManager().removeItemAtPath(path, error: &error)
-        if !removed || error != nil {
-            println("Warning: A temporary item failed to be removed at path \(path)")
-            if (error != nil) {
-                println("Error removing temporary item at path \(path) \(error)")
-            }
-            return false
-        }
-        
-        return true
+        let success = NSFileManager.defaultManager().removeItemAtPath(path, error: &error)
+        XCTAssertNil(error, "The error should be nil.")
+        XCTAssertTrue(success, "Removing the temporary item should succeed.")
+        return success
     }
     
     override func setUp() {

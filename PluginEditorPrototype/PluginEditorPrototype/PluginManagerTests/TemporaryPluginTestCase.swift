@@ -60,7 +60,7 @@ class TemporaryPluginsTestCase: TemporaryDirectoryTestCase {
         temporaryPluginsDirectoryURL = nil
         
         // Remove the plugins directory (containing the plugin)
-        let success = removeTemporaryItemWithName(pluginsDirectoryPathComponent)
+        let success = removeTemporaryItemAtPathComponent(pluginsDirectoryPathComponent)
         XCTAssertTrue(success, "Removing the plugins directory should have succeeded")
 
         super.tearDown()
