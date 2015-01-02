@@ -191,7 +191,10 @@ extension FilesAndPluginsDirectoryManagerTests {
             }
         })
         // Move
-        SubprocessFileSystemModifier.moveItemAtPath(path, toPath: destinationPath)
+        let moveExpectation = expectationWithDescription("Move finished")
+        SubprocessFileSystemModifier.moveItemAtPath(path, toPath: destinationPath, handler: {
+            moveExpectation.fulfill()
+        })
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
 
@@ -204,7 +207,10 @@ extension FilesAndPluginsDirectoryManagerTests {
             }
         })
         // Move
-        SubprocessFileSystemModifier.moveItemAtPath(path, toPath: destinationPath)
+        let moveExpectation = expectationWithDescription("Move finished")
+        SubprocessFileSystemModifier.moveItemAtPath(path, toPath: destinationPath, handler: {
+            moveExpectation.fulfill()
+        })
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
 
