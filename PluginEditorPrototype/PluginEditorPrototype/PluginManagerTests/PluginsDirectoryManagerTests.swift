@@ -9,24 +9,14 @@
 import Foundation
 import XCTest
 
-@objc protocol TestPluginsDirectoryManagerDelegate: PluginsDirectoryManagerDelegate {
-    optional func testPluginsDirectoryManager(testPluginsDirectoryManager: TestPluginsDirectoryManager, directoryWasCreatedOrModifiedAtPath path: NSString)
-    optional func testPluginsDirectoryManager(testPluginsDirectoryManager: TestPluginsDirectoryManager, fileWasCreatedOrModifiedAtPath path: NSString)
-    optional func testPluginsDirectoryManager(testPluginsDirectoryManager: TestPluginsDirectoryManager, itemWasRemovedAtPath path: NSString)
+@objc protocol FilesAndPluginsDirectoryManagerFileDelegate {
+    optional func testPluginsDirectoryManager(filesAndPluginsDirectoryManager: FilesAndPluginsDirectoryManager, fileWasCreatedOrModifiedAtPath path: NSString)
+    optional func testPluginsDirectoryManager(filesAndPluginsDirectoryManager: FilesAndPluginsDirectoryManager, directoryWasCreatedOrModifiedAtPath path: NSString)
+    optional func testPluginsDirectoryManager(filesAndPluginsDirectoryManager: FilesAndPluginsDirectoryManager, itemWasRemovedAtPath path: NSString)
 }
 
-class TestPluginsDirectoryManager: PluginsDirectoryManager {
-    weak var fileDelegate: TestPluginsDirectoryManagerDelegate?
-    override var delegate: PluginsDirectoryManagerDelegate? {
-        get {
-            return fileDelegate
-        }
-        set {
-            if newValue is TestPluginsDirectoryManagerDelegate {
-                fileDelegate = newValue as? TestPluginsDirectoryManagerDelegate
-            }
-        }
-    }
+class FilesAndPluginsDirectoryManager: PluginsDirectoryManager {
+    weak var fileDelegate: FilesAndPluginsDirectoryManagerFileDelegate?
     
     override func directoryWatcher(directoryWatcher: WCLDirectoryWatcher!, directoryWasCreatedOrModifiedAtPath path: String!) {
         fileDelegate?.testPluginsDirectoryManager?(self, directoryWasCreatedOrModifiedAtPath: path)
@@ -44,41 +34,19 @@ class TestPluginsDirectoryManager: PluginsDirectoryManager {
     }
 }
 
-class PluginsDirectoryManagerTestManager: TestPluginsDirectoryManagerDelegate {
-    var pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers: Array<(path: NSString) -> Void>
-    var pluginInfoDictionaryWasRemovedAtPluginPathHandlers: Array<(path: NSString) -> Void>
-
+class FilesAndPluginsDirectoryEventManager: PluginsDirectoryEventManager, FilesAndPluginsDirectoryManagerFileDelegate {
     var fileWasCreatedOrModifiedAtPathHandlers: Array<(path: NSString) -> Void>
     var directoryWasCreatedOrModifiedAtPathHandlers: Array<(path: NSString) -> Void>
     var itemWasRemovedAtPathHandlers: Array<(path: NSString) -> Void>
-    
-    init () {
-        self.pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers = Array<(path: NSString) -> Void>()
-        self.pluginInfoDictionaryWasRemovedAtPluginPathHandlers = Array<(path: NSString) -> Void>()
+
+    override init() {
         self.fileWasCreatedOrModifiedAtPathHandlers = Array<(path: NSString) -> Void>()
         self.directoryWasCreatedOrModifiedAtPathHandlers = Array<(path: NSString) -> Void>()
         self.itemWasRemovedAtPathHandlers = Array<(path: NSString) -> Void>()
+        super.init()
     }
 
-    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath path: NSString) {
-        assert(pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers.count > 0, "There should be at least one handler")
-        
-        if (pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers.count > 0) {
-            let handler = pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers.removeAtIndex(0)
-            handler(path: path)
-        }
-    }
-
-    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasRemovedAtPluginPath path: NSString) {
-        assert(pluginInfoDictionaryWasRemovedAtPluginPathHandlers.count > 0, "There should be at least one handler")
-        
-        if (pluginInfoDictionaryWasRemovedAtPluginPathHandlers.count > 0) {
-            let handler = pluginInfoDictionaryWasRemovedAtPluginPathHandlers.removeAtIndex(0)
-            handler(path: path)
-        }
-    }
-    
-    func testPluginsDirectoryManager(testPluginsDirectoryManager: TestPluginsDirectoryManager, fileWasCreatedOrModifiedAtPath path: NSString) {
+    func testPluginsDirectoryManager(filesAndPluginsDirectoryManager: FilesAndPluginsDirectoryManager, fileWasCreatedOrModifiedAtPath path: NSString) {
         assert(fileWasCreatedOrModifiedAtPathHandlers.count > 0, "There should be at least one handler")
         
         if (fileWasCreatedOrModifiedAtPathHandlers.count > 0) {
@@ -87,7 +55,7 @@ class PluginsDirectoryManagerTestManager: TestPluginsDirectoryManagerDelegate {
         }
     }
     
-    func testPluginsDirectoryManager(testPluginsDirectoryManager: TestPluginsDirectoryManager, directoryWasCreatedOrModifiedAtPath path: NSString) {
+    func testPluginsDirectoryManager(filesAndPluginsDirectoryManager: FilesAndPluginsDirectoryManager, directoryWasCreatedOrModifiedAtPath path: NSString) {
         assert(directoryWasCreatedOrModifiedAtPathHandlers.count > 0, "There should be at least one handler")
         
         if (directoryWasCreatedOrModifiedAtPathHandlers.count > 0) {
@@ -96,7 +64,7 @@ class PluginsDirectoryManagerTestManager: TestPluginsDirectoryManagerDelegate {
         }
     }
     
-    func testPluginsDirectoryManager(testPluginsDirectoryManager: TestPluginsDirectoryManager, itemWasRemovedAtPath path: NSString) {
+    func testPluginsDirectoryManager(filesAndPluginsDirectoryManager: FilesAndPluginsDirectoryManager, itemWasRemovedAtPath path: NSString) {
         assert(itemWasRemovedAtPathHandlers.count > 0, "There should be at least one handler")
         
         if (itemWasRemovedAtPathHandlers.count > 0) {
@@ -105,48 +73,44 @@ class PluginsDirectoryManagerTestManager: TestPluginsDirectoryManagerDelegate {
         }
     }
 
-    func addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler(handler: (path: NSString) -> Void) {
-        pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers.append(handler)
-    }
-    
-    func addPluginInfoDictionaryWasRemovedAtPluginPathHandler(handler: (path: NSString) -> Void) {
-        pluginInfoDictionaryWasRemovedAtPluginPathHandlers.append(handler)
-    }
 
     func addFileWasCreatedOrModifiedAtPathHandler(handler: (path: NSString) -> Void) {
         fileWasCreatedOrModifiedAtPathHandlers.append(handler)
     }
-
+    
     func addDirectoryWasCreatedOrModifiedAtPathHandler(handler: (path: NSString) -> Void) {
         directoryWasCreatedOrModifiedAtPathHandlers.append(handler)
     }
-
+    
     func addItemWasRemovedAtPathHandler(handler: (path: NSString) -> Void) {
         itemWasRemovedAtPathHandlers.append(handler)
     }
 }
 
+
 class PluginsDirectoryManagerTestCase: TemporaryPluginsTestCase {
-    var pluginsDirectoryManager: TestPluginsDirectoryManager!
-    var pluginsDirectoryManagerTestManager: PluginsDirectoryManagerTestManager!
+    var fileAndPluginsDirectoryManager: FilesAndPluginsDirectoryManager!
+    var fileAndPluginsDirectoryEventManager: FilesAndPluginsDirectoryEventManager!
 
     override func setUp() {
         super.setUp()
-        pluginsDirectoryManager = TestPluginsDirectoryManager(pluginsDirectoryURL: temporaryPluginsDirectoryURL)
-        pluginsDirectoryManagerTestManager = PluginsDirectoryManagerTestManager()
-        pluginsDirectoryManager.delegate = pluginsDirectoryManagerTestManager
+        fileAndPluginsDirectoryManager = FilesAndPluginsDirectoryManager(pluginsDirectoryURL: temporaryPluginsDirectoryURL)
+        fileAndPluginsDirectoryEventManager = FilesAndPluginsDirectoryEventManager()
+        fileAndPluginsDirectoryManager.delegate = fileAndPluginsDirectoryEventManager
+        fileAndPluginsDirectoryManager.fileDelegate = fileAndPluginsDirectoryEventManager
     }
     
     override func tearDown() {
-        pluginsDirectoryManager.delegate = nil
-        pluginsDirectoryManagerTestManager = nil
-        pluginsDirectoryManager = nil // Make sure this happens after setting its delegate to nil
+        fileAndPluginsDirectoryManager.fileDelegate = nil
+        fileAndPluginsDirectoryManager.delegate = nil
+        fileAndPluginsDirectoryEventManager = nil
+        fileAndPluginsDirectoryManager = nil // Make sure this happens after setting its delegate to nil
         super.tearDown()
     }
 
     func createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(path: NSString) {
         let pluginInfoDictionaryWasRemovedExpectation = expectationWithDescription("Plugin info dictionary was removed")
-        pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasRemovedAtPluginPathHandler({ returnedPath -> Void in
+        fileAndPluginsDirectoryEventManager.addPluginInfoDictionaryWasRemovedAtPluginPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 pluginInfoDictionaryWasRemovedExpectation.fulfill()
             }
@@ -155,7 +119,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginsTestCase {
 
     func createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(path: NSString) {
         let pluginInfoDictionaryWasCreatedOrModifiedExpectation = expectationWithDescription("Plugin info dictionary was created or modified")
-        pluginsDirectoryManagerTestManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler({ returnedPath -> Void in
+        fileAndPluginsDirectoryEventManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 pluginInfoDictionaryWasCreatedOrModifiedExpectation.fulfill()
             }
@@ -165,7 +129,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginsTestCase {
     // MARK: Create
     func createFileAtPathWithConfirmation(path: NSString) {
         let fileWasCreatedOrModifiedExpectation = expectationWithDescription("File was created")
-        pluginsDirectoryManagerTestManager.addFileWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
+        fileAndPluginsDirectoryEventManager.addFileWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 fileWasCreatedOrModifiedExpectation.fulfill()
             }
@@ -175,7 +139,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginsTestCase {
     }
     func createDirectoryAtPathWithConfirmation(path: NSString) {
         let directoryWasCreatedOrModifiedExpectation = expectationWithDescription("Directory was created")
-        pluginsDirectoryManagerTestManager.addDirectoryWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
+        fileAndPluginsDirectoryEventManager.addDirectoryWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 directoryWasCreatedOrModifiedExpectation.fulfill()
             }
@@ -187,7 +151,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginsTestCase {
     // MARK: Remove
     func removeFileAtPathWithConfirmation(path: NSString) {
         let fileWasRemovedExpectation = expectationWithDescription("File was removed")
-        pluginsDirectoryManagerTestManager.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
+        fileAndPluginsDirectoryEventManager.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 fileWasRemovedExpectation.fulfill()
             }
@@ -197,7 +161,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginsTestCase {
     }
     func removeDirectoryAtPathWithConfirmation(path: NSString) {
         let directoryWasRemovedExpectation = expectationWithDescription("Directory was removed")
-        pluginsDirectoryManagerTestManager.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
+        fileAndPluginsDirectoryEventManager.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 directoryWasRemovedExpectation.fulfill()
             }
@@ -210,14 +174,14 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginsTestCase {
     func moveDirectoryAtPathWithConfirmation(path: NSString, destinationPath: NSString) {
         // Remove original
         let directoryWasRemovedExpectation = expectationWithDescription("Directory was removed with move")
-        pluginsDirectoryManagerTestManager.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
+        fileAndPluginsDirectoryEventManager.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 directoryWasRemovedExpectation.fulfill()
             }
         })
         // Create new
         let directoryWasCreatedExpectation = expectationWithDescription("Directory was created with move")
-        pluginsDirectoryManagerTestManager.addDirectoryWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
+        fileAndPluginsDirectoryEventManager.addDirectoryWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == destinationPath) {
                 directoryWasCreatedExpectation.fulfill()
             }
@@ -231,7 +195,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginsTestCase {
     func moveDirectoryAtUnwatchedPathWithConfirmation(path: NSString, destinationPath: NSString) {
         // Create new
         let directoryWasCreatedExpectation = expectationWithDescription("Directory was created with move")
-        pluginsDirectoryManagerTestManager.addDirectoryWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
+        fileAndPluginsDirectoryEventManager.addDirectoryWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == destinationPath) {
                 directoryWasCreatedExpectation.fulfill()
             }
@@ -244,7 +208,7 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginsTestCase {
     func moveDirectoryAtPathWithConfirmation(path: NSString, toUnwatchedDestinationPath destinationPath: NSString) {
         // Remove original
         let directoryWasRemovedExpectation = expectationWithDescription("Directory was removed with move")
-        pluginsDirectoryManagerTestManager.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
+        fileAndPluginsDirectoryEventManager.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
                 directoryWasRemovedExpectation.fulfill()
             }
