@@ -8,11 +8,9 @@
 
 import Foundation
 
-class ErrorHelper {
-    // TODO: EXTENSION BEGIN NSError+Helper
+extension NSError {
     class func errorWithDescription(description: String, code: Int) -> NSError {
         let userInfo = [NSLocalizedDescriptionKey: description]
         return NSError(domain: errorDomain, code: code, userInfo: userInfo)
     }
-    // TODO: EXTENSION END NSError+Helper
 }

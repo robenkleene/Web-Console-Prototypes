@@ -10,109 +10,6 @@ import Cocoa
 
 
 class Plugin: NSObject {
-    // TODO: EXTENSION BEGIN Plugin+Initialization
-    class func pluginWithURL(url: NSURL) -> Plugin? {
-        if let path = url.path {
-            return self.pluginWithPath(path)
-        }
-        return nil
-    }
-    
-    class func pluginWithPath(path: String) -> Plugin? {
-        var error: NSError?
-        if let bundle = validBundle(path, error: &error) {
-            if let infoDictionary = validInfoDictionary(bundle, error: &error) {
-                if let identifier = validIdentifier(infoDictionary, error: &error) {
-                    if let name = validName(infoDictionary, error: &error) {
-                        let command = validCommand(infoDictionary, error: &error)
-                        return Plugin(bundle: bundle, infoDictionary: infoDictionary, identifier: identifier, name: name, command: command)
-                    }
-                }
-            }
-        }
-        
-        println("Failed to load a plugin at path \(path) \(error)")
-        return nil
-    }
-    
-    class func validBundle(path: String, error: NSErrorPointer) -> NSBundle? {
-        if let bundle = NSBundle(path: path) as NSBundle? {
-            return bundle
-        }
-        
-        if error != nil {
-            let errorString = NSLocalizedString("Bundle is invalid at path \(path).", comment: "Invalid plugin bundle error")
-            error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
-        }
-        
-        return nil
-    }
-    
-    class func validInfoDictionary(bundle: NSBundle, error: NSErrorPointer) -> [NSObject : AnyObject]? {
-        let url = self.infoDictionaryURL(bundle)
-        let infoDictionary: NSMutableDictionary? = NSMutableDictionary(contentsOfURL: url)
-        if infoDictionary != nil {
-            return infoDictionary
-        }
-        
-        if error != nil {
-            if let path = url.path {
-                let errorString = NSLocalizedString("Info.plist is invalid at path \(path).", comment: "Invalid plugin Info.plist error")
-                error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
-            }
-        }
-        
-        return nil
-    }
-
-    // TODO: A plugin command can be nil
-    class func validCommand(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
-        if let command = infoDictionary[ClassConstants.pluginCommandKey] as NSString? {
-            if command.length > 0 {
-                return command
-            }
-        }
-        
-        if error != nil {
-            let errorString = NSLocalizedString("Plugin command is invalid \(infoDictionary).", comment: "Invalid plugin command error")
-            error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
-        }
-        
-        return nil
-    }
-    
-    class func validName(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
-        if let name = infoDictionary[ClassConstants.pluginNameKey] as NSString? {
-            if name.length > 0 {
-                return name
-            }
-        }
-        
-        if error != nil {
-            let errorString = NSLocalizedString("Plugin name is invalid \(infoDictionary).", comment: "Invalid plugin name error")
-            error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
-        }
-        
-        return nil
-    }
-    
-    class func validIdentifier(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
-        if let uuidString = infoDictionary[ClassConstants.pluginIdentifierKey] as NSString? {
-            var uuid: NSUUID? = NSUUID(UUIDString: uuidString)
-            if uuid != nil {
-                return uuidString
-            }
-        }
-        
-        if error != nil {
-            let errorString = NSLocalizedString("Plugin UUID is invalid \(infoDictionary).", comment: "Invalid plugin UUID error")
-            error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
-        }
-        
-        return nil
-    }
-    // TODO: EXTENSION END Plugin+Initialization
-    
     struct ClassConstants {
         static let errorCode = -43
         static let pluginNameKey = "WCName"
@@ -120,9 +17,9 @@ class Plugin: NSObject {
         static let pluginCommandKey = "WCCommand"
         static let infoDictionaryPathComponent = "Contents".stringByAppendingPathComponent("Info.plist")
     }
-    let bundle: NSBundle // TODO: EXTENSION This should be marked internal and the tests that need it should use an extension to access it
-    var infoDictionary: [NSObject : AnyObject]
-    var infoDictionaryURL: NSURL {
+    internal let bundle: NSBundle
+    internal var infoDictionary: [NSObject : AnyObject]
+    internal var infoDictionaryURL: NSURL {
         get {
             return self.dynamicType.infoDictionaryURL(bundle)
         }
@@ -172,7 +69,7 @@ class Plugin: NSObject {
         if !success && error != nil {
             if let path = url.path {
                 let errorString = NSLocalizedString("Failed to write to dictionary at path \(path).", comment: "Failed to write to dictionary")
-                error.memory = ErrorHelper.errorWithDescription(errorString, code: ClassConstants.errorCode)
+                error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
             }
         }
     }

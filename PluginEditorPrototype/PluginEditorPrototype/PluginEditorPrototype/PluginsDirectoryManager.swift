@@ -13,8 +13,6 @@ import Foundation
     optional func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasRemovedAtPluginPath path: NSString)
 }
 
-// TODO: EXTENSION BEGIN NSString+PluginDirectoryPaths
-// Can swift do inline extensions? This is probably only appropriate if this can be an extension that only this class can see
 class PluginsPathHelper {
 
     class func rangeInPath(path: NSString, untilSubpath subpath: NSString) -> NSRange {
@@ -98,7 +96,6 @@ class PluginsPathHelper {
         return false
     }
 }
-// TODO: EXTENSION END NSString+PluginDirectoryPaths
 
 class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate, PluginsDirectoryEventHandlerDelegate {
     struct ClassConstants {
