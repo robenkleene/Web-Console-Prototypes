@@ -77,7 +77,7 @@ extension PluginsDirectoryManagerTests {
     // MARK: Copy Helpers
     
     func copyPluginAtPathWithConfirmation(pluginPath: NSString, destinationPluginPath: NSString) {
-        let createExpectation = expectationWithDescription("Info dictionary was created")
+        let createExpectation = expectationWithDescription("Info dictionary was created or modified")
         pluginsDirectoryEventManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler({ (path) -> Void in
             if (self.dynamicType.resolveTemporaryDirectoryPath(path) == destinationPluginPath) {
                 createExpectation.fulfill()
@@ -91,7 +91,7 @@ extension PluginsDirectoryManagerTests {
     // MARK: Remove Helpers
     
     func removePluginAtPathWithConfirmation(pluginPath: NSString) {
-        let removeExpectation = expectationWithDescription("Info dictionary was removed again")
+        let removeExpectation = expectationWithDescription("Info dictionary was removed")
         pluginsDirectoryEventManager.addPluginInfoDictionaryWasRemovedAtPluginPathHandler({ (path) -> Void in
             self.pluginsDirectoryManager.delegate = nil // Ignore subsequent remove events
             if (self.dynamicType.resolveTemporaryDirectoryPath(path) == pluginPath) {
@@ -146,38 +146,42 @@ class PluginsDirectoryManagerTests: TemporaryPluginsTestCase {
         removePluginAtPathWithConfirmation(copiedPluginPath)
     }
 
-    // TODO: Refactor hierarchy creators to take a path
-    // TODO: Test copy plugin
     // TODO: Test copy from an unwatched directory to the watched directory
     // TODO: Test copy from the watched directory to the unwatched directory
+    
+    // TODO: Test modifying the plist
+    // TODO: Test deleting and re-adding the plist
 
     // TODO: Test multiple move events?
-    // TODO: Test potential false positive directories
+    // TODO: Test potential false positive directories?
     
-    //    func testMoveInfoDictionaryPath() {
-    //        if let temporaryDirectoryURL = temporaryDirectoryURL {
-    //            if let temporaryPlugin = temporaryPlugin {
-    //                let pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryDirectoryURL)
-    
-    //                let expectation = expectationWithDescription("Plugins Directory Event")
-    
-    // Move the plist
-    //                var error: NSError?
-    //                let oldInfoDictionaryURL = temporaryPlugin.infoDictionaryURL
-    //                let newInfoDictionaryFilename = temporaryPlugin.identifier
-    //                renameItemAtURL(oldInfoDictionaryURL, toName: newInfoDictionaryFilename)
-    
-    
-    // TODO: Move it again
-    
-    //                waitForExpectationsWithTimeout(defaultTimeout, handler: { error in
-    //                    println("Expectation")
-    //                })
-    //            }
-    //        }
-    //    }
-    
-    // TODO: Test moving into and from unwatched directories
-    // TODO: Gets notified moving the file
-    // TODO: Gets notified modifying the plist
+    func testMoveInfoDictionary() {
+        
+        let infoDictionaryPath: NSString! = temporaryPlugin.infoDictionaryURL.path
+        let infoDictionaryDirectory: NSString! = infoDictionaryPath.stringByDeletingLastPathComponent
+        let renamedInfoDictionaryFilename = temporaryPlugin.identifier
+        let renamedInfoDictionaryPath = infoDictionaryDirectory.stringByAppendingPathComponent(renamedInfoDictionaryFilename)
+        
+        // Move
+        let pluginPath = temporaryPlugin.bundle.bundlePath
+        let expectation = expectationWithDescription("Info dictionary was removed")
+        pluginsDirectoryEventManager.addPluginInfoDictionaryWasRemovedAtPluginPathHandler({ (path) -> Void in
+            if (self.dynamicType.resolveTemporaryDirectoryPath(path) == pluginPath) {
+                expectation.fulfill()
+            }
+        })
+        SubprocessFileSystemModifier.moveItemAtPath(infoDictionaryPath, toPath: renamedInfoDictionaryPath)
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        
+        // Move back
+        let expectationTwo = expectationWithDescription("Info dictionary was created or modified")
+        pluginsDirectoryEventManager.addPluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandler({ (path) -> Void in
+            if (self.dynamicType.resolveTemporaryDirectoryPath(path) == pluginPath) {
+                expectationTwo.fulfill()
+            }
+        })
+        SubprocessFileSystemModifier.moveItemAtPath(renamedInfoDictionaryPath, toPath: infoDictionaryPath)
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+    }
+
 }
