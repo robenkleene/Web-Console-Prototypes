@@ -50,29 +50,25 @@ class PluginsDirectoryEventManager: PluginsDirectoryManagerDelegate {
 
 class PluginsDirectoryManagerPluginsTests: TemporaryPluginsTestCase {
 
-//    var pluginsDirectoryManager: PluginsDirectoryManager!
-//    var pluginsDirectoryManagerTestManager: PluginsDirectoryManagerTestManager!
-//    
-//    override func setUp() {
-//        super.setUp()
-//        pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryPluginsDirectoryURL)
-//        pluginsDirectoryManagerTestManager = PluginsDirectoryManagerTestManager()
-//        pluginsDirectoryManager.delegate = pluginsDirectoryManagerTestManager
-//    }
-//    
-//    override func tearDown() {
-//        pluginsDirectoryManager.delegate = nil
-//        pluginsDirectoryManagerTestManager = nil
-//        pluginsDirectoryManager = nil // Make sure this happens after setting its delegate to nil
-//        super.tearDown()
-//    }
+    var pluginsDirectoryManager: PluginsDirectoryManager!
+    var pluginsDirectoryEventManager: PluginsDirectoryEventManager!
+    
+    override func setUp() {
+        super.setUp()
+        pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryPluginsDirectoryURL)
+        pluginsDirectoryEventManager = PluginsDirectoryEventManager()
+        pluginsDirectoryManager.delegate = pluginsDirectoryEventManager
+    }
+    
+    override func tearDown() {
+        pluginsDirectoryManager.delegate = nil
+        pluginsDirectoryEventManager = nil
+        pluginsDirectoryManager = nil // Make sure this happens after setting its delegate to nil
+        super.tearDown()
+    }
 
     
     func testMovePlugin() {
-
-        let pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryPluginsDirectoryURL)
-        let pluginsDirectoryEventManager = PluginsDirectoryEventManager()
-        pluginsDirectoryManager.delegate = pluginsDirectoryEventManager
 
         // Move the plugin
         let pluginPath = temporaryPlugin.bundle.bundlePath
@@ -120,11 +116,6 @@ class PluginsDirectoryManagerPluginsTests: TemporaryPluginsTestCase {
     // TODO: Disable this test until we have a method of handling rename events
     func testCopyAndRemovePlugin() {
 
-        // Setup
-        let pluginsDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: temporaryPluginsDirectoryURL)
-        let pluginsDirectoryEventManager = PluginsDirectoryEventManager()
-        pluginsDirectoryManager.delegate = pluginsDirectoryEventManager
-
         // Setup Copy
         let pluginPath = temporaryPlugin.bundle.bundlePath
         let newPluginFilename = temporaryPlugin.identifier
@@ -143,7 +134,7 @@ class PluginsDirectoryManagerPluginsTests: TemporaryPluginsTestCase {
 
         let removeExpectation = expectationWithDescription("Info dictionary was removed again")
         pluginsDirectoryEventManager.addPluginInfoDictionaryWasRemovedAtPluginPathHandler({ (path) -> Void in
-            pluginsDirectoryManager.delegate = nil // Ignore subsequent remove events
+            self.pluginsDirectoryManager.delegate = nil // Ignore subsequent remove events
             if (self.dynamicType.resolveTemporaryDirectoryPath(path) == newPluginPath) {
                 removeExpectation.fulfill()
             }
