@@ -94,7 +94,13 @@ class PluginsDirectoryManagerPluginsTests: TemporaryPluginsTestCase {
         SubprocessFileSystemModifier.removeDirectoryAtPath(newPluginPath)
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
+
     
+    // TODO: Refactor hierarchy creators to take a path
+    // TODO: Test copy plugin
+    // TODO: Test copy from an unwatched directory to the watched directory
+    // TODO: Test copy from the watched directory to the unwatched directory
+
     // TODO: Test multiple move events?
     // TODO: Test potential false positive directories
     

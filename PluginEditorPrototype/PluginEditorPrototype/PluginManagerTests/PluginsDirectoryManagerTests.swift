@@ -227,6 +227,32 @@ class PluginsDirectoryManagerTestCase: TemporaryPluginsTestCase {
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
 
+
+    func moveDirectoryAtUnwatchedPathWithConfirmation(path: NSString, destinationPath: NSString) {
+        // Create new
+        let directoryWasCreatedExpectation = expectationWithDescription("Directory was created with move")
+        pluginsDirectoryManagerTestManager.addDirectoryWasCreatedOrModifiedAtPathHandler({ returnedPath -> Void in
+            if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == destinationPath) {
+                directoryWasCreatedExpectation.fulfill()
+            }
+        })
+        // Move
+        SubprocessFileSystemModifier.moveItemAtPath(path, toPath: destinationPath)
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+    }
+    
+    func moveDirectoryAtPathWithConfirmation(path: NSString, toUnwatchedDestinationPath destinationPath: NSString) {
+        // Remove original
+        let directoryWasRemovedExpectation = expectationWithDescription("Directory was removed with move")
+        pluginsDirectoryManagerTestManager.addItemWasRemovedAtPathHandler({ returnedPath -> Void in
+            if (self.dynamicType.resolveTemporaryDirectoryPath(returnedPath) == path) {
+                directoryWasRemovedExpectation.fulfill()
+            }
+        })
+        // Move
+        SubprocessFileSystemModifier.moveItemAtPath(path, toPath: destinationPath)
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+    }
 }
 
 class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
@@ -464,11 +490,21 @@ class PluginsDirectoryManagerFilesTests: PluginsDirectoryManagerTestCase {
         removeValidPluginHierarchyAtPath(temporaryPluginsDirectoryPath)
     }
 
-    // TODO: Refactor hierarchy creators to take a path
-    // TODO: Test copy from an unwatched directory to the watched directory
-    // TODO: Test move from the unwatched directory to the watched directory
-    // TODO: Test move from the watched directory to the unwatched directory
-    // TODO: Test copy from the watched directory to the unwatched directory
-    
-    // TODO: Make a subdirectory of `temporaryDirectoryURL` a subdirectory here
+    func testMovePluginFromAndToUnwatchedDirectory() {
+        createValidPluginHierarchyAtPath(temporaryDirectoryPath)
+        
+        // Move from unwatched directory
+        let testPluginDirectoryPath = temporaryDirectoryPath.stringByAppendingPathComponent(testDirectoryName)
+        let testMovedPluginDirectoryPath = temporaryPluginsDirectoryPath.stringByAppendingPathComponent(testDirectoryName)
+        createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(testMovedPluginDirectoryPath)
+        moveDirectoryAtUnwatchedPathWithConfirmation(testPluginDirectoryPath, destinationPath: testMovedPluginDirectoryPath)
+
+        // Move to unwatched directory
+        createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testMovedPluginDirectoryPath)
+        moveDirectoryAtPathWithConfirmation(testMovedPluginDirectoryPath, toUnwatchedDestinationPath: testPluginDirectoryPath)
+
+        // Clean up
+        removeValidPluginHierarchyAtPath(temporaryDirectoryPath)
+    }
+
 }
