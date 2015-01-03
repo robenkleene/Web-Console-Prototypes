@@ -58,6 +58,7 @@ class PluginTests: TemporaryPluginsTestCase {
     //
     //    }
     
+    // TODO: Test trying to run a plugin that has been unloaded? After deleting it's resources
 }
 
 

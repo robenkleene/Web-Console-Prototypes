@@ -21,7 +21,7 @@ class PluginManager {
     
     init(_ paths: [String]) {
         self.pluginDataController = PluginDataController(paths)
-        self.nameToPluginController = WCLKeyToObjectController(key: pluginNameKey, objects: pluginDataController.existingPlugins())
+        self.nameToPluginController = WCLKeyToObjectController(key: pluginNameKey, objects: pluginDataController.plugins())
     }
     
     convenience init() {

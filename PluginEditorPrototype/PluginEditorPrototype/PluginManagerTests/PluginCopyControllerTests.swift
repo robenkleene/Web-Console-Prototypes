@@ -11,7 +11,7 @@ import XCTest
 
 class PluginCopyControllerTests: XCTestCase {
     let pluginCopyController = PluginCopyController()
-    let pluginManager = PluginManager(testPluginPaths)
+    let pluginManager = PluginManager(testPluginsPaths)
     var plugin: Plugin?
 
     override func setUp() {

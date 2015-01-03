@@ -7,7 +7,7 @@
 //
 
 extension PluginDataController {
-    class func pathsForPluginsAtPath(paths: String) -> [String] {
+    class func pathsForPluginsAtPath(paths: NSString) -> [NSString] {
         var pluginPaths = [String]()
         
         if let pathContents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(paths, error:nil) {
@@ -28,15 +28,7 @@ extension PluginDataController {
         return pluginPaths
     }
     
-    class func pathsForPluginsAtPaths(paths: [String]) -> [String] {
-        var pluginPaths = [String]()
-        for path in paths {
-            pluginPaths += self.pathsForPluginsAtPath(path)
-        }
-        return pluginPaths
-    }
-    
-    class func pluginsAtPluginPaths(pluginPaths: [String]) -> [Plugin] {
+    class func pluginsAtPluginPaths(pluginPaths: [NSString]) -> [Plugin] {
         var plugins = [Plugin]()
         for pluginPath in pluginPaths {
             if let plugin = Plugin.pluginWithPath(pluginPath) {
@@ -45,4 +37,11 @@ extension PluginDataController {
         }
         return plugins
     }
+    
+    class func pluginsAtPluginsPath(path: NSString) -> [Plugin] {
+        let pluginPaths = self.pathsForPluginsAtPath(path)
+        let plugins = self.pluginsAtPluginPaths(pluginPaths)
+        return plugins
+    }
+
 }

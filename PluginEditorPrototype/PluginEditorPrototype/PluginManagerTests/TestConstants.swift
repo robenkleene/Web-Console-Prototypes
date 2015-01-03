@@ -7,7 +7,7 @@
 //
 
 let defaultTimeout = 15.0
-let testPluginPaths = [Directory.BuiltInPlugins.path()]
+let testPluginsPaths = [Directory.BuiltInPlugins.path()]
 let testPluginName = "HTML"
 
 let testPluginPathComponent = "\(testPluginName).\(pluginFileExtension)"

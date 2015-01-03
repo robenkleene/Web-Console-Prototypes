@@ -41,12 +41,17 @@ class PluginDataControllerClassTests: XCTestCase {
 
 
 class PluginDataControllerTests: XCTestCase {
-    let pluginDataController = PluginDataController(testPluginPaths)
+    let pluginDataController = PluginDataController(testPluginsPaths)
 
     func testExistingPlugins() {
-        let plugins = pluginDataController.existingPlugins()
+        let plugins = pluginDataController.plugins()
         
-        let pluginPaths = PluginDataController.pathsForPluginsAtPaths(testPluginPaths)
+        var pluginPaths = [NSString]()
+        for pluginsPath in testPluginsPaths {
+            let paths = PluginDataController.pathsForPluginsAtPath(pluginsPath)
+            pluginPaths += paths
+        }
+        
         
         XCTAssert(!plugins.isEmpty, "The plugins should not be empty")
         XCTAssert(plugins.count == pluginPaths.count, "The plugins count should match the plugin paths count")

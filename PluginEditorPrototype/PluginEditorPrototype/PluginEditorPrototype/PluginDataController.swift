@@ -8,24 +8,61 @@
 
 import Cocoa
 
+protocol PluginDataControllerDelegate {
+    func pluginDataController(pluginDataController: PluginDataController, didAddPlugin plugin: Plugin)
+    func pluginDataController(pluginDataController: PluginDataController, didRemovePlugin plugin: Plugin)
+}
 
-
-class PluginDataController {
-    let pluginsPaths = [String]()
+class PluginDataController: PluginsDirectoryManagerDelegate {
+    var delegate: PluginDataControllerDelegate?
+    var pluginDirectoryManagers: [PluginsDirectoryManager]!
+    var pluginPathToPluginDictionary: [NSString : Plugin]!
     lazy var pluginCopyController = PluginCopyController()
-    lazy var copyPluginDirectory = Directory.ApplicationSupportPlugins
+    
+    struct ClassConstants {
+        static let copyPluginDestinationDirectory = Directory.ApplicationSupportPlugins
+    }
     
     init(_ paths: [String]) {
-        self.pluginsPaths = paths
+        self.pluginDirectoryManagers = [PluginsDirectoryManager]()
+        self.pluginPathToPluginDictionary = [NSString : Plugin]()
+
+        for path in paths {
+            let plugins = self.dynamicType.pluginsAtPluginsPath(path)
+            for plugin in plugins {
+                pluginPathToPluginDictionary[plugin.bundle.bundlePath] = plugin
+            }
+            if let pluginsDirectoryURL = NSURL(fileURLWithPath: path) {
+                let pluginDirectoryManager = PluginsDirectoryManager(pluginsDirectoryURL: pluginsDirectoryURL)
+                pluginDirectoryManager.delegate = self
+                pluginDirectoryManagers.append(pluginDirectoryManager)
+            }
+        }
     }
 
-    func existingPlugins() -> [Plugin] {
-        let pluginPaths = self.dynamicType.pathsForPluginsAtPaths(pluginsPaths)
-        return self.dynamicType.pluginsAtPluginPaths(pluginPaths)
+
+    // MARK: Plugins
+    
+    func plugins() -> [Plugin] {
+        return Array(pluginPathToPluginDictionary.values)
+    }
+    
+
+    // MARK: PluginsDirectoryManagerDelegate
+
+    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath path: NSString) {
+        
+    }
+    
+    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasRemovedAtPluginPath path: NSString) {
+        
     }
 
+    
+    // MARK: Creating New Plugins
+    
     func newPluginFromPlugin(plugin: Plugin) {
-        newPluginFromPlugin(plugin, inDirectoryAtURL: copyPluginDirectory.URL())
+        newPluginFromPlugin(plugin, inDirectoryAtURL: ClassConstants.copyPluginDestinationDirectory.URL())
     }
 
     private func newPluginFromPlugin(plugin: Plugin, inDirectoryAtURL dstURL: NSURL) {
