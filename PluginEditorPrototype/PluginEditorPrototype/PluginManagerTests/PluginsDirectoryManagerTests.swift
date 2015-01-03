@@ -19,21 +19,21 @@ class PluginsDirectoryEventManager: PluginsDirectoryManagerDelegate {
         self.pluginInfoDictionaryWasRemovedAtPluginPathHandlers = Array<(path: NSString) -> Void>()
     }
     
-    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath path: NSString) {
+    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath pluginPath: NSString) {
         assert(pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers.count > 0, "There should be at least one handler")
         
         if (pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers.count > 0) {
             let handler = pluginInfoDictionaryWasCreatedOrModifiedAtPluginPathHandlers.removeAtIndex(0)
-            handler(path: path)
+            handler(path: pluginPath)
         }
     }
     
-    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasRemovedAtPluginPath path: NSString) {
+    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasRemovedAtPluginPath pluginPath: NSString) {
         assert(pluginInfoDictionaryWasRemovedAtPluginPathHandlers.count > 0, "There should be at least one handler")
         
         if (pluginInfoDictionaryWasRemovedAtPluginPathHandlers.count > 0) {
             let handler = pluginInfoDictionaryWasRemovedAtPluginPathHandlers.removeAtIndex(0)
-            handler(path: path)
+            handler(path: pluginPath)
         }
     }
     
