@@ -72,7 +72,7 @@
 		458FD69419D8A1D100D4898A /* NSError+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458FD69319D8A1D100D4898A /* NSError+Helper.swift */; };
 		458FD69519D8A45B00D4898A /* NSError+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458FD69319D8A1D100D4898A /* NSError+Helper.swift */; };
 		4590E5371A0EABFA000C9890 /* FilesAndPluginsDirectoryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4590E5361A0EABFA000C9890 /* FilesAndPluginsDirectoryManagerTests.swift */; };
-		4590E5391A0EAC58000C9890 /* TemporaryPluginTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4590E5381A0EAC58000C9890 /* TemporaryPluginTestCase.swift */; };
+		4590E5391A0EAC58000C9890 /* TemporaryPluginsTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4590E5381A0EAC58000C9890 /* TemporaryPluginsTestCase.swift */; };
 		4590E53B1A0EAF7E000C9890 /* PluginsDirectoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4590E53A1A0EAF7E000C9890 /* PluginsDirectoryManager.swift */; };
 		4596913E18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4596913D18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m */; };
 		4596914118D4AFF60096B058 /* WCLTestPluginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4596914018D4AFF60096B058 /* WCLTestPluginManager.m */; };
@@ -84,6 +84,7 @@
 		45D02C641A072ED700778F3A /* HTML.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4818F382F400955EDC /* HTML.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		45D21F0A18C80932001AFE36 /* WCLPluginManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D21F0918C80932001AFE36 /* WCLPluginManagerController.m */; };
 		45DEFEAD1A391EB700A6CF7E /* PluginsDirectoryEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DEFEAC1A391EB700A6CF7E /* PluginsDirectoryEventHandler.swift */; };
+		45E0EB321A5874A500BDCB90 /* PluginDataControllerTemporaryPluginsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E0EB311A5874A500BDCB90 /* PluginDataControllerTemporaryPluginsTests.swift */; };
 		45F4235E19D3896F007F5BC3 /* TestConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F4235D19D3896F007F5BC3 /* TestConstants.swift */; };
 		45F892EB18CFF10D00B89515 /* WCLFileExtensionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892EA18CFF10D00B89515 /* WCLFileExtensionController.m */; };
 		45F892EE18D12A6300B89515 /* WCLKeyToObjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892ED18D12A6300B89515 /* WCLKeyToObjectController.m */; };
@@ -231,7 +232,7 @@
 		4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginManagerDefaultNewPluginTests.m; sourceTree = "<group>"; };
 		458FD69319D8A1D100D4898A /* NSError+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Helper.swift"; sourceTree = "<group>"; };
 		4590E5361A0EABFA000C9890 /* FilesAndPluginsDirectoryManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FilesAndPluginsDirectoryManagerTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		4590E5381A0EAC58000C9890 /* TemporaryPluginTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryPluginTestCase.swift; sourceTree = "<group>"; };
+		4590E5381A0EAC58000C9890 /* TemporaryPluginsTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryPluginsTestCase.swift; sourceTree = "<group>"; };
 		4590E53A1A0EAF7E000C9890 /* PluginsDirectoryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PluginsDirectoryManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4596913D18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLFileExtensionsControllerTests.m; sourceTree = "<group>"; };
 		4596913F18D4AFF60096B058 /* WCLTestPluginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLTestPluginManager.h; sourceTree = "<group>"; };
@@ -246,6 +247,7 @@
 		45D21F0818C80932001AFE36 /* WCLPluginManagerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPluginManagerController.h; sourceTree = "<group>"; };
 		45D21F0918C80932001AFE36 /* WCLPluginManagerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginManagerController.m; sourceTree = "<group>"; };
 		45DEFEAC1A391EB700A6CF7E /* PluginsDirectoryEventHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PluginsDirectoryEventHandler.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		45E0EB311A5874A500BDCB90 /* PluginDataControllerTemporaryPluginsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginDataControllerTemporaryPluginsTests.swift; sourceTree = "<group>"; };
 		45F4235D19D3896F007F5BC3 /* TestConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TestConstants.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		45F892E918CFF10D00B89515 /* WCLFileExtensionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLFileExtensionController.h; sourceTree = "<group>"; };
 		45F892EA18CFF10D00B89515 /* WCLFileExtensionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLFileExtensionController.m; sourceTree = "<group>"; };
@@ -318,11 +320,12 @@
 				45D02C5F1A072E6100778F3A /* PluginTests.swift */,
 				45605E8419D72A750033A8AD /* DirectoryTests.swift */,
 				452D273419C7AB190085CDAF /* PluginDataControllerTests.swift */,
+				45E0EB311A5874A500BDCB90 /* PluginDataControllerTemporaryPluginsTests.swift */,
 				45605E8619D74A1D0033A8AD /* PluginCopyControllerTests.swift */,
 				4562C68D1A3E85550080D6FC /* PluginsDirectoryManagerTests.swift */,
 				4590E5361A0EABFA000C9890 /* FilesAndPluginsDirectoryManagerTests.swift */,
 				450B63AA1A2AAFD4002676BC /* PluginsPathHelperTests.swift */,
-				4590E5381A0EAC58000C9890 /* TemporaryPluginTestCase.swift */,
+				4590E5381A0EAC58000C9890 /* TemporaryPluginsTestCase.swift */,
 				453DDF7E1A1EBDC7007F1443 /* WCLDirectoryWatcherTests.swift */,
 				45539B0119D4E80E0017B892 /* TemporaryDirectoryTestCase.swift */,
 				452D273219C7AB190085CDAF /* Supporting Files */,
@@ -682,7 +685,7 @@
 				45FF3C5C1A0F0806009486AD /* PluginsDirectoryManager.swift in Sources */,
 				451A85E219D2409E00C92D47 /* PluginManager.swift in Sources */,
 				45F4235E19D3896F007F5BC3 /* TestConstants.swift in Sources */,
-				4590E5391A0EAC58000C9890 /* TemporaryPluginTestCase.swift in Sources */,
+				4590E5391A0EAC58000C9890 /* TemporaryPluginsTestCase.swift in Sources */,
 				452D273E19C7AFCA0085CDAF /* PluginDataController.swift in Sources */,
 				45D02C611A072E6100778F3A /* PluginTests.swift in Sources */,
 				4590E5371A0EABFA000C9890 /* FilesAndPluginsDirectoryManagerTests.swift in Sources */,
@@ -693,6 +696,7 @@
 				4562C68E1A3E85550080D6FC /* PluginsDirectoryManagerTests.swift in Sources */,
 				458FD69519D8A45B00D4898A /* NSError+Helper.swift in Sources */,
 				452D273519C7AB190085CDAF /* PluginDataControllerTests.swift in Sources */,
+				45E0EB321A5874A500BDCB90 /* PluginDataControllerTemporaryPluginsTests.swift in Sources */,
 				453DDF811A2104DA007F1443 /* SubprocessFileSystemModifier.swift in Sources */,
 				450B63AB1A2AAFD4002676BC /* PluginsPathHelperTests.swift in Sources */,
 				4508DACB1A57631600A6E71F /* PluginDataController+Paths.swift in Sources */,
