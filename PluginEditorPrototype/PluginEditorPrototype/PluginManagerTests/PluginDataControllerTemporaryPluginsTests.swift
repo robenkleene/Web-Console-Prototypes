@@ -120,6 +120,38 @@ extension PluginDataControllerTemporaryPluginsTests {
         SubprocessFileSystemModifier.removeDirectoryAtPath(pluginPath)
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
+
+
+    // MARK: Modify Helpers
+    
+    func modifyPluginWithConfirmation(plugin: Plugin, handler: (plugin: Plugin?) -> Void) {
+        let infoDictionaryPath: NSString! = temporaryPlugin.infoDictionaryURL.path
+        var error: NSError?
+        let infoDictionaryContents: NSString! = NSString(contentsOfFile: infoDictionaryPath, encoding: NSUTF8StringEncoding, error: &error)
+        XCTAssertNil(error, "The error should be nil.")
+
+        let removeExpectation = expectationWithDescription("Plugin was removed")
+        pluginDataEventManager.addPluginWasRemovedHandler({ (removedPlugin) -> Void in
+            if (plugin == removedPlugin) {
+                removeExpectation.fulfill()
+            }
+        })
+        
+        let pluginPath = plugin.bundle.bundlePath
+        var newPlugin: Plugin?
+        let createExpectation = expectationWithDescription("Plugin was added")
+        pluginDataEventManager.addPluginWasAddedHandler({ (addedPlugin) -> Void in
+            let path = addedPlugin.bundle.bundlePath
+            if (path == pluginPath) {
+                newPlugin = addedPlugin
+                handler(plugin: newPlugin)
+                createExpectation.fulfill()
+            }
+        })
+        
+        SubprocessFileSystemModifier.writeToFileAtPath(infoDictionaryPath, contents: infoDictionaryContents)
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+    }
 }
 
 class PluginDataControllerTemporaryPluginsTests: TemporaryPluginsTestCase {
@@ -182,8 +214,20 @@ class PluginDataControllerTemporaryPluginsTests: TemporaryPluginsTestCase {
         XCTAssertTrue(contains(pluginDataController.plugins(), newPluginTwo), "The plugins should contain the plugin")
     }
     
-//    func testEditPlugin() {
-//    }
+    func testEditPlugin() {
+        let pluginPath = plugin.bundle.bundlePath
+        let destinationPluginFilename = plugin.identifier
+        let destinationPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(destinationPluginFilename)
+        
+        // Move the plugin
+        var newPlugin: Plugin!
+        modifyPluginWithConfirmation(plugin, handler: { (plugin) -> Void in
+            newPlugin = plugin
+        })
+        XCTAssertNotNil(newPlugin, "The plugin should not be nil")
+        XCTAssertFalse(contains(pluginDataController.plugins(), plugin), "The plugins should not contain the plugin")
+        XCTAssertTrue(contains(pluginDataController.plugins(), newPlugin), "The plugins should contain the plugin")
+    }
     
     // TODO: Test invalid plugins are not loaded?
 }
