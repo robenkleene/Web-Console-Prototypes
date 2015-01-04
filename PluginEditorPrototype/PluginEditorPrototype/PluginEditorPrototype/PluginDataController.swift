@@ -89,11 +89,11 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
 
     // MARK: Creating New Plugins
     
-    func newPluginFromPlugin(plugin: Plugin) {
-        newPluginFromPlugin(plugin, inDirectoryAtURL: ClassConstants.duplicatePluginDestinationDirectory.URL())
-    }
-
-    private func newPluginFromPlugin(plugin: Plugin, inDirectoryAtURL dstURL: NSURL) {
-        pluginDuplicateController.duplicatePlugin(plugin, toDirectoryAtURL: dstURL)
-    }
+//    func newPluginFromPlugin(plugin: Plugin) {
+//        newPluginFromPlugin(plugin, inDirectoryAtURL: ClassConstants.duplicatePluginDestinationDirectory.URL())
+//    }
+//
+//    private func newPluginFromPlugin(plugin: Plugin, inDirectoryAtURL dstURL: NSURL) {
+//        pluginDuplicateController.duplicatePlugin(plugin, toDirectoryAtURL: dstURL)
+//    }
 }
