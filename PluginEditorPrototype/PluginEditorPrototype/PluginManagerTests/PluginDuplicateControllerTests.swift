@@ -1,5 +1,5 @@
 //
-//  PluginCopyControllerTests.swift
+//  PluginDuplicateControllerTests.swift
 //  PluginEditorPrototype
 //
 //  Created by Roben Kleene on 9/27/14.
@@ -9,8 +9,8 @@
 import Cocoa
 import XCTest
 
-class PluginCopyControllerTests: XCTestCase {
-    let pluginCopyController = PluginCopyController()
+class PluginDuplicateControllerTests: XCTestCase {
+    let pluginDuplicateController = PluginDuplicateController()
     let pluginManager = PluginManager(testPluginsPaths)
     var plugin: Plugin?
 
@@ -20,13 +20,13 @@ class PluginCopyControllerTests: XCTestCase {
     }
 
     override func tearDown() {
-        pluginCopyController.cleanUp()
+        pluginDuplicateController.cleanUp()
         plugin = nil
         super.tearDown()
     }
     
     func testCopyPlugin() {
-        var testPluginURL = pluginCopyController.copyPlugin(plugin!, toDirectoryAtURL: pluginCopyController.copyTempDirectoryURL)
+        var testPluginURL = pluginDuplicateController.duplicatePlugin(plugin!, toDirectoryAtURL: pluginDuplicateController.copyTempDirectoryURL)
         var testPlugin = Plugin.pluginWithURL(testPluginURL!)
         
         XCTAssertNotNil(testPlugin, "The plugin should not be nil")
@@ -42,16 +42,16 @@ class PluginCopyControllerTests: XCTestCase {
     }
     
     func testCleanUp() {
-        pluginCopyController.copyPlugin(plugin!, toDirectoryAtURL: pluginCopyController.copyTempDirectoryURL)
+        pluginDuplicateController.duplicatePlugin(plugin!, toDirectoryAtURL: pluginDuplicateController.copyTempDirectoryURL)
 
         // Assert the directory is not empty
-        let path = pluginCopyController.copyTempDirectoryURL.path!
+        let path = pluginDuplicateController.copyTempDirectoryURL.path!
         var error: NSError?
         var contents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path, error:&error)
         XCTAssertNil(error, "The error should be nil")
         XCTAssertFalse(contents!.isEmpty, "The contents should not be empty")
         
-        pluginCopyController.cleanUp()
+        pluginDuplicateController.cleanUp()
 
         // Assert directory is empty
         error = nil
@@ -63,7 +63,7 @@ class PluginCopyControllerTests: XCTestCase {
     // TODO: If there is already an existing plugin the resulting directory name should be the same as the plugins UUID
 }
 
-//class PluginCopyControllerTests: XCTestCase {
+//class PluginDuplicateControllerTests: XCTestCase {
 
 
 // TODO: Copy to test directory

@@ -17,10 +17,10 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
     var delegate: PluginDataControllerDelegate?
     var pluginDirectoryManagers: [PluginsDirectoryManager]!
     var pluginPathToPluginDictionary: [NSString : Plugin]!
-    lazy var pluginCopyController = PluginCopyController()
+    lazy var pluginDuplicateController = PluginDuplicateController()
     
     struct ClassConstants {
-        static let copyPluginDestinationDirectory = Directory.ApplicationSupportPlugins
+        static let duplicatePluginDestinationDirectory = Directory.ApplicationSupportPlugins
     }
     
     init(_ paths: [String]) {
@@ -90,10 +90,10 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
     // MARK: Creating New Plugins
     
     func newPluginFromPlugin(plugin: Plugin) {
-        newPluginFromPlugin(plugin, inDirectoryAtURL: ClassConstants.copyPluginDestinationDirectory.URL())
+        newPluginFromPlugin(plugin, inDirectoryAtURL: ClassConstants.duplicatePluginDestinationDirectory.URL())
     }
 
     private func newPluginFromPlugin(plugin: Plugin, inDirectoryAtURL dstURL: NSURL) {
-        pluginCopyController.copyPlugin(plugin, toDirectoryAtURL: dstURL)
+        pluginDuplicateController.duplicatePlugin(plugin, toDirectoryAtURL: dstURL)
     }
 }

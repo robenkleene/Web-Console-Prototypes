@@ -1,5 +1,5 @@
 //
-//  PluginCopyController.swift
+//  PluginDuplicateController.swift
 //  PluginEditorPrototype
 //
 //  Created by Roben Kleene on 9/25/14.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PluginCopyController {
+class PluginDuplicateController {
     let copyTempDirectoryURL: NSURL
     
     init() {
@@ -34,7 +34,7 @@ class PluginCopyController {
         }
     }
     
-    func copyPlugin(plugin: Plugin, toDirectoryAtURL destinationDirectoryURL: NSURL) -> NSURL? {
+    func duplicatePlugin(plugin: Plugin, toDirectoryAtURL destinationDirectoryURL: NSURL) -> NSURL? {
         let uuid = NSUUID()
         let filename = uuid.UUIDString
         let pluginURL = plugin.bundle.bundleURL
@@ -85,8 +85,7 @@ class PluginCopyController {
                     error: &error)
             println("error = \(error)")
             assert(createSuccess && error == nil, "The create should succeed")
-        }
-        else {
+        } else {
             assert(isDir ? true : false, "The file should be a directory")
         }
         
