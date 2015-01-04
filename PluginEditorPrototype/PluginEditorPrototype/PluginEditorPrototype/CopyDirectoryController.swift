@@ -12,7 +12,12 @@ import Cocoa
 
 class CopyDirectoryController {
     let copyTempDirectoryURL: NSURL
-    let tempDirectoryName: String
+    let tempDirectoryName: NSString
+    var trashDirectoryName: NSString {
+        get {
+            return tempDirectoryName + " Recovered"
+        }
+    }
     
     init(tempDirectoryName: String) {
         self.tempDirectoryName = tempDirectoryName
@@ -24,7 +29,6 @@ class CopyDirectoryController {
     // MARK: Public
     
     func cleanUp() {
-        let trashDirectoryName = tempDirectoryName + " Recovered"
         self.dynamicType.moveContentsOfURL(copyTempDirectoryURL, toDirectoryInTrashWithName: trashDirectoryName)
     }
     
@@ -52,11 +56,7 @@ class CopyDirectoryController {
             return
         }
 
-        var createDirectoryError: NSError?
-        let trashDirectoryURL = URL.URLByAppendingPathComponent(trashDirectoryName)
-        let createDirectorySuccess = createDirectoryIfMissingAtURL(trashDirectoryURL, error: &createDirectoryError)
-        assert(createDirectorySuccess && createDirectoryError == nil, "Creating the directory should succeed")
-        
+        var foundFilesToRecover = false
         let keys: Array<AnyObject> = [NSURLNameKey]
         let options = NSDirectoryEnumerationOptions.SkipsHiddenFiles | NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants
         if let enumerator = NSFileManager.defaultManager().enumeratorAtURL(URL,
@@ -74,6 +74,15 @@ class CopyDirectoryController {
                     if filename == trashDirectoryName {
                         continue
                     }
+
+                    let trashDirectoryURL = URL.URLByAppendingPathComponent(trashDirectoryName)
+                    if !foundFilesToRecover {
+                        var createDirectoryError: NSError?
+                        let createDirectorySuccess = createDirectoryIfMissingAtURL(trashDirectoryURL, error: &createDirectoryError)
+                        assert(createDirectorySuccess && createDirectoryError == nil, "Creating the directory should succeed")
+                        foundFilesToRecover = true
+                    }
+                    
                     let UUID = NSUUID()
                     let UUIDString = UUID.UUIDString
                     let destinationFileURL = trashDirectoryURL.URLByAppendingPathComponent(UUIDString)
@@ -82,6 +91,10 @@ class CopyDirectoryController {
                     assert(moveSuccess && moveError == nil, "The move should succeed")
                 }
             }
+        }
+
+        if !foundFilesToRecover {
+            return
         }
 
         if let path = URL.path {

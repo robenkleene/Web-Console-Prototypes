@@ -11,10 +11,14 @@ import XCTest
 
 class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
     var copyDirectoryController: CopyDirectoryController!
+    struct ClassConstants {
+        static let tempDirectoryName = "Copy Directory Test"
+    }
+
     
     override func setUp() {
         super.setUp()
-        copyDirectoryController = CopyDirectoryController(tempDirectoryName: "Copy Directory Test")
+        copyDirectoryController = CopyDirectoryController(tempDirectoryName: ClassConstants.tempDirectoryName)
     }
     
     override func tearDown() {
@@ -23,13 +27,7 @@ class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
     }
 
 
-    func testCleanUp() {
-        // Copy the plugin to the temp directory
-        // Init a new CopyDirectoryController
-        // Confirm the directory is empty
-        // Confirm the items are in the trash
-        // Delete the items from the trash
-
+    func testCleanUpOnInit() {
         let pluginFileURL = temporaryPlugin.bundle.bundleURL
         let copyExpectation = expectationWithDescription("Copy")
         copyDirectoryController.copyItemAtURL(pluginFileURL, completionHandler: { (URL, error) -> Void in
@@ -46,24 +44,38 @@ class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
             }
         })
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+
+        // Assert the contents is empty
+        var contentsError: NSError?
+        let keys: Array<AnyObject> = [NSURLNameKey]
+        let options = NSDirectoryEnumerationOptions.SkipsHiddenFiles | NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants
+        let contents = NSFileManager.defaultManager().contentsOfDirectoryAtURL(copyDirectoryController.copyTempDirectoryURL,
+            includingPropertiesForKeys: keys,
+            options: options,
+            error: &contentsError)
+        XCTAssertNil(contentsError, "The error should be nil")
+        XCTAssertFalse(contents!.isEmpty, "The contents should not be empty")
+
+        // Init a new CopyDirectoryController
+        let copyDirectoryControllerTwo = CopyDirectoryController(tempDirectoryName: ClassConstants.tempDirectoryName)
         
+        // Assert directory is empty
+        var contentsErrorTwo: NSError?
+        let contentsTwo = NSFileManager.defaultManager().contentsOfDirectoryAtURL(copyDirectoryController.copyTempDirectoryURL,
+            includingPropertiesForKeys: keys,
+            options: options,
+            error: &contentsErrorTwo)
+        XCTAssertNil(contentsErrorTwo, "The error should be nil")
+        XCTAssertTrue(contentsTwo!.isEmpty, "The contents should be empty")
 
-//        // Assert the directory is not empty
-//        let path = pluginDuplicateController.duplicateTempDirectoryURL.path!
-//        var error: NSError?
-//        var contents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path, error:&error)
-//        XCTAssertNil(error, "The error should be nil")
-//        XCTAssertFalse(contents!.isEmpty, "The contents should not be empty")
-//
-//        pluginDuplicateController.cleanUp()
-//
-//        // Assert directory is empty
-//        error = nil
-//        contents = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path, error:&error)
-//        XCTAssertNil(error, "The error should be nil")
-//        XCTAssertTrue(contents!.isEmpty, "The contents should be empty")
+        // Clean Up
+        let trashDirectory = NSSearchPathForDirectoriesInDomains(.TrashDirectory, .UserDomainMask, true)[0] as NSString
+        let recoveredFilesPath = trashDirectory.stringByAppendingPathComponent(copyDirectoryControllerTwo.trashDirectoryName)
+        var isDir: ObjCBool = false
+        let exists = NSFileManager.defaultManager().fileExistsAtPath(recoveredFilesPath, isDirectory: &isDir)
+        XCTAssertTrue(exists, "The item should exist")
+        XCTAssertTrue(isDir, "The item should be a directory")
+        var removeError: NSError?
+        NSFileManager.defaultManager().removeItemAtPath(recoveredFilesPath, error: &removeError)
     }
-
-
-
 }
