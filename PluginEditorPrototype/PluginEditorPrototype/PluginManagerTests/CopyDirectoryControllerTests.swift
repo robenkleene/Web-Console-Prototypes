@@ -26,6 +26,45 @@ class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
         copyDirectoryController = nil
     }
 
+    
+    func testCopy() {
+        let pluginFileURL = temporaryPlugin.bundle.bundleURL
+        let copyExpectation = expectationWithDescription("Copy")
+        
+        var copiedPluginURL: NSURL!
+        copyDirectoryController.copyItemAtURL(pluginFileURL, completionHandler: { (URL, error) -> Void in
+            XCTAssertNotNil(URL, "The URL should not be nil")
+            XCTAssertNil(error, "The error should be nil")
+            
+            if let URL = URL {
+                let movedFilename = testDirectoryName
+                let movedDestinationURL = self.temporaryPluginsDirectoryURL.URLByAppendingPathComponent(movedFilename)
+                var moveError: NSError?
+                let moveSuccess = NSFileManager.defaultManager().moveItemAtURL(URL,
+                    toURL: movedDestinationURL,
+                    error: &moveError)
+                XCTAssertTrue(moveSuccess, "The move should succeed")
+                XCTAssertNil(moveError, "The error should be nil")
+                copiedPluginURL = movedDestinationURL
+                copyExpectation.fulfill()
+            }
+        })
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+
+        var isDir: ObjCBool = false
+        let exists = NSFileManager.defaultManager().fileExistsAtPath(copiedPluginURL.path!,
+            isDirectory: &isDir)
+        XCTAssertTrue(exists, "The item should exist")
+        XCTAssertTrue(isDir, "The item should be a directory")
+
+        let copiedPlugin = Plugin.pluginWithURL(copiedPluginURL)
+        XCTAssertNotNil(copiedPlugin, "The plugin should not be nil")
+        XCTAssertEqual(copiedPlugin!.name, temporaryPlugin.name, "The plugin names should be equal")
+        
+        // Cleanup
+        let success = removeTemporaryItemAtURL(copiedPluginURL)
+        XCTAssertTrue(success, "The remove should succeed")
+    }
 
     func testCleanUpOnInit() {
         let pluginFileURL = temporaryPlugin.bundle.bundleURL
@@ -39,7 +78,11 @@ class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
                 let movedDirectoryURL: NSURL! = URL.URLByDeletingLastPathComponent
                 let movedDestinationURL = movedDirectoryURL.URLByAppendingPathComponent(movedFilename)
                 var moveError: NSError?
-                let moveSuccess = NSFileManager.defaultManager().moveItemAtURL(URL, toURL: movedDestinationURL, error: &moveError)
+                let moveSuccess = NSFileManager.defaultManager().moveItemAtURL(URL,
+                    toURL: movedDestinationURL,
+                    error: &moveError)
+                XCTAssertTrue(moveSuccess, "The move should succeed")
+                XCTAssertNil(moveError, "The error should be nil")
                 copyExpectation.fulfill()
             }
         })

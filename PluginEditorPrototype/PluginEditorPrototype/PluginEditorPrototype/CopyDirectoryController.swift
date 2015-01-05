@@ -38,6 +38,12 @@ class CopyDirectoryController {
             var copiedURL = self.dynamicType.URLOfItemCopiedFromURL(URL, toDirectoryURL: self.copyTempDirectoryURL, error: &error)
             dispatch_async(dispatch_get_main_queue()) {
                 handler(URL: copiedURL, error: error)
+                if let path = copiedURL?.path {
+                    let fileExists = NSFileManager.defaultManager().fileExistsAtPath(path)
+                    assert(!fileExists, "The file should not exist")
+                } else {
+                    assert(false, "Getting the path should succeed")
+                }
             }
         }
     }

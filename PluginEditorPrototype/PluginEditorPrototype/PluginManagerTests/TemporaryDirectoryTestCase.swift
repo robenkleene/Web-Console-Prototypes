@@ -43,6 +43,13 @@ class TemporaryDirectoryTestCase: XCTestCase {
         return self.dynamicType.safelyRemoveTemporaryItemAtPath(path)
     }
 
+    func removeTemporaryItemAtURL(URL: NSURL) -> Bool {
+        if let path = URL.path {
+            return removeTemporaryItemAtPath(path)
+        }
+        return false
+    }
+    
     func removeTemporaryItemAtPath(path: NSString) -> Bool {
         if !path.hasPrefix(temporaryDirectoryPath) {
             XCTAssert(false, "Attempted to delete a temporary item that is not in the temporary directory.")
