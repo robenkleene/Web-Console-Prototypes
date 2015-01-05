@@ -9,27 +9,47 @@
 import Cocoa
 import XCTest
 
-class DuplicatePluginControllerTests: XCTestCase {
-
+class DuplicatePluginControllerTests: TemporaryPluginsTestCase {
+    var duplicatePluginController: DuplicatePluginController!
+    
     override func setUp() {
         super.setUp()
-        // Mine here
+        duplicatePluginController = DuplicatePluginController()
     }
 
     override func tearDown() {
-        // Mine here
+        duplicatePluginController = nil
         super.tearDown()
     }
     
     func testDuplicatePlugin() {
-        
-//        XCTAssertNotNil(testPlugin, "The plugin should not be nil")
-//        XCTAssertNotEqual(plugin!.name, testPlugin!.name, "The test plugin's name should not equal the plugin's name")
-//        XCTAssertNotEqual(plugin!.identifier, testPlugin!.identifier, "The test plugin's identifier should not equal the plugin's name")
+        var duplicatePlugin: Plugin!
+        let duplicateExpectation = expectationWithDescription("Duplicate")
+        duplicatePluginController.duplicatePlugin(temporaryPlugin, toDirectoryAtURL: temporaryPluginsDirectoryURL) { (plugin, error) -> Void in
+            XCTAssertNil(error, "The error should be nil")
+            XCTAssertNotNil(plugin, "The plugin should not be nil")
+            duplicatePlugin = plugin
+            duplicateExpectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
 
-        // TODO: Assert that the new plugins properties can be changed
-        // TODO: Assert that after moving the bundle its URL is still accurate
-        // TODO: Assert the directory matches the name
-        // TODO: How to resolve issues around a plugins new URL? E.g., I've loaded the plugin and then change its URL
+        // Test the plugins directory exists
+        let duplicatePluginURL = duplicatePlugin.bundle.bundleURL
+        var isDir: ObjCBool = false
+        let exists = NSFileManager.defaultManager().fileExistsAtPath(duplicatePluginURL.path!,
+            isDirectory: &isDir)
+        XCTAssertTrue(exists, "The item should exist")
+        XCTAssertTrue(isDir, "The item should be a directory")
+
+        // Test the plugins properties are accurate
+        XCTAssertNotEqual(temporaryPlugin.bundle.bundleURL, duplicatePlugin.bundle.bundleURL, "The URLs should not be equal")
+        XCTAssertNotEqual(temporaryPlugin.identifier, duplicatePlugin.identifier, "The identifiers should not be equal")
+        XCTAssertNotEqual(temporaryPlugin.name, duplicatePlugin.name, "The names should not be equal")
+        XCTAssertNotEqual(temporaryPlugin.commandPath!, duplicatePlugin.commandPath!, "The command paths should not be equal")
+        XCTAssertEqual(temporaryPlugin.command!, duplicatePlugin.command!, "The commands should be equal")
+
+        // Clean Up
+        let success = removeTemporaryItemAtURL(duplicatePluginURL)
+        XCTAssertTrue(success, "The remove should succeed")
     }
 }

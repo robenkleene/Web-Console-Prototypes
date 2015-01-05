@@ -47,7 +47,7 @@ class DuplicatePluginController {
                         error: &renameError)
                     if !renameSuccess || renameError != nil {
                         println("Failed to move a plugin directory to \(renamedDestinationURL) \(error)")
-                    } else if let renamedPlugin = Plugin.pluginWithURL(movedDestinationURL) {
+                    } else if let renamedPlugin = Plugin.pluginWithURL(renamedDestinationURL) {
                         plugin = renamedPlugin
                     }
                 }
