@@ -17,7 +17,7 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
     var delegate: PluginDataControllerDelegate?
     var pluginDirectoryManagers: [PluginsDirectoryManager]!
     var pluginPathToPluginDictionary: [NSString : Plugin]!
-    lazy var pluginDuplicateController = PluginDuplicateController()
+    lazy var duplicatePluginController = DuplicatePluginController()
     
     struct ClassConstants {
         static let duplicatePluginDestinationDirectory = Directory.ApplicationSupportPlugins
@@ -94,6 +94,6 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
 //    }
 //
 //    private func newPluginFromPlugin(plugin: Plugin, inDirectoryAtURL dstURL: NSURL) {
-//        pluginDuplicateController.duplicatePlugin(plugin, toDirectoryAtURL: dstURL)
+//        duplicatePluginController.duplicatePlugin(plugin, toDirectoryAtURL: dstURL)
 //    }
 }

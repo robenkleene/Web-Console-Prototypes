@@ -30,10 +30,10 @@
 		453DDF7F1A1EBDC7007F1443 /* WCLDirectoryWatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453DDF7E1A1EBDC7007F1443 /* WCLDirectoryWatcherTests.swift */; };
 		453DDF811A2104DA007F1443 /* SubprocessFileSystemModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453DDF801A2104DA007F1443 /* SubprocessFileSystemModifier.swift */; };
 		45539B0219D4E80E0017B892 /* TemporaryDirectoryTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0119D4E80E0017B892 /* TemporaryDirectoryTestCase.swift */; };
-		45539B0419D4F5790017B892 /* PluginDuplicateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0319D4F5790017B892 /* PluginDuplicateController.swift */; };
-		45539B0519D4F5790017B892 /* PluginDuplicateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0319D4F5790017B892 /* PluginDuplicateController.swift */; };
+		45539B0419D4F5790017B892 /* DuplicatePluginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0319D4F5790017B892 /* DuplicatePluginController.swift */; };
+		45539B0519D4F5790017B892 /* DuplicatePluginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45539B0319D4F5790017B892 /* DuplicatePluginController.swift */; };
 		45605E8519D72A750033A8AD /* DirectoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45605E8419D72A750033A8AD /* DirectoryTests.swift */; };
-		45605E8719D74A1D0033A8AD /* PluginDuplicateControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45605E8619D74A1D0033A8AD /* PluginDuplicateControllerTests.swift */; };
+		45605E8719D74A1D0033A8AD /* DuplicatePluginControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45605E8619D74A1D0033A8AD /* DuplicatePluginControllerTests.swift */; };
 		4562C68E1A3E85550080D6FC /* PluginsDirectoryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4562C68D1A3E85550080D6FC /* PluginsDirectoryManagerTests.swift */; };
 		4563D5591A104EE1000B5F4C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4567DB4218B03A7A00CBBD29 /* Cocoa.framework */; };
 		4563D55C1A143679000B5F4C /* WCLDirectoryWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4563D55B1A143679000B5F4C /* WCLDirectoryWatcher.m */; };
@@ -178,9 +178,9 @@
 		453DDF7E1A1EBDC7007F1443 /* WCLDirectoryWatcherTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = WCLDirectoryWatcherTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		453DDF801A2104DA007F1443 /* SubprocessFileSystemModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SubprocessFileSystemModifier.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		45539B0119D4E80E0017B892 /* TemporaryDirectoryTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryDirectoryTestCase.swift; sourceTree = "<group>"; };
-		45539B0319D4F5790017B892 /* PluginDuplicateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginDuplicateController.swift; sourceTree = "<group>"; };
+		45539B0319D4F5790017B892 /* DuplicatePluginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuplicatePluginController.swift; sourceTree = "<group>"; };
 		45605E8419D72A750033A8AD /* DirectoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryTests.swift; sourceTree = "<group>"; };
-		45605E8619D74A1D0033A8AD /* PluginDuplicateControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginDuplicateControllerTests.swift; sourceTree = "<group>"; };
+		45605E8619D74A1D0033A8AD /* DuplicatePluginControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuplicatePluginControllerTests.swift; sourceTree = "<group>"; };
 		4562C68D1A3E85550080D6FC /* PluginsDirectoryManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginsDirectoryManagerTests.swift; sourceTree = "<group>"; };
 		4563D55A1A143679000B5F4C /* WCLDirectoryWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WCLDirectoryWatcher.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4563D55B1A143679000B5F4C /* WCLDirectoryWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WCLDirectoryWatcher.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -326,7 +326,7 @@
 				45605E8419D72A750033A8AD /* DirectoryTests.swift */,
 				452D273419C7AB190085CDAF /* PluginDataControllerTests.swift */,
 				45E0EB311A5874A500BDCB90 /* PluginDataControllerTemporaryPluginsTests.swift */,
-				45605E8619D74A1D0033A8AD /* PluginDuplicateControllerTests.swift */,
+				45605E8619D74A1D0033A8AD /* DuplicatePluginControllerTests.swift */,
 				4563DE191A59D58000CCBE45 /* CopyDirectoryControllerTests.swift */,
 				4562C68D1A3E85550080D6FC /* PluginsDirectoryManagerTests.swift */,
 				4590E5361A0EABFA000C9890 /* FilesAndPluginsDirectoryManagerTests.swift */,
@@ -427,7 +427,7 @@
 				4567DB4918B03A7A00CBBD29 /* Supporting Files */,
 				452D272319C66EE40085CDAF /* PluginDataController.swift */,
 				4508DAC91A57623300A6E71F /* PluginDataController+Paths.swift */,
-				45539B0319D4F5790017B892 /* PluginDuplicateController.swift */,
+				45539B0319D4F5790017B892 /* DuplicatePluginController.swift */,
 				4563DE171A59BF8C00CCBE45 /* CopyDirectoryController.swift */,
 				451A85E019D2409E00C92D47 /* PluginManager.swift */,
 				4590E53A1A0EAF7E000C9890 /* PluginsDirectoryManager.swift */,
@@ -697,7 +697,7 @@
 				452D273E19C7AFCA0085CDAF /* PluginDataController.swift in Sources */,
 				45D02C611A072E6100778F3A /* PluginTests.swift in Sources */,
 				4590E5371A0EABFA000C9890 /* FilesAndPluginsDirectoryManagerTests.swift in Sources */,
-				45605E8719D74A1D0033A8AD /* PluginDuplicateControllerTests.swift in Sources */,
+				45605E8719D74A1D0033A8AD /* DuplicatePluginControllerTests.swift in Sources */,
 				452D273F19C7B0760085CDAF /* Plugin.swift in Sources */,
 				453DDF7F1A1EBDC7007F1443 /* WCLDirectoryWatcherTests.swift in Sources */,
 				45FDD13B1A393B4F00746003 /* PluginsDirectoryEventHandler.swift in Sources */,
@@ -709,7 +709,7 @@
 				450B63AB1A2AAFD4002676BC /* PluginsPathHelperTests.swift in Sources */,
 				4508DACB1A57631600A6E71F /* PluginDataController+Paths.swift in Sources */,
 				4563DE1B1A59DA6F00CCBE45 /* CopyDirectoryController.swift in Sources */,
-				45539B0519D4F5790017B892 /* PluginDuplicateController.swift in Sources */,
+				45539B0519D4F5790017B892 /* DuplicatePluginController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -732,7 +732,7 @@
 				45F892EB18CFF10D00B89515 /* WCLFileExtensionController.m in Sources */,
 				4567DB8918B1C08800CBBD29 /* WCLPlugin.m in Sources */,
 				45F892F418D12AFD00B89515 /* WCLPluginManager.m in Sources */,
-				45539B0419D4F5790017B892 /* PluginDuplicateController.swift in Sources */,
+				45539B0419D4F5790017B892 /* DuplicatePluginController.swift in Sources */,
 				4508DAC71A575FC900A6E71F /* Plugin+Initialization.swift in Sources */,
 				452D272819C66EE40085CDAF /* Plugin.swift in Sources */,
 				4567DB7C18B044B700CBBD29 /* WCLPreferencesWindowController.m in Sources */,
