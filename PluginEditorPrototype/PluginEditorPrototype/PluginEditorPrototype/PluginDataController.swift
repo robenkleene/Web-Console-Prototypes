@@ -50,50 +50,56 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
 
     // MARK: PluginsDirectoryManagerDelegate
 
-    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath pluginPath: NSString) {
-        if let oldPlugin = removedPluginAtPluginPath(pluginPath) {
-            delegate?.pluginDataController(self, didRemovePlugin: oldPlugin)
+    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager,
+        pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath pluginPath: NSString)
+    {
+        if let oldPlugin = pluginAtPluginPath(pluginPath) {
+            removePlugin(oldPlugin)
         }
-
-        if let newPlugin = addedPluginAtPluginPath(pluginPath) {
-            delegate?.pluginDataController(self, didAddPlugin: newPlugin)
+        
+        if let newPlugin = Plugin.pluginWithPath(pluginPath) {
+            addPlugin(newPlugin)
         }
     }
     
-    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager, pluginInfoDictionaryWasRemovedAtPluginPath pluginPath: NSString) {
-        if let oldPlugin = removedPluginAtPluginPath(pluginPath) {
-            delegate?.pluginDataController(self, didRemovePlugin: oldPlugin)
+    func pluginsDirectoryManager(pluginsDirectoryManager: PluginsDirectoryManager,
+        pluginInfoDictionaryWasRemovedAtPluginPath pluginPath: NSString)
+    {
+        if let oldPlugin = pluginAtPluginPath(pluginPath) {
+            removePlugin(oldPlugin)
         }
     }
 
     
     // MARK: Add & Remove Helpers
     
-    func addedPluginAtPluginPath(pluginPath: NSString) -> Plugin? {
-        if let plugin = Plugin.pluginWithPath(pluginPath) {
-            pluginPathToPluginDictionary[pluginPath] = plugin
-            return plugin
-        }
-        return nil
+    func addPlugin(plugin: Plugin) {
+        let pluginPath = plugin.bundle.bundlePath
+        pluginPathToPluginDictionary[pluginPath] = plugin
+        delegate?.pluginDataController(self, didAddPlugin: plugin)
     }
     
-    func removedPluginAtPluginPath(pluginPath: NSString) -> Plugin? {
-        if let plugin = pluginPathToPluginDictionary[pluginPath] {
-            pluginPathToPluginDictionary.removeValueForKey(pluginPath)
-            return plugin
-        }
-        
-        return nil
+    func removePlugin(plugin: Plugin) {
+        let pluginPath = plugin.bundle.bundlePath
+        pluginPathToPluginDictionary.removeValueForKey(pluginPath)
+        delegate?.pluginDataController(self, didRemovePlugin: plugin)
     }
     
+    func pluginAtPluginPath(pluginPath: NSString) -> Plugin? {
+        return pluginPathToPluginDictionary[pluginPath]
+    }
+
 
     // MARK: Creating New Plugins
     
-//    func newPluginFromPlugin(plugin: Plugin) {
-//        newPluginFromPlugin(plugin, inDirectoryAtURL: ClassConstants.duplicatePluginDestinationDirectory.URL())
-//    }
-//
-//    private func newPluginFromPlugin(plugin: Plugin, inDirectoryAtURL dstURL: NSURL) {
-//        duplicatePluginController.duplicatePlugin(plugin, toDirectoryAtURL: dstURL)
-//    }
+    func duplicatePlugin(plugin: Plugin) {
+        duplicatePluginController.duplicatePlugin(plugin,
+            toDirectoryAtURL: ClassConstants.duplicatePluginDestinationDirectory.URL())
+        { (plugin, error) -> Void in
+            if let plugin = plugin {
+                self.addPlugin(plugin)
+            }
+        }
+    }
+
 }

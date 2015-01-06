@@ -228,6 +228,10 @@ class PluginDataControllerTemporaryPluginsTests: TemporaryPluginsTestCase {
         XCTAssertFalse(contains(pluginDataController.plugins(), plugin), "The plugins should not contain the plugin")
         XCTAssertTrue(contains(pluginDataController.plugins(), newPlugin), "The plugins should contain the plugin")
     }
+
+    func testDuplicatePlugin() {
+        
+    }
     
     // TODO: Test invalid plugins are not loaded?
 }
