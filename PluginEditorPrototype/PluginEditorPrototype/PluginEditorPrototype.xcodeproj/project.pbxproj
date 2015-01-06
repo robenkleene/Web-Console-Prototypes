@@ -87,7 +87,6 @@
 		45D02C641A072ED700778F3A /* HTML.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4818F382F400955EDC /* HTML.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		45D21F0A18C80932001AFE36 /* WCLPluginManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D21F0918C80932001AFE36 /* WCLPluginManagerController.m */; };
 		45DEFEAD1A391EB700A6CF7E /* PluginsDirectoryEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DEFEAC1A391EB700A6CF7E /* PluginsDirectoryEventHandler.swift */; };
-		45E0EB321A5874A500BDCB90 /* PluginDataControllerTemporaryPluginsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E0EB311A5874A500BDCB90 /* PluginDataControllerTemporaryPluginsTests.swift */; };
 		45F4235E19D3896F007F5BC3 /* TestConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F4235D19D3896F007F5BC3 /* TestConstants.swift */; };
 		45F892EB18CFF10D00B89515 /* WCLFileExtensionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892EA18CFF10D00B89515 /* WCLFileExtensionController.m */; };
 		45F892EE18D12A6300B89515 /* WCLKeyToObjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892ED18D12A6300B89515 /* WCLKeyToObjectController.m */; };
@@ -252,7 +251,6 @@
 		45D21F0818C80932001AFE36 /* WCLPluginManagerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPluginManagerController.h; sourceTree = "<group>"; };
 		45D21F0918C80932001AFE36 /* WCLPluginManagerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginManagerController.m; sourceTree = "<group>"; };
 		45DEFEAC1A391EB700A6CF7E /* PluginsDirectoryEventHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PluginsDirectoryEventHandler.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		45E0EB311A5874A500BDCB90 /* PluginDataControllerTemporaryPluginsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginDataControllerTemporaryPluginsTests.swift; sourceTree = "<group>"; };
 		45F4235D19D3896F007F5BC3 /* TestConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TestConstants.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		45F892E918CFF10D00B89515 /* WCLFileExtensionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLFileExtensionController.h; sourceTree = "<group>"; };
 		45F892EA18CFF10D00B89515 /* WCLFileExtensionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLFileExtensionController.m; sourceTree = "<group>"; };
@@ -325,7 +323,6 @@
 				45D02C5F1A072E6100778F3A /* PluginTests.swift */,
 				45605E8419D72A750033A8AD /* DirectoryTests.swift */,
 				452D273419C7AB190085CDAF /* PluginDataControllerTests.swift */,
-				45E0EB311A5874A500BDCB90 /* PluginDataControllerTemporaryPluginsTests.swift */,
 				45605E8619D74A1D0033A8AD /* DuplicatePluginControllerTests.swift */,
 				4563DE191A59D58000CCBE45 /* CopyDirectoryControllerTests.swift */,
 				4562C68D1A3E85550080D6FC /* PluginsDirectoryManagerTests.swift */,
@@ -704,7 +701,6 @@
 				4562C68E1A3E85550080D6FC /* PluginsDirectoryManagerTests.swift in Sources */,
 				458FD69519D8A45B00D4898A /* NSError+Helper.swift in Sources */,
 				452D273519C7AB190085CDAF /* PluginDataControllerTests.swift in Sources */,
-				45E0EB321A5874A500BDCB90 /* PluginDataControllerTemporaryPluginsTests.swift in Sources */,
 				453DDF811A2104DA007F1443 /* SubprocessFileSystemModifier.swift in Sources */,
 				450B63AB1A2AAFD4002676BC /* PluginsPathHelperTests.swift in Sources */,
 				4508DACB1A57631600A6E71F /* PluginDataController+Paths.swift in Sources */,

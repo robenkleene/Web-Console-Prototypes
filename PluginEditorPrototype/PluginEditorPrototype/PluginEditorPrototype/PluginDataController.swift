@@ -18,15 +18,17 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
     var pluginDirectoryManagers: [PluginsDirectoryManager]!
     var pluginPathToPluginDictionary: [NSString : Plugin]!
     lazy var duplicatePluginController = DuplicatePluginController()
+    let duplicatePluginDestinationDirectoryURL: NSURL
     
-    struct ClassConstants {
-        static let duplicatePluginDestinationDirectory = Directory.ApplicationSupportPlugins
+    convenience init(_ paths: [String]) {
+        self.init(paths, duplicatePluginDestinationDirectoryURL: Directory.ApplicationSupportPlugins.URL())
     }
-    
-    init(_ paths: [String]) {
+
+    init(_ paths: [String], duplicatePluginDestinationDirectoryURL: NSURL) {
         self.pluginDirectoryManagers = [PluginsDirectoryManager]()
         self.pluginPathToPluginDictionary = [NSString : Plugin]()
-
+        self.duplicatePluginDestinationDirectoryURL = duplicatePluginDestinationDirectoryURL
+        
         for path in paths {
             let plugins = self.dynamicType.pluginsAtPluginsPath(path)
             for plugin in plugins {
@@ -94,7 +96,7 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
     
     func duplicatePlugin(plugin: Plugin) {
         duplicatePluginController.duplicatePlugin(plugin,
-            toDirectoryAtURL: ClassConstants.duplicatePluginDestinationDirectory.URL())
+            toDirectoryAtURL: duplicatePluginDestinationDirectoryURL)
         { (plugin, error) -> Void in
             if let plugin = plugin {
                 self.addPlugin(plugin)
