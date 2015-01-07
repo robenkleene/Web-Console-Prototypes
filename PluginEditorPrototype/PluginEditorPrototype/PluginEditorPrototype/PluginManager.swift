@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class PluginManager {
+class PluginManager: PluginDataControllerDelegate {
     private let nameToPluginController: WCLKeyToObjectController
     private let pluginDataController: PluginDataController
     
@@ -28,7 +28,36 @@ class PluginManager {
         self.init([Directory.BuiltInPlugins.path(), Directory.ApplicationSupportPlugins.path()])
     }
 
+    
+    // MARK: Accessing Plugins
+    
+    func plugins() -> [Plugin] {
+        return self.nameToPluginController.allObjects() as [Plugin]!
+    }
+    
     func pluginWithName(name: String) -> Plugin? {
         return self.nameToPluginController.objectWithName(name) as? Plugin
     }
+
+
+    // MARK: Adding and Removing Plugins
+    
+    func removePlugin(plugin: Plugin) {
+        self.pluginDataController.movePluginToTrash(plugin)
+    }
+    
+    func duplicatePlugin(plugin: Plugin, handler: ((newPlugin: Plugin?) -> Void)?) {
+        self.pluginDataController.duplicatePlugin(plugin, handler: handler)
+    }
+
+    // MARK: PluginDataControllerDelegate
+
+    func pluginDataController(pluginDataController: PluginDataController, didAddPlugin plugin: Plugin) {
+        self.nameToPluginController.addObject(plugin)
+    }
+
+    func pluginDataController(pluginDataController: PluginDataController, didRemovePlugin plugin: Plugin) {
+        self.nameToPluginController.removeObject(plugin)
+    }
+
 }

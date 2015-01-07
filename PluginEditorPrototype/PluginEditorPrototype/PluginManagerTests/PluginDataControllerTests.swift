@@ -280,13 +280,17 @@ class PluginDataControllerTemporaryPluginsTests: TemporaryPluginsTestCase {
         let plugin = pluginDataController.plugins()[0]
         XCTAssertEqual(pluginDataController.plugins().count, 1, "The plugins count should be 1")
         
-        pluginDataController.duplicatePlugin(plugin)
-        
         var newPlugin: Plugin?
-        let createExpectation = expectationWithDescription("Plugin was added")
+        
+        let duplicateExpectation = expectationWithDescription("Plugin was duplicated")
+        pluginDataController.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
+            newPlugin = duplicatePlugin
+            duplicateExpectation.fulfill()
+        })
+
+        let addedExpectation = expectationWithDescription("Plugin was added")
         pluginDataEventManager.addPluginWasAddedHandler({ (addedPlugin) -> Void in
-            newPlugin = addedPlugin
-            createExpectation.fulfill()
+            addedExpectation.fulfill()
         })
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
