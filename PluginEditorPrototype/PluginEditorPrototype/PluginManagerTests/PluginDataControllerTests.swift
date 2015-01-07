@@ -276,7 +276,7 @@ class PluginDataControllerTemporaryPluginsTests: TemporaryPluginsTestCase {
         XCTAssertTrue(contains(pluginDataController.plugins(), newPlugin), "The plugins should contain the plugin")
     }
     
-    func testDuplicatePlugin() {
+    func testDuplicateAndTrashPlugin() {
         let plugin = pluginDataController.plugins()[0]
         XCTAssertEqual(pluginDataController.plugins().count, 1, "The plugins count should be 1")
         
@@ -293,9 +293,35 @@ class PluginDataControllerTemporaryPluginsTests: TemporaryPluginsTestCase {
         XCTAssertEqual(pluginDataController.plugins().count, 2, "The plugins count should be 1")
         XCTAssertTrue(contains(pluginDataController.plugins(), newPlugin!), "The plugins should contain the plugin")
         
-        // Cleanup
-        let success = removeTemporaryItemAtURL(newPlugin!.bundle.bundleURL)
+        // Trash the duplicated plugin
+
+        // Confirm that a matching directory does not exist in the trash
+        let trashedPluginDirectoryName = newPlugin!.bundle.bundlePath.lastPathComponent
+        let trashDirectory = NSSearchPathForDirectoriesInDomains(.TrashDirectory, .UserDomainMask, true)[0] as NSString
+        let trashedPluginPath = trashDirectory.stringByAppendingPathComponent(trashedPluginDirectoryName)
+        let beforeExists = NSFileManager.defaultManager().fileExistsAtPath(trashedPluginPath)
+        XCTAssertTrue(!beforeExists, "The item should exist")
+
+        // Trash the plugin
+        let removeExpectation = expectationWithDescription("Plugin was removed")
+        pluginDataEventManager.addPluginWasRemovedHandler({ (removedPlugin) -> Void in
+            XCTAssertEqual(newPlugin!, removedPlugin, "The plugins should be equal")
+            removeExpectation.fulfill()
+        })
+        pluginDataController.movePluginToTrash(newPlugin!)
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        
+        // Confirm that the directory does exist in the trash now
+        var isDir: ObjCBool = false
+        let afterExists = NSFileManager.defaultManager().fileExistsAtPath(trashedPluginPath, isDirectory: &isDir)
+        XCTAssertTrue(afterExists, "The item should exist")
+        XCTAssertTrue(isDir, "The item should be a directory")
+
+        // Clean up trash
+        var removeError: NSError?
+        let success = NSFileManager.defaultManager().removeItemAtPath(trashedPluginPath, error: &removeError)
         XCTAssertTrue(success, "The remove should succeed")
+        XCTAssertNil(removeError, "The error should be nil")
     }
     
     // TODO: Test plugins made invalid are not loaded?

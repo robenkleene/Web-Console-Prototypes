@@ -118,7 +118,11 @@ class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
         let exists = NSFileManager.defaultManager().fileExistsAtPath(recoveredFilesPath, isDirectory: &isDir)
         XCTAssertTrue(exists, "The item should exist")
         XCTAssertTrue(isDir, "The item should be a directory")
+
+        // Clean up trash
         var removeError: NSError?
-        NSFileManager.defaultManager().removeItemAtPath(recoveredFilesPath, error: &removeError)
+        let success = NSFileManager.defaultManager().removeItemAtPath(recoveredFilesPath, error: &removeError)
+        XCTAssertTrue(success, "The remove should succeed")
+        XCTAssertNil(removeError, "The error should be nil")
     }
 }

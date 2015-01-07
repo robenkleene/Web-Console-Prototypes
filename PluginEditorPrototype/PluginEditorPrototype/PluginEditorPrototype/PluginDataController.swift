@@ -92,7 +92,21 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
     }
 
 
-    // MARK: Creating New Plugins
+    // MARK: Duplicate and Remove
+
+    func movePluginToTrash(plugin: Plugin) {
+        removePlugin(plugin)
+        let pluginPath = plugin.bundle.bundlePath
+        let pluginDirectoryPath = pluginPath.stringByDeletingLastPathComponent
+        let pluginDirectoryName = pluginPath.lastPathComponent
+        NSWorkspace.sharedWorkspace().performFileOperation(NSWorkspaceRecycleOperation,
+            source: pluginDirectoryPath,
+            destination: "",
+            files: [pluginDirectoryName],
+            tag: nil)
+        let exists = NSFileManager.defaultManager().fileExistsAtPath(pluginPath)
+        assert(!exists, "The file should not exist")
+    }
     
     func duplicatePlugin(plugin: Plugin) {
         duplicatePluginController.duplicatePlugin(plugin,
