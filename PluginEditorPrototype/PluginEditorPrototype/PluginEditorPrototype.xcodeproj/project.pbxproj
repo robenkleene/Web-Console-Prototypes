@@ -59,15 +59,6 @@
 		4567DB9118B26DD000CBBD29 /* WCLPluginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB8F18B26DD000CBBD29 /* WCLPluginViewController.xib */; };
 		4567DB9518B26E5800CBBD29 /* WCLEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB9318B26E5800CBBD29 /* WCLEnvironmentViewController.m */; };
 		4567DB9618B26E5800CBBD29 /* WCLEnvironmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB9418B26E5800CBBD29 /* WCLEnvironmentViewController.xib */; };
-		456D1A5718F3834000955EDC /* HTML.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4818F382F400955EDC /* HTML.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		456D1A5818F3834C00955EDC /* IRB.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4918F382F400955EDC /* IRB.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		456D1A5918F3834C00955EDC /* Markdown.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4A18F382F400955EDC /* Markdown.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		456D1A5A18F3834C00955EDC /* Node.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4B18F382F400955EDC /* Node.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		456D1A5B18F3834C00955EDC /* Search.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4C18F382F400955EDC /* Search.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		456D1A5C18F3834C00955EDC /* Shared Resources.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4D18F382F400955EDC /* Shared Resources.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		456D1A5D18F3834C00955EDC /* Shared Test Resources.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4E18F382F400955EDC /* Shared Test Resources.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		456D1A5E18F3834C00955EDC /* Git.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4618F382E900955EDC /* Git.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		456D1A5F18F3834C00955EDC /* Coffee.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4418F382E000955EDC /* Coffee.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		456D1A6218F38E7E00955EDC /* WCLTestPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 456D1A6118F38E7E00955EDC /* WCLTestPlugin.m */; };
 		4576716D18E1015B00EB720C /* WCLFileExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4576716C18E1015B00EB720C /* WCLFileExtensionTests.m */; };
 		457F7B6018D4F6CD0034F6D5 /* WCLTestPluginPrototype.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 457F7B5E18D4F6CD0034F6D5 /* WCLTestPluginPrototype.xcdatamodeld */; };
@@ -86,9 +77,18 @@
 		45CFF0491A5CCEE400C16F16 /* PluginManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CFF0481A5CCEE400C16F16 /* PluginManagerTests.swift */; };
 		45D02C611A072E6100778F3A /* PluginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D02C5F1A072E6100778F3A /* PluginTests.swift */; };
 		45D02C621A072E6100778F3A /* XCTest+BundleResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D02C601A072E6100778F3A /* XCTest+BundleResources.swift */; };
-		45D02C641A072ED700778F3A /* HTML.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4818F382F400955EDC /* HTML.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		45D21F0A18C80932001AFE36 /* WCLPluginManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D21F0918C80932001AFE36 /* WCLPluginManagerController.m */; };
 		45DEFEAD1A391EB700A6CF7E /* PluginsDirectoryEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DEFEAC1A391EB700A6CF7E /* PluginsDirectoryEventHandler.swift */; };
+		45EB9A3A1A61C79400CDA51F /* HTML.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4818F382F400955EDC /* HTML.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		45EB9A3C1A61C81E00CDA51F /* HTML.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4818F382F400955EDC /* HTML.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		45EB9A3D1A61C82200CDA51F /* IRB.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4918F382F400955EDC /* IRB.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		45EB9A3E1A61C82600CDA51F /* Markdown.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4A18F382F400955EDC /* Markdown.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		45EB9A3F1A61C82A00CDA51F /* Node.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4B18F382F400955EDC /* Node.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		45EB9A401A61C82E00CDA51F /* Search.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4C18F382F400955EDC /* Search.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		45EB9A411A61C83200CDA51F /* Shared Resources.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4D18F382F400955EDC /* Shared Resources.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		45EB9A421A61C83600CDA51F /* Shared Test Resources.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4E18F382F400955EDC /* Shared Test Resources.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		45EB9A431A61C83B00CDA51F /* Git.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4618F382E900955EDC /* Git.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		45EB9A441A61C83F00CDA51F /* Coffee.wcplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 456D1A4418F382E000955EDC /* Coffee.wcplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		45F4235E19D3896F007F5BC3 /* TestConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F4235D19D3896F007F5BC3 /* TestConstants.swift */; };
 		45F892EB18CFF10D00B89515 /* WCLFileExtensionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892EA18CFF10D00B89515 /* WCLFileExtensionController.m */; };
 		45F892EE18D12A6300B89515 /* WCLKeyToObjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F892ED18D12A6300B89515 /* WCLKeyToObjectController.m */; };
@@ -123,31 +123,31 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		456D1A5618F3833100955EDC /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				456D1A5818F3834C00955EDC /* IRB.wcplugin in CopyFiles */,
-				456D1A5918F3834C00955EDC /* Markdown.wcplugin in CopyFiles */,
-				456D1A5A18F3834C00955EDC /* Node.wcplugin in CopyFiles */,
-				456D1A5B18F3834C00955EDC /* Search.wcplugin in CopyFiles */,
-				456D1A5C18F3834C00955EDC /* Shared Resources.wcplugin in CopyFiles */,
-				456D1A5D18F3834C00955EDC /* Shared Test Resources.wcplugin in CopyFiles */,
-				456D1A5E18F3834C00955EDC /* Git.wcplugin in CopyFiles */,
-				456D1A5F18F3834C00955EDC /* Coffee.wcplugin in CopyFiles */,
-				456D1A5718F3834000955EDC /* HTML.wcplugin in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		45D02C631A072EC300778F3A /* CopyFiles */ = {
+		45EB9A391A61C78B00CDA51F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				45D02C641A072ED700778F3A /* HTML.wcplugin in CopyFiles */,
+				45EB9A3A1A61C79400CDA51F /* HTML.wcplugin in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45EB9A3B1A61C81200CDA51F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				45EB9A441A61C83F00CDA51F /* Coffee.wcplugin in CopyFiles */,
+				45EB9A431A61C83B00CDA51F /* Git.wcplugin in CopyFiles */,
+				45EB9A421A61C83600CDA51F /* Shared Test Resources.wcplugin in CopyFiles */,
+				45EB9A411A61C83200CDA51F /* Shared Resources.wcplugin in CopyFiles */,
+				45EB9A401A61C82E00CDA51F /* Search.wcplugin in CopyFiles */,
+				45EB9A3F1A61C82A00CDA51F /* Node.wcplugin in CopyFiles */,
+				45EB9A3E1A61C82600CDA51F /* Markdown.wcplugin in CopyFiles */,
+				45EB9A3D1A61C82200CDA51F /* IRB.wcplugin in CopyFiles */,
+				45EB9A3C1A61C81E00CDA51F /* HTML.wcplugin in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -542,7 +542,7 @@
 				452D272C19C7AB190085CDAF /* Sources */,
 				452D272D19C7AB190085CDAF /* Frameworks */,
 				452D272E19C7AB190085CDAF /* Resources */,
-				45D02C631A072EC300778F3A /* CopyFiles */,
+				45EB9A391A61C78B00CDA51F /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -559,8 +559,8 @@
 			buildConfigurationList = 4567DB7318B03A7A00CBBD29 /* Build configuration list for PBXNativeTarget "PluginEditorPrototype" */;
 			buildPhases = (
 				4567DB3B18B03A7A00CBBD29 /* Sources */,
-				456D1A5618F3833100955EDC /* CopyFiles */,
 				4567DB3C18B03A7A00CBBD29 /* Frameworks */,
+				45EB9A3B1A61C81200CDA51F /* CopyFiles */,
 				4567DB3D18B03A7A00CBBD29 /* Resources */,
 			);
 			buildRules = (
@@ -837,6 +837,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PluginEditorPrototype.app/Contents/MacOS/PluginEditorPrototype";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -861,6 +862,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PluginEditorPrototype.app/Contents/MacOS/PluginEditorPrototype";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -882,6 +884,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -908,6 +911,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -938,7 +942,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -977,7 +981,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -999,7 +1003,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PluginEditorPrototype/PluginEditorPrototype-Prefix.pch";
@@ -1014,7 +1018,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PluginEditorPrototype/PluginEditorPrototype-Prefix.pch";
@@ -1029,6 +1033,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PluginEditorPrototype.app/Contents/MacOS/PluginEditorPrototype";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1051,6 +1056,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PluginEditorPrototype.app/Contents/MacOS/PluginEditorPrototype";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",

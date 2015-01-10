@@ -161,7 +161,7 @@ static void *WCLPluginContext;
     }
     
     NSError *error;
-    NSLog(@"saving, edited keypath = %@, plugin = %@", keyPath, self);
+//    NSLog(@"saving, edited keypath = %@, plugin = %@", keyPath, self);
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving. %@", error);
     }

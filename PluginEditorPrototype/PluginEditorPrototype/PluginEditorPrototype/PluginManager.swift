@@ -33,22 +33,22 @@ class PluginManager: PluginDataControllerDelegate {
     // MARK: Accessing Plugins
     
     func plugins() -> [Plugin] {
-        return self.nameToPluginController.allObjects() as [Plugin]!
+        return nameToPluginController.allObjects() as [Plugin]!
     }
     
     func pluginWithName(name: String) -> Plugin? {
-        return self.nameToPluginController.objectWithName(name) as? Plugin
+        return nameToPluginController.objectWithKey(name) as? Plugin
     }
 
 
     // MARK: Adding and Removing Plugins
     
-    func removePlugin(plugin: Plugin) {
-        self.pluginDataController.movePluginToTrash(plugin)
+    func movePluginToTrash(plugin: Plugin) {
+        pluginDataController.movePluginToTrash(plugin)
     }
     
     func duplicatePlugin(plugin: Plugin, handler: ((newPlugin: Plugin?) -> Void)?) {
-        self.pluginDataController.duplicatePlugin(plugin, handler: handler)
+        pluginDataController.duplicatePlugin(plugin, handler: handler)
     }
 
     func newPlugin(handler: ((newPlugin: Plugin?) -> Void)?) {
@@ -58,11 +58,28 @@ class PluginManager: PluginDataControllerDelegate {
     // MARK: PluginDataControllerDelegate
 
     func pluginDataController(pluginDataController: PluginDataController, didAddPlugin plugin: Plugin) {
-        self.nameToPluginController.addObject(plugin)
+        addPlugin(plugin)
     }
 
     func pluginDataController(pluginDataController: PluginDataController, didRemovePlugin plugin: Plugin) {
-        self.nameToPluginController.removeObject(plugin)
+        removePlugin(plugin)
     }
 
+    // MARK: Private add helper
+
+    private func addPlugin(plugin: Plugin) {
+        if let existingPlugin: Plugin = nameToPluginController.objectWithKey(plugin.name) as? Plugin {
+            nameToPluginController.removeObject(existingPlugin)
+        }
+        
+        nameToPluginController.addObject(plugin)
+    }
+
+    private func removePlugin(plugin: Plugin) {
+        if let existingPlugin: Plugin = nameToPluginController.objectWithKey(plugin.name) as? Plugin {
+            if existingPlugin == plugin {
+                nameToPluginController.removeObject(plugin)
+            }
+        }
+    }
 }

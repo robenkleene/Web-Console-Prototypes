@@ -31,7 +31,7 @@
     [plugin renameWithUniqueName];
 
     NSError *error;
-    NSLog(@"saving after adding plugin %@", plugin);
+//    NSLog(@"saving after adding plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving.");
     }
@@ -52,7 +52,7 @@
     
 
     NSError *error;
-    NSLog(@"saving after adding plugin %@", plugin);
+//    NSLog(@"saving after adding plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving.");
     }
@@ -65,7 +65,7 @@
     [self.managedObjectContext deleteObject:plugin];
     
     NSError *error;
-    NSLog(@"saving after removing plugin %@", plugin);
+//    NSLog(@"saving after removing plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving.");
     }

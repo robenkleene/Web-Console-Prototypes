@@ -52,9 +52,10 @@ static void *WCLKeyToObjectControllerContext;
 
 - (void)removeObject:(id)object
 {
-    NSString *value = [object valueForKey:self.key];
-    
-    [self.keyToObjectDictionary removeObjectForKey:value];
+    NSString *key = [object valueForKey:self.key];
+
+    NSAssert(self.keyToObjectDictionary[key] == object, @"Attempted to remove an object where the stored object doesn't match the object's key");
+    [self.keyToObjectDictionary removeObjectForKey:key];
 	[object removeObserver:self
                 forKeyPath:self.key
                    context:&WCLKeyToObjectControllerContext];
@@ -115,9 +116,9 @@ static void *WCLKeyToObjectControllerContext;
 
 #pragma mark Accessing Plugins
 
-- (id)objectWithName:(NSString *)name
+- (id)objectWithKey:(NSString *)key
 {
-    return self.keyToObjectDictionary[name];
+    return self.keyToObjectDictionary[key];
 }
 
 - (NSArray *)allObjects

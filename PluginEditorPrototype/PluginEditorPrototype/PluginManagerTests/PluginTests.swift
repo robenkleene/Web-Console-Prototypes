@@ -26,12 +26,8 @@ class PluginTests: TemporaryPluginsTestCase {
             let newPluginFilename = temporaryPlugin.identifier
             let oldPluginURL = temporaryPlugin.bundle.bundleURL
             
-            println("oldPluginURL = \(oldPluginURL)")
-            
             let newPluginURL = oldPluginURL.URLByDeletingLastPathComponent!.URLByAppendingPathComponent(newPluginFilename)
             error = nil
-            
-            println("newPluginURL = \(newPluginURL)")
             
             let moveSuccess = NSFileManager.defaultManager().moveItemAtURL(oldPluginURL, toURL: newPluginURL, error: &error)
             XCTAssertTrue(moveSuccess, "The move should succeed")
@@ -39,7 +35,6 @@ class PluginTests: TemporaryPluginsTestCase {
             
             // TODO: Refactor this test, reloading the plugin should be handled with the PluginsDirectoryManager
             let newCommandPath = temporaryPlugin.commandPath!
-            println("newCommandPath = \(newCommandPath)")
             //            let newContents = NSString(contentsOfFile:newCommandPath, encoding:NSUTF8StringEncoding, error:&error) as String!
             //            XCTAssertNil(error, "The error should be nil")
             //            XCTAssertEqual(contents, newContents, "The new contents should equal the old contents")

@@ -39,7 +39,6 @@
     // the pluginManagerController implements the key-value coding to-many
     // relationship accessors
     [[WCLPluginManagerController sharedPluginManagerController] insertObject:plugin inPluginsAtIndex:0];
-
     return plugin;
 }
 
@@ -59,7 +58,7 @@
     NSRange range = NSMakeRange(0, [plugins count]);
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
     [[WCLPluginManagerController sharedPluginManagerController] removePluginsAtIndexes:indexSet];
-    
+
     for (WCLPlugin *plugin in plugins) {
         [[WCLPluginManager sharedPluginManager] deletePlugin:plugin];
     }

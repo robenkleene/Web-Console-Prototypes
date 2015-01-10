@@ -15,6 +15,6 @@
 - (void)removeObject:(id)object;
 - (void)addObjectsFromArray:(NSArray *)plugins;
 - (void)removeObjectsFromArray:(NSArray *)plugins;
-- (id)objectWithName:(NSString *)name;
+- (id)objectWithKey:(NSString *)key;
 - (NSArray *)allObjects;
 @end

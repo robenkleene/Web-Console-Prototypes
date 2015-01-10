@@ -14,6 +14,7 @@
 
 #import "WCLPluginManager.h"
 #import "WCLPlugin.h"
+#import "WCLPluginManagerController.h"
 
 @interface WCLPlugin (Tests)
 - (BOOL)validateName:(id *)ioValue error:(NSError * __autoreleasing *)outError;
@@ -62,13 +63,22 @@
 
     // Change the first plugins name
     plugin.name = kTestDefaultNewPluginName;
+
+    // TODO: This remove is to resolve an issue where the plugin manager only allows one plugin with a matching name since
+    // at this point, plugin and plugin two have the same name, this plugin is no longer loaded in the plugin manager.
+    // If we don't delete the plugin from the plugin manager controller, then in the tear down, this will cause an assert
+    // when the plugin is deleted. This presents multiple issues:
+    // 1. The plugin manager controller should probably be observing the plugin managers plugins, and delete the plugin
+    // when it's removed from the plugin managers plugins
+    // 2. This test probably isn't cleaning up properly, the plugin has probably never been deleted from the managed object context
+    [[WCLPluginManagerController sharedPluginManagerController] removeObjectFromPluginsAtIndex:0];
     
     // Test that the name is now valid for the second plugin
     error = nil;
     name = kTestPluginName;
     valid = [pluginTwo validateName:&name error:&error];
-    XCTAssertTrue(valid, @"The name should not be valid");
-    XCTAssertNil(error, @"The error should not be nil.");
+    XCTAssertTrue(valid, @"The name should be valid");
+    XCTAssertNil(error, @"The error should be nil.");
 
 
     // Test that the new name is now invalid

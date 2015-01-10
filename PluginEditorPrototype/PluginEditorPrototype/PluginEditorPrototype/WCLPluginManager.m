@@ -70,7 +70,7 @@
 
 - (WCLPlugin *)pluginWithName:(NSString *)name
 {
-    return [self.nameToPluginController objectWithName:name];
+    return [self.nameToPluginController objectWithKey:name];
 }
 
 - (NSArray *)plugins
