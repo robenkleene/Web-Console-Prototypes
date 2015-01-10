@@ -20,10 +20,6 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
     lazy var duplicatePluginController = DuplicatePluginController()
     let duplicatePluginDestinationDirectoryURL: NSURL
     
-    convenience init(_ paths: [String]) {
-        self.init(paths, duplicatePluginDestinationDirectoryURL: Directory.ApplicationSupportPlugins.URL())
-    }
-
     init(_ paths: [String], duplicatePluginDestinationDirectoryURL: NSURL) {
         self.pluginDirectoryManagers = [PluginsDirectoryManager]()
         self.pluginPathToPluginDictionary = [NSString : Plugin]()

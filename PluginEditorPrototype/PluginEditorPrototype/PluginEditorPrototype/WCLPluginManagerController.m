@@ -74,7 +74,7 @@
 // All accessors do nothing if _mutablePlugins is nil because we don't care about
 // key-value observing until the plugins array is being observed.
 // This prevents a plugin from being added twice if the _mutablePlugins is
-// instansiated during an accessor. The plugin can be added twice if its
+// instantiated during an accessor. The plugin can be added twice if its
 // already been added to the plugin manager, i.e., once from plugin manager's
 // plugins in the getter, and once being added by the insert.
 

@@ -10,7 +10,7 @@ import Cocoa
 
 class PluginManager: PluginDataControllerDelegate {
     private let nameToPluginController: WCLKeyToObjectController
-    private let pluginDataController: PluginDataController
+    let pluginDataController: PluginDataController
     
     class var sharedInstance : PluginManager {
         struct Singleton {
@@ -19,13 +19,14 @@ class PluginManager: PluginDataControllerDelegate {
         return Singleton.instance
     }
     
-    init(_ paths: [String]) {
-        self.pluginDataController = PluginDataController(paths)
+    init(_ paths: [String], duplicatePluginDestinationDirectoryURL: NSURL) {
+        self.pluginDataController = PluginDataController(paths, duplicatePluginDestinationDirectoryURL: duplicatePluginDestinationDirectoryURL)
         self.nameToPluginController = WCLKeyToObjectController(key: pluginNameKey, objects: pluginDataController.plugins())
+        pluginDataController.delegate = self
     }
     
     convenience init() {
-        self.init([Directory.BuiltInPlugins.path(), Directory.ApplicationSupportPlugins.path()])
+        self.init([Directory.BuiltInPlugins.path(), Directory.ApplicationSupportPlugins.path()], duplicatePluginDestinationDirectoryURL: Directory.ApplicationSupportPlugins.URL())
     }
 
     
@@ -50,6 +51,10 @@ class PluginManager: PluginDataControllerDelegate {
         self.pluginDataController.duplicatePlugin(plugin, handler: handler)
     }
 
+    func newPlugin(handler: ((newPlugin: Plugin?) -> Void)?) {
+        // TODO: This needs to use default new plugin
+    }
+    
     // MARK: PluginDataControllerDelegate
 
     func pluginDataController(pluginDataController: PluginDataController, didAddPlugin plugin: Plugin) {
