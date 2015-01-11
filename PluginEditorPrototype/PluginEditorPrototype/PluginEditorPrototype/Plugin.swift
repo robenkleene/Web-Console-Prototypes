@@ -24,7 +24,7 @@ class Plugin: NSObject {
             return self.dynamicType.infoDictionaryURL(bundle)
         }
     }
-    var name: String {
+    dynamic var name: String {
         didSet {
             infoDictionary[ClassConstants.pluginNameKey] = name
             save()

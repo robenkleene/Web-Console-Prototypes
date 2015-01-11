@@ -170,7 +170,12 @@ class PluginManagerTests: PluginDataEventManagerTestCase {
         XCTAssertNil(removeError, "The error should be nil")
     }
 
-    // TODO: Test that after renaming a plugin `pluginWithName` works with the new name and not the old name
+    func testRenamePlugin() {
+        let newPluginName = plugin.identifier
+        plugin.name = newPluginName
+        XCTAssertNotNil(pluginManager.pluginWithName(newPluginName), "The plugin should not be nil")
+        XCTAssertNil(pluginManager.pluginWithName(testPluginName), "The plugin should be nil")
+    }
     
     // TODO: Waiting for default new plugin API, do tests with `PluginManager` `duplicatePlugin` API, using `PluginManager` `newPlugin`
 
