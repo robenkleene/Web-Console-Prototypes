@@ -76,6 +76,9 @@ class PluginDataControllerPluginDataEventManagerTests: PluginDataEventManagerTes
         super.tearDown()
     }
     
+
+    // MARK: File System Tests
+    
     func testAddAndDeletePlugin() {
         let pluginPath = plugin.bundle.bundlePath
         let destinationPluginFilename = plugin.identifier
@@ -130,25 +133,29 @@ class PluginDataControllerPluginDataEventManagerTests: PluginDataEventManagerTes
         XCTAssertTrue(contains(pluginDataController.plugins(), newPlugin), "The plugins should contain the plugin")
     }
     
+    
+    // MARK: Test Other Methods of Creating Plugins
+    
     func testDuplicateAndTrashPlugin() {
         let plugin = pluginDataController.plugins()[0]
-        XCTAssertEqual(pluginDataController.plugins().count, 1, "The plugins count should be 1")
+        XCTAssertEqual(pluginDataController.plugins().count, 1, "The plugins count should be one")
         
         var newPlugin: Plugin?
         
+        let addedExpectation = expectationWithDescription("Plugin was added")
+        pluginDataEventManager.addPluginWasAddedHandler({ (addedPlugin) -> Void in
+            addedExpectation.fulfill()
+        })
+
         let duplicateExpectation = expectationWithDescription("Plugin was duplicated")
         pluginDataController.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
             newPlugin = duplicatePlugin
             duplicateExpectation.fulfill()
         })
 
-        let addedExpectation = expectationWithDescription("Plugin was added")
-        pluginDataEventManager.addPluginWasAddedHandler({ (addedPlugin) -> Void in
-            addedExpectation.fulfill()
-        })
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
-        XCTAssertEqual(pluginDataController.plugins().count, 2, "The plugins count should be 1")
+        XCTAssertEqual(pluginDataController.plugins().count, 2, "The plugins count should be two")
         XCTAssertTrue(contains(pluginDataController.plugins(), newPlugin!), "The plugins should contain the plugin")
         
         // Trash the duplicated plugin

@@ -30,6 +30,7 @@ class PluginManagerTests: PluginDataEventManagerTestCase {
             duplicatePluginDestinationDirectoryURL: temporaryPluginsDirectoryURL,
             pluginDataEventManager: pluginDataEventManager)
         plugin = pluginManager.pluginWithName(testPluginName)
+        XCTAssertTrue(contains(pluginManager.plugins(), plugin), "The plugins should contain the plugin")
     }
 
     override func tearDown() {
@@ -45,7 +46,7 @@ class PluginManagerTests: PluginDataEventManagerTestCase {
         let pluginPath = plugin.bundle.bundlePath
         let destinationPluginFilename = plugin.identifier
         let destinationPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(destinationPluginFilename)
-        
+
         var newPlugin: Plugin!
         copyPluginWithConfirmation(plugin, destinationPluginPath: destinationPluginPath, handler: { (plugin) -> Void in
             newPlugin = plugin
@@ -102,9 +103,75 @@ class PluginManagerTests: PluginDataEventManagerTestCase {
         XCTAssertEqual(pluginManager.plugins().count, 1, "The plugins count should be one")
     }
 
+    func testEditPlugin() {
+        let pluginPath = plugin.bundle.bundlePath
+        let destinationPluginFilename = plugin.identifier
+        let destinationPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(destinationPluginFilename)
+        
+        // Move the plugin
+        var newPlugin: Plugin!
+        modifyPluginWithConfirmation(plugin, handler: { (plugin) -> Void in
+            newPlugin = plugin
+        })
+        XCTAssertNotNil(newPlugin, "The plugin should not be nil")
+        XCTAssertFalse(contains(pluginManager.plugins(), plugin), "The plugins should not contain the plugin")
+        XCTAssertTrue(contains(pluginManager.plugins(), newPlugin), "The plugins should contain the plugin")
+    }
+
     // MARK: Test Other Methods of Creating Plugins
     
-    // TODO: Do tests with actual `PluginManager` `duplicatePlugin` API
-    // TODO: Do tests with `PluginManager` `duplicatePlugin` API, using `PluginManager` `newPlugin`
+    func testDuplicateAndTrashPlugin() {
+        var newPlugin: Plugin?
+
+        let addedExpectation = expectationWithDescription("Plugin was added")
+        pluginDataEventManager.addPluginWasAddedHandler({ (addedPlugin) -> Void in
+            addedExpectation.fulfill()
+        })
+
+        let duplicateExpectation = expectationWithDescription("Plugin was duplicated")
+        pluginManager.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
+            newPlugin = duplicatePlugin
+            duplicateExpectation.fulfill()
+        })
+
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        
+        XCTAssertEqual(pluginManager.plugins().count, 2, "The plugins count should be two")
+        XCTAssertTrue(contains(pluginManager.plugins(), newPlugin!), "The plugins should contain the plugin")
+        
+        // Trash the duplicated plugin
+        
+        // Confirm that a matching directory does not exist in the trash
+        let trashedPluginDirectoryName = newPlugin!.bundle.bundlePath.lastPathComponent
+        let trashDirectory = NSSearchPathForDirectoriesInDomains(.TrashDirectory, .UserDomainMask, true)[0] as NSString
+        let trashedPluginPath = trashDirectory.stringByAppendingPathComponent(trashedPluginDirectoryName)
+        let beforeExists = NSFileManager.defaultManager().fileExistsAtPath(trashedPluginPath)
+        XCTAssertTrue(!beforeExists, "The item should exist")
+        
+        // Trash the plugin
+        let removeExpectation = expectationWithDescription("Plugin was removed")
+        pluginDataEventManager.addPluginWasRemovedHandler({ (removedPlugin) -> Void in
+            XCTAssertEqual(newPlugin!, removedPlugin, "The plugins should be equal")
+            removeExpectation.fulfill()
+        })
+        pluginManager.movePluginToTrash(newPlugin!)
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        
+        // Confirm that the directory does exist in the trash now
+        var isDir: ObjCBool = false
+        let afterExists = NSFileManager.defaultManager().fileExistsAtPath(trashedPluginPath, isDirectory: &isDir)
+        XCTAssertTrue(afterExists, "The item should exist")
+        XCTAssertTrue(isDir, "The item should be a directory")
+        
+        // Clean up trash
+        var removeError: NSError?
+        let success = NSFileManager.defaultManager().removeItemAtPath(trashedPluginPath, error: &removeError)
+        XCTAssertTrue(success, "The remove should succeed")
+        XCTAssertNil(removeError, "The error should be nil")
+    }
+
     // TODO: Test that after renaming a plugin `pluginWithName` works with the new name and not the old name
+    
+    // TODO: Waiting for default new plugin API, do tests with `PluginManager` `duplicatePlugin` API, using `PluginManager` `newPlugin`
+
 }
