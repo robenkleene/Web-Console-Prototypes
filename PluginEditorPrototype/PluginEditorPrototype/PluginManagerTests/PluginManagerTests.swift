@@ -39,8 +39,9 @@ class PluginManagerTests: PluginDataEventManagerTestCase {
         super.tearDown()
     }
 
+    // MARK: File System Tests
+    
     func testAddAndDeletePlugin() {
-        let pluginIdentifier = plugin.identifier
         let pluginPath = plugin.bundle.bundlePath
         let destinationPluginFilename = plugin.identifier
         let destinationPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(destinationPluginFilename)
@@ -74,8 +75,36 @@ class PluginManagerTests: PluginDataEventManagerTestCase {
         XCTAssertEqual(pluginManager.pluginWithName(testPluginName)!, originalPlugin, "The plugins should be equal")
         XCTAssertEqual(pluginManager.plugins().count, 1, "The plugins count should be one")
     }
+    
+    func testMovePlugin() {
+        let pluginPath = plugin.bundle.bundlePath
+        let destinationPluginFilename = plugin.identifier
+        let destinationPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(destinationPluginFilename)
+        
+        // Move the plugin
+        var newPlugin: Plugin!
+        movePluginWithConfirmation(plugin, destinationPluginPath: destinationPluginPath, handler: { (plugin) -> Void in
+            newPlugin = plugin
+        })
+        XCTAssertNotNil(newPlugin, "The plugin should not be nil")
+        XCTAssertTrue(contains(pluginManager.plugins(), newPlugin), "The plugins should contain the plugin")
+        XCTAssertEqual(pluginManager.pluginWithName(testPluginName)!, newPlugin, "The plugins should be equal")
+        XCTAssertEqual(pluginManager.plugins().count, 1, "The plugins count should be one")
 
-    // TODO: Make all the same `PluginDataControllerTests` work here and confirm `pluginWithName` behaves as it should for each
+        // Move the plugin back
+        var originalPlugin: Plugin!
+        movePluginWithConfirmation(newPlugin, destinationPluginPath: pluginPath, handler: { (plugin) -> Void in
+            originalPlugin = plugin
+        })
+        XCTAssertNotNil(originalPlugin, "The plugin should not be nil")
+        XCTAssertTrue(contains(pluginManager.plugins(), originalPlugin), "The plugins should contain the plugin")
+        XCTAssertEqual(pluginManager.pluginWithName(testPluginName)!, originalPlugin, "The plugins should be equal")
+        XCTAssertEqual(pluginManager.plugins().count, 1, "The plugins count should be one")
+    }
+
+    // MARK: Test Other Methods of Creating Plugins
+    
+    // TODO: Do tests with actual `PluginManager` `duplicatePlugin` API
+    // TODO: Do tests with `PluginManager` `duplicatePlugin` API, using `PluginManager` `newPlugin`
     // TODO: Test that after renaming a plugin `pluginWithName` works with the new name and not the old name
-    // This should work now!
 }
