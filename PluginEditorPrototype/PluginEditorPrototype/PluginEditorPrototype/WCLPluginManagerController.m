@@ -7,8 +7,8 @@
 //
 
 #import "WCLPluginManagerController.h"
-#import "WCLPlugin.h"
-#import "WCLPluginManager.h"
+#import "WCLPlugin_old.h"
+#import "WCLPluginManager_old.h"
 
 @interface WCLPluginManagerController ()
 @property (nonatomic, strong, readonly) NSMutableArray *mutablePlugins;
@@ -64,7 +64,7 @@
         return _mutablePlugins;
     }
     
-    _mutablePlugins = [[[WCLPluginManager sharedPluginManager] plugins] mutableCopy];
+    _mutablePlugins = [[[WCLPluginManager_old sharedPluginManager] plugins] mutableCopy];
     
     return _mutablePlugins;
 }
@@ -83,7 +83,7 @@
     return [NSArray arrayWithArray:self.mutablePlugins];
 }
 
-- (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index
+- (void)insertObject:(WCLPlugin_old *)plugin inPluginsAtIndex:(NSUInteger)index
 {
     if (_mutablePlugins) {
         [self.mutablePlugins insertObject:plugin atIndex:index];

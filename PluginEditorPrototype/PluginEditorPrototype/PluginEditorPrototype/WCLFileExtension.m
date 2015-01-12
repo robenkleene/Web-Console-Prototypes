@@ -8,8 +8,8 @@
 
 #import "WCLFileExtension.h"
 
-#import "WCLPlugin.h"
-#import "WCLPluginManager.h"
+#import "WCLPlugin_old.h"
+#import "WCLPluginManager_old.h"
 
 NSString * const WCLFileExtensionPluginsKey = @"plugins";
 NSString * const WCLFileExtensionExtensionKey = @"extension";
@@ -65,7 +65,7 @@ static void *WCLFileExtensionContext;
                                           forKey:kFileExtensionEnabledKey];
 }
 
-- (WCLPlugin *)selectedPlugin
+- (WCLPlugin_old *)selectedPlugin
 {
     if (_selectedPlugin) {
         return _selectedPlugin;
@@ -74,7 +74,7 @@ static void *WCLFileExtensionContext;
     NSString *identifier = [self.fileExtensionPluginDictionary objectForKey:kFileExtensionPluginIdentifierKey];
 
     if (identifier) {
-        _selectedPlugin = [[WCLPluginManager sharedPluginManager] pluginWithIdentifier:identifier];
+        _selectedPlugin = [[WCLPluginManager_old sharedPluginManager] pluginWithIdentifier:identifier];
     }
     
     if (!_selectedPlugin) {
@@ -86,7 +86,7 @@ static void *WCLFileExtensionContext;
     return _selectedPlugin;
 }
 
-- (void)setSelectedPlugin:(WCLPlugin *)selectedPlugin
+- (void)setSelectedPlugin:(WCLPlugin_old *)selectedPlugin
 {
     if (_selectedPlugin == selectedPlugin) {
         return;
@@ -133,7 +133,7 @@ static void *WCLFileExtensionContext;
     return [NSArray arrayWithArray:self.mutablePlugins];
 }
 
-- (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index
+- (void)insertObject:(WCLPlugin_old *)plugin inPluginsAtIndex:(NSUInteger)index
 {
     [self.mutablePlugins insertObject:plugin atIndex:index];
 }

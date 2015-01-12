@@ -34,7 +34,7 @@
 @synthesize managedObjectContext = _managedObjectContext;
 
 
-- (WCLPlugin *)newPlugin
+- (WCLPlugin_old *)newPlugin
 {
     NSEntityDescription *entity = [NSEntityDescription entityForName:kTestPluginEntityName
                                               inManagedObjectContext:self.managedObjectContext];
@@ -51,10 +51,10 @@
         NSAssert(NO, @"Error saving.");
     }
     
-    return (WCLPlugin *)plugin;
+    return (WCLPlugin_old *)plugin;
 }
 
-- (WCLPlugin *)newPluginFromPlugin:(WCLTestPlugin *)plugin
+- (WCLPlugin_old *)newPluginFromPlugin:(WCLTestPlugin *)plugin
 {
     NSEntityDescription *entity = [NSEntityDescription entityForName:kTestPluginEntityName
                                               inManagedObjectContext:self.managedObjectContext];
@@ -74,7 +74,7 @@
         NSAssert(NO, @"Error saving.");
     }
     
-    return (WCLPlugin *)newPlugin;
+    return (WCLPlugin_old *)newPlugin;
 }
 
 - (void)deletePlugin:(WCLTestPlugin *)plugin
@@ -187,11 +187,11 @@ void WCLSwizzleClassMethod(Class class,
 }
 
 
-@interface WCLPluginManager (TestPluginManager)
+@interface WCLPluginManager_old (TestPluginManager)
 @end
 
 
-@implementation WCLPluginManager (TestPluginManager)
+@implementation WCLPluginManager_old (TestPluginManager)
 
 + (instancetype)overrideSharedPluginManager
 {
@@ -207,7 +207,7 @@ void WCLSwizzleClassMethod(Class class,
 
 + (void)load
 {
-    WCLSwizzleClassMethod([WCLPluginManager class],
+    WCLSwizzleClassMethod([WCLPluginManager_old class],
                           @selector(sharedPluginManager),
                           @selector(overrideSharedPluginManager));
 }

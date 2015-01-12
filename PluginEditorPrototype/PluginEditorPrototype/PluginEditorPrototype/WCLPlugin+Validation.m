@@ -7,15 +7,15 @@
 //
 
 #import "WCLPlugin+Validation.h"
-#import "WCLPluginManager.h"
+#import "WCLPluginManager_old.h"
 
-@implementation WCLPlugin (Validation)
+@implementation WCLPlugin_old (Validation)
 
 #pragma mark Name Public
 
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name
 {
-    return [self string:name containsOnlyCharactersInCharacterSet:[WCLPlugin nameAllowedCharacterSet]];
+    return [self string:name containsOnlyCharactersInCharacterSet:[WCLPlugin_old nameAllowedCharacterSet]];
 }
 
 - (BOOL)nameIsValid:(NSString *)name
@@ -24,7 +24,7 @@
         return NO;
     }
     
-    if (![WCLPlugin nameContainsOnlyValidCharacters:name]) {
+    if (![WCLPlugin_old nameContainsOnlyValidCharacters:name]) {
         return NO;
     }
     
@@ -61,7 +61,7 @@
 
 - (BOOL)isUniqueName:(NSString *)name
 {
-    WCLPlugin *existingPlugin = [[WCLPluginManager sharedPluginManager] pluginWithName:name];
+    WCLPlugin_old *existingPlugin = [[WCLPluginManager_old sharedPluginManager] pluginWithName:name];
     
     if (!existingPlugin) {
         return YES;
@@ -103,7 +103,7 @@
     for (NSString *extension in extensionsCountedSet) {
         if (![extension isKindOfClass:[NSString class]] || // Must be a string
             !(extension.length > 0) || // Must be greater than zero characters
-            !([WCLPlugin extensionContainsOnlyValidCharacters:extension])) { // Must only contain valid characters
+            !([WCLPlugin_old extensionContainsOnlyValidCharacters:extension])) { // Must only contain valid characters
             return NO;
         }
         
@@ -120,7 +120,7 @@
 {
     NSMutableArray *validExtensions = [NSMutableArray array];
     for (NSString *fileExtension in extensions) {
-        NSString *validFileExtension = [WCLPlugin extensionContainingOnlyValidCharactersFromExtension:fileExtension];
+        NSString *validFileExtension = [WCLPlugin_old extensionContainingOnlyValidCharactersFromExtension:fileExtension];
         if (validFileExtension &&
             ![validExtensions containsObject:validFileExtension]) {
             [validExtensions addObject:validFileExtension];

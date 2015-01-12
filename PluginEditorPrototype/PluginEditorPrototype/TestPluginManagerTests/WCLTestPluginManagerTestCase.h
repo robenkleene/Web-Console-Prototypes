@@ -8,10 +8,10 @@
 
 #import <XCTest/XCTest.h>
 
-@class WCLPlugin;
+@class WCLPlugin_old;
 
 @interface WCLTestPluginManagerTestCase : XCTestCase
-- (WCLPlugin *)addedPlugin;
-- (void)deletePlugin:(WCLPlugin *)plugin;
+- (WCLPlugin_old *)addedPlugin;
+- (void)deletePlugin:(WCLPlugin_old *)plugin;
 - (void)deleteAllPlugins;
 @end

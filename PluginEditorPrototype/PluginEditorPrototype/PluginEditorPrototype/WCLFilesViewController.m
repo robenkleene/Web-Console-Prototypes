@@ -7,8 +7,8 @@
 //
 
 #import "WCLFilesViewController.h"
-#import "WCLPlugin.h"
-#import "WCLPluginManager.h"
+#import "WCLPlugin_old.h"
+#import "WCLPluginManager_old.h"
 #import "WCLFileExtension.h"
 
 @interface WCLPluginsToPluginNamesValueTransformer : NSValueTransformer
@@ -37,8 +37,8 @@
         return [self transformedArray:value];
     }
     
-    if ([value isKindOfClass:[WCLPlugin class]]) {
-        WCLPlugin *plugin = (WCLPlugin *)value;
+    if ([value isKindOfClass:[WCLPlugin_old class]]) {
+        WCLPlugin_old *plugin = (WCLPlugin_old *)value;
         return plugin.name;
     }
     
@@ -64,7 +64,7 @@
     
     if ([value isKindOfClass:[NSString class]]) {
         NSString *pluginName = (NSString *)value;
-        return [[WCLPluginManager sharedPluginManager] pluginWithName:pluginName];
+        return [[WCLPluginManager_old sharedPluginManager] pluginWithName:pluginName];
     }
 
     return nil;

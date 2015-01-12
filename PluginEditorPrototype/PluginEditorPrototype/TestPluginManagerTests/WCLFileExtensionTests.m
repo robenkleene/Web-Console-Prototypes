@@ -14,8 +14,8 @@
 
 #import "WCLFileExtensionController.h"
 #import "WCLFileExtension.h"
-#import "WCLPluginManager.h"
-#import "WCLPlugin.h"
+#import "WCLPluginManager_old.h"
+#import "WCLPlugin_old.h"
 #import "WCLKeyValueObservingTestsHelper.h"
 
 
@@ -37,7 +37,7 @@
     
     // TODO: Assert existing plugin settings in userDefaults are nil? I.e., [WCLFileExtension fileExtensionToPluginDictionary]
 
-    WCLPlugin *plugin = [self addedPlugin];
+    WCLPlugin_old *plugin = [self addedPlugin];
     
     // Set file extensions to an array of file extensions
     plugin.extensions = kTestExtensionsOne;
@@ -62,9 +62,9 @@
     XCTAssertTrue(fileExtension.isEnabled == kFileExtensionDefaultEnabled, @"The WCLFileExtension's enabled should equal the default enabled.");
     XCTAssertEqual(fileExtension.selectedPlugin, [fileExtension.plugins firstObject], @"The WCLFileExtension's selected WCLPlugin should be the first WCLPlugin.");
 
-    NSArray *plugins = [[WCLPluginManager sharedPluginManager] plugins];
+    NSArray *plugins = [[WCLPluginManager_old sharedPluginManager] plugins];
     
-    for (WCLPlugin *plugin in plugins) {
+    for (WCLPlugin_old *plugin in plugins) {
         BOOL matches = [[self class] plugin:plugin matchesForFileExtension:fileExtension];
         XCTAssertTrue(matches, @"The WCLPlugin should match the WCLFileExtension.");
     }
@@ -129,7 +129,7 @@
                                    completionBlock:^(NSDictionary *change) {
                                                observedChange = YES;
                                            }];
-    WCLPlugin *plugin = fileExtension.plugins[0];
+    WCLPlugin_old *plugin = fileExtension.plugins[0];
     XCTAssertFalse(observedChange, @"The change should not have been observed.");
     fileExtension.selectedPlugin = plugin;
     XCTAssertTrue(observedChange, @"The key-value observing change should have occurred.");
@@ -144,7 +144,7 @@
     // Test changing the selected plugin
     
     // Test key-value observing for the selected plugin property
-    WCLPlugin *newPlugin = [self addedPlugin];
+    WCLPlugin_old *newPlugin = [self addedPlugin];
     newPlugin.extensions = kTestExtensionsOne;
 
     observedChange = NO;
@@ -191,7 +191,7 @@
 - (void)testChangingPluginsFileExtensions
 {
     WCLFileExtension *fileExtension = [[WCLFileExtensionController sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
-    WCLPlugin *newPlugin = [self addedPlugin];
+    WCLPlugin_old *newPlugin = [self addedPlugin];
     XCTAssertFalse([fileExtension.plugins containsObject:newPlugin], @"The WCLFileExtension's WCLPlugins should not contain the new WCLPlugin.");
 
     // Test key-value observing for the plugins property
@@ -249,7 +249,7 @@
 - (void)testDeletingSelectedPlugin
 {
     WCLFileExtension *fileExtension = [[WCLFileExtensionController sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
-    WCLPlugin *newPlugin = [self addedPlugin];
+    WCLPlugin_old *newPlugin = [self addedPlugin];
     newPlugin.extensions = kTestExtensionsOne;
 
     fileExtension.selectedPlugin = newPlugin;
@@ -296,7 +296,7 @@
 
 #pragma mark Helpers
 
-+ (BOOL)plugin:(WCLPlugin *)plugin matchesForFileExtension:(WCLFileExtension *)fileExtension
++ (BOOL)plugin:(WCLPlugin_old *)plugin matchesForFileExtension:(WCLFileExtension *)fileExtension
 {
     NSString *extension = fileExtension.extension;
 

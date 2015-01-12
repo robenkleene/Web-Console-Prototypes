@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@class WCLPlugin;
+@class WCLPlugin_old;
 
 @interface WCLPluginManagerController : NSObject
 + (instancetype)sharedPluginManagerController;
 
 #pragma mark Required Key-Value Coding To-Many Relationship Compliance
 - (NSArray *)plugins;
-- (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index;
+- (void)insertObject:(WCLPlugin_old *)plugin inPluginsAtIndex:(NSUInteger)index;
 - (void)insertPlugins:(NSArray *)pluginsArray atIndexes:(NSIndexSet *)indexes;
 - (void)removeObjectFromPluginsAtIndex:(NSUInteger)index;
 - (void)removePluginsAtIndexes:(NSIndexSet *)indexes;

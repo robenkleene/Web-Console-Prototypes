@@ -9,3 +9,4 @@
 #import "WCLKeyToObjectController.h"
 #import "WCLPlugin.h"
 #import "WCLDirectoryWatcher.h"
+#import "WCLPluginManager.h"

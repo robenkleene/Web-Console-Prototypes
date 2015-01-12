@@ -9,7 +9,7 @@
 import Cocoa
 
 
-class Plugin: NSObject {
+class Plugin: WCLPlugin {
     struct ClassConstants {
         static let errorCode = -43
         static let pluginNameKey = "WCName"

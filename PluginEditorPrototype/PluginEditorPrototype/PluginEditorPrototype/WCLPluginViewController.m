@@ -8,10 +8,10 @@
 //
 
 #import "WCLPluginViewController.h"
-#import "WCLPluginManager.h"
+#import "WCLPluginManager_old.h"
 
 #import "WCLPlugin+Validation.h"
-#import "WCLPlugin.h"
+#import "WCLPlugin_old.h"
 
 #import "WCLFileExtensionController.h"
 
@@ -58,7 +58,7 @@
             newEditingString:(NSString *__autoreleasing *)newString
             errorDescription:(NSString *__autoreleasing *)error
 {
-    return [WCLPlugin nameContainsOnlyValidCharacters:partialString];
+    return [WCLPlugin_old nameContainsOnlyValidCharacters:partialString];
 }
 
 @end
@@ -74,7 +74,7 @@
 
 - (id)newObject
 {
-    return [[WCLPluginManager sharedPluginManager] newPlugin];
+    return [[WCLPluginManager_old sharedPluginManager] newPlugin];
 }
 
 - (void)rearrangeObjects
@@ -130,8 +130,8 @@
 {
     NSArray *plugins = [self.pluginArrayController selectedObjects];
 
-    for (WCLPlugin *plugin in plugins) {
-        WCLPlugin *newPlugin = [[WCLPluginManager sharedPluginManager] newPluginFromPlugin:plugin];
+    for (WCLPlugin_old *plugin in plugins) {
+        WCLPlugin_old *newPlugin = [[WCLPluginManager_old sharedPluginManager] newPluginFromPlugin:plugin];
         [self.pluginArrayController addObject:newPlugin];
     }
 
@@ -141,8 +141,8 @@
 - (IBAction)makeDefaultPlugin:(id)sender
 {
     NSArray *plugins = [self.pluginArrayController selectedObjects];
-    for (WCLPlugin *plugin in plugins) {
-        [[WCLPluginManager sharedPluginManager] setDefaultNewPlugin:plugin];
+    for (WCLPlugin_old *plugin in plugins) {
+        [[WCLPluginManager_old sharedPluginManager] setDefaultNewPlugin:plugin];
     }
 }
 
@@ -171,8 +171,8 @@
     
     [self.pluginArrayController remove:nil];
 
-    for (WCLPlugin *plugin in plugins) {
-        [[WCLPluginManager sharedPluginManager] deletePlugin:plugin];
+    for (WCLPlugin_old *plugin in plugins) {
+        [[WCLPluginManager_old sharedPluginManager] deletePlugin:plugin];
     }
 }
 
@@ -193,7 +193,7 @@ completionsForSubstring:(NSString *)substring
        shouldAddObjects:(NSArray *)tokens
                 atIndex:(NSUInteger)index
 {
-    NSArray *validExtensions = [WCLPlugin validExtensionsFromExtensions:tokens];
+    NSArray *validExtensions = [WCLPlugin_old validExtensionsFromExtensions:tokens];
     
     return validExtensions;
 }

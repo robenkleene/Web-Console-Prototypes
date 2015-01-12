@@ -8,7 +8,7 @@
 
 #import "WCLPluginDataController.h"
 #import "WCLPlugin+Validation.h"
-#import "WCLPlugin.h"
+#import "WCLPlugin_old.h"
 
 @interface WCLPluginDataController ()
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -22,10 +22,10 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize managedObjectContext = _managedObjectContext;
 
-- (WCLPlugin *)newPlugin
+- (WCLPlugin_old *)newPlugin
 {
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin" inManagedObjectContext:self.managedObjectContext];
-    WCLPlugin *plugin = [[WCLPlugin alloc] initWithEntity:entity insertIntoManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin_old" inManagedObjectContext:self.managedObjectContext];
+    WCLPlugin_old *plugin = [[WCLPlugin_old alloc] initWithEntity:entity insertIntoManagedObjectContext:self.managedObjectContext];
 
     plugin.identifier = [[NSUUID UUID] UUIDString];
     [plugin renameWithUniqueName];
@@ -39,10 +39,10 @@
     return plugin;
 }
 
-- (WCLPlugin *)newPluginFromPlugin:(WCLPlugin *)plugin
+- (WCLPlugin_old *)newPluginFromPlugin:(WCLPlugin_old *)plugin
 {
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin" inManagedObjectContext:self.managedObjectContext];
-    WCLPlugin *newPlugin = [[WCLPlugin alloc] initWithEntity:entity insertIntoManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin_old" inManagedObjectContext:self.managedObjectContext];
+    WCLPlugin_old *newPlugin = [[WCLPlugin_old alloc] initWithEntity:entity insertIntoManagedObjectContext:self.managedObjectContext];
     
     newPlugin.command = plugin.command;
     newPlugin.extensions = plugin.extensions;
@@ -60,7 +60,7 @@
     return newPlugin;
 }
 
-- (void)deletePlugin:(WCLPlugin *)plugin
+- (void)deletePlugin:(WCLPlugin_old *)plugin
 {
     [self.managedObjectContext deleteObject:plugin];
     
@@ -75,7 +75,7 @@
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin" inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WCLPlugin_old" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
     NSError *error;

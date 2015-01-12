@@ -12,11 +12,11 @@
 
 #import "Web_ConsoleTestsConstants.h"
 
-#import "WCLPluginManager.h"
-#import "WCLPlugin.h"
+#import "WCLPluginManager_old.h"
+#import "WCLPlugin_old.h"
 #import "WCLPluginManagerController.h"
 
-@interface WCLPlugin (Tests)
+@interface WCLPlugin_old (Tests)
 - (BOOL)validateName:(id *)ioValue error:(NSError * __autoreleasing *)outError;
 @end
 
@@ -39,7 +39,7 @@
 
 - (void)testNameValidation
 {
-    WCLPlugin *plugin = [self addedPlugin];
+    WCLPlugin_old *plugin = [self addedPlugin];
     plugin.name = kTestPluginName;
 
     // Test that the name is valid for this plugin
@@ -50,7 +50,7 @@
     XCTAssertNil(error, @"The error should be nil");
     
     // Make a new plugin
-    WCLPlugin *pluginTwo = [self addedPlugin];
+    WCLPlugin_old *pluginTwo = [self addedPlugin];
     
     // Test that the name is not valid for another plugin
     error = nil;
@@ -100,7 +100,7 @@
 - (void)testPluginNames
 {
     for (NSUInteger i = 0; i < 105; i++) {
-        WCLPlugin *plugin = [self addedPlugin];
+        WCLPlugin_old *plugin = [self addedPlugin];
  
         if (i == 0) {
             XCTAssertTrue([plugin.name isEqualToString:kTestDefaultNewPluginName], @"The WCLPlugin's name equal the default new plugin name.");

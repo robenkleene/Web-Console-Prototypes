@@ -8,7 +8,7 @@
 
 #import "WCLTestPlugin.h"
 
-#import "WCLPlugin.h"
+#import "WCLPlugin_old.h"
 
 #import <objc/runtime.h>
 
@@ -108,13 +108,13 @@ static void *WCLTestPluginContext;
 + (void)usePluginImplementationForSelector:(SEL)selector
 {
     Method testPluginMethod = class_getInstanceMethod(self, selector);
-    Method pluginMethod = class_getInstanceMethod([WCLPlugin class], selector);
+    Method pluginMethod = class_getInstanceMethod([WCLPlugin_old class], selector);
     method_exchangeImplementations(testPluginMethod, pluginMethod);
 }
 
 - (BOOL)isKindOfClass:(Class)aClass
 {
-    if (aClass == [WCLPlugin class]) {
+    if (aClass == [WCLPlugin_old class]) {
         return YES;
     }
 

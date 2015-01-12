@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
 //
 
-#import "WCLPluginManager.h"
+#import "WCLPluginManager_old.h"
 
-@interface WCLTestPluginManager : WCLPluginManager
+@interface WCLTestPluginManager : WCLPluginManager_old
 @end
 

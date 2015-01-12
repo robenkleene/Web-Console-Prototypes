@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
 //
 
-#import "WCLPlugin.h"
+#import "WCLPlugin_old.h"
 
-@interface WCLPlugin (Validation)
+@interface WCLPlugin_old (Validation)
 #pragma mark Name
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name;
 - (BOOL)nameIsValid:(NSString *)name;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="WCLPlugin" representedClassName="WCLPlugin" syncable="YES">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14B25" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="WCLPlugin_old" representedClassName="WCLPlugin_old" syncable="YES">
         <attribute name="command" optional="YES" attributeType="String" defaultValueString="script.sh" syncable="YES"/>
         <attribute name="extensionsData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
@@ -8,6 +8,6 @@
         <attribute name="type" attributeType="String" defaultValueString="Built-In" syncable="YES"/>
     </entity>
     <elements>
-        <element name="WCLPlugin" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="WCLPlugin_old" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

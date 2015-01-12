@@ -11,18 +11,18 @@
 extern NSString * const WCLFileExtensionPluginsKey;
 extern NSString * const WCLFileExtensionExtensionKey;
 
-@class WCLPlugin;
+@class WCLPlugin_old;
 
 @interface WCLFileExtension : NSObject
 - (id)initWithExtension:(NSString *)extension;
 @property (nonatomic, strong, readonly) NSString *extension;
 @property (nonatomic, assign, getter = isEnabled) BOOL enabled;
-@property (nonatomic, strong) WCLPlugin *selectedPlugin;
+@property (nonatomic, strong) WCLPlugin_old *selectedPlugin;
 @property (nonatomic, strong) NSArrayController *pluginsArrayController;
 
 #pragma mark Required Key-Value Coding To-Many Relationship Compliance
 - (NSArray *)plugins;
-- (void)insertObject:(WCLPlugin *)plugin inPluginsAtIndex:(NSUInteger)index;
+- (void)insertObject:(WCLPlugin_old *)plugin inPluginsAtIndex:(NSUInteger)index;
 - (void)insertPlugins:(NSArray *)pluginsArray atIndexes:(NSIndexSet *)indexes;
 - (void)removeObjectFromPluginsAtIndex:(NSUInteger)index;
 - (void)removePluginsAtIndexes:(NSIndexSet *)indexes;

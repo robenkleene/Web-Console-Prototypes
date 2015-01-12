@@ -14,7 +14,7 @@
 
 #import "WCLFileExtensionController.h"
 
-#import "WCLPlugin.h"
+#import "WCLPlugin_old.h"
 
 @interface WCLFileExtensionsControllerTests : WCLTestPluginManagerTestCase
 @end
@@ -38,7 +38,7 @@
     // Hitting file extensions early makes sure that the singletons are instantiated and observers are in place.
     XCTAssertFalse([[[WCLFileExtensionController sharedFileExtensionController] extensions] count] > 0, @"There should not be any file extensions before adding a plugin.");
     
-    WCLPlugin *plugin = [self addedPlugin];
+    WCLPlugin_old *plugin = [self addedPlugin];
     
     // Set file extensions to an array of file extensions
     plugin.extensions = kTestExtensions;

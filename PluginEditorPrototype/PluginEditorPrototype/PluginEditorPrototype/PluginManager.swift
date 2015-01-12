@@ -8,7 +8,8 @@
 
 import Cocoa
 
-class PluginManager: PluginDataControllerDelegate {
+class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
+
     private let nameToPluginController: WCLKeyToObjectController
     let pluginDataController: PluginDataController
     
@@ -22,10 +23,11 @@ class PluginManager: PluginDataControllerDelegate {
     init(_ paths: [String], duplicatePluginDestinationDirectoryURL: NSURL) {
         self.pluginDataController = PluginDataController(paths, duplicatePluginDestinationDirectoryURL: duplicatePluginDestinationDirectoryURL)
         self.nameToPluginController = WCLKeyToObjectController(key: pluginNameKey, objects: pluginDataController.plugins())
+        super.init()
         pluginDataController.delegate = self
     }
     
-    convenience init() {
+    convenience override init() {
         self.init([Directory.BuiltInPlugins.path(), Directory.ApplicationSupportPlugins.path()], duplicatePluginDestinationDirectoryURL: Directory.ApplicationSupportPlugins.URL())
     }
 
@@ -38,6 +40,16 @@ class PluginManager: PluginDataControllerDelegate {
     
     func pluginWithName(name: String) -> Plugin? {
         return nameToPluginController.objectWithKey(name) as? Plugin
+    }
+    
+    func pluginWithIdentifier(identifier: String) -> Plugin? {
+        let allPlugins = plugins()
+        for plugin in allPlugins {
+            if plugin.identifier == identifier {
+                return plugin
+            }
+        }
+        return nil
     }
 
 
@@ -55,6 +67,7 @@ class PluginManager: PluginDataControllerDelegate {
         // TODO: This needs to use default new plugin
     }
     
+
     // MARK: PluginDataControllerDelegate
 
     func pluginDataController(pluginDataController: PluginDataController, didAddPlugin plugin: Plugin) {
