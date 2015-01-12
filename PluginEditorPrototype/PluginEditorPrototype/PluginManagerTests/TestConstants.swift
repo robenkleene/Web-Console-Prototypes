@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
 //
 
-let defaultTimeout = 15.0
+let defaultTimeout = 20.0
 let testPluginsPaths = [Directory.BuiltInPlugins.path()]
 let testPluginName = "HTML"
 

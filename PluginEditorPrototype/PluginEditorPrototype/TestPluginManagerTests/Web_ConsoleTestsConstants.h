@@ -16,6 +16,7 @@
 #pragma mark Test Plugin
 
 #define kTestPluginName @"Test Plugin"
+#define kTestPluginNameTwo @"Test Plugin Two"
 #define kTestPluginCommand @"wcprint.rb"
 #define kTestPluginDefaultNewPluginKeyPath @"defaultNewPlugin"
 
