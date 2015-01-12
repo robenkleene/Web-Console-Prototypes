@@ -39,7 +39,7 @@ class PluginDataControllerClassTests: XCTestCase {
     
 }
 
-class PluginDataControllerTests: XCTestCase {
+class PluginDataControllerBuiltInPluginsTests: XCTestCase {
 
     func testExistingPlugins() {
         let trashDirectoryPath = NSSearchPathForDirectoriesInDomains(.TrashDirectory, .UserDomainMask, true)[0] as NSString
@@ -58,81 +58,7 @@ class PluginDataControllerTests: XCTestCase {
     }
 }
 
-class PluginDataControllerPluginDataEventManagerTests: PluginDataEventManagerTestCase {
-    var pluginDataController: PluginDataController!
-    var plugin: Plugin!
-    
-    override func setUp() {
-        super.setUp()
-        pluginDataController = PluginDataController([temporaryPluginsDirectoryPath], duplicatePluginDestinationDirectoryURL: temporaryPluginsDirectoryURL)
-        pluginDataController.delegate = pluginDataEventManager
-        XCTAssertEqual(pluginDataController.plugins().count, 1, "The plugins count should equal one")
-        plugin = pluginDataController.plugins()[0]
-    }
-    
-    override func tearDown() {
-        pluginDataController.delegate = nil
-        pluginDataController = nil // Make sure this happens after setting its delegate to nil
-        super.tearDown()
-    }
-    
-
-    // MARK: File System Tests
-    
-    func testAddAndDeletePlugin() {
-        let pluginPath = plugin.bundle.bundlePath
-        let destinationPluginFilename = plugin.identifier
-        let destinationPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(destinationPluginFilename)
-        
-        var newPlugin: Plugin!
-        copyPluginWithConfirmation(plugin, destinationPluginPath: destinationPluginPath, handler: { (plugin) -> Void in
-            newPlugin = plugin
-        })
-        XCTAssertNotNil(newPlugin, "The plugin should not be nil")
-        XCTAssertTrue(contains(pluginDataController.plugins(), newPlugin), "The plugins should contain the plugin")
-        removePluginWithConfirmation(newPlugin)
-        XCTAssertFalse(contains(pluginDataController.plugins(), newPlugin), "The plugins should not contain the plugin")
-    }
-    
-    func testMovePlugin() {
-        let pluginPath = plugin.bundle.bundlePath
-        let destinationPluginFilename = plugin.identifier
-        let destinationPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(destinationPluginFilename)
-        
-        // Move the plugin
-        var newPlugin: Plugin!
-        movePluginWithConfirmation(plugin, destinationPluginPath: destinationPluginPath, handler: { (plugin) -> Void in
-            newPlugin = plugin
-        })
-        XCTAssertNotNil(newPlugin, "The plugin should not be nil")
-        XCTAssertFalse(contains(pluginDataController.plugins(), plugin), "The plugins should not contain the plugin")
-        XCTAssertTrue(contains(pluginDataController.plugins(), newPlugin), "The plugins should contain the plugin")
-        
-        // Move the plugin back
-        var newPluginTwo: Plugin!
-        movePluginWithConfirmation(newPlugin, destinationPluginPath: pluginPath, handler: { (plugin) -> Void in
-            newPluginTwo = plugin
-        })
-        XCTAssertNotNil(newPluginTwo, "The plugin should not be nil")
-        XCTAssertFalse(contains(pluginDataController.plugins(), newPlugin), "The plugins should not contain the plugin")
-        XCTAssertTrue(contains(pluginDataController.plugins(), newPluginTwo), "The plugins should contain the plugin")
-    }
-    
-    func testEditPlugin() {
-        let pluginPath = plugin.bundle.bundlePath
-        let destinationPluginFilename = plugin.identifier
-        let destinationPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(destinationPluginFilename)
-        
-        // Move the plugin
-        var newPlugin: Plugin!
-        modifyPluginWithConfirmation(plugin, handler: { (plugin) -> Void in
-            newPlugin = plugin
-        })
-        XCTAssertNotNil(newPlugin, "The plugin should not be nil")
-        XCTAssertFalse(contains(pluginDataController.plugins(), plugin), "The plugins should not contain the plugin")
-        XCTAssertTrue(contains(pluginDataController.plugins(), newPlugin), "The plugins should contain the plugin")
-    }
-    
+class PluginDataControllerTests: PluginDataControllerTestCase {
     
     // MARK: Test Other Methods of Creating Plugins
     
@@ -188,6 +114,4 @@ class PluginDataControllerPluginDataEventManagerTests: PluginDataEventManagerTes
         XCTAssertTrue(success, "The remove should succeed")
         XCTAssertNil(removeError, "The error should be nil")
     }
-    
-    // TODO: Test plugins made invalid are not loaded?
 }
