@@ -40,8 +40,12 @@ static void *WCLKeyToObjectControllerContext;
 - (void)addObject:(id)object
 {
     NSString *value = [object valueForKey:self.key];
+
+    id existingObject = self.keyToObjectDictionary[value];
     
-    NSAssert(self.keyToObjectDictionary[value] == nil, @"Attemped to add an object with an existing key value.");
+    if (existingObject) {
+        [self removeObject:existingObject];
+    }
 
     self.keyToObjectDictionary[value] = object;
     [object addObserver:self

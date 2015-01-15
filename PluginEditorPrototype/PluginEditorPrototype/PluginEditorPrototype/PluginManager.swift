@@ -81,9 +81,9 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     // MARK: Private add helper
 
     private func addPlugin(plugin: Plugin) {
-        if let existingPlugin: Plugin = nameToPluginController.objectWithKey(plugin.name) as? Plugin {
-            nameToPluginController.removeObject(existingPlugin)
-        }
+//        if let existingPlugin: Plugin = nameToPluginController.objectWithKey(plugin.name) as? Plugin {
+//            nameToPluginController.removeObject(existingPlugin)
+//        }
         
         nameToPluginController.addObject(plugin)
     }
