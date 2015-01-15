@@ -33,7 +33,7 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
 
     
     // MARK: Accessing Plugins
-    
+
     func plugins() -> [Plugin] {
         return nameToPluginController.allObjects() as [Plugin]!
     }
@@ -66,8 +66,8 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     func newPlugin(handler: ((newPlugin: Plugin?) -> Void)?) {
         // TODO: This needs to use default new plugin
     }
-    
 
+    
     // MARK: PluginDataControllerDelegate
 
     func pluginDataController(pluginDataController: PluginDataController, didAddPlugin plugin: Plugin) {
@@ -78,13 +78,10 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
         removePlugin(plugin)
     }
 
+
     // MARK: Private add helper
 
     private func addPlugin(plugin: Plugin) {
-//        if let existingPlugin: Plugin = nameToPluginController.objectWithKey(plugin.name) as? Plugin {
-//            nameToPluginController.removeObject(existingPlugin)
-//        }
-        
         nameToPluginController.addObject(plugin)
     }
 
