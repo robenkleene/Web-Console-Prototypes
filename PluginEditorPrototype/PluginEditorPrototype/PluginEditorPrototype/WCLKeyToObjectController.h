@@ -11,9 +11,9 @@
 @interface WCLKeyToObjectController : NSObject
 - (instancetype)initWithKey:(NSString *)key;
 - (instancetype)initWithKey:(NSString *)key objects:(NSArray *)objects;
-- (void)addObject:(id)object;
+- (id)addObject:(id)object;
 - (void)removeObject:(id)object;
-- (void)addObjectsFromArray:(NSArray *)plugins;
+- (NSArray *)addObjectsFromArray:(NSArray *)plugins;
 - (void)removeObjectsFromArray:(NSArray *)plugins;
 - (id)objectWithKey:(NSString *)key;
 - (NSArray *)allObjects;

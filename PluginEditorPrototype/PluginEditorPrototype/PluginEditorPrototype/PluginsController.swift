@@ -41,6 +41,19 @@ class PluginsController {
         insertObject(plugin, inPluginsAtIndex: 0)
     }
     
+    func addPlugins(plugins: [Plugin]) {
+        let range = NSMakeRange(0, plugins.count)
+        let indexes = NSIndexSet(indexesInRange: range)
+        insertPlugins(plugins, atIndexes: indexes)
+    }
+    
+    func removePlugin(plugin: Plugin) {
+        let index = mutablePlugins.indexOfObject(plugin)
+        if index != NSNotFound {
+            removeObjectFromPluginsAtIndex(index)
+        }
+    }
+    
     
     // MARK: Required Key-Value Coding To-Many Relationship Compliance
     
@@ -49,13 +62,26 @@ class PluginsController {
     }
     
     func insertObject(plugin: Plugin, inPluginsAtIndex index: Int) {
-        nameToPluginController.addObject(plugin)
+        var replacedPlugin: Plugin? = nameToPluginController.addObject(plugin) as? Plugin
         mutablePlugins.insertObject(plugin, atIndex: index)
+        if let replacedPlugin: Plugin = replacedPlugin {
+            let index = mutablePlugins.indexOfObject(replacedPlugin)
+            if index != NSNotFound {
+                removeObjectFromPluginsAtIndex(index)
+            }
+        }
     }
     
     func insertPlugins(plugins: [Plugin], atIndexes indexes: NSIndexSet) {
-        nameToPluginController.addObjectsFromArray(plugins)
+        var replacedPlugins: [Plugin]? = nameToPluginController.addObjectsFromArray(plugins) as? [Plugin]
         mutablePlugins.insertObjects(plugins, atIndexes: indexes)
+        if let replacedPlugins: [Plugin] = replacedPlugins {
+            let indexes = mutablePlugins.indexesOfObjectsPassingTest({
+                (object: AnyObject!, index: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Bool in
+                return contains(replacedPlugins, object as Plugin)
+            })
+            removePluginsAtIndexes(indexes)
+        }
     }
 
     func removeObjectFromPluginsAtIndex(index: Int) {

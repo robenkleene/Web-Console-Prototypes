@@ -10,7 +10,8 @@ import Cocoa
 
 class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
 
-    private let nameToPluginController: WCLKeyToObjectController
+    private let pluginsController: PluginsController
+    
     let pluginDataController: PluginDataController
     
     class var sharedInstance : PluginManager {
@@ -22,7 +23,7 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     
     init(_ paths: [String], duplicatePluginDestinationDirectoryURL: NSURL) {
         self.pluginDataController = PluginDataController(paths, duplicatePluginDestinationDirectoryURL: duplicatePluginDestinationDirectoryURL)
-        self.nameToPluginController = WCLKeyToObjectController(key: pluginNameKey, objects: pluginDataController.plugins())
+        self.pluginsController = PluginsController(pluginDataController.plugins())
         super.init()
         pluginDataController.delegate = self
     }
@@ -33,13 +34,9 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
 
     
     // MARK: Accessing Plugins
-
-    func plugins() -> [Plugin] {
-        return nameToPluginController.allObjects() as [Plugin]!
-    }
     
     func pluginWithName(name: String) -> Plugin? {
-        return nameToPluginController.objectWithKey(name) as? Plugin
+        return pluginsController.pluginWithName(name)
     }
     
     func pluginWithIdentifier(identifier: String) -> Plugin? {
@@ -53,6 +50,16 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     }
 
 
+    // MARK: Required Key-Value Coding To-Many Relationship Compliance
+    
+    // TODO: This should return an NSArray
+    func plugins() -> [Plugin] {
+        return pluginsController.plugins() as [Plugin]
+    }
+    
+    // TODO: Implement rest of KVC To-Many Relationship methods
+    
+    
     // MARK: Adding and Removing Plugins
     
     func movePluginToTrash(plugin: Plugin) {
@@ -71,25 +78,10 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     // MARK: PluginDataControllerDelegate
 
     func pluginDataController(pluginDataController: PluginDataController, didAddPlugin plugin: Plugin) {
-        addPlugin(plugin)
+        pluginsController.addPlugin(plugin)
     }
 
     func pluginDataController(pluginDataController: PluginDataController, didRemovePlugin plugin: Plugin) {
-        removePlugin(plugin)
-    }
-
-
-    // MARK: Private add helper
-
-    private func addPlugin(plugin: Plugin) {
-        nameToPluginController.addObject(plugin)
-    }
-
-    private func removePlugin(plugin: Plugin) {
-        if let existingPlugin: Plugin = nameToPluginController.objectWithKey(plugin.name) as? Plugin {
-            if existingPlugin == plugin {
-                nameToPluginController.removeObject(plugin)
-            }
-        }
+        pluginsController.removePlugin(plugin)
     }
 }

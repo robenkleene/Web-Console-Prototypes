@@ -14,6 +14,8 @@ let testPluginPathComponent = "\(testPluginName).\(pluginFileExtension)"
 
 let testDirectoryName = "test"
 let testDirectoryNameTwo = "test2"
+let testDirectoryNameThree = "test3"
+let testDirectoryNameFour = "test4"
 let testFilename = "test.txt"
 let testFilenameTwo = "test2.txt"
 let testFileContents = "test"

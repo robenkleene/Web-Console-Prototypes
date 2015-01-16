@@ -37,7 +37,7 @@ static void *WCLKeyToObjectControllerContext;
     return self;
 }
 
-- (void)addObject:(id)object
+- (id)addObject:(id)object
 {
     NSString *value = [object valueForKey:self.key];
 
@@ -52,17 +52,20 @@ static void *WCLKeyToObjectControllerContext;
              forKeyPath:self.key
                 options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
                 context:&WCLKeyToObjectControllerContext];
+
+    return existingObject;
 }
 
 - (void)removeObject:(id)object
 {
     NSString *key = [object valueForKey:self.key];
 
-    NSAssert(self.keyToObjectDictionary[key] == object, @"Attempted to remove an object where the stored object doesn't match the object's key");
-    [self.keyToObjectDictionary removeObjectForKey:key];
-	[object removeObserver:self
-                forKeyPath:self.key
-                   context:&WCLKeyToObjectControllerContext];
+    if (self.keyToObjectDictionary[key] == object) {
+        [self.keyToObjectDictionary removeObjectForKey:key];
+        [object removeObserver:self
+                    forKeyPath:self.key
+                       context:&WCLKeyToObjectControllerContext];
+    }
 }
 
 - (void)dealloc
@@ -103,11 +106,16 @@ static void *WCLKeyToObjectControllerContext;
 
 #pragma mark Convienence Methods
 
-- (void)addObjectsFromArray:(NSArray *)objects
+- (NSArray *)addObjectsFromArray:(NSArray *)objects
 {
+    NSMutableArray *removedObjects = [NSMutableArray array];
     for (id object in objects) {
-        [self addObject:object];
+        id removedObject = [self addObject:object];
+        if (removedObject) {
+            [removedObjects addObject:removedObject];
+        }
     }
+    return removedObjects;
 }
 
 - (void)removeObjectsFromArray:(NSArray *)objects
