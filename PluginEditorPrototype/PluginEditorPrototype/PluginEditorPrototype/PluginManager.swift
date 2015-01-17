@@ -10,7 +10,7 @@ import Cocoa
 
 class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
 
-    private let pluginsController: PluginsController
+    private let pluginsController: MultiCollectionController
     
     let pluginDataController: PluginDataController
     
@@ -23,7 +23,7 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     
     init(_ paths: [String], duplicatePluginDestinationDirectoryURL: NSURL) {
         self.pluginDataController = PluginDataController(paths, duplicatePluginDestinationDirectoryURL: duplicatePluginDestinationDirectoryURL)
-        self.pluginsController = PluginsController(pluginDataController.plugins())
+        self.pluginsController = MultiCollectionController(pluginDataController.plugins(), key:pluginNameKey)
         super.init()
         pluginDataController.delegate = self
     }
@@ -36,7 +36,7 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     // MARK: Accessing Plugins
     
     func pluginWithName(name: String) -> Plugin? {
-        return pluginsController.pluginWithName(name)
+        return pluginsController.objectWithKey(name) as Plugin?
     }
     
     func pluginWithIdentifier(identifier: String) -> Plugin? {
@@ -54,7 +54,7 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     
     // TODO: This should return an NSArray
     func plugins() -> [Plugin] {
-        return pluginsController.plugins() as [Plugin]
+        return pluginsController.objects() as [Plugin]
     }
     
     // TODO: Implement rest of KVC To-Many Relationship methods
@@ -78,10 +78,10 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     // MARK: PluginDataControllerDelegate
 
     func pluginDataController(pluginDataController: PluginDataController, didAddPlugin plugin: Plugin) {
-        pluginsController.addPlugin(plugin)
+        pluginsController.addObject(plugin)
     }
 
     func pluginDataController(pluginDataController: PluginDataController, didRemovePlugin plugin: Plugin) {
-        pluginsController.removePlugin(plugin)
+        pluginsController.removeObject(plugin)
     }
 }

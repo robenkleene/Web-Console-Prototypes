@@ -9,12 +9,12 @@
 import Cocoa
 import XCTest
 
-class PluginsControllerTests: TemporaryPluginsTestCase {
-    var pluginsController: PluginsController!
+class MultiCollectionControllerTests: TemporaryPluginsTestCase {
+    var pluginsController: MultiCollectionController!
     
     override func setUp() {
         super.setUp()
-        pluginsController = PluginsController([temporaryPlugin])
+        pluginsController = MultiCollectionController([temporaryPlugin], key: pluginNameKey)
     }
     
     override func tearDown() {
@@ -34,11 +34,11 @@ class PluginsControllerTests: TemporaryPluginsTestCase {
     func testAddPlugin() {
         let destinationPluginURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: temporaryPlugin.identifier)
         let newPlugin = Plugin.pluginWithURL(destinationPluginURL)!
-        pluginsController.addPlugin(newPlugin)
-        XCTAssertEqual(pluginsController.plugins().count, 1, "The plugins count should be one")
-        XCTAssertEqual(pluginsController.pluginWithName(newPlugin.name)!, newPlugin, "The plugins should be equal")
-        XCTAssertTrue(pluginsController.plugins().containsObject(newPlugin), "The plugins should contain the new plugin")
-        XCTAssertFalse(pluginsController.plugins().containsObject(temporaryPlugin), "The plugins should not contain the temporary plugin")
+        pluginsController.addObject(newPlugin)
+        XCTAssertEqual(pluginsController.objects().count, 1, "The plugins count should be one")
+        XCTAssertEqual(pluginsController.objectWithKey(newPlugin.name)! as Plugin, newPlugin, "The plugins should be equal")
+        XCTAssertTrue(pluginsController.objects().containsObject(newPlugin), "The plugins should contain the new plugin")
+        XCTAssertFalse(pluginsController.objects().containsObject(temporaryPlugin), "The plugins should not contain the temporary plugin")
         
         // Clean up
         var removeError: NSError?
@@ -71,21 +71,21 @@ class PluginsControllerTests: TemporaryPluginsTestCase {
         let newPlugins = [newPlugin, newPluginTwo, newPluginChangedName, newPluginChangedNameTwo]
         let newPluginURLs = [newPluginURL, newPluginTwoURL, newPluginChangedNameURL, newPluginChangedNameTwoURL]
         
-        pluginsController.addPlugins(newPlugins)
+        pluginsController.addObjects(newPlugins)
 
         
-        XCTAssertEqual(pluginsController.plugins().count, 2, "The plugins count should be one")
+        XCTAssertEqual(pluginsController.objects().count, 2, "The plugins count should be one")
         
         // Test New Plugins
-        XCTAssertEqual(pluginsController.pluginWithName(newPluginTwo.name)!, newPluginTwo, "The plugins should be equal")
-        XCTAssertTrue(pluginsController.plugins().containsObject(newPluginTwo), "The plugins should contain the second new plugin")
-        XCTAssertFalse(pluginsController.plugins().containsObject(newPlugin), "The plugins should not contain the new plugin")
-        XCTAssertFalse(pluginsController.plugins().containsObject(temporaryPlugin), "The plugins should not contain the temporary plugin")
+        XCTAssertEqual(pluginsController.objectWithKey(newPluginTwo.name)! as Plugin, newPluginTwo, "The plugins should be equal")
+        XCTAssertTrue(pluginsController.objects().containsObject(newPluginTwo), "The plugins should contain the second new plugin")
+        XCTAssertFalse(pluginsController.objects().containsObject(newPlugin), "The plugins should not contain the new plugin")
+        XCTAssertFalse(pluginsController.objects().containsObject(temporaryPlugin), "The plugins should not contain the temporary plugin")
         
         // Test New Plugins Changed Name
-        XCTAssertEqual(pluginsController.pluginWithName(newPluginChangedNameTwo.name)!, newPluginChangedNameTwo, "The plugins should be equal")
-        XCTAssertTrue(pluginsController.plugins().containsObject(newPluginChangedNameTwo), "The plugins should contain the second new plugin changed name")
-        XCTAssertFalse(pluginsController.plugins().containsObject(newPluginChangedName), "The plugins should not contain the new plugin changed name")
+        XCTAssertEqual(pluginsController.objectWithKey(newPluginChangedNameTwo.name)! as Plugin, newPluginChangedNameTwo, "The plugins should be equal")
+        XCTAssertTrue(pluginsController.objects().containsObject(newPluginChangedNameTwo), "The plugins should contain the second new plugin changed name")
+        XCTAssertFalse(pluginsController.objects().containsObject(newPluginChangedName), "The plugins should not contain the new plugin changed name")
 
         for pluginURL: NSURL in newPluginURLs {
             // Clean up

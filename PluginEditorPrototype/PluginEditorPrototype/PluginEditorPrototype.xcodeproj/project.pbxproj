@@ -104,7 +104,7 @@
 		45CC5A061A675ECF00EDE1B5 /* PluginsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC5A051A675ECF00EDE1B5 /* PluginsController.swift */; };
 		45CC5A071A67699300EDE1B5 /* PluginsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC5A051A675ECF00EDE1B5 /* PluginsController.swift */; };
 		45CC5A081A67699E00EDE1B5 /* PluginsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC5A051A675ECF00EDE1B5 /* PluginsController.swift */; };
-		45CC5A0A1A677A1F00EDE1B5 /* PluginsControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC5A091A677A1F00EDE1B5 /* PluginsControllerTests.swift */; };
+		45CC5A0A1A677A1F00EDE1B5 /* MultiCollectionControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC5A091A677A1F00EDE1B5 /* MultiCollectionControllerTests.swift */; };
 		45CFF0491A5CCEE400C16F16 /* PluginManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CFF0481A5CCEE400C16F16 /* PluginManagerTests.swift */; };
 		45D02C611A072E6100778F3A /* PluginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D02C5F1A072E6100778F3A /* PluginTests.swift */; };
 		45D02C621A072E6100778F3A /* XCTest+BundleResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D02C601A072E6100778F3A /* XCTest+BundleResources.swift */; };
@@ -288,7 +288,7 @@
 		45AC08EB18DF277A002550CF /* WCLFileExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLFileExtension.h; sourceTree = "<group>"; };
 		45AC08EC18DF277A002550CF /* WCLFileExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLFileExtension.m; sourceTree = "<group>"; };
 		45CC5A051A675ECF00EDE1B5 /* PluginsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginsController.swift; sourceTree = "<group>"; };
-		45CC5A091A677A1F00EDE1B5 /* PluginsControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginsControllerTests.swift; sourceTree = "<group>"; };
+		45CC5A091A677A1F00EDE1B5 /* MultiCollectionControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiCollectionControllerTests.swift; sourceTree = "<group>"; };
 		45CFF0481A5CCEE400C16F16 /* PluginManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginManagerTests.swift; sourceTree = "<group>"; };
 		45D02C5F1A072E6100778F3A /* PluginTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginTests.swift; sourceTree = "<group>"; };
 		45D02C601A072E6100778F3A /* XCTest+BundleResources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTest+BundleResources.swift"; sourceTree = "<group>"; };
@@ -374,7 +374,7 @@
 				45D02C5F1A072E6100778F3A /* PluginTests.swift */,
 				45605E8419D72A750033A8AD /* DirectoryTests.swift */,
 				45CFF0481A5CCEE400C16F16 /* PluginManagerTests.swift */,
-				45CC5A091A677A1F00EDE1B5 /* PluginsControllerTests.swift */,
+				45CC5A091A677A1F00EDE1B5 /* MultiCollectionControllerTests.swift */,
 				452D273419C7AB190085CDAF /* PluginDataControllerTests.swift */,
 				45605E8619D74A1D0033A8AD /* DuplicatePluginControllerTests.swift */,
 				4563DE191A59D58000CCBE45 /* CopyDirectoryControllerTests.swift */,
@@ -818,7 +818,7 @@
 				4508DAC81A57600200A6E71F /* Plugin+Initialization.swift in Sources */,
 				45FF3C5C1A0F0806009486AD /* PluginsDirectoryManager.swift in Sources */,
 				451A85E219D2409E00C92D47 /* PluginManager.swift in Sources */,
-				45CC5A0A1A677A1F00EDE1B5 /* PluginsControllerTests.swift in Sources */,
+				45CC5A0A1A677A1F00EDE1B5 /* MultiCollectionControllerTests.swift in Sources */,
 				45F4235E19D3896F007F5BC3 /* TestConstants.swift in Sources */,
 				4590E5391A0EAC58000C9890 /* TemporaryPluginsTestCase.swift in Sources */,
 				452D273E19C7AFCA0085CDAF /* PluginDataController.swift in Sources */,

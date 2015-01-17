@@ -10,16 +10,17 @@
 #import "WCLPluginDataController.h"
 #import "WCLKeyToObjectController.h"
 #import "WCLPlugin_old.h"
+#import "PluginEditorPrototype-Swift.h"
 
 @interface WCLPluginManager_old ()
 @property (nonatomic, strong, readonly) WCLPluginDataController *pluginDataController;
-@property (nonatomic, strong, readonly) WCLKeyToObjectController *nameToPluginController;
+@property (nonatomic, strong, readonly) MultiCollectionController *pluginsController;
 @end
 
 @implementation WCLPluginManager_old
 
 @synthesize pluginDataController = _pluginDataController;
-@synthesize nameToPluginController = _nameToPluginController;
+@synthesize pluginsController = _pluginsController;
 @synthesize defaultNewPlugin = _defaultNewPlugin;
 
 + (instancetype)sharedPluginManager
@@ -47,14 +48,14 @@
         newPlugin = [self.pluginDataController newPlugin];
     }
     
-    [self.nameToPluginController addObject:newPlugin];
+    [self.pluginsController addObject:newPlugin];
     return newPlugin;
 }
 
 - (WCLPlugin_old *)newPluginFromPlugin:(WCLPlugin_old *)plugin
 {
     WCLPlugin_old *newPlugin = [self.pluginDataController newPluginFromPlugin:plugin];
-    [self.nameToPluginController addObject:newPlugin];
+    [self.pluginsController addObject:newPlugin];
     return newPlugin;
 }
 
@@ -64,18 +65,18 @@
         self.defaultNewPlugin = nil;
     }
     
-    [self.nameToPluginController removeObject:plugin];
+    [self.pluginsController removeObject:plugin];
     [self.pluginDataController deletePlugin:plugin];
 }
 
 - (WCLPlugin_old *)pluginWithName:(NSString *)name
 {
-    return [self.nameToPluginController objectWithKey:name];
+    return [self.pluginsController objectWithKey:name];
 }
 
 - (NSArray *)plugins
 {
-    return [self.nameToPluginController allObjects];
+    return [self.pluginsController objects];
 }
 
 #pragma mark Properties
@@ -131,16 +132,17 @@
     return nil;
 }
 
-- (WCLKeyToObjectController *)nameToPluginController
+- (MultiCollectionController *)pluginsController
 {
-    if (_nameToPluginController) {
-        return _nameToPluginController;
+    if (_pluginsController) {
+        return _pluginsController;
     }
+    
 
-    _nameToPluginController = [[WCLKeyToObjectController alloc] initWithKey:WCLPluginNameKey
-                                                                    objects:[self.pluginDataController existingPlugins]];
-
-    return _nameToPluginController;
+    NSArray *plugins = [self.pluginDataController existingPlugins];
+    _pluginsController = [[MultiCollectionController alloc] init:plugins key:WCLPluginNameKey];
+    
+    return _pluginsController;
 }
 
 - (WCLPluginDataController *)pluginDataController

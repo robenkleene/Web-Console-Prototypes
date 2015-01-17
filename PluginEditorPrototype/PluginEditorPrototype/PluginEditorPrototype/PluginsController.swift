@@ -9,91 +9,81 @@
 import Foundation
 import Cocoa
 
-class PluginsController {
-    private let nameToPluginController: WCLKeyToObjectController
-    private var mutablePlugins = NSMutableArray()
+@objc class MultiCollectionController: NSObject {
+    private let nameToObjectController: WCLKeyToObjectController
+    private var mutableObjects = NSMutableArray()
     
-    init(_ plugins: [Plugin]) {
-        self.nameToPluginController = WCLKeyToObjectController(key: pluginNameKey, objects: plugins)
-        self.mutablePlugins.addObjectsFromArray(plugins)
+    init(_ objects: [AnyObject], key: String) {
+        self.nameToObjectController = WCLKeyToObjectController(key: key, objects: objects)
+        self.mutableObjects.addObjectsFromArray(objects)
+        super.init()
     }
     
     // MARK: Accessing Plugins
     
-    func pluginWithName(name: String) -> Plugin? {
-        return nameToPluginController.objectWithKey(name) as? Plugin
+    func objectWithKey(key: String) -> AnyObject? {
+        return nameToObjectController.objectWithKey(key)
     }
-    
-    func pluginWithIdentifier(identifier: String) -> Plugin? {
-        let allPlugins = mutablePlugins as NSArray as [Plugin]
-        for plugin in allPlugins {
-            if plugin.identifier == identifier {
-                return plugin
-            }
-        }
-        return nil
-    }
-
 
     // MARK: Convenience
     
-    func addPlugin(plugin: Plugin) {
-        insertObject(plugin, inPluginsAtIndex: 0)
+    func addObject(object: AnyObject) {
+        insertObject(object, inObjectsAtIndex: 0)
     }
     
-    func addPlugins(plugins: [Plugin]) {
-        let range = NSMakeRange(0, plugins.count)
+    func addObjects(objects: [AnyObject]) {
+        let range = NSMakeRange(0, objects.count)
         let indexes = NSIndexSet(indexesInRange: range)
-        insertPlugins(plugins, atIndexes: indexes)
+        insertObjects(objects, atIndexes: indexes)
     }
     
-    func removePlugin(plugin: Plugin) {
-        let index = mutablePlugins.indexOfObject(plugin)
+    func removeObject(object: AnyObject) {
+        let index = mutableObjects.indexOfObject(object)
         if index != NSNotFound {
-            removeObjectFromPluginsAtIndex(index)
+            removeObjectFromObjectsAtIndex(index)
         }
     }
     
     
     // MARK: Required Key-Value Coding To-Many Relationship Compliance
     
-    func plugins() -> NSArray {
-        return NSArray(array: mutablePlugins)
+    func objects() -> NSArray {
+        return NSArray(array: mutableObjects)
     }
     
-    func insertObject(plugin: Plugin, inPluginsAtIndex index: Int) {
-        var replacedPlugin: Plugin? = nameToPluginController.addObject(plugin) as? Plugin
-        mutablePlugins.insertObject(plugin, atIndex: index)
-        if let replacedPlugin: Plugin = replacedPlugin {
-            let index = mutablePlugins.indexOfObject(replacedPlugin)
+    func insertObject(object: AnyObject, inObjectsAtIndex index: Int) {
+        var replacedObject: AnyObject? = nameToObjectController.addObject(object)
+        mutableObjects.insertObject(object, atIndex: index)
+        if let replacedObject: AnyObject = replacedObject {
+            let index = mutableObjects.indexOfObject(replacedObject)
             if index != NSNotFound {
-                removeObjectFromPluginsAtIndex(index)
+                removeObjectFromObjectsAtIndex(index)
             }
         }
     }
     
-    func insertPlugins(plugins: [Plugin], atIndexes indexes: NSIndexSet) {
-        var replacedPlugins: [Plugin]? = nameToPluginController.addObjectsFromArray(plugins) as? [Plugin]
-        mutablePlugins.insertObjects(plugins, atIndexes: indexes)
-        if let replacedPlugins: [Plugin] = replacedPlugins {
-            let indexes = mutablePlugins.indexesOfObjectsPassingTest({
+    func insertObjects(objects: [AnyObject], atIndexes indexes: NSIndexSet) {
+        var replacedObjects: NSArray? = nameToObjectController.addObjectsFromArray(objects)
+        mutableObjects.insertObjects(objects, atIndexes: indexes)
+        if let replacedObjects: NSArray = replacedObjects {            
+            let indexes = mutableObjects.indexesOfObjectsPassingTest({
                 (object: AnyObject!, index: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Bool in
-                return contains(replacedPlugins, object as Plugin)
+                return replacedObjects.containsObject(object)
             })
-            removePluginsAtIndexes(indexes)
+            removeObjectsAtIndexes(indexes)
         }
     }
 
-    func removeObjectFromPluginsAtIndex(index: Int) {
-        let plugin = mutablePlugins.objectAtIndex(index) as Plugin
-        nameToPluginController.removeObject(plugin)
-        mutablePlugins.removeObjectAtIndex(index)
+    func removeObjectFromObjectsAtIndex(index: Int) {
+        let object: AnyObject = mutableObjects.objectAtIndex(index)
+        nameToObjectController.removeObject(object)
+        mutableObjects.removeObjectAtIndex(index)
     }
     
-    func removePluginsAtIndexes(indexes: NSIndexSet) {
-        let plugins = mutablePlugins.objectsAtIndexes(indexes)
-        nameToPluginController.removeObjectsFromArray(plugins)
-        mutablePlugins.removeObjectsAtIndexes(indexes)
+    func removeObjectsAtIndexes(indexes: NSIndexSet) {
+        let objects = mutableObjects.objectsAtIndexes(indexes)
+        nameToObjectController.removeObjectsFromArray(objects)
+        mutableObjects.removeObjectsAtIndexes(indexes)
     }
 
 }
