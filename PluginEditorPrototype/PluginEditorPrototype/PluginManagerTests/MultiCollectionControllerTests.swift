@@ -9,6 +9,70 @@
 import Cocoa
 import XCTest
 
+extension TemporaryPluginsTestCase {
+    func fileURLOfDuplicatedItemAtURL(fileURL: NSURL, withFilename filename: NSString) -> NSURL {
+        let destinationFileURL = fileURL.URLByDeletingLastPathComponent!.URLByAppendingPathComponent(filename)
+        var copyError: NSError?
+        let copySuccess = NSFileManager.defaultManager().copyItemAtURL(fileURL, toURL: destinationFileURL, error: &copyError)
+        XCTAssertTrue(copySuccess, "The copy should succeed")
+        XCTAssertNil(copyError, "The error should be nil")
+        return destinationFileURL
+    }
+}
+
+
+class MultiCollectionControllerInitTests: TemporaryPluginsTestCase {
+
+    func testInitPlugins() {
+        let newPluginFilename = testDirectoryName
+        let newPluginURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginFilename)
+        let newPlugin = Plugin.pluginWithURL(newPluginURL)!
+        
+        let newPluginTwoFilename = testDirectoryNameTwo
+        let newPluginTwoURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginTwoFilename)
+        let newPluginTwo = Plugin.pluginWithURL(newPluginURL)!
+        
+        let newPluginChangedNameFilename = testDirectoryNameThree
+        let newPluginChangedNameURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginChangedNameFilename)
+        let newPluginChangedName = Plugin.pluginWithURL(newPluginURL)!
+        let changedName = testDirectoryName
+        newPluginChangedName.name = changedName
+        
+        let newPluginChangedNameTwoFilename = testDirectoryNameFour
+        let newPluginChangedNameTwoURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginChangedNameTwoFilename)
+        let newPluginChangedNameTwo = Plugin.pluginWithURL(newPluginURL)!
+        newPluginChangedNameTwo.name = changedName
+        
+        let plugins = [temporaryPlugin, newPlugin, newPluginTwo, newPluginChangedName, newPluginChangedNameTwo]
+        let newPluginURLs = [newPluginURL, newPluginTwoURL, newPluginChangedNameURL, newPluginChangedNameTwoURL]
+        
+        let pluginsController = MultiCollectionController(plugins, key: pluginNameKey)
+        
+        XCTAssertEqual(pluginsController.objects().count, 2, "The plugins count should be one")
+        
+        // Test New Plugins
+        XCTAssertEqual(pluginsController.objectWithKey(newPluginTwo.name)! as Plugin, newPluginTwo, "The plugins should be equal")
+        XCTAssertTrue(pluginsController.objects().containsObject(newPluginTwo), "The plugins should contain the second new plugin")
+        XCTAssertFalse(pluginsController.objects().containsObject(newPlugin), "The plugins should not contain the new plugin")
+        XCTAssertFalse(pluginsController.objects().containsObject(temporaryPlugin), "The plugins should not contain the temporary plugin")
+        
+        // Test New Plugins Changed Name
+        XCTAssertEqual(pluginsController.objectWithKey(newPluginChangedNameTwo.name)! as Plugin, newPluginChangedNameTwo, "The plugins should be equal")
+        XCTAssertTrue(pluginsController.objects().containsObject(newPluginChangedNameTwo), "The plugins should contain the second new plugin changed name")
+        XCTAssertFalse(pluginsController.objects().containsObject(newPluginChangedName), "The plugins should not contain the new plugin changed name")
+        
+        for pluginURL: NSURL in newPluginURLs {
+            // Clean up
+            var removeError: NSError?
+            let success = NSFileManager.defaultManager().removeItemAtURL(pluginURL, error: &removeError)
+            XCTAssertTrue(success, "The remove should succeed")
+            XCTAssertNil(removeError, "The error should be nil")
+        }
+    }
+
+}
+
+
 class MultiCollectionControllerTests: TemporaryPluginsTestCase {
     var pluginsController: MultiCollectionController!
     
@@ -20,15 +84,6 @@ class MultiCollectionControllerTests: TemporaryPluginsTestCase {
     override func tearDown() {
         pluginsController = nil
         super.tearDown()
-    }
-
-    func fileURLOfDuplicatedItemAtURL(fileURL: NSURL, withFilename filename: NSString) -> NSURL {
-        let destinationFileURL = fileURL.URLByDeletingLastPathComponent!.URLByAppendingPathComponent(filename)
-        var copyError: NSError?
-        let copySuccess = NSFileManager.defaultManager().copyItemAtURL(fileURL, toURL: destinationFileURL, error: &copyError)
-        XCTAssertTrue(copySuccess, "The copy should succeed")
-        XCTAssertNil(copyError, "The error should be nil")
-        return destinationFileURL
     }
     
     func testAddPlugin() {

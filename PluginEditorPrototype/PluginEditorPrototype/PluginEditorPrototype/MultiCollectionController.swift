@@ -15,7 +15,7 @@ import Cocoa
     
     init(_ objects: [AnyObject], key: String) {
         self.nameToObjectController = WCLKeyToObjectController(key: key, objects: objects)
-        self.mutableObjects.addObjectsFromArray(objects)
+        self.mutableObjects.addObjectsFromArray(self.nameToObjectController.allObjects())
         super.init()
     }
     
