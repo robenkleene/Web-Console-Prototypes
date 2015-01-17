@@ -119,11 +119,11 @@
 
 - (IBAction)addPlugin:(id)sender
 {
-    id newObject = [self.pluginArrayController newObject];
-    [self.pluginArrayController addObject:newObject];
+    [self.pluginArrayController newObject];
     
+    // TODO: Select the added plugin?
     // Simple re-implement of NSDictionaryController add because using the add: method waits for the next run loop before updating the table view.
-    [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
+//    [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
 }
 
 - (IBAction)duplicatePlugin:(id)sender
@@ -131,8 +131,7 @@
     NSArray *plugins = [self.pluginArrayController selectedObjects];
 
     for (WCLPlugin_old *plugin in plugins) {
-        WCLPlugin_old *newPlugin = [[WCLPluginManager_old sharedPluginManager] newPluginFromPlugin:plugin];
-        [self.pluginArrayController addObject:newPlugin];
+        [[WCLPluginManager_old sharedPluginManager] newPluginFromPlugin:plugin];
     }
 
     [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
@@ -168,8 +167,6 @@
     if (returnCode != NSAlertFirstButtonReturn) return;
 
     NSArray *plugins = [self.pluginArrayController selectedObjects];
-    
-    [self.pluginArrayController remove:nil];
 
     for (WCLPlugin_old *plugin in plugins) {
         [[WCLPluginManager_old sharedPluginManager] deletePlugin:plugin];

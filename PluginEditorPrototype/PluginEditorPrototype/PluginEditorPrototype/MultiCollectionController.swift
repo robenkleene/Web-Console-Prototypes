@@ -38,12 +38,15 @@ import Cocoa
     }
     
     func removeObject(object: AnyObject) {
-        let index = mutableObjects.indexOfObject(object)
+        let index = indexOfObject(object)
         if index != NSNotFound {
             removeObjectFromObjectsAtIndex(index)
         }
     }
     
+    func indexOfObject(object: AnyObject) -> Int {
+         return mutableObjects.indexOfObject(object)
+    }
     
     // MARK: Required Key-Value Coding To-Many Relationship Compliance
     

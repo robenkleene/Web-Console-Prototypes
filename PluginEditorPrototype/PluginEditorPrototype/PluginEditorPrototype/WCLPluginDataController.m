@@ -31,7 +31,7 @@
     [plugin renameWithUniqueName];
 
     NSError *error;
-//    NSLog(@"saving after adding plugin %@", plugin);
+    
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving.");
     }
@@ -50,9 +50,7 @@
     newPlugin.identifier = [[NSUUID UUID] UUIDString];
     newPlugin.name = [newPlugin uniquePluginNameFromName:plugin.name];
     
-
     NSError *error;
-//    NSLog(@"saving after adding plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving.");
     }
@@ -65,7 +63,6 @@
     [self.managedObjectContext deleteObject:plugin];
     
     NSError *error;
-//    NSLog(@"saving after removing plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving.");
     }
@@ -81,7 +78,7 @@
     NSError *error;
     NSArray *plugins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     NSAssert(!error, @"Error executing fetch request. %@ %@", fetchRequest, error);
-
+    
     return plugins;
 }
 

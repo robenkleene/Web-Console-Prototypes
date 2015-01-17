@@ -23,17 +23,46 @@
 @synthesize pluginsController = _pluginsController;
 @synthesize defaultNewPlugin = _defaultNewPlugin;
 
+#pragma mark Interface Builder Compatible Singleton
+
 + (instancetype)sharedPluginManager
 {
     static dispatch_once_t pred;
     static WCLPluginManager_old *pluginManager = nil;
     
     dispatch_once(&pred, ^{
-        pluginManager = [[self alloc] init];
+        pluginManager = [[self hiddenAlloc] hiddenInit];
     });
-
+    
     return pluginManager;
 }
+
++ (id)allocWithZone:(NSZone *)zone
+{
+    return [self sharedPluginManager];
+}
+
++ (id)alloc
+{
+    return [self sharedPluginManager];
+}
+
+- (id)init
+{
+    return self;
+}
+
++ (id)hiddenAlloc
+{
+    return [super allocWithZone:NULL];
+}
+
+- (id)hiddenInit
+{
+    return [super init];
+}
+
+#pragma mark Plugins
 
 - (WCLPlugin_old *)newPlugin
 {
@@ -48,14 +77,15 @@
         newPlugin = [self.pluginDataController newPlugin];
     }
     
-    [self.pluginsController addObject:newPlugin];
+    [self addPlugin:newPlugin];
+
     return newPlugin;
 }
 
 - (WCLPlugin_old *)newPluginFromPlugin:(WCLPlugin_old *)plugin
 {
     WCLPlugin_old *newPlugin = [self.pluginDataController newPluginFromPlugin:plugin];
-    [self.pluginsController addObject:newPlugin];
+    [self addPlugin:newPlugin];
     return newPlugin;
 }
 
@@ -64,19 +94,14 @@
     if (self.defaultNewPlugin == plugin) {
         self.defaultNewPlugin = nil;
     }
-    
-    [self.pluginsController removeObject:plugin];
+
+    [self removePlugin:plugin];
     [self.pluginDataController deletePlugin:plugin];
 }
 
 - (WCLPlugin_old *)pluginWithName:(NSString *)name
 {
     return [self.pluginsController objectWithKey:name];
-}
-
-- (NSArray *)plugins
-{
-    return [self.pluginsController objects];
 }
 
 #pragma mark Properties
@@ -154,6 +179,50 @@
     _pluginDataController = [[WCLPluginDataController alloc] init];
 
     return _pluginDataController;
+}
+
+#pragma mark Convenience
+
+- (void)addPlugin:(WCLPlugin_old *)plugin
+{
+    [self insertObject:plugin inPluginsAtIndex:0];
+}
+
+- (void)removePlugin:(WCLPlugin_old *)plugin
+{
+    NSUInteger index = [self.pluginsController indexOfObject:plugin];
+    if (index != NSNotFound) {
+        [self removeObjectFromPluginsAtIndex:index];
+    }
+}
+
+#pragma mark Required Key-Value Coding To-Many Relationship Compliance
+
+- (NSArray *)plugins
+{
+    return [self.pluginsController objects];
+}
+
+- (void)insertObject:(WCLPlugin_old *)plugin inPluginsAtIndex:(NSUInteger)index
+{
+    if (_pluginsController) {
+        [self.pluginsController insertObject:plugin inObjectsAtIndex:index];
+    }
+}
+
+- (void)insertPlugins:(NSArray *)pluginsArray atIndexes:(NSIndexSet *)indexes
+{
+    [self.pluginsController insertObjects:pluginsArray atIndexes:indexes];
+}
+
+- (void)removeObjectFromPluginsAtIndex:(NSUInteger)index
+{
+    [self.pluginsController removeObjectFromObjectsAtIndex:index];
+}
+
+- (void)removePluginsAtIndexes:(NSIndexSet *)indexes
+{
+    [self.pluginsController removeObjectsAtIndexes:indexes];
 }
 
 @end

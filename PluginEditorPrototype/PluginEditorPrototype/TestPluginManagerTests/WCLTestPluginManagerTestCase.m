@@ -10,7 +10,6 @@
 
 #import "WCLPluginManager_old.h"
 #import "WCLFileExtensionController.h"
-#import "WCLPluginManagerController.h"
 
 @implementation WCLTestPluginManagerTestCase
 
@@ -35,35 +34,17 @@
 {
     WCLPlugin_old *plugin = [[WCLPluginManager_old sharedPluginManager] newPlugin];
     
-    // You have to insert the plugin into the plugin manager controller because
-    // the pluginManagerController implements the key-value coding to-many
-    // relationship accessors
-    [[WCLPluginManagerController sharedPluginManagerController] insertObject:plugin inPluginsAtIndex:0];
     return plugin;
 }
 
 - (void)deletePlugin:(WCLPlugin_old *)plugin
 {
-    NSUInteger index = [[[WCLPluginManagerController sharedPluginManagerController] plugins] indexOfObject:plugin];
-    NSAssert(index != NSNotFound, @"Attempted to remove a plugin from pluginManagerController's plugins that was not found.");
-    [[WCLPluginManagerController sharedPluginManagerController] removeObjectFromPluginsAtIndex:index];
-    
     [[WCLPluginManager_old sharedPluginManager] deletePlugin:plugin];
 }
 
 - (void)deleteAllPlugins
 {
-    NSArray *plugins = [[WCLPluginManagerController sharedPluginManagerController] plugins];
-    
-    NSRange range = NSMakeRange(0, [plugins count]);
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-    [[WCLPluginManagerController sharedPluginManagerController] removePluginsAtIndexes:indexSet];
-
-    for (WCLPlugin_old *plugin in plugins) {
-        [[WCLPluginManager_old sharedPluginManager] deletePlugin:plugin];
-    }
-
-    plugins = [[WCLPluginManager_old sharedPluginManager] plugins];
+    NSArray *plugins = [[WCLPluginManager_old sharedPluginManager] plugins];
     for (WCLPlugin_old *plugin in plugins) {
         [[WCLPluginManager_old sharedPluginManager] deletePlugin:plugin];
     }

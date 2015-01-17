@@ -14,7 +14,6 @@
 
 #import "WCLPluginManager_old.h"
 #import "WCLPlugin_old.h"
-#import "WCLPluginManagerController.h"
 
 @interface WCLPlugin_old (Tests)
 - (BOOL)validateName:(id *)ioValue error:(NSError * __autoreleasing *)outError;

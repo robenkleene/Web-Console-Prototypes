@@ -46,7 +46,6 @@
 
     
     NSError *error;
-//    NSLog(@"saving after adding plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving.");
     }
@@ -69,7 +68,6 @@
 
 
     NSError *error;
-//    NSLog(@"saving after adding plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving.");
     }
@@ -82,7 +80,6 @@
     [self.managedObjectContext deleteObject:plugin];
     
     NSError *error;
-//    NSLog(@"saving after removing plugin %@", plugin);
     if (![[self managedObjectContext] save:&error]) {
         NSAssert(NO, @"Error saving.");
     }
@@ -193,13 +190,23 @@ void WCLSwizzleClassMethod(Class class,
 
 @implementation WCLPluginManager_old (TestPluginManager)
 
++ (id)hiddenAlloc
+{
+    return [super allocWithZone:NULL];
+}
+
+- (id)hiddenInit
+{
+    return [super init];
+}
+
 + (instancetype)overrideSharedPluginManager
 {
     static dispatch_once_t pred;
     static WCLTestPluginManager *pluginManager = nil;
     
     dispatch_once(&pred, ^{
-        pluginManager = [[WCLTestPluginManager alloc] init];
+        pluginManager = [[WCLTestPluginManager hiddenAlloc] hiddenInit];
     });
     
     return pluginManager;
