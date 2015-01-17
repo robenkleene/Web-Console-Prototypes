@@ -14,11 +14,6 @@ class PluginManagerTests: PluginManagerTestCase {
     func testDuplicateAndTrashPlugin() {
         var newPlugin: Plugin?
 
-        let addedExpectation = expectationWithDescription("Plugin was added")
-        pluginDataEventManager.addPluginWasAddedHandler({ (addedPlugin) -> Void in
-            addedExpectation.fulfill()
-        })
-
         let duplicateExpectation = expectationWithDescription("Plugin was duplicated")
         pluginManager.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
             newPlugin = duplicatePlugin
@@ -40,13 +35,7 @@ class PluginManagerTests: PluginManagerTestCase {
         XCTAssertTrue(!beforeExists, "The item should exist")
         
         // Trash the plugin
-        let removeExpectation = expectationWithDescription("Plugin was removed")
-        pluginDataEventManager.addPluginWasRemovedHandler({ (removedPlugin) -> Void in
-            XCTAssertEqual(newPlugin!, removedPlugin, "The plugins should be equal")
-            removeExpectation.fulfill()
-        })
         pluginManager.movePluginToTrash(newPlugin!)
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
         // Confirm that the directory does exist in the trash now
         var isDir: ObjCBool = false

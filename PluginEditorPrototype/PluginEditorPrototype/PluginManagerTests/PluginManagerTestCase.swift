@@ -9,34 +9,23 @@
 import Cocoa
 import XCTest
 
-extension PluginManager {
-    convenience init(_ paths: [String],
-        duplicatePluginDestinationDirectoryURL: NSURL,
-        pluginDataEventManager: PluginDataEventManager)
-    {
-        self.init(paths, duplicatePluginDestinationDirectoryURL: duplicatePluginDestinationDirectoryURL)
-        self.pluginDataController.delegate = pluginDataEventManager
-        pluginDataEventManager.delegate = self
-    }
-}
 
-class PluginManagerTestCase: PluginDataEventManagerTestCase {
+class PluginManagerTestCase: TemporaryPluginsTestCase {
     var pluginManager: PluginManager!
     var plugin: Plugin!
     
     override func setUp() {
         super.setUp()
         pluginManager = PluginManager([temporaryPluginsDirectoryPath],
-            duplicatePluginDestinationDirectoryURL: temporaryPluginsDirectoryURL,
-            pluginDataEventManager: pluginDataEventManager)
+            duplicatePluginDestinationDirectoryURL: temporaryPluginsDirectoryURL)
         plugin = pluginManager.pluginWithName(testPluginName)
         XCTAssertTrue(contains(pluginManager.plugins(), plugin), "The plugins should contain the plugin")
     }
     
     override func tearDown() {
-        pluginManager.pluginDataController.delegate = nil
         pluginManager = nil
         plugin = nil
         super.tearDown()
     }
+
 }

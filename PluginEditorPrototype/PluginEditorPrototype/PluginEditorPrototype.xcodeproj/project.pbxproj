@@ -31,7 +31,6 @@
 		453413331A6366DC0047C820 /* SubprocessFileSystemModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453413321A6366DC0047C820 /* SubprocessFileSystemModifier.swift */; };
 		453413351A6367520047C820 /* PluginManagerTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453413341A6367520047C820 /* PluginManagerTestCase.swift */; };
 		453413381A6367E90047C820 /* PluginManagerFileSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453413371A6367E90047C820 /* PluginManagerFileSystemTests.swift */; };
-		4534133A1A6368180047C820 /* PluginManagerTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453413341A6367520047C820 /* PluginManagerTestCase.swift */; };
 		4534133B1A6368310047C820 /* PluginDataEventManagerTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454E12991A60CD2100898AA2 /* PluginDataEventManagerTestCase.swift */; };
 		4534133D1A6368B70047C820 /* PluginDataEventManagerTestCase+FileSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4534133C1A6368B70047C820 /* PluginDataEventManagerTestCase+FileSystemTests.swift */; };
 		4534133E1A6368F20047C820 /* TemporaryPluginsTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4590E5381A0EAC58000C9890 /* TemporaryPluginsTestCase.swift */; };
@@ -80,7 +79,7 @@
 		4576716D18E1015B00EB720C /* WCLFileExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4576716C18E1015B00EB720C /* WCLFileExtensionTests.m */; };
 		457F7B6018D4F6CD0034F6D5 /* WCLTestPluginPrototype.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 457F7B5E18D4F6CD0034F6D5 /* WCLTestPluginPrototype.xcdatamodeld */; };
 		457F7B6318D5286E0034F6D5 /* WCLPlugin+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 457F7B6218D5286E0034F6D5 /* WCLPlugin+Validation.m */; };
-		4589996918D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests.m */; };
+		4589996918D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests_old.m in Sources */ = {isa = PBXBuildFile; fileRef = 4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests_old.m */; };
 		458FD69419D8A1D100D4898A /* NSError+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458FD69319D8A1D100D4898A /* NSError+Helper.swift */; };
 		458FD69519D8A45B00D4898A /* NSError+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458FD69319D8A1D100D4898A /* NSError+Helper.swift */; };
 		4590E5391A0EAC58000C9890 /* TemporaryPluginsTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4590E5381A0EAC58000C9890 /* TemporaryPluginsTestCase.swift */; };
@@ -101,6 +100,7 @@
 		45A5EEE918DA7231002657DF /* WCLFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A5EEE718DA7231002657DF /* WCLFilesViewController.m */; };
 		45A5EEEA18DA7231002657DF /* WCLFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45A5EEE818DA7231002657DF /* WCLFilesViewController.xib */; };
 		45AC08ED18DF277A002550CF /* WCLFileExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AC08EC18DF277A002550CF /* WCLFileExtension.m */; };
+		45BBB40C1A6B1B9C00549930 /* PluginManagerDefaultNewPluginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BBB40B1A6B1B9C00549930 /* PluginManagerDefaultNewPluginTests.m */; };
 		45CC5A061A675ECF00EDE1B5 /* MultiCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC5A051A675ECF00EDE1B5 /* MultiCollectionController.swift */; };
 		45CC5A071A67699300EDE1B5 /* MultiCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC5A051A675ECF00EDE1B5 /* MultiCollectionController.swift */; };
 		45CC5A081A67699E00EDE1B5 /* MultiCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC5A051A675ECF00EDE1B5 /* MultiCollectionController.swift */; };
@@ -274,7 +274,7 @@
 		457F7B5F18D4F6CD0034F6D5 /* WCLTestPluginPrototype.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WCLTestPluginPrototype.xcdatamodel; sourceTree = "<group>"; };
 		457F7B6118D5286E0034F6D5 /* WCLPlugin+Validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WCLPlugin+Validation.h"; sourceTree = "<group>"; };
 		457F7B6218D5286E0034F6D5 /* WCLPlugin+Validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WCLPlugin+Validation.m"; sourceTree = "<group>"; };
-		4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginManagerDefaultNewPluginTests.m; sourceTree = "<group>"; };
+		4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests_old.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginManagerDefaultNewPluginTests_old.m; sourceTree = "<group>"; };
 		458FD69319D8A1D100D4898A /* NSError+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Helper.swift"; sourceTree = "<group>"; };
 		4590E5381A0EAC58000C9890 /* TemporaryPluginsTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryPluginsTestCase.swift; sourceTree = "<group>"; };
 		4590E53A1A0EAF7E000C9890 /* PluginsDirectoryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PluginsDirectoryManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -286,6 +286,7 @@
 		45A5EEE818DA7231002657DF /* WCLFilesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WCLFilesViewController.xib; sourceTree = "<group>"; };
 		45AC08EB18DF277A002550CF /* WCLFileExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLFileExtension.h; sourceTree = "<group>"; };
 		45AC08EC18DF277A002550CF /* WCLFileExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLFileExtension.m; sourceTree = "<group>"; };
+		45BBB40B1A6B1B9C00549930 /* PluginManagerDefaultNewPluginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginManagerDefaultNewPluginTests.m; sourceTree = "<group>"; };
 		45CC5A051A675ECF00EDE1B5 /* MultiCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiCollectionController.swift; sourceTree = "<group>"; };
 		45CC5A091A677A1F00EDE1B5 /* MultiCollectionControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiCollectionControllerTests.swift; sourceTree = "<group>"; };
 		45CFF0481A5CCEE400C16F16 /* PluginManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginManagerTests.swift; sourceTree = "<group>"; };
@@ -371,10 +372,12 @@
 				45D02C5F1A072E6100778F3A /* PluginTests.swift */,
 				45605E8419D72A750033A8AD /* DirectoryTests.swift */,
 				45CFF0481A5CCEE400C16F16 /* PluginManagerTests.swift */,
+				45BBB40B1A6B1B9C00549930 /* PluginManagerDefaultNewPluginTests.m */,
 				45CC5A091A677A1F00EDE1B5 /* MultiCollectionControllerTests.swift */,
 				452D273419C7AB190085CDAF /* PluginDataControllerTests.swift */,
 				45605E8619D74A1D0033A8AD /* DuplicatePluginControllerTests.swift */,
 				4563DE191A59D58000CCBE45 /* CopyDirectoryControllerTests.swift */,
+				453413341A6367520047C820 /* PluginManagerTestCase.swift */,
 				453413361A6367640047C820 /* Shared */,
 				452D273219C7AB190085CDAF /* Supporting Files */,
 			);
@@ -415,7 +418,6 @@
 		453413361A6367640047C820 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				453413341A6367520047C820 /* PluginManagerTestCase.swift */,
 				453413461A636A140047C820 /* PluginDataControllerTestCase.swift */,
 				454E12991A60CD2100898AA2 /* PluginDataEventManagerTestCase.swift */,
 				4590E5381A0EAC58000C9890 /* TemporaryPluginsTestCase.swift */,
@@ -560,7 +562,7 @@
 				4576716C18E1015B00EB720C /* WCLFileExtensionTests.m */,
 				4596913D18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m */,
 				45087C9518F0E2E900C18554 /* WCLPluginManagerTests.m */,
-				4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests.m */,
+				4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests_old.m */,
 				451DAFD618D7D46E00AACC86 /* WCLTestPluginManagerTestCase.h */,
 				451DAFD718D7D46E00AACC86 /* WCLTestPluginManagerTestCase.m */,
 				4567DB6A18B03A7A00CBBD29 /* Supporting Files */,
@@ -830,6 +832,7 @@
 				45CC5A071A67699300EDE1B5 /* MultiCollectionController.swift in Sources */,
 				454E129A1A60CD2100898AA2 /* PluginDataEventManagerTestCase.swift in Sources */,
 				4563DE1B1A59DA6F00CCBE45 /* CopyDirectoryController.swift in Sources */,
+				45BBB40C1A6B1B9C00549930 /* PluginManagerDefaultNewPluginTests.m in Sources */,
 				45539B0519D4F5790017B892 /* DuplicatePluginController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -840,7 +843,6 @@
 			files = (
 				453413451A6369D70047C820 /* TestConstants.swift in Sources */,
 				4599CA351A636C400015DA99 /* Constants.swift in Sources */,
-				4534133A1A6368180047C820 /* PluginManagerTestCase.swift in Sources */,
 				4534134A1A636B3C0047C820 /* PluginsDirectoryManagerTests.swift in Sources */,
 				4599CA371A636C960015DA99 /* PluginsDirectoryEventHandler.swift in Sources */,
 				4599CA3B1A636D010015DA99 /* XCTest+BundleResources.swift in Sources */,
@@ -911,7 +913,7 @@
 			files = (
 				45087C9618F0E2E900C18554 /* WCLPluginManagerTests.m in Sources */,
 				4576716D18E1015B00EB720C /* WCLFileExtensionTests.m in Sources */,
-				4589996918D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests.m in Sources */,
+				4589996918D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests_old.m in Sources */,
 				456D1A6218F38E7E00955EDC /* WCLTestPlugin.m in Sources */,
 				451DAFD818D7D46E00AACC86 /* WCLTestPluginManagerTestCase.m in Sources */,
 				4596913E18D4A4F00096B058 /* WCLFileExtensionsControllerTests.m in Sources */,
