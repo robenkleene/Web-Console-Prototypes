@@ -9,11 +9,10 @@
 import Cocoa
 import XCTest
 
-class PluginManagerDefaultNewPluginTests: PluginManagerSingletonTestCase {
+class PluginManagerDefaultNewPluginTests: PluginManagerTestCase_new {
 
     override func setUp() {
         super.setUp()
-        let plugin = PluginManager.sharedInstance.pluginWithName(testPluginName)
         PluginManager.sharedInstance.defaultNewPlugin = plugin
     }
     
