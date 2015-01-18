@@ -83,4 +83,10 @@ class Plugin: WCLPlugin {
         self.identifier = identifier
         self.command = command
     }
+    override func isPluginManagerDefaultNewPlugin() -> Bool {
+        return PluginManager.sharedInstance.defaultNewPlugin? == self
+    }
+    override var description : String {
+        return "Plugin name = \(name),  identifier = \(identifier), defaultNewPlugin = \(defaultNewPlugin)"
+    }
 }

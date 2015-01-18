@@ -9,7 +9,6 @@
 import Cocoa
 import XCTest
 
-
 class PluginManagerTestCase: TemporaryPluginsTestCase {
     var pluginManager: PluginManager!
     var plugin: Plugin!
@@ -19,7 +18,7 @@ class PluginManagerTestCase: TemporaryPluginsTestCase {
         pluginManager = PluginManager([temporaryPluginsDirectoryPath],
             duplicatePluginDestinationDirectoryURL: temporaryPluginsDirectoryURL)
         plugin = pluginManager.pluginWithName(testPluginName)
-        XCTAssertTrue(contains(pluginManager.plugins(), plugin), "The plugins should contain the plugin")
+        XCTAssertTrue(pluginManager.plugins().containsObject(plugin), "The plugins should contain the plugin")
     }
     
     override func tearDown() {

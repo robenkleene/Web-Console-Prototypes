@@ -21,7 +21,11 @@
     
     NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifierKey];
     
-    Plugin *plugin = [[PluginManager sharedInstance] pluginWithIdentifier:identifier];
+    Plugin *plugin;
+
+    if (identifier) {
+        plugin = [self pluginWithIdentifier:identifier];
+    }
     
     _defaultNewPlugin = plugin;
     
@@ -50,6 +54,12 @@
         [[NSUserDefaults standardUserDefaults] setObject:_defaultNewPlugin.identifier
                                                   forKey:kDefaultNewPluginIdentifierKey];
     }
+}
+
+- (Plugin *)pluginWithIdentifier:(NSString *)identifier
+{
+    NSAssert(NO, @"Implemented in superclass");
+    return nil;
 }
 
 @end

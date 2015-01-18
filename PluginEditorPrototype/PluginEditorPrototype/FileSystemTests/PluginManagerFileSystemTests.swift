@@ -31,7 +31,7 @@ class PluginManagerFileSystemTests: PluginDataEventManagerTestCase {
             duplicatePluginDestinationDirectoryURL: temporaryPluginsDirectoryURL,
             pluginDataEventManager: pluginDataEventManager)
         plugin = pluginManager.pluginWithName(testPluginName)
-        XCTAssertTrue(contains(pluginManager.plugins(), plugin), "The plugins should contain the plugin")
+        XCTAssertTrue(pluginManager.plugins().containsObject(plugin), "The plugins should contain the plugin")
     }
     
     override func tearDown() {
@@ -54,7 +54,7 @@ class PluginManagerFileSystemTests: PluginDataEventManagerTestCase {
             newPlugin = plugin
         })
         XCTAssertNotNil(newPlugin, "The plugin should not be nil")
-        XCTAssertTrue(contains(pluginManager.plugins(), newPlugin), "The plugins should contain the plugin")
+        XCTAssertTrue(pluginManager.plugins().containsObject(newPlugin), "The plugins should contain the plugin")
         XCTAssertEqual(pluginManager.pluginWithName(testPluginName)!, newPlugin, "The plugins should be equal")
         // Since both plugins have the same name, the new plugin should have replaced the original plugin
         // So the plugin count should still be one
@@ -62,7 +62,7 @@ class PluginManagerFileSystemTests: PluginDataEventManagerTestCase {
         
         // Clean Up
         removePluginWithConfirmation(newPlugin)
-        XCTAssertFalse(contains(pluginManager.plugins(), newPlugin), "The plugins should not contain the plugin")
+        XCTAssertFalse(pluginManager.plugins().containsObject(newPlugin), "The plugins should not contain the plugin")
         XCTAssertEqual(pluginManager.plugins().count, 0, "The plugins count should be zero")
         
         // Interesting here is that the plugin manager has no plugins loaded, even though the original plugin is still there.
@@ -74,7 +74,7 @@ class PluginManagerFileSystemTests: PluginDataEventManagerTestCase {
             originalPlugin = plugin
         })
         XCTAssertNotNil(originalPlugin, "The plugin should not be nil")
-        XCTAssertTrue(contains(pluginManager.plugins(), originalPlugin), "The plugins should contain the plugin")
+        XCTAssertTrue(pluginManager.plugins().containsObject(originalPlugin), "The plugins should contain the plugin")
         XCTAssertEqual(pluginManager.pluginWithName(testPluginName)!, originalPlugin, "The plugins should be equal")
         XCTAssertEqual(pluginManager.plugins().count, 1, "The plugins count should be one")
     }
@@ -90,7 +90,7 @@ class PluginManagerFileSystemTests: PluginDataEventManagerTestCase {
             newPlugin = plugin
         })
         XCTAssertNotNil(newPlugin, "The plugin should not be nil")
-        XCTAssertTrue(contains(pluginManager.plugins(), newPlugin), "The plugins should contain the plugin")
+        XCTAssertTrue(pluginManager.plugins().containsObject(newPlugin), "The plugins should contain the plugin")
         XCTAssertEqual(pluginManager.pluginWithName(testPluginName)!, newPlugin, "The plugins should be equal")
         XCTAssertEqual(pluginManager.plugins().count, 1, "The plugins count should be one")
         
@@ -100,7 +100,7 @@ class PluginManagerFileSystemTests: PluginDataEventManagerTestCase {
             originalPlugin = plugin
         })
         XCTAssertNotNil(originalPlugin, "The plugin should not be nil")
-        XCTAssertTrue(contains(pluginManager.plugins(), originalPlugin), "The plugins should contain the plugin")
+        XCTAssertTrue(pluginManager.plugins().containsObject(originalPlugin), "The plugins should contain the plugin")
         XCTAssertEqual(pluginManager.pluginWithName(testPluginName)!, originalPlugin, "The plugins should be equal")
         XCTAssertEqual(pluginManager.plugins().count, 1, "The plugins count should be one")
     }
@@ -116,8 +116,8 @@ class PluginManagerFileSystemTests: PluginDataEventManagerTestCase {
             newPlugin = plugin
         })
         XCTAssertNotNil(newPlugin, "The plugin should not be nil")
-        XCTAssertFalse(contains(pluginManager.plugins(), plugin), "The plugins should not contain the plugin")
-        XCTAssertTrue(contains(pluginManager.plugins(), newPlugin), "The plugins should contain the plugin")
+        XCTAssertFalse(pluginManager.plugins().containsObject(plugin), "The plugins should not contain the plugin")
+        XCTAssertTrue(pluginManager.plugins().containsObject(newPlugin), "The plugins should contain the plugin")
     }
 
 }

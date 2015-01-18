@@ -8,8 +8,6 @@
 
 #import "WCLPlugin.h"
 
-#import "PluginEditorPrototype-Swift.h"
-
 @implementation WCLPlugin
 
 @synthesize defaultNewPlugin = _defaultNewPlugin;
@@ -23,13 +21,19 @@
 
 - (BOOL)isDefaultNewPlugin
 {
-    BOOL isDefaultNewPlugin = [[PluginManager sharedInstance] defaultNewPlugin] == self;
-    
+    BOOL isDefaultNewPlugin = [self isPluginManagerDefaultNewPlugin];
+
     if (_defaultNewPlugin != isDefaultNewPlugin) {
         _defaultNewPlugin = isDefaultNewPlugin;
     }
     
     return _defaultNewPlugin;
+}
+
+- (BOOL)isPluginManagerDefaultNewPlugin
+{
+    NSAssert(NO, @"Subclass must implement");
+    return NO;
 }
 
 @end

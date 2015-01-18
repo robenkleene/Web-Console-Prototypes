@@ -105,6 +105,7 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
     }
     
     func duplicatePlugin(plugin: Plugin, handler: ((plugin: Plugin?) -> Void)?) {
+
         duplicatePluginController.duplicatePlugin(plugin,
             toDirectoryAtURL: duplicatePluginDestinationDirectoryURL)
         { (plugin, error) -> Void in

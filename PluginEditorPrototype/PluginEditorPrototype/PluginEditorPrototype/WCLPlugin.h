@@ -10,4 +10,5 @@
 
 @interface WCLPlugin : NSObject
 @property (nonatomic, assign, getter = isDefaultNewPlugin) BOOL defaultNewPlugin;
+- (BOOL)isPluginManagerDefaultNewPlugin;
 @end

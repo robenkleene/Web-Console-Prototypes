@@ -23,7 +23,7 @@ class PluginManagerTests: PluginManagerTestCase {
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
         XCTAssertEqual(pluginManager.plugins().count, 2, "The plugins count should be two")
-        XCTAssertTrue(contains(pluginManager.plugins(), newPlugin!), "The plugins should contain the plugin")
+        XCTAssertTrue(pluginManager.plugins().containsObject(newPlugin!), "The plugins should contain the plugin")
         
         // Trash the duplicated plugin
         

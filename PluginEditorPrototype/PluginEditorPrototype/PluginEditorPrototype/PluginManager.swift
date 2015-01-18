@@ -14,11 +14,25 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     
     let pluginDataController: PluginDataController
     
-    class var sharedInstance : PluginManager {
-        struct Singleton {
-            static let instance : PluginManager = PluginManager()
+    // MARK: Singleton
+    
+    struct Singleton {
+        static let instance: PluginManager = PluginManager()
+        static var overrideSharedInstance: PluginManager?
+    }
+
+    class var sharedInstance: PluginManager {
+        if let overrideSharedInstance = Singleton.overrideSharedInstance {
+            return overrideSharedInstance
         }
+        
         return Singleton.instance
+    }
+
+    // MARK: Init
+    
+    class func setOverrideSharedInstance(pluginManager: PluginManager?) {
+        Singleton.overrideSharedInstance = pluginManager
     }
     
     init(_ paths: [String], duplicatePluginDestinationDirectoryURL: NSURL) {
@@ -41,9 +55,11 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     
     func pluginWithIdentifier(identifier: String) -> Plugin? {
         let allPlugins = plugins()
-        for plugin in allPlugins {
-            if plugin.identifier == identifier {
-                return plugin
+        for object: AnyObject in allPlugins {
+            if let plugin: Plugin = object as? Plugin {
+                if plugin.identifier == identifier {
+                    return plugin
+                }
             }
         }
         return nil
@@ -53,8 +69,8 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     // MARK: Required Key-Value Coding To-Many Relationship Compliance
     
     // TODO: This should return an NSArray
-    func plugins() -> [Plugin] {
-        return pluginsController.objects() as [Plugin]
+    func plugins() -> NSArray {
+        return pluginsController.objects()
     }
     
     // TODO: Implement rest of KVC To-Many Relationship methods
@@ -71,7 +87,10 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     }
 
     func newPlugin(handler: ((newPlugin: Plugin?) -> Void)?) {
-        // TODO: This needs to use default new plugin
+        // TODO: Need an error handler for no default new plugin, it should just use a hardcoded backup if no default is set, probably HTML? What if the HTML plugin is missing too?
+        if let plugin = defaultNewPlugin {
+            duplicatePlugin(plugin, handler: handler)
+        }
     }
 
     
