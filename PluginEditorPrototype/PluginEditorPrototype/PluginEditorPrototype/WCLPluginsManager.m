@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Roben Kleene. All rights reserved.
 //
 
-#import "WCLPluginManager.h"
+#import "WCLPluginsManager.h"
 #import "PluginEditorPrototype-Swift.h"
 
-@implementation WCLPluginManager
+@implementation WCLPluginsManager
 
 @synthesize defaultNewPlugin = _defaultNewPlugin;
 

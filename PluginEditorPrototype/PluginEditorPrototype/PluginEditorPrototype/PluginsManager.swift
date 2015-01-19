@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
+class PluginsManager: WCLPluginsManager, PluginDataControllerDelegate {
 
     private let pluginsController: MultiCollectionController
     
@@ -17,11 +17,11 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
     // MARK: Singleton
     
     struct Singleton {
-        static let instance: PluginManager = PluginManager()
-        static var overrideSharedInstance: PluginManager?
+        static let instance: PluginsManager = PluginsManager()
+        static var overrideSharedInstance: PluginsManager?
     }
 
-    class var sharedInstance: PluginManager {
+    class var sharedInstance: PluginsManager {
         if let overrideSharedInstance = Singleton.overrideSharedInstance {
             return overrideSharedInstance
         }
@@ -33,8 +33,8 @@ class PluginManager: WCLPluginManager, PluginDataControllerDelegate {
 
     // MARK: Init
     
-    class func setOverrideSharedInstance(pluginManager: PluginManager?) {
-        Singleton.overrideSharedInstance = pluginManager
+    class func setOverrideSharedInstance(pluginsManager: PluginsManager?) {
+        Singleton.overrideSharedInstance = pluginsManager
     }
     
     init(_ paths: [String], duplicatePluginDestinationDirectoryURL: NSURL) {

@@ -9,23 +9,23 @@
 import Cocoa
 import XCTest
 
-class PluginManagerDefaultNewPluginTests: PluginManagerTestCase {
+class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
 
     override func setUp() {
         super.setUp()
-        PluginManager.sharedInstance.defaultNewPlugin = plugin
+        PluginsManager.sharedInstance.defaultNewPlugin = plugin
     }
     
     func testSettingDefaultNewPlugin() {
         var plugin: Plugin!
         let newPluginExpectation = expectationWithDescription("Create new plugin")
-        PluginManager.sharedInstance.newPlugin { (newPlugin) -> Void in
+        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
             plugin = newPlugin
             newPluginExpectation.fulfill()
         }
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
 
-        PluginManager.sharedInstance.defaultNewPlugin = plugin
+        PluginsManager.sharedInstance.defaultNewPlugin = plugin
         
         // Assert the WCLPlugin's isDefaultNewPlugin property
         XCTAssertTrue(plugin.defaultNewPlugin, "The WCLPlugin should be the default new WCLPlugin.")
@@ -35,7 +35,7 @@ class PluginManagerDefaultNewPluginTests: PluginManagerTestCase {
         XCTAssertEqual(plugin.identifier, defaultNewPluginIdentifier, "The default WCLPlugin's identifier should equal the WCLPlugin's identifier.")
 
         // Assert the default new plugin is returned from the WCLPluginManager
-        let defaultNewPlugin = PluginManager.sharedInstance.defaultNewPlugin
+        let defaultNewPlugin = PluginsManager.sharedInstance.defaultNewPlugin
         XCTAssertEqual(defaultNewPlugin, plugin, "The default new WCLPlugin should be the WCLPlugin.")
     }
 

@@ -9,21 +9,21 @@
 import Cocoa
 import XCTest
 
-class PluginManagerTests: PluginManagerTestCase {
+class PluginsManagerTests: PluginsManagerTestCase {
 
     func testDuplicateAndTrashPlugin() {
         var newPlugin: Plugin?
 
         let duplicateExpectation = expectationWithDescription("Plugin was duplicated")
-        PluginManager.sharedInstance.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
+        PluginsManager.sharedInstance.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
             newPlugin = duplicatePlugin
             duplicateExpectation.fulfill()
         })
 
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
-        XCTAssertEqual(PluginManager.sharedInstance.plugins().count, 2, "The plugins count should be two")
-        XCTAssertTrue(PluginManager.sharedInstance.plugins().containsObject(newPlugin!), "The plugins should contain the plugin")
+        XCTAssertEqual(PluginsManager.sharedInstance.plugins().count, 2, "The plugins count should be two")
+        XCTAssertTrue(PluginsManager.sharedInstance.plugins().containsObject(newPlugin!), "The plugins should contain the plugin")
         
         // Trash the duplicated plugin
         
@@ -35,7 +35,7 @@ class PluginManagerTests: PluginManagerTestCase {
         XCTAssertTrue(!beforeExists, "The item should exist")
         
         // Trash the plugin
-        PluginManager.sharedInstance.movePluginToTrash(newPlugin!)
+        PluginsManager.sharedInstance.movePluginToTrash(newPlugin!)
         
         // Confirm that the directory does exist in the trash now
         var isDir: ObjCBool = false
@@ -53,8 +53,8 @@ class PluginManagerTests: PluginManagerTestCase {
     func testRenamePlugin() {
         let newPluginName = plugin.identifier
         plugin.name = newPluginName
-        XCTAssertNotNil(PluginManager.sharedInstance.pluginWithName(newPluginName), "The plugin should not be nil")
-        XCTAssertNil(PluginManager.sharedInstance.pluginWithName(testPluginName), "The plugin should be nil")
+        XCTAssertNotNil(PluginsManager.sharedInstance.pluginWithName(newPluginName), "The plugin should not be nil")
+        XCTAssertNil(PluginsManager.sharedInstance.pluginWithName(testPluginName), "The plugin should be nil")
     }
     
     // TODO: Waiting for default new plugin API, do tests with `PluginManager` `duplicatePlugin` API, using `PluginManager` `newPlugin`

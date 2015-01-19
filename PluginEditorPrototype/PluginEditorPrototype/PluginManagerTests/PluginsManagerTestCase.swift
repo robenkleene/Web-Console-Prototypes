@@ -9,25 +9,25 @@
 import Cocoa
 import XCTest
 
-class PluginManagerTestCase: TemporaryPluginsTestCase {
+class PluginsManagerTestCase: TemporaryPluginsTestCase {
     var plugin: Plugin!
     
     override func setUp() {
         super.setUp()
         
         // Create the plugin manager
-        let pluginManager = PluginManager([pluginsDirectoryPath],
+        let pluginsManager = PluginsManager([pluginsDirectoryPath],
             duplicatePluginDestinationDirectoryURL: pluginsDirectoryURL)
-        PluginManager.setOverrideSharedInstance(pluginManager)
+        PluginsManager.setOverrideSharedInstance(pluginsManager)
 
         // Set the plugin
-        plugin = pluginManager.pluginWithName(testPluginName)
+        plugin = pluginsManager.pluginWithName(testPluginName)
         XCTAssertNotNil(plugin, "The temporary plugin should not be nil")
     }
     
     override func tearDown() {
         plugin = nil
-        PluginManager.setOverrideSharedInstance(nil)
+        PluginsManager.setOverrideSharedInstance(nil)
         super.tearDown()
     }
     

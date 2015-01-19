@@ -8,7 +8,7 @@
 
 import XCTest
 
-//class PluginTests: PluginManagerTestCase {
+//class PluginTests: PluginsManagerTestCase {
 //    
 //    func testRenamePluginDirectory() {
 //        

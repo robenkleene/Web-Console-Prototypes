@@ -63,8 +63,8 @@ class PluginDataControllerTests: PluginDataControllerEventTestCase {
     // MARK: Test Other Methods of Creating Plugins
     
     func testDuplicateAndTrashPlugin() {
-        let plugin = PluginManager.sharedInstance.pluginDataController.plugins()[0]
-        XCTAssertEqual(PluginManager.sharedInstance.pluginDataController.plugins().count, 1, "The plugins count should be one")
+        let plugin = PluginsManager.sharedInstance.pluginDataController.plugins()[0]
+        XCTAssertEqual(PluginsManager.sharedInstance.pluginDataController.plugins().count, 1, "The plugins count should be one")
         
         var newPlugin: Plugin?
         
@@ -74,15 +74,15 @@ class PluginDataControllerTests: PluginDataControllerEventTestCase {
         })
 
         let duplicateExpectation = expectationWithDescription("Plugin was duplicated")
-        PluginManager.sharedInstance.pluginDataController.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
+        PluginsManager.sharedInstance.pluginDataController.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
             newPlugin = duplicatePlugin
             duplicateExpectation.fulfill()
         })
 
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
-        XCTAssertEqual(PluginManager.sharedInstance.pluginDataController.plugins().count, 2, "The plugins count should be two")
-        XCTAssertTrue(contains(PluginManager.sharedInstance.pluginDataController.plugins(), newPlugin!), "The plugins should contain the plugin")
+        XCTAssertEqual(PluginsManager.sharedInstance.pluginDataController.plugins().count, 2, "The plugins count should be two")
+        XCTAssertTrue(contains(PluginsManager.sharedInstance.pluginDataController.plugins(), newPlugin!), "The plugins should contain the plugin")
         
         // Trash the duplicated plugin
 
@@ -99,7 +99,7 @@ class PluginDataControllerTests: PluginDataControllerEventTestCase {
             XCTAssertEqual(newPlugin!, removedPlugin, "The plugins should be equal")
             removeExpectation.fulfill()
         })
-        PluginManager.sharedInstance.pluginDataController.movePluginToTrash(newPlugin!)
+        PluginsManager.sharedInstance.pluginDataController.movePluginToTrash(newPlugin!)
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
         // Confirm that the directory does exist in the trash now

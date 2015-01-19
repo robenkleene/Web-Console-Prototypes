@@ -10,6 +10,6 @@
 
 @class Plugin;
 
-@interface WCLPluginManager : NSObject
+@interface WCLPluginsManager : NSObject
 @property (nonatomic, strong) Plugin *defaultNewPlugin;
 @end

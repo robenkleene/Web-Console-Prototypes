@@ -9,7 +9,7 @@
 import Cocoa
 import XCTest
 
-class DuplicatePluginControllerTests: PluginManagerTestCase {
+class DuplicatePluginControllerTests: PluginsManagerTestCase {
     var duplicatePluginController: DuplicatePluginController!
     
     override func setUp() {

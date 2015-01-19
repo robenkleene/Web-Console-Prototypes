@@ -98,7 +98,7 @@ class Plugin: WCLPlugin {
     // MARK: Plugin Manager Singleton
 
     override func isPluginManagerDefaultNewPlugin() -> Bool {
-        return PluginManager.sharedInstance.defaultNewPlugin? == self
+        return PluginsManager.sharedInstance.defaultNewPlugin? == self
     }
 
     // MARK: Description

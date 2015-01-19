@@ -21,7 +21,7 @@ extension TemporaryPluginsTestCase {
 }
 
 
-class MultiCollectionControllerInitTests: PluginManagerTestCase {
+class MultiCollectionControllerInitTests: PluginsManagerTestCase {
 
     func testInitPlugins() {
         let newPluginFilename = testDirectoryName
@@ -73,7 +73,7 @@ class MultiCollectionControllerInitTests: PluginManagerTestCase {
 }
 
 
-class MultiCollectionControllerTests: PluginManagerTestCase {
+class MultiCollectionControllerTests: PluginsManagerTestCase {
     var pluginsController: MultiCollectionController!
     
     override func setUp() {
