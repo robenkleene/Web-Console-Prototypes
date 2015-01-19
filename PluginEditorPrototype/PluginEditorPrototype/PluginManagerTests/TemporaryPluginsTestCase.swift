@@ -19,7 +19,7 @@ class TemporaryPluginsTestCase: TemporaryDirectoryTestCase {
     var pluginURL: NSURL!
     var pluginPath: NSString! {
         get {
-            return pluginsDirectoryURL.path
+            return pluginURL.path
         }
     }
     

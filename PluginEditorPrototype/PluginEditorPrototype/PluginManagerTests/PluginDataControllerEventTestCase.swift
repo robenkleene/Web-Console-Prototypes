@@ -70,6 +70,8 @@ class PluginDataControllerEventTestCase: PluginManagerTestCase {
     
     override func tearDown() {
         PluginManager.sharedInstance.pluginDataController.delegate = PluginManager.sharedInstance
+        pluginDataEventManager.delegate = nil
+        pluginDataEventManager = nil
         super.tearDown()
     }
 }
