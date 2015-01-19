@@ -8,13 +8,13 @@
 
 import Cocoa
 
-protocol PluginDataControllerDelegate {
-    func pluginDataController(pluginDataController: PluginDataController, didAddPlugin plugin: Plugin)
-    func pluginDataController(pluginDataController: PluginDataController, didRemovePlugin plugin: Plugin)
+protocol PluginsDataControllerDelegate {
+    func pluginsDataController(pluginsDataController: PluginsDataController, didAddPlugin plugin: Plugin)
+    func pluginsDataController(pluginsDataController: PluginsDataController, didRemovePlugin plugin: Plugin)
 }
 
-class PluginDataController: PluginsDirectoryManagerDelegate {
-    var delegate: PluginDataControllerDelegate?
+class PluginsDataController: PluginsDirectoryManagerDelegate {
+    var delegate: PluginsDataControllerDelegate?
     var pluginDirectoryManagers: [PluginsDirectoryManager]!
     var pluginPathToPluginDictionary: [NSString : Plugin]!
     lazy var duplicatePluginController = DuplicatePluginController()
@@ -74,13 +74,13 @@ class PluginDataController: PluginsDirectoryManagerDelegate {
     func addPlugin(plugin: Plugin) {
         let pluginPath = plugin.bundle.bundlePath
         pluginPathToPluginDictionary[pluginPath] = plugin
-        delegate?.pluginDataController(self, didAddPlugin: plugin)
+        delegate?.pluginsDataController(self, didAddPlugin: plugin)
     }
     
     func removePlugin(plugin: Plugin) {
         let pluginPath = plugin.bundle.bundlePath
         pluginPathToPluginDictionary.removeValueForKey(pluginPath)
-        delegate?.pluginDataController(self, didRemovePlugin: plugin)
+        delegate?.pluginsDataController(self, didRemovePlugin: plugin)
     }
     
     func pluginAtPluginPath(pluginPath: NSString) -> Plugin? {

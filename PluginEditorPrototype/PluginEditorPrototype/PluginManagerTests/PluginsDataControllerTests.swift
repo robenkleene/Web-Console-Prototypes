@@ -9,11 +9,11 @@
 import Cocoa
 import XCTest
 
-class PluginDataControllerClassTests: XCTestCase {
+class PluginsDataControllerClassTests: XCTestCase {
     
     func testPluginPaths() {
         let pluginsPath = NSBundle.mainBundle().builtInPlugInsPath!
-        let pluginPaths = PluginDataController.pathsForPluginsAtPath(pluginsPath)
+        let pluginPaths = PluginsDataController.pathsForPluginsAtPath(pluginsPath)
 
         // Test plugin path counts
         if let testPluginPaths = NSFileManager.defaultManager().contentsOfDirectoryAtPath(pluginsPath, error:nil) {
@@ -33,23 +33,23 @@ class PluginDataControllerClassTests: XCTestCase {
             }
         }
 
-        let testPluginsCount = PluginDataController.pluginsAtPluginPaths(pluginPaths).count
+        let testPluginsCount = PluginsDataController.pluginsAtPluginPaths(pluginPaths).count
         XCTAssert(plugins.count == testPluginsCount, "The plugins count should equal the test plugins count")
     }
     
 }
 
-class PluginDataControllerBuiltInPluginsTests: XCTestCase {
+class PluginsDataControllerBuiltInPluginsTests: XCTestCase {
 
     func testExistingPlugins() {
         let trashDirectoryPath = NSSearchPathForDirectoriesInDomains(.TrashDirectory, .UserDomainMask, true)[0] as NSString
         let trashDirectoryURL = NSURL(fileURLWithPath: trashDirectoryPath)
-        let pluginDataController = PluginDataController(testPluginsPaths, duplicatePluginDestinationDirectoryURL: trashDirectoryURL!)
-        let plugins = pluginDataController.plugins()
+        let pluginsDataController = PluginsDataController(testPluginsPaths, duplicatePluginDestinationDirectoryURL: trashDirectoryURL!)
+        let plugins = pluginsDataController.plugins()
         
         var pluginPaths = [NSString]()
         for pluginsPath in testPluginsPaths {
-            let paths = PluginDataController.pathsForPluginsAtPath(pluginsPath)
+            let paths = PluginsDataController.pathsForPluginsAtPath(pluginsPath)
             pluginPaths += paths
         }
         
@@ -58,13 +58,13 @@ class PluginDataControllerBuiltInPluginsTests: XCTestCase {
     }
 }
 
-class PluginDataControllerTests: PluginDataControllerEventTestCase {
+class PluginsDataControllerTests: PluginsDataControllerEventTestCase {
     
     // MARK: Test Other Methods of Creating Plugins
     
     func testDuplicateAndTrashPlugin() {
-        let plugin = PluginsManager.sharedInstance.pluginDataController.plugins()[0]
-        XCTAssertEqual(PluginsManager.sharedInstance.pluginDataController.plugins().count, 1, "The plugins count should be one")
+        let plugin = PluginsManager.sharedInstance.pluginsDataController.plugins()[0]
+        XCTAssertEqual(PluginsManager.sharedInstance.pluginsDataController.plugins().count, 1, "The plugins count should be one")
         
         var newPlugin: Plugin?
         
@@ -74,15 +74,15 @@ class PluginDataControllerTests: PluginDataControllerEventTestCase {
         })
 
         let duplicateExpectation = expectationWithDescription("Plugin was duplicated")
-        PluginsManager.sharedInstance.pluginDataController.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
+        PluginsManager.sharedInstance.pluginsDataController.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
             newPlugin = duplicatePlugin
             duplicateExpectation.fulfill()
         })
 
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
-        XCTAssertEqual(PluginsManager.sharedInstance.pluginDataController.plugins().count, 2, "The plugins count should be two")
-        XCTAssertTrue(contains(PluginsManager.sharedInstance.pluginDataController.plugins(), newPlugin!), "The plugins should contain the plugin")
+        XCTAssertEqual(PluginsManager.sharedInstance.pluginsDataController.plugins().count, 2, "The plugins count should be two")
+        XCTAssertTrue(contains(PluginsManager.sharedInstance.pluginsDataController.plugins(), newPlugin!), "The plugins should contain the plugin")
         
         // Trash the duplicated plugin
 
@@ -99,7 +99,7 @@ class PluginDataControllerTests: PluginDataControllerEventTestCase {
             XCTAssertEqual(newPlugin!, removedPlugin, "The plugins should be equal")
             removeExpectation.fulfill()
         })
-        PluginsManager.sharedInstance.pluginDataController.movePluginToTrash(newPlugin!)
+        PluginsManager.sharedInstance.pluginsDataController.movePluginToTrash(newPlugin!)
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
         // Confirm that the directory does exist in the trash now

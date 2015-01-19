@@ -8,11 +8,11 @@
 
 import Cocoa
 
-class PluginsManager: WCLPluginsManager, PluginDataControllerDelegate {
+class PluginsManager: WCLPluginsManager, PluginsDataControllerDelegate {
 
     private let pluginsController: MultiCollectionController
     
-    let pluginDataController: PluginDataController
+    let pluginsDataController: PluginsDataController
     
     // MARK: Singleton
     
@@ -38,10 +38,10 @@ class PluginsManager: WCLPluginsManager, PluginDataControllerDelegate {
     }
     
     init(_ paths: [String], duplicatePluginDestinationDirectoryURL: NSURL) {
-        self.pluginDataController = PluginDataController(paths, duplicatePluginDestinationDirectoryURL: duplicatePluginDestinationDirectoryURL)
-        self.pluginsController = MultiCollectionController(pluginDataController.plugins(), key:pluginNameKey)
+        self.pluginsDataController = PluginsDataController(paths, duplicatePluginDestinationDirectoryURL: duplicatePluginDestinationDirectoryURL)
+        self.pluginsController = MultiCollectionController(pluginsDataController.plugins(), key:pluginNameKey)
         super.init()
-        pluginDataController.delegate = self
+        pluginsDataController.delegate = self
     }
     
     convenience override init() {
@@ -81,11 +81,11 @@ class PluginsManager: WCLPluginsManager, PluginDataControllerDelegate {
     // MARK: Adding and Removing Plugins
     
     func movePluginToTrash(plugin: Plugin) {
-        pluginDataController.movePluginToTrash(plugin)
+        pluginsDataController.movePluginToTrash(plugin)
     }
     
     func duplicatePlugin(plugin: Plugin, handler: ((newPlugin: Plugin?) -> Void)?) {
-        pluginDataController.duplicatePlugin(plugin, handler: handler)
+        pluginsDataController.duplicatePlugin(plugin, handler: handler)
     }
 
     func newPlugin(handler: ((newPlugin: Plugin?) -> Void)?) {
@@ -96,13 +96,13 @@ class PluginsManager: WCLPluginsManager, PluginDataControllerDelegate {
     }
 
     
-    // MARK: PluginDataControllerDelegate
+    // MARK: PluginsDataControllerDelegate
 
-    func pluginDataController(pluginDataController: PluginDataController, didAddPlugin plugin: Plugin) {
+    func pluginsDataController(pluginsDataController: PluginsDataController, didAddPlugin plugin: Plugin) {
         pluginsController.addObject(plugin)
     }
 
-    func pluginDataController(pluginDataController: PluginDataController, didRemovePlugin plugin: Plugin) {
+    func pluginsDataController(pluginsDataController: PluginsDataController, didRemovePlugin plugin: Plugin) {
         pluginsController.removeObject(plugin)
     }
 }

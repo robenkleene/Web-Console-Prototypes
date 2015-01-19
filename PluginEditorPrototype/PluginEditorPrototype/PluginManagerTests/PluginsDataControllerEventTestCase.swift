@@ -9,10 +9,10 @@
 import Cocoa
 import XCTest
 
-class PluginDataEventManager: PluginDataControllerDelegate {
+class PluginDataEventManager: PluginsDataControllerDelegate {
     var pluginWasAddedHandlers: Array<(plugin: Plugin) -> Void>
     var pluginWasRemovedHandlers: Array<(plugin: Plugin) -> Void>
-    var delegate: PluginDataControllerDelegate?
+    var delegate: PluginsDataControllerDelegate?
     
     init () {
         self.pluginWasAddedHandlers = Array<(plugin: Plugin) -> Void>()
@@ -20,10 +20,10 @@ class PluginDataEventManager: PluginDataControllerDelegate {
     }
     
     
-    // MARK: PluginDataControllerDelegate
+    // MARK: PluginsDataControllerDelegate
     
-    func pluginDataController(pluginDataController: PluginDataController, didAddPlugin plugin: Plugin) {
-        delegate?.pluginDataController(pluginDataController, didAddPlugin: plugin)
+    func pluginsDataController(pluginsDataController: PluginsDataController, didAddPlugin plugin: Plugin) {
+        delegate?.pluginsDataController(pluginsDataController, didAddPlugin: plugin)
         
         assert(pluginWasAddedHandlers.count > 0, "There should be at least one handler")
         
@@ -33,8 +33,8 @@ class PluginDataEventManager: PluginDataControllerDelegate {
         }
     }
     
-    func pluginDataController(pluginDataController: PluginDataController, didRemovePlugin plugin: Plugin) {
-        delegate?.pluginDataController(pluginDataController, didRemovePlugin: plugin)
+    func pluginsDataController(pluginsDataController: PluginsDataController, didRemovePlugin plugin: Plugin) {
+        delegate?.pluginsDataController(pluginsDataController, didRemovePlugin: plugin)
         
         assert(pluginWasRemovedHandlers.count > 0, "There should be at least one handler")
         
@@ -58,18 +58,18 @@ class PluginDataEventManager: PluginDataControllerDelegate {
 }
 
 
-class PluginDataControllerEventTestCase: PluginsManagerTestCase {
+class PluginsDataControllerEventTestCase: PluginsManagerTestCase {
     var pluginDataEventManager: PluginDataEventManager!
     
     override func setUp() {
         super.setUp()
         pluginDataEventManager = PluginDataEventManager()
         pluginDataEventManager.delegate = PluginsManager.sharedInstance
-        PluginsManager.sharedInstance.pluginDataController.delegate = pluginDataEventManager
+        PluginsManager.sharedInstance.pluginsDataController.delegate = pluginDataEventManager
     }
     
     override func tearDown() {
-        PluginsManager.sharedInstance.pluginDataController.delegate = PluginsManager.sharedInstance
+        PluginsManager.sharedInstance.pluginsDataController.delegate = PluginsManager.sharedInstance
         pluginDataEventManager.delegate = nil
         pluginDataEventManager = nil
         super.tearDown()

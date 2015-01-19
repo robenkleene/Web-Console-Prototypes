@@ -9,7 +9,7 @@
 import Cocoa
 import XCTest
 
-class PluginsManagerFileSystemTests: PluginDataControllerEventTestCase {
+class PluginsManagerFileSystemTests: PluginsDataControllerEventTestCase {
 
     
     // MARK: File System Tests

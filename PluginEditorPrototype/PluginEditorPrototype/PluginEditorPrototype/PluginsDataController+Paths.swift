@@ -1,12 +1,12 @@
 //
-//  PluginDataController+Paths.swift
+//  PluginsDataController+Paths.swift
 //  PluginEditorPrototype
 //
 //  Created by Roben Kleene on 1/2/15.
 //  Copyright (c) 2015 Roben Kleene. All rights reserved.
 //
 
-extension PluginDataController {
+extension PluginsDataController {
     class func pathsForPluginsAtPath(paths: NSString) -> [NSString] {
         var pluginPaths = [String]()
         

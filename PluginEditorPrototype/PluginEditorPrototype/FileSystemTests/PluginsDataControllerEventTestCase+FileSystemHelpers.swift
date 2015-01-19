@@ -1,5 +1,5 @@
 //
-//  PluginDataControllerEventTestCase+FileSystemHelpers.swift
+//  PluginsDataControllerEventTestCase+FileSystemHelpers.swift
 //  PluginEditorPrototype
 //
 //  Created by Roben Kleene on 1/19/15.
@@ -9,7 +9,7 @@
 import Foundation
 import XCTest
 
-extension PluginDataControllerEventTestCase {
+extension PluginsDataControllerEventTestCase {
     // MARK: Move Helpers
     
     func movePluginWithConfirmation(plugin: Plugin, destinationPluginPath: NSString, handler: (plugin: Plugin?) -> Void) {
