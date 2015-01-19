@@ -21,29 +21,29 @@ extension TemporaryPluginsTestCase {
 }
 
 
-class MultiCollectionControllerInitTests: TemporaryPluginsTestCase {
+class MultiCollectionControllerInitTests: PluginManagerTestCase {
 
     func testInitPlugins() {
         let newPluginFilename = testDirectoryName
-        let newPluginURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginFilename)
+        let newPluginURL = fileURLOfDuplicatedItemAtURL(plugin.bundle.bundleURL, withFilename: newPluginFilename)
         let newPlugin = Plugin.pluginWithURL(newPluginURL)!
         
         let newPluginTwoFilename = testDirectoryNameTwo
-        let newPluginTwoURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginTwoFilename)
+        let newPluginTwoURL = fileURLOfDuplicatedItemAtURL(plugin.bundle.bundleURL, withFilename: newPluginTwoFilename)
         let newPluginTwo = Plugin.pluginWithURL(newPluginURL)!
         
         let newPluginChangedNameFilename = testDirectoryNameThree
-        let newPluginChangedNameURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginChangedNameFilename)
+        let newPluginChangedNameURL = fileURLOfDuplicatedItemAtURL(plugin.bundle.bundleURL, withFilename: newPluginChangedNameFilename)
         let newPluginChangedName = Plugin.pluginWithURL(newPluginURL)!
         let changedName = testDirectoryName
         newPluginChangedName.name = changedName
         
         let newPluginChangedNameTwoFilename = testDirectoryNameFour
-        let newPluginChangedNameTwoURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginChangedNameTwoFilename)
+        let newPluginChangedNameTwoURL = fileURLOfDuplicatedItemAtURL(plugin.bundle.bundleURL, withFilename: newPluginChangedNameTwoFilename)
         let newPluginChangedNameTwo = Plugin.pluginWithURL(newPluginURL)!
         newPluginChangedNameTwo.name = changedName
         
-        let plugins = [temporaryPlugin, newPlugin, newPluginTwo, newPluginChangedName, newPluginChangedNameTwo]
+        let plugins = [plugin, newPlugin, newPluginTwo, newPluginChangedName, newPluginChangedNameTwo]
         let newPluginURLs = [newPluginURL, newPluginTwoURL, newPluginChangedNameURL, newPluginChangedNameTwoURL]
         
         let pluginsController = MultiCollectionController(plugins, key: pluginNameKey)
@@ -54,7 +54,7 @@ class MultiCollectionControllerInitTests: TemporaryPluginsTestCase {
         XCTAssertEqual(pluginsController.objectWithKey(newPluginTwo.name)! as Plugin, newPluginTwo, "The plugins should be equal")
         XCTAssertTrue(pluginsController.objects().containsObject(newPluginTwo), "The plugins should contain the second new plugin")
         XCTAssertFalse(pluginsController.objects().containsObject(newPlugin), "The plugins should not contain the new plugin")
-        XCTAssertFalse(pluginsController.objects().containsObject(temporaryPlugin), "The plugins should not contain the temporary plugin")
+        XCTAssertFalse(pluginsController.objects().containsObject(plugin), "The plugins should not contain the temporary plugin")
         
         // Test New Plugins Changed Name
         XCTAssertEqual(pluginsController.objectWithKey(newPluginChangedNameTwo.name)! as Plugin, newPluginChangedNameTwo, "The plugins should be equal")
@@ -73,12 +73,12 @@ class MultiCollectionControllerInitTests: TemporaryPluginsTestCase {
 }
 
 
-class MultiCollectionControllerTests: TemporaryPluginsTestCase {
+class MultiCollectionControllerTests: PluginManagerTestCase {
     var pluginsController: MultiCollectionController!
     
     override func setUp() {
         super.setUp()
-        pluginsController = MultiCollectionController([temporaryPlugin], key: pluginNameKey)
+        pluginsController = MultiCollectionController([plugin], key: pluginNameKey)
     }
     
     override func tearDown() {
@@ -87,13 +87,13 @@ class MultiCollectionControllerTests: TemporaryPluginsTestCase {
     }
     
     func testAddPlugin() {
-        let destinationPluginURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: temporaryPlugin.identifier)
+        let destinationPluginURL = fileURLOfDuplicatedItemAtURL(plugin.bundle.bundleURL, withFilename: plugin.identifier)
         let newPlugin = Plugin.pluginWithURL(destinationPluginURL)!
         pluginsController.addObject(newPlugin)
         XCTAssertEqual(pluginsController.objects().count, 1, "The plugins count should be one")
         XCTAssertEqual(pluginsController.objectWithKey(newPlugin.name)! as Plugin, newPlugin, "The plugins should be equal")
         XCTAssertTrue(pluginsController.objects().containsObject(newPlugin), "The plugins should contain the new plugin")
-        XCTAssertFalse(pluginsController.objects().containsObject(temporaryPlugin), "The plugins should not contain the temporary plugin")
+        XCTAssertFalse(pluginsController.objects().containsObject(plugin), "The plugins should not contain the temporary plugin")
         
         // Clean up
         var removeError: NSError?
@@ -105,21 +105,21 @@ class MultiCollectionControllerTests: TemporaryPluginsTestCase {
     func testAddPlugins() {
 
         let newPluginFilename = testDirectoryName
-        let newPluginURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginFilename)
+        let newPluginURL = fileURLOfDuplicatedItemAtURL(plugin.bundle.bundleURL, withFilename: newPluginFilename)
         let newPlugin = Plugin.pluginWithURL(newPluginURL)!
 
         let newPluginTwoFilename = testDirectoryNameTwo
-        let newPluginTwoURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginTwoFilename)
+        let newPluginTwoURL = fileURLOfDuplicatedItemAtURL(plugin.bundle.bundleURL, withFilename: newPluginTwoFilename)
         let newPluginTwo = Plugin.pluginWithURL(newPluginURL)!
 
         let newPluginChangedNameFilename = testDirectoryNameThree
-        let newPluginChangedNameURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginChangedNameFilename)
+        let newPluginChangedNameURL = fileURLOfDuplicatedItemAtURL(plugin.bundle.bundleURL, withFilename: newPluginChangedNameFilename)
         let newPluginChangedName = Plugin.pluginWithURL(newPluginURL)!
         let changedName = testDirectoryName
         newPluginChangedName.name = changedName
 
         let newPluginChangedNameTwoFilename = testDirectoryNameFour
-        let newPluginChangedNameTwoURL = fileURLOfDuplicatedItemAtURL(temporaryPlugin.bundle.bundleURL, withFilename: newPluginChangedNameTwoFilename)
+        let newPluginChangedNameTwoURL = fileURLOfDuplicatedItemAtURL(plugin.bundle.bundleURL, withFilename: newPluginChangedNameTwoFilename)
         let newPluginChangedNameTwo = Plugin.pluginWithURL(newPluginURL)!
         newPluginChangedNameTwo.name = changedName
         
@@ -135,7 +135,7 @@ class MultiCollectionControllerTests: TemporaryPluginsTestCase {
         XCTAssertEqual(pluginsController.objectWithKey(newPluginTwo.name)! as Plugin, newPluginTwo, "The plugins should be equal")
         XCTAssertTrue(pluginsController.objects().containsObject(newPluginTwo), "The plugins should contain the second new plugin")
         XCTAssertFalse(pluginsController.objects().containsObject(newPlugin), "The plugins should not contain the new plugin")
-        XCTAssertFalse(pluginsController.objects().containsObject(temporaryPlugin), "The plugins should not contain the temporary plugin")
+        XCTAssertFalse(pluginsController.objects().containsObject(plugin), "The plugins should not contain the temporary plugin")
         
         // Test New Plugins Changed Name
         XCTAssertEqual(pluginsController.objectWithKey(newPluginChangedNameTwo.name)! as Plugin, newPluginChangedNameTwo, "The plugins should be equal")

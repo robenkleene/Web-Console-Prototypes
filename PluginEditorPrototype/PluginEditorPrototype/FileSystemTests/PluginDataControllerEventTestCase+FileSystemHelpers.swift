@@ -1,15 +1,15 @@
 //
-//  PluginDataEventManagerTestCase+FileSystemTests.swift
+//  PluginDataControllerEventTestCase+FileSystemHelpers.swift
 //  PluginEditorPrototype
 //
-//  Created by Roben Kleene on 1/11/15.
+//  Created by Roben Kleene on 1/19/15.
 //  Copyright (c) 2015 Roben Kleene. All rights reserved.
 //
 
 import Foundation
 import XCTest
 
-extension PluginDataEventManagerTestCase {
+extension PluginDataControllerEventTestCase {
     // MARK: Move Helpers
     
     func movePluginWithConfirmation(plugin: Plugin, destinationPluginPath: NSString, handler: (plugin: Plugin?) -> Void) {
@@ -81,7 +81,7 @@ extension PluginDataEventManagerTestCase {
     // MARK: Modify Helpers
     
     func modifyPluginWithConfirmation(plugin: Plugin, handler: (plugin: Plugin?) -> Void) {
-        let infoDictionaryPath: NSString! = temporaryPlugin.infoDictionaryURL.path
+        let infoDictionaryPath: NSString! = plugin.infoDictionaryURL.path
         var error: NSError?
         let infoDictionaryContents: NSString! = NSString(contentsOfFile: infoDictionaryPath, encoding: NSUTF8StringEncoding, error: &error)
         XCTAssertNil(error, "The error should be nil.")

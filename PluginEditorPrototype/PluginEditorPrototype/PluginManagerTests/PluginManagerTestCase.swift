@@ -1,8 +1,8 @@
 //
-//  PluginManagerTestCase.swift
+//  PluginManagerTestCase_new.swift
 //  PluginEditorPrototype
 //
-//  Created by Roben Kleene on 1/11/15.
+//  Created by Roben Kleene on 1/18/15.
 //  Copyright (c) 2015 Roben Kleene. All rights reserved.
 //
 
@@ -10,21 +10,25 @@ import Cocoa
 import XCTest
 
 class PluginManagerTestCase: TemporaryPluginsTestCase {
-    var pluginManager: PluginManager!
     var plugin: Plugin!
     
     override func setUp() {
         super.setUp()
-        pluginManager = PluginManager([temporaryPluginsDirectoryPath],
-            duplicatePluginDestinationDirectoryURL: temporaryPluginsDirectoryURL)
+        
+        // Create the plugin manager
+        let pluginManager = PluginManager([pluginsDirectoryPath],
+            duplicatePluginDestinationDirectoryURL: pluginsDirectoryURL)
+        PluginManager.setOverrideSharedInstance(pluginManager)
+
+        // Set the plugin
         plugin = pluginManager.pluginWithName(testPluginName)
-        XCTAssertTrue(pluginManager.plugins().containsObject(plugin), "The plugins should contain the plugin")
+        XCTAssertNotNil(plugin, "The temporary plugin should not be nil")
     }
     
     override func tearDown() {
-        pluginManager = nil
         plugin = nil
+        PluginManager.setOverrideSharedInstance(nil)
         super.tearDown()
     }
-
+    
 }

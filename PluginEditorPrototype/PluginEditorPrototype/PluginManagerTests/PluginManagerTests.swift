@@ -15,15 +15,15 @@ class PluginManagerTests: PluginManagerTestCase {
         var newPlugin: Plugin?
 
         let duplicateExpectation = expectationWithDescription("Plugin was duplicated")
-        pluginManager.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
+        PluginManager.sharedInstance.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
             newPlugin = duplicatePlugin
             duplicateExpectation.fulfill()
         })
 
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
-        XCTAssertEqual(pluginManager.plugins().count, 2, "The plugins count should be two")
-        XCTAssertTrue(pluginManager.plugins().containsObject(newPlugin!), "The plugins should contain the plugin")
+        XCTAssertEqual(PluginManager.sharedInstance.plugins().count, 2, "The plugins count should be two")
+        XCTAssertTrue(PluginManager.sharedInstance.plugins().containsObject(newPlugin!), "The plugins should contain the plugin")
         
         // Trash the duplicated plugin
         
@@ -35,7 +35,7 @@ class PluginManagerTests: PluginManagerTestCase {
         XCTAssertTrue(!beforeExists, "The item should exist")
         
         // Trash the plugin
-        pluginManager.movePluginToTrash(newPlugin!)
+        PluginManager.sharedInstance.movePluginToTrash(newPlugin!)
         
         // Confirm that the directory does exist in the trash now
         var isDir: ObjCBool = false
@@ -53,8 +53,8 @@ class PluginManagerTests: PluginManagerTestCase {
     func testRenamePlugin() {
         let newPluginName = plugin.identifier
         plugin.name = newPluginName
-        XCTAssertNotNil(pluginManager.pluginWithName(newPluginName), "The plugin should not be nil")
-        XCTAssertNil(pluginManager.pluginWithName(testPluginName), "The plugin should be nil")
+        XCTAssertNotNil(PluginManager.sharedInstance.pluginWithName(newPluginName), "The plugin should not be nil")
+        XCTAssertNil(PluginManager.sharedInstance.pluginWithName(testPluginName), "The plugin should be nil")
     }
     
     // TODO: Waiting for default new plugin API, do tests with `PluginManager` `duplicatePlugin` API, using `PluginManager` `newPlugin`

@@ -9,7 +9,7 @@
 import Cocoa
 import XCTest
 
-class PluginManagerDefaultNewPluginTests: PluginManagerTestCase_new {
+class PluginManagerDefaultNewPluginTests: PluginManagerTestCase {
 
     override func setUp() {
         super.setUp()

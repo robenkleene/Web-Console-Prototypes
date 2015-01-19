@@ -57,16 +57,19 @@ class PluginDataEventManager: PluginDataControllerDelegate {
     
 }
 
-class PluginDataEventManagerTestCase: TemporaryPluginsTestCase {
-    var pluginDataEventManager: PluginDataEventManager!
 
+class PluginDataControllerEventTestCase: PluginManagerTestCase {
+    var pluginDataEventManager: PluginDataEventManager!
+    
     override func setUp() {
         super.setUp()
         pluginDataEventManager = PluginDataEventManager()
+        pluginDataEventManager.delegate = PluginManager.sharedInstance
+        PluginManager.sharedInstance.pluginDataController.delegate = pluginDataEventManager
     }
-
+    
     override func tearDown() {
-        pluginDataEventManager = nil
+        PluginManager.sharedInstance.pluginDataController.delegate = PluginManager.sharedInstance
         super.tearDown()
     }
 }

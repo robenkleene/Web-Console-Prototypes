@@ -14,7 +14,6 @@ class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
     struct ClassConstants {
         static let tempDirectoryName = "Copy Directory Test"
     }
-
     
     override func setUp() {
         super.setUp()
@@ -22,23 +21,22 @@ class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
         copyDirectoryController = nil
+        super.tearDown()
     }
 
     
     func testCopy() {
-        let pluginFileURL = temporaryPlugin.bundle.bundleURL
         let copyExpectation = expectationWithDescription("Copy")
         
         var copiedPluginURL: NSURL!
-        copyDirectoryController.copyItemAtURL(pluginFileURL, completionHandler: { (URL, error) -> Void in
+        copyDirectoryController.copyItemAtURL(pluginURL, completionHandler: { (URL, error) -> Void in
             XCTAssertNotNil(URL, "The URL should not be nil")
             XCTAssertNil(error, "The error should be nil")
             
             if let URL = URL {
                 let movedFilename = testDirectoryName
-                let movedDestinationURL = self.temporaryPluginsDirectoryURL.URLByAppendingPathComponent(movedFilename)
+                let movedDestinationURL = self.pluginsDirectoryURL.URLByAppendingPathComponent(movedFilename)
                 var moveError: NSError?
                 let moveSuccess = NSFileManager.defaultManager().moveItemAtURL(URL,
                     toURL: movedDestinationURL,
@@ -57,9 +55,15 @@ class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
         XCTAssertTrue(exists, "The item should exist")
         XCTAssertTrue(isDir, "The item should be a directory")
 
-        let copiedPlugin = Plugin.pluginWithURL(copiedPluginURL)
-        XCTAssertNotNil(copiedPlugin, "The plugin should not be nil")
-        XCTAssertEqual(copiedPlugin!.name, temporaryPlugin.name, "The plugin names should be equal")
+        var error: NSError?
+        let pluginInfoDictionaryURL = Plugin.infoDictionaryURL(pluginURL)
+        let pluginInfoDictionaryContents: NSString! = NSString(contentsOfURL: pluginInfoDictionaryURL, encoding: NSUTF8StringEncoding, error: &error)
+        XCTAssertNil(error, "The error should be nil")
+        let copiedPluginInfoDictionaryURL = Plugin.infoDictionaryURL(copiedPluginURL)
+        let copiedPluginInfoDictionaryContents: NSString! = NSString(contentsOfURL: copiedPluginInfoDictionaryURL, encoding: NSUTF8StringEncoding, error: &error)
+        XCTAssertNil(error, "The error should be nil")
+        
+        XCTAssertEqual(copiedPluginInfoDictionaryContents, pluginInfoDictionaryContents, "The contents should be equal")
         
         // Cleanup
         let success = removeTemporaryItemAtURL(copiedPluginURL)
@@ -67,9 +71,8 @@ class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
     }
 
     func testCleanUpOnInit() {
-        let pluginFileURL = temporaryPlugin.bundle.bundleURL
         let copyExpectation = expectationWithDescription("Copy")
-        copyDirectoryController.copyItemAtURL(pluginFileURL, completionHandler: { (URL, error) -> Void in
+        copyDirectoryController.copyItemAtURL(pluginURL, completionHandler: { (URL, error) -> Void in
             XCTAssertNotNil(URL, "The URL should not be nil")
             XCTAssertNil(error, "The error should be nil")
 

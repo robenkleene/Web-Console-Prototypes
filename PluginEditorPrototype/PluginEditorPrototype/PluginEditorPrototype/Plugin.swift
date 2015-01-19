@@ -18,12 +18,35 @@ class Plugin: WCLPlugin {
         static let infoDictionaryPathComponent = "Contents".stringByAppendingPathComponent("Info.plist")
     }
     internal let bundle: NSBundle
+    
+    init(bundle: NSBundle, infoDictionary: [NSObject : AnyObject], identifier: String, name: String, command: String?) {
+        self.infoDictionary = infoDictionary
+        self.bundle = bundle
+        self.name = name
+        self.identifier = identifier
+        self.command = command
+    }
+    
+    // MARK: Paths
+
+    private var resourcePath: String? {
+        get {
+            return bundle.resourcePath
+        }
+    }
     internal var infoDictionary: [NSObject : AnyObject]
     internal var infoDictionaryURL: NSURL {
         get {
-            return self.dynamicType.infoDictionaryURL(bundle)
+            return self.dynamicType.infoDictionaryURL(bundle.bundleURL)
         }
     }
+    class func infoDictionaryURL(bundleURL: NSURL) -> NSURL {
+        return bundleURL.URLByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
+    }
+    
+    
+    // MARK: Properties
+    
     dynamic var name: String {
         didSet {
             infoDictionary[ClassConstants.pluginNameKey] = name
@@ -52,11 +75,9 @@ class Plugin: WCLPlugin {
             return nil
         }
     }
-    private var resourcePath: String? {
-        get {
-            return bundle.resourcePath
-        }
-    }
+
+    
+    // MARK: Save
     
     private func save() {
         let infoDictionaryURL = self.infoDictionaryURL
@@ -73,19 +94,15 @@ class Plugin: WCLPlugin {
             }
         }
     }
-    class func infoDictionaryURL(bundle: NSBundle) -> NSURL {
-        return bundle.bundleURL.URLByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
-    }
-    init(bundle: NSBundle, infoDictionary: [NSObject : AnyObject], identifier: String, name: String, command: String?) {
-        self.infoDictionary = infoDictionary
-        self.bundle = bundle
-        self.name = name
-        self.identifier = identifier
-        self.command = command
-    }
+    
+    // MARK: Plugin Manager Singleton
+
     override func isPluginManagerDefaultNewPlugin() -> Bool {
         return PluginManager.sharedInstance.defaultNewPlugin? == self
     }
+
+    // MARK: Description
+    
     override var description : String {
         return "Plugin name = \(name),  identifier = \(identifier), defaultNewPlugin = \(defaultNewPlugin)"
     }

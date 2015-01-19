@@ -9,7 +9,7 @@
 import Cocoa
 import XCTest
 
-class DuplicatePluginControllerTests: TemporaryPluginsTestCase {
+class DuplicatePluginControllerTests: PluginManagerTestCase {
     var duplicatePluginController: DuplicatePluginController!
     
     override func setUp() {
@@ -25,7 +25,7 @@ class DuplicatePluginControllerTests: TemporaryPluginsTestCase {
     func testDuplicatePlugin() {
         var duplicatePlugin: Plugin!
         let duplicateExpectation = expectationWithDescription("Duplicate")
-        duplicatePluginController.duplicatePlugin(temporaryPlugin, toDirectoryAtURL: temporaryPluginsDirectoryURL) { (plugin, error) -> Void in
+        duplicatePluginController.duplicatePlugin(plugin, toDirectoryAtURL: temporaryDirectoryURL) { (plugin, error) -> Void in
             XCTAssertNil(error, "The error should be nil")
             XCTAssertNotNil(plugin, "The plugin should not be nil")
             duplicatePlugin = plugin
@@ -42,11 +42,11 @@ class DuplicatePluginControllerTests: TemporaryPluginsTestCase {
         XCTAssertTrue(isDir, "The item should be a directory")
 
         // Test the plugins properties are accurate
-        XCTAssertNotEqual(temporaryPlugin.bundle.bundleURL, duplicatePlugin.bundle.bundleURL, "The URLs should not be equal")
-        XCTAssertNotEqual(temporaryPlugin.identifier, duplicatePlugin.identifier, "The identifiers should not be equal")
-        XCTAssertNotEqual(temporaryPlugin.name, duplicatePlugin.name, "The names should not be equal")
-        XCTAssertNotEqual(temporaryPlugin.commandPath!, duplicatePlugin.commandPath!, "The command paths should not be equal")
-        XCTAssertEqual(temporaryPlugin.command!, duplicatePlugin.command!, "The commands should be equal")
+        XCTAssertNotEqual(plugin.bundle.bundleURL, duplicatePlugin.bundle.bundleURL, "The URLs should not be equal")
+        XCTAssertNotEqual(plugin.identifier, duplicatePlugin.identifier, "The identifiers should not be equal")
+        XCTAssertNotEqual(plugin.name, duplicatePlugin.name, "The names should not be equal")
+        XCTAssertNotEqual(plugin.commandPath!, duplicatePlugin.commandPath!, "The command paths should not be equal")
+        XCTAssertEqual(plugin.command!, duplicatePlugin.command!, "The commands should be equal")
 
         // Clean Up
         let success = removeTemporaryItemAtURL(duplicatePluginURL)
