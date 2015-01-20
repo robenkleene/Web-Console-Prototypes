@@ -13,65 +13,42 @@ class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
 
     override func setUp() {
         super.setUp()
-        PluginsManager.sharedInstance.defaultNewPlugin = nil
+        PluginsManager.sharedInstance.defaultNewPlugin = plugin
     }
     override func tearDown() {
         PluginsManager.sharedInstance.defaultNewPlugin = nil
         super.tearDown()
     }
     
-    func testSettingDefaultNewPlugin() {
-
-        PluginsManager.sharedInstance.defaultNewPlugin = plugin
+    func testSettingAndDeletingDefaultNewPlugin() {
+        var newPlugin: Plugin!
+        let newPluginExpectation = expectationWithDescription("Create new plugin")
+        PluginsManager.sharedInstance.newPlugin { (createdPlugin) -> Void in
+            newPlugin = createdPlugin
+            newPluginExpectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        
+        PluginsManager.sharedInstance.defaultNewPlugin = newPlugin
         
         // Assert the WCLPlugin's isDefaultNewPlugin property
-        XCTAssertTrue(plugin.defaultNewPlugin, "The WCLPlugin should be the default new WCLPlugin.")
+        XCTAssertTrue(newPlugin.defaultNewPlugin, "The WCLPlugin should be the default new WCLPlugin.")
         
         // Assert the default new plugin identifier in NSUserDefaults
         let defaultNewPluginIdentifier: String! = NSUserDefaults.standardUserDefaults().stringForKey(defaultNewPluginIdentifierKey)
-        XCTAssertEqual(plugin.identifier, defaultNewPluginIdentifier, "The default WCLPlugin's identifier should equal the WCLPlugin's identifier.")
+        XCTAssertEqual(newPlugin.identifier, defaultNewPluginIdentifier, "The default WCLPlugin's identifier should equal the WCLPlugin's identifier.")
 
         // Assert the default new plugin is returned from the WCLPluginManager
         let defaultNewPlugin = PluginsManager.sharedInstance.defaultNewPlugin
-        XCTAssertEqual(defaultNewPlugin, plugin, "The default new WCLPlugin should be the WCLPlugin.")
-    }
-
-    func testDeletingDefaultNewPlugin() {
-        PluginsManager.sharedInstance.defaultNewPlugin = plugin
-        
-        let defaultNewPlugin = PluginsManager.sharedInstance.defaultNewPlugin
-        XCTAssertNotNil(defaultNewPlugin, "The default WCLPlugin should not be nil.")
-        let defaultNewPluginIdentifier = NSUserDefaults.standardUserDefaults().stringForKey(defaultNewPluginIdentifierKey)
-        XCTAssertNotNil(defaultNewPluginIdentifier, "The default new WCLPlugin identifier should not be nil.")
-
-        // Have to use move plugin to trash and then empty trash here
-        // Probably want to create a helper function on `PluginsManagerTestCase` for deleting the trashed plugin
-        
-//        PluginsManager.sharedInstance.deletePlugin
-        
-    }
-
-
-
-    //- (void)testDeletingDefaultNewPlugin
-    //{
-    //    WCLPlugin_old *plugin = [[WCLPluginManager_old sharedPluginManager] newPlugin];
-    //    [[WCLPluginManager_old sharedPluginManager] setDefaultNewPlugin:plugin];
-    //
-    //    WCLPlugin_old *defaultNewPlugin = [[WCLPluginManager_old sharedPluginManager] defaultNewPlugin];
-    //    XCTAssertNotNil(defaultNewPlugin, @"The default WCLPlugin should not be nil.");
-    //    NSString *defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifierKey];
-    //    XCTAssertNotNil(defaultNewPluginIdentifier, @"The default new WCLPlugin identifier should not be nil.");
-    //
-    //    [[WCLPluginManager_old sharedPluginManager] deletePlugin:plugin];
-    //
-    //    defaultNewPlugin = [[WCLPluginManager_old sharedPluginManager] defaultNewPlugin];
-    //    XCTAssertNil(defaultNewPlugin, @"The default WCLPlugin should be nil.");
-    //    defaultNewPluginIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kDefaultNewPluginIdentifierKey];
-    //    XCTAssertNil(defaultNewPluginIdentifier, @"The default new WCLPlugin identifier should be nil.");
-    //}
-
+        XCTAssertEqual(defaultNewPlugin, newPlugin, "The default new WCLPlugin should be the WCLPlugin.")
     
+        movePluginToTrashAndCleanUpWithConfirmation(newPlugin)
+
+        let defaultNewPluginTwo = PluginsManager.sharedInstance.defaultNewPlugin
+        XCTAssertNil(defaultNewPluginTwo, "The default WCLPlugin should be nil.")
+        let defaultNewPluginIdentifierTwo = NSUserDefaults.standardUserDefaults().stringForKey(defaultNewPluginIdentifierKey)
+        XCTAssertNil(defaultNewPluginIdentifierTwo, "The default new WCLPlugin identifier should be nil.")
+    }
     
     //- (void)testChangingDefaultNewPlugin
     //{
