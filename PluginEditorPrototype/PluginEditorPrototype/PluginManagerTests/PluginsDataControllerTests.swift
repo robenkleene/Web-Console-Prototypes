@@ -85,33 +85,13 @@ class PluginsDataControllerTests: PluginsDataControllerEventTestCase {
         XCTAssertTrue(contains(PluginsManager.sharedInstance.pluginsDataController.plugins(), newPlugin!), "The plugins should contain the plugin")
         
         // Trash the duplicated plugin
-
-        // Confirm that a matching directory does not exist in the trash
-        let trashedPluginDirectoryName = newPlugin!.bundle.bundlePath.lastPathComponent
-        let trashDirectory = NSSearchPathForDirectoriesInDomains(.TrashDirectory, .UserDomainMask, true)[0] as NSString
-        let trashedPluginPath = trashDirectory.stringByAppendingPathComponent(trashedPluginDirectoryName)
-        let beforeExists = NSFileManager.defaultManager().fileExistsAtPath(trashedPluginPath)
-        XCTAssertTrue(!beforeExists, "The item should exist")
-
-        // Trash the plugin
         let removeExpectation = expectationWithDescription("Plugin was removed")
         pluginDataEventManager.addPluginWasRemovedHandler({ (removedPlugin) -> Void in
             XCTAssertEqual(newPlugin!, removedPlugin, "The plugins should be equal")
             removeExpectation.fulfill()
         })
-        PluginsManager.sharedInstance.pluginsDataController.movePluginToTrash(newPlugin!)
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
-        
-        // Confirm that the directory does exist in the trash now
-        var isDir: ObjCBool = false
-        let afterExists = NSFileManager.defaultManager().fileExistsAtPath(trashedPluginPath, isDirectory: &isDir)
-        XCTAssertTrue(afterExists, "The item should exist")
-        XCTAssertTrue(isDir, "The item should be a directory")
 
-        // Clean up trash
-        var removeError: NSError?
-        let success = NSFileManager.defaultManager().removeItemAtPath(trashedPluginPath, error: &removeError)
-        XCTAssertTrue(success, "The remove should succeed")
-        XCTAssertNil(removeError, "The error should be nil")
+        movePluginToTrashAndCleanUpWithConfirmation(newPlugin!)
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
 }
