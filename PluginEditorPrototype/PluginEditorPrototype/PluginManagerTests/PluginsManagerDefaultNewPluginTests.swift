@@ -83,20 +83,20 @@ class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
         XCTAssertEqual(createdPlugin.command!, createdPluginTwo.command!, "The new WCLPlugin's command should equal the WCLPlugin's command.")
         XCTAssertNotEqual(createdPlugin.identifier, createdPluginTwo.identifier, "The identifiers should not be equal")
     }
+    
+    func testSettingDefaultNewPluginToNil() {
+        let defaultNewPluginIdentifier: String? = NSUserDefaults.standardUserDefaults().stringForKey(defaultNewPluginIdentifierKey)
+        XCTAssertNotNil(defaultNewPluginIdentifier, "The identifier should not be nil")
 
-    //- (void)testSettingDefaultNewPluginToNil
-    //{
-    //    WCLPlugin_old *plugin = [[WCLPluginManager_old sharedPluginManager] newPlugin];
-    //    plugin.name = kTestPluginName;
-    //    [[WCLPluginManager_old sharedPluginManager] setDefaultNewPlugin:plugin];
-    //    WCLPlugin_old *newPlugin = [[WCLPluginManager_old sharedPluginManager] newPlugin];
-    //    XCTAssertTrue([newPlugin.name hasPrefix:plugin.name], @"The new WCLPlugin's name should start with the WCLPlugin's name.");
-    //
-    //    [[WCLPluginManager_old sharedPluginManager] setDefaultNewPlugin:nil];
-    //    WCLPlugin_old *newPluginTwo = [[WCLPluginManager_old sharedPluginManager] newPlugin];
-    //    XCTAssertTrue([newPluginTwo.name hasPrefix:kTestDefaultNewPluginName], @"The new WCLPlugin's name should start with the default new plugin name.");
-    //}
-    //
+        PluginsManager.sharedInstance.defaultNewPlugin = nil
+
+        let defaultNewPluginIdentifierTwo: String? = NSUserDefaults.standardUserDefaults().stringForKey(defaultNewPluginIdentifierKey)
+        XCTAssertNil(defaultNewPluginIdentifierTwo, "The identifier should be nil")
+        
+        // TODO: Test calling `newPlugin` for no default new plugin in preferences after behavior for that case is sorted out
+    }
+
+
     //- (void)testDefaultNewPluginKeyValueObserving
     //{
     //    // Test that key-value observing notifications occur when a new plugin is set as the default new plugin
