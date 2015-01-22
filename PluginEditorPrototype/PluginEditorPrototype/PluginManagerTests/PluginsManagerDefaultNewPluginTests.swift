@@ -21,68 +21,69 @@ class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
     }
     
     func testSettingAndDeletingDefaultNewPlugin() {
-        var newPlugin: Plugin!
-        let newPluginExpectation = expectationWithDescription("Create new plugin")
-        PluginsManager.sharedInstance.newPlugin { (createdPlugin) -> Void in
-            newPlugin = createdPlugin
-            newPluginExpectation.fulfill()
+        var createdPlugin: Plugin!
+        let createdPluginExpectation = expectationWithDescription("Create new plugin")
+        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
+            createdPlugin = newPlugin
+            createdPluginExpectation.fulfill()
         }
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
-        PluginsManager.sharedInstance.defaultNewPlugin = newPlugin
+        PluginsManager.sharedInstance.defaultNewPlugin = createdPlugin
         
         // Assert the WCLPlugin's isDefaultNewPlugin property
-        XCTAssertTrue(newPlugin.defaultNewPlugin, "The WCLPlugin should be the default new WCLPlugin.")
+        XCTAssertTrue(createdPlugin.defaultNewPlugin, "The WCLPlugin should be the default new WCLPlugin.")
         
         // Assert the default new plugin identifier in NSUserDefaults
         let defaultNewPluginIdentifier: String! = NSUserDefaults.standardUserDefaults().stringForKey(defaultNewPluginIdentifierKey)
-        XCTAssertEqual(newPlugin.identifier, defaultNewPluginIdentifier, "The default WCLPlugin's identifier should equal the WCLPlugin's identifier.")
-
+        XCTAssertEqual(createdPlugin.identifier, defaultNewPluginIdentifier, "The default WCLPlugin's identifier should equal the WCLPlugin's identifier.")
+        
         // Assert the default new plugin is returned from the WCLPluginManager
         let defaultNewPlugin = PluginsManager.sharedInstance.defaultNewPlugin
-        XCTAssertEqual(defaultNewPlugin, newPlugin, "The default new WCLPlugin should be the WCLPlugin.")
-    
-        movePluginToTrashAndCleanUpWithConfirmation(newPlugin)
-
+        XCTAssertEqual(defaultNewPlugin, createdPlugin, "The default new WCLPlugin should be the WCLPlugin.")
+        
+        movePluginToTrashAndCleanUpWithConfirmation(createdPlugin)
+        
         let defaultNewPluginTwo = PluginsManager.sharedInstance.defaultNewPlugin
         XCTAssertNil(defaultNewPluginTwo, "The default WCLPlugin should be nil.")
         let defaultNewPluginIdentifierTwo = NSUserDefaults.standardUserDefaults().stringForKey(defaultNewPluginIdentifierKey)
         XCTAssertNil(defaultNewPluginIdentifierTwo, "The default new WCLPlugin identifier should be nil.")
     }
     
-    //- (void)testChangingDefaultNewPlugin
-    //{
-    //    WCLPlugin_old *plugin = [[WCLPluginManager_old sharedPluginManager] newPlugin];
-    //    [[WCLPluginManager_old sharedPluginManager] setDefaultNewPlugin:plugin];
-    //
-    //    XCTAssertTrue(plugin.isDefaultNewPlugin, @"The WCLPlugin should be the default WCLPlugin.");
-    //
-    //    WCLPlugin_old *pluginTwo = [[WCLPluginManager_old sharedPluginManager] newPlugin];
-    //    [[WCLPluginManager_old sharedPluginManager] setDefaultNewPlugin:pluginTwo];
-    //
-    //    XCTAssertFalse(plugin.isDefaultNewPlugin, @"The WCLPlugin should not be the default WCLPlugin.");
-    //    XCTAssertTrue(pluginTwo.isDefaultNewPlugin, @"The second WCLPlugin should be the default WCLPlugin.");
-    //    WCLPlugin_old *defaultNewPlugin = [[WCLPluginManager_old sharedPluginManager] defaultNewPlugin];
-    //    XCTAssertEqual(defaultNewPlugin, pluginTwo, @"The default WCLPlugin should be the second WCLPlugin.");
-    //}
-    //
-    //- (void)testDefaultNewPlugin
-    //{
-    //    WCLPlugin_old *plugin = [[WCLPluginManager_old sharedPluginManager] newPlugin];
-    //    plugin.name = kTestPluginName;
-    //    plugin.extensions = kTestExtensions;
-    //    plugin.command = kTestPluginCommand;
-    //
-    //    [[WCLPluginManager_old sharedPluginManager] setDefaultNewPlugin:plugin];
-    //
-    //    WCLPlugin_old *newPlugin = [[WCLPluginManager_old sharedPluginManager] newPlugin];
-    //
-    //    XCTAssertTrue([newPlugin.name hasPrefix:plugin.name], @"The new WCLPlugin's name should start with the WCLPlugin's name.");
-    //    XCTAssertFalse([newPlugin.name isEqualToString:plugin.name], @"The new WCLPlugin's name should not equal the WCLPlugin's name.");
-    //    XCTAssertTrue([newPlugin.command isEqualToString:plugin.command], @"The new WCLPlugin's command should equal the WCLPlugin's command.");
-    //    XCTAssertTrue([newPlugin.extensions isEqualToArray:plugin.extensions], @"The new WCLPlugin's file extensions should equal the WCLPlugin's file extensions.");
-    //}
-    //
+
+    func testDefaultNewPlugin() {
+        var createdPlugin: Plugin!
+        let createdPluginExpectation = expectationWithDescription("Create new plugin")
+        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
+            createdPlugin = newPlugin
+            createdPluginExpectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+
+        PluginsManager.sharedInstance.defaultNewPlugin = createdPlugin
+        
+        createdPlugin.name = testPluginNameTwo
+        createdPlugin.command = testPluginCommandTwo
+        
+        var createdPluginTwo: Plugin!
+        let createdPluginTwoExpectation = expectationWithDescription("Create new plugin")
+        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
+            createdPluginTwo = newPlugin
+            createdPluginTwoExpectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        
+        // TODO: Test file extensions
+        // XCTAssertTrue([newPlugin.extensions isEqualToArray:plugin.extensions], @"The new WCLPlugin's file extensions should equal the WCLPlugin's file extensions.");
+
+        // TODO: The name tests won't be valid until name validation and the "best name" algorithm are working
+//        XCTAssertEqual(createdPlugin.name, createdPluginTwo.name, "The new WCLPlugin's name should start with the WCLPlugin's name.")
+//        XCTAssertNotEqual(createdPlugin.name, createdPluginTwo.name, "The new WCLPlugin's name should not equal the WCLPlugin's name.")
+
+        XCTAssertEqual(createdPlugin.command!, createdPluginTwo.command!, "The new WCLPlugin's command should equal the WCLPlugin's command.")
+        XCTAssertNotEqual(createdPlugin.identifier, createdPluginTwo.identifier, "The identifiers should not be equal")
+    }
+
     //- (void)testSettingDefaultNewPluginToNil
     //{
     //    WCLPlugin_old *plugin = [[WCLPluginManager_old sharedPluginManager] newPlugin];

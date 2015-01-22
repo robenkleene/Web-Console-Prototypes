@@ -45,7 +45,7 @@ extension Plugin {
     }
     
     class func validInfoDictionary(bundle: NSBundle, error: NSErrorPointer) -> [NSObject : AnyObject]? {
-        let url = self.infoDictionaryURL(bundle.bundleURL)
+        let url = self.infoDictionaryURLForPluginURL(bundle.bundleURL)
         let infoDictionary: NSMutableDictionary? = NSMutableDictionary(contentsOfURL: url)
         if infoDictionary != nil {
             return infoDictionary

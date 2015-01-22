@@ -56,10 +56,10 @@ class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
         XCTAssertTrue(isDir, "The item should be a directory")
 
         var error: NSError?
-        let pluginInfoDictionaryURL = Plugin.infoDictionaryURL(pluginURL)
+        let pluginInfoDictionaryURL = Plugin.infoDictionaryURLForPluginURL(pluginURL)
         let pluginInfoDictionaryContents: NSString! = NSString(contentsOfURL: pluginInfoDictionaryURL, encoding: NSUTF8StringEncoding, error: &error)
         XCTAssertNil(error, "The error should be nil")
-        let copiedPluginInfoDictionaryURL = Plugin.infoDictionaryURL(copiedPluginURL)
+        let copiedPluginInfoDictionaryURL = Plugin.infoDictionaryURLForPluginURL(copiedPluginURL)
         let copiedPluginInfoDictionaryContents: NSString! = NSString(contentsOfURL: copiedPluginInfoDictionaryURL, encoding: NSUTF8StringEncoding, error: &error)
         XCTAssertNil(error, "The error should be nil")
         

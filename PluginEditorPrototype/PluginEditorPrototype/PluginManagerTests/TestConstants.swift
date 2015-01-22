@@ -9,6 +9,9 @@
 let defaultTimeout = 20.0
 let testPluginsPaths = [Directory.BuiltInPlugins.path()]
 let testPluginName = "HTML"
+let testPluginNameTwo = "IRB"
+let testPluginCommand = "html.rb"
+let testPluginCommandTwo = "irb.rb"
 
 let testPluginPathComponent = "\(testPluginName).\(pluginFileExtension)"
 

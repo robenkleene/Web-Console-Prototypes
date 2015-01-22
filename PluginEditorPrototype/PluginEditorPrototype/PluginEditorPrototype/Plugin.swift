@@ -37,11 +37,16 @@ class Plugin: WCLPlugin {
     internal var infoDictionary: [NSObject : AnyObject]
     internal var infoDictionaryURL: NSURL {
         get {
-            return self.dynamicType.infoDictionaryURL(bundle.bundleURL)
+            return self.dynamicType.infoDictionaryURLForPluginURL(bundle.bundleURL)
         }
     }
-    class func infoDictionaryURL(bundleURL: NSURL) -> NSURL {
-        return bundleURL.URLByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
+
+    class func infoDictionaryURLForPlugin(plugin: Plugin) -> NSURL {
+        return infoDictionaryURLForPluginURL(plugin.bundle.bundleURL)
+    }
+
+    class func infoDictionaryURLForPluginURL(pluginURL: NSURL) -> NSURL {
+        return pluginURL.URLByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
     }
     
     
@@ -106,4 +111,5 @@ class Plugin: WCLPlugin {
     override var description : String {
         return "Plugin name = \(name),  identifier = \(identifier), defaultNewPlugin = \(defaultNewPlugin)"
     }
+    
 }

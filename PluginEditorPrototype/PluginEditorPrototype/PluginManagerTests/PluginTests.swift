@@ -8,8 +8,8 @@
 
 import XCTest
 
-//class PluginTests: PluginsManagerTestCase {
-//    
+class PluginTests: PluginsManagerTestCase {
+    
 //    func testRenamePluginDirectory() {
 //        
 //        var reloadPluginURL: NSURL?
@@ -48,13 +48,38 @@ import XCTest
 //        }
 //        
 //    }
-//    
+    
 //    func testRenamePlugin() {
 //
 //    }
-//    
-//
-//}
+
+    func infoDictionaryContentsForPluginWithConfirmation(plugin: Plugin) -> String {
+        let pluginInfoDictionaryPath = Plugin.infoDictionaryURLForPlugin(plugin).path!
+        var error: NSError?
+        let infoDictionaryContents: NSString! = NSString(contentsOfFile: pluginInfoDictionaryPath, encoding: NSUTF8StringEncoding, error: &error)
+        XCTAssertNil(error, "The error should be nil.")
+        return infoDictionaryContents
+    }
+    
+    func testEditPluginProperties() {
+        let contents = infoDictionaryContentsForPluginWithConfirmation(plugin)
+
+        plugin.name = testPluginNameTwo
+        let contentsTwo = infoDictionaryContentsForPluginWithConfirmation(plugin)
+        XCTAssertNotEqual(contents, contentsTwo, "The contents should not be equal")
+
+        plugin.command = testPluginCommandTwo
+        let contentsThree = infoDictionaryContentsForPluginWithConfirmation(plugin)
+        XCTAssertNotEqual(contentsTwo, contentsThree, "The contents should not be equal")
+
+        let uuid = NSUUID()
+        let uuidString = uuid.UUIDString
+        plugin.identifier = uuidString
+        let contentsFour = infoDictionaryContentsForPluginWithConfirmation(plugin)
+        XCTAssertNotEqual(contentsThree, contentsFour, "The contents should not be equal")
+    }
+
+}
 
 // TODO: Test trying to run a plugin that has been unloaded? After deleting it's resources
 
