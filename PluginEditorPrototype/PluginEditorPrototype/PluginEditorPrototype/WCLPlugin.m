@@ -14,6 +14,8 @@
 
 - (void)setDefaultNewPlugin:(BOOL)defaultNewPlugin
 {
+#warning It's problematic that using this setter without going through the plugin manager, will set the flag to true without it actually being the default new plugin
+    
     if (_defaultNewPlugin != defaultNewPlugin) {
         _defaultNewPlugin = defaultNewPlugin;
     }

@@ -96,55 +96,70 @@ class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
         // TODO: Test calling `newPlugin` for no default new plugin in preferences after behavior for that case is sorted out
     }
 
+    func testDefaultNewPluginKeyValueObserving() {
+        var createdPlugin: Plugin!
+        let createdPluginExpectation = expectationWithDescription("Create new plugin")
+        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
+            createdPlugin = newPlugin
+            createdPluginExpectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        XCTAssertFalse(createdPlugin.defaultNewPlugin, "The WCLPlugin should not be the default new WCLPlugin.")
 
-    //- (void)testDefaultNewPluginKeyValueObserving
-    //{
-    //    // Test that key-value observing notifications occur when a new plugin is set as the default new plugin
-    //    WCLPlugin_old *plugin = [[WCLPluginManager_old sharedPluginManager] newPlugin];
-    //    XCTAssertFalse(plugin.isDefaultNewPlugin, @"The WCLPlugin should not be the default new WCLPlugin.");
-    //    __block BOOL isDefaultNewPlugin = plugin.isDefaultNewPlugin;
-    //    [WCLKeyValueObservingTestsHelper observeObject:plugin
-    //                                        forKeyPath:kTestPluginDefaultNewPluginKeyPath
-    //                                           options:NSKeyValueObservingOptionNew
-    //                                   completionBlock:^(NSDictionary *change) {
-    //                                               isDefaultNewPlugin = plugin.isDefaultNewPlugin;
-    //                                           }];
-    //    [[WCLPluginManager_old sharedPluginManager] setDefaultNewPlugin:plugin];
-    //    XCTAssertTrue(isDefaultNewPlugin, @"The key-value observing change notification for the WCLPlugin's default new WCLPlugin property should have occurred.");
-    //    XCTAssertTrue(plugin.isDefaultNewPlugin, @"The WCLPlugin should be the default new WCLPlugin.");
-    //
-    //    // Test that key-value observing notifications occur when second new plugin is set as the default new plugin
-    //    WCLPlugin_old *pluginTwo = [[WCLPluginManager_old sharedPluginManager] newPlugin];
-    //    XCTAssertFalse(pluginTwo.isDefaultNewPlugin, @"The second WCLPlugin should not be the default new WCLPlugin.");
-    //    [WCLKeyValueObservingTestsHelper observeObject:plugin
-    //                                        forKeyPath:kTestPluginDefaultNewPluginKeyPath
-    //                                           options:NSKeyValueObservingOptionNew
-    //                                   completionBlock:^(NSDictionary *change) {
-    //                                               isDefaultNewPlugin = plugin.isDefaultNewPlugin;
-    //                                           }];
-    //    __block BOOL isDefaultNewPluginTwo = pluginTwo.isDefaultNewPlugin;
-    //    [WCLKeyValueObservingTestsHelper observeObject:pluginTwo
-    //                                        forKeyPath:kTestPluginDefaultNewPluginKeyPath
-    //                                           options:NSKeyValueObservingOptionNew
-    //                                   completionBlock:^(NSDictionary *change) {
-    //                                               isDefaultNewPluginTwo = pluginTwo.isDefaultNewPlugin;
-    //                                           }];
-    //    [[WCLPluginManager_old sharedPluginManager] setDefaultNewPlugin:pluginTwo];
-    //    XCTAssertFalse(isDefaultNewPlugin, @"The key-value observing change notification for the WCLPlugin's default new WCLPlugin property should have occurred.");
-    //    XCTAssertTrue(isDefaultNewPluginTwo, @"The key-value observing change notification for the second WCLPlugin's default new WCLPlugin property should have occurred.");
-    //    XCTAssertFalse(plugin.isDefaultNewPlugin, @"The WCLPlugin should not be the default new WCLPlugin.");
-    //    XCTAssertTrue(pluginTwo.isDefaultNewPlugin, @"The second WCLPlugin should be the default new WCLPlugin.");
-    //
-    //    // Test that key-value observing notifications occur when the default new plugin is set to nil
-    //    [WCLKeyValueObservingTestsHelper observeObject:pluginTwo
-    //                                        forKeyPath:kTestPluginDefaultNewPluginKeyPath
-    //                                           options:NSKeyValueObservingOptionNew
-    //                                   completionBlock:^(NSDictionary *change) {
-    //                                               isDefaultNewPluginTwo = pluginTwo.isDefaultNewPlugin;
-    //                                           }];
-    //    [[WCLPluginManager_old sharedPluginManager] setDefaultNewPlugin:nil];
-    //    XCTAssertFalse(isDefaultNewPluginTwo, @"The key-value observing change notification for the second WCLPlugin's default new WCLPlugin property should have occurred.");
-    //    XCTAssertFalse(pluginTwo.isDefaultNewPlugin, @"The second WCLPlugin should not be the default new WCLPlugin.");
-    //}
+        var isDefaultNewPlugin = createdPlugin.defaultNewPlugin
+        WCLKeyValueObservingTestsHelper.observeObject(createdPlugin,
+            forKeyPath: testPluginDefaultNewPluginKeyPath,
+            options: NSKeyValueObservingOptions.New )
+        {
+            (change: [NSObject : AnyObject]!) -> Void in
+            isDefaultNewPlugin = createdPlugin.defaultNewPlugin
+        }
+        PluginsManager.sharedInstance.defaultNewPlugin = createdPlugin
+        XCTAssertTrue(isDefaultNewPlugin, "The key-value observing change notification for the WCLPlugin's default new WCLPlugin property should have occurred.")
+        XCTAssertTrue(createdPlugin.defaultNewPlugin, "The WCLPlugin should be the default new WCLPlugin.")
 
+        // Test that key-value observing notifications occur when second new plugin is set as the default new plugin
+        var createdPluginTwo: Plugin!
+        let createdPluginTwoExpectation = expectationWithDescription("Create new plugin")
+        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
+            createdPluginTwo = newPlugin
+            createdPluginTwoExpectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        XCTAssertFalse(createdPluginTwo.defaultNewPlugin, "The WCLPlugin should not be the default new WCLPlugin.")
+        
+        WCLKeyValueObservingTestsHelper.observeObject(createdPlugin,
+            forKeyPath: testPluginDefaultNewPluginKeyPath,
+            options: NSKeyValueObservingOptions.New )
+            {
+                (change: [NSObject : AnyObject]!) -> Void in
+                isDefaultNewPlugin = createdPlugin.defaultNewPlugin
+        }
+        var isDefaultNewPluginTwo = createdPlugin.defaultNewPlugin
+        WCLKeyValueObservingTestsHelper.observeObject(createdPluginTwo,
+            forKeyPath: testPluginDefaultNewPluginKeyPath,
+            options: NSKeyValueObservingOptions.New )
+            {
+                (change: [NSObject : AnyObject]!) -> Void in
+                isDefaultNewPluginTwo = createdPluginTwo.defaultNewPlugin
+        }
+        PluginsManager.sharedInstance.defaultNewPlugin = createdPluginTwo
+        XCTAssertTrue(isDefaultNewPluginTwo, "The key-value observing change notification for the WCLPlugin's default new WCLPlugin property should have occurred.")
+        XCTAssertTrue(createdPluginTwo.defaultNewPlugin, "The WCLPlugin should be the default new WCLPlugin.")
+        XCTAssertFalse(isDefaultNewPlugin, "The key-value observing change notification for the WCLPlugin's default new WCLPlugin property should have occurred.")
+        XCTAssertFalse(createdPlugin.defaultNewPlugin, "The WCLPlugin should not be the default new WCLPlugin.")
+
+        // Test that key-value observing notifications occur when the default new plugin is set to nil
+        WCLKeyValueObservingTestsHelper.observeObject(createdPluginTwo,
+            forKeyPath: testPluginDefaultNewPluginKeyPath,
+            options: NSKeyValueObservingOptions.New )
+            {
+                (change: [NSObject : AnyObject]!) -> Void in
+                isDefaultNewPluginTwo = createdPluginTwo.defaultNewPlugin
+        }
+        PluginsManager.sharedInstance.defaultNewPlugin = nil
+        XCTAssertFalse(isDefaultNewPluginTwo, "The key-value observing change notification for the second WCLPlugin's default new WCLPlugin property should have occurred.")
+        XCTAssertFalse(createdPluginTwo.defaultNewPlugin, "The second WCLPlugin should not be the default new WCLPlugin.")
+    }
+    
 }

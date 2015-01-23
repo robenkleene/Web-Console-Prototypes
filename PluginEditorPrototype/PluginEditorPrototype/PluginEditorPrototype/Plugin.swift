@@ -111,5 +111,5 @@ class Plugin: WCLPlugin {
     override var description : String {
         return "Plugin name = \(name),  identifier = \(identifier), defaultNewPlugin = \(defaultNewPlugin)"
     }
-    
+
 }
