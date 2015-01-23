@@ -17,6 +17,12 @@ let testPluginNameTwo = "IRB"
 let testPluginCommand = "html.rb"
 let testPluginCommandTwo = "irb.rb"
 let testPluginPathComponent = "\(testPluginName).\(pluginFileExtension)"
+let testPluginFileExtension = "html"
+let testPluginFileExtensions: [String] = [testPluginFileExtension]
+let testPluginFileExtensionsTwo: [String] = ["html", "md", "js"]
+let testPluginFileExtensionsEmpty = [String]()
+
+
 
 // MARK: Plugin KVO
 

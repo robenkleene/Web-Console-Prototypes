@@ -77,10 +77,23 @@ class PluginTests: PluginsManagerTestCase {
         plugin.identifier = uuidString
         let contentsFour = infoDictionaryContentsForPluginWithConfirmation(plugin)
         XCTAssertNotEqual(contentsThree, contentsFour, "The contents should not be equal")
+
+        plugin.fileExtensions = testPluginFileExtensionsTwo
+        let contentsFive = infoDictionaryContentsForPluginWithConfirmation(plugin)
+        XCTAssertNotEqual(contentsFour, contentsFive, "The contents should not be equal")
+        let newPlugin: Plugin! = Plugin.pluginWithURL(pluginURL)
+
+        XCTAssertEqual(plugin.name, newPlugin.name, "The names should be equal")
+        XCTAssertEqual(plugin.command!, newPlugin.command!, "The commands should be equal")
+        XCTAssertEqual(plugin.identifier, newPlugin.identifier, "The identifiers should be equal")
+        XCTAssertEqual(plugin.fileExtensions, newPlugin.fileExtensions, "The file extensions should be equal")
     }
+    // TODO: Test KVO fires when modifying plugin properties. Only `dynamic` properties work with KVO?
+
+    
 
 }
 
 // TODO: Test trying to run a plugin that has been unloaded? After deleting it's resources
-
+// TODO: Add tests for invalid plugin info dictionaries, e.g., file extensions and commands can be nil
 

@@ -20,8 +20,21 @@ extension Plugin {
             if let infoDictionary = validInfoDictionary(bundle, error: &error) {
                 if let identifier = validIdentifier(infoDictionary, error: &error) {
                     if let name = validName(infoDictionary, error: &error) {
+    
+                        // Optional Values
                         let command = validCommand(infoDictionary, error: &error)
-                        return Plugin(bundle: bundle, infoDictionary: infoDictionary, identifier: identifier, name: name, command: command)
+                        if (error == nil) {
+                            let fileExtensions = validFileExtensions(infoDictionary, error: &error)
+                            if (error == nil) {
+                                return Plugin(bundle: bundle,
+                                    infoDictionary: infoDictionary,
+                                    identifier: identifier,
+                                    name: name,
+                                    command: command,
+                                    fileExtensions: fileExtensions)
+                            }
+                        }
+
                     }
                 }
             }
@@ -61,17 +74,33 @@ extension Plugin {
         return nil
     }
 
-    // TODO: A plugin command can be nil
+    class func validFileExtensions(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> [String]? {
+        if let fileExtensions = infoDictionary[ClassConstants.pluginFileExtensionsKey] as? [String] {
+            return fileExtensions
+        }
+
+        if let fileExtensions: AnyObject = infoDictionary[ClassConstants.pluginFileExtensionsKey] {
+            if error != nil {
+                let errorString = NSLocalizedString("Plugin file extensions is invalid \(infoDictionary).", comment: "Invalid plugin file extensions error")
+                error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
+            }
+        }
+        
+        return nil
+    }
+
     class func validCommand(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
         if let command = infoDictionary[ClassConstants.pluginCommandKey] as NSString? {
             if command.length > 0 {
                 return command
             }
         }
-        
-        if error != nil {
-            let errorString = NSLocalizedString("Plugin command is invalid \(infoDictionary).", comment: "Invalid plugin command error")
-            error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
+
+        if let commnd: AnyObject = infoDictionary[ClassConstants.pluginCommandKey] {
+            if error != nil {
+                let errorString = NSLocalizedString("Plugin command is invalid \(infoDictionary).", comment: "Invalid plugin command error")
+                error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
+            }
         }
         
         return nil
