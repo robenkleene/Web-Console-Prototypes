@@ -11,7 +11,7 @@ import XCTest
 
 class WCLFileExtensionsControllerTests: PluginsManagerTestCase {
 
-    func extensions(extensions1: [String], matchExtensions extensions2: [String]) -> Bool {
+    func testExtensions(extensions1: [String], matchExtensions extensions2: [String]) -> Bool {
         let sortedExtensions1: NSArray = extensions1.sorted { $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
         let sortedExtensions2: NSArray = extensions2.sorted { $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
         return sortedExtensions1 == sortedExtensions2
@@ -32,8 +32,6 @@ class WCLFileExtensionsControllerTests: PluginsManagerTestCase {
     override func tearDown() {
         super.tearDown()
     }
-
-
     
     func testAddingPluginAndChangingFileExtensions() {
         var createdPlugin: Plugin!
@@ -43,8 +41,12 @@ class WCLFileExtensionsControllerTests: PluginsManagerTestCase {
             createdPluginExpectation.fulfill()
         }
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
-
+        XCTAssertFalse(WCLFileExtensionsController.sharedFileExtensionsController().extensions().count > 0, "The file extensions count should be zero");
         
+//        createdPlugin.extensions = testPluginExtensions
+//        let extensions: [String] = WCLFileExtensionsController.sharedFileExtensionsController().extensions() as [String]
+//        let extensionsMatch = testExtensions(extensions, matchExtensions: testPluginExtensions)
+//        XCTAssertTrue(extensionsMatch, "The file extensions should match the test file extensions.")
     }
     
     // TODO: Test starting `WCLFileExtensionsController` has the right count of extensions
