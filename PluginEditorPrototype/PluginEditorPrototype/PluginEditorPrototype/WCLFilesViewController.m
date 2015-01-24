@@ -9,7 +9,7 @@
 #import "WCLFilesViewController.h"
 #import "WCLPlugin_old.h"
 #import "WCLPluginManager_old.h"
-#import "WCLFileExtension.h"
+#import "WCLFileExtension_old.h"
 
 @interface WCLPluginsToPluginNamesValueTransformer : NSValueTransformer
 @end

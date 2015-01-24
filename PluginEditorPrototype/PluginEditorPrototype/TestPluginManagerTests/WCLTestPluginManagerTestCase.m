@@ -9,7 +9,7 @@
 #import "WCLTestPluginManagerTestCase.h"
 
 #import "WCLPluginManager_old.h"
-#import "WCLFileExtensionController.h"
+#import "WCLFileExtensionController_old.h"
 
 @implementation WCLTestPluginManagerTestCase
 
@@ -20,7 +20,7 @@
     NSArray *plugins = [[WCLPluginManager_old sharedPluginManager] plugins];
     XCTAssertFalse([plugins count] > 0, @"The WCLPluginManager should not have any WCLPlugins.");
     
-    NSArray *extensions = [[WCLFileExtensionController sharedFileExtensionController] extensions];
+    NSArray *extensions = [[WCLFileExtensionController_old sharedFileExtensionController] extensions];
     XCTAssertFalse([extensions count] > 0, @"There should not be any file extensions after deleting all plugins.");
 
     XCTAssertNil([[WCLPluginManager_old sharedPluginManager] defaultNewPlugin], @"The WCLPluginManager's default new WCLPlugin should be nil.");

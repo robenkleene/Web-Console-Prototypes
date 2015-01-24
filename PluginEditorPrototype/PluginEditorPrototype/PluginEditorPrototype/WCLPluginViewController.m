@@ -13,7 +13,7 @@
 #import "WCLPlugin+Validation.h"
 #import "WCLPlugin_old.h"
 
-#import "WCLFileExtensionController.h"
+#import "WCLFileExtensionController_old.h"
 
 #pragma mark - WCLPluginNameTextField
 
@@ -180,7 +180,7 @@ completionsForSubstring:(NSString *)substring
            indexOfToken:(NSInteger)tokenIndex
     indexOfSelectedItem:(NSInteger *)selectedIndex
 {
-    NSArray *extensions = [[WCLFileExtensionController sharedFileExtensionController] extensions];
+    NSArray *extensions = [[WCLFileExtensionController_old sharedFileExtensionController] extensions];
     NSArray *matchingExtensions = [extensions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[cd] %@", substring]];
     return matchingExtensions;
 }
