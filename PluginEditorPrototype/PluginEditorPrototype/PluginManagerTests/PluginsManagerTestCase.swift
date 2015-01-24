@@ -23,11 +23,16 @@ class PluginsManagerTestCase: TemporaryPluginsTestCase {
         // Set the plugin
         plugin = pluginsManager.pluginWithName(testPluginName)
         XCTAssertNotNil(plugin, "The temporary plugin should not be nil")
+
+        // TODO: This should probably be changed once a fallback exists for when no default new plugin is set
+        PluginsManager.sharedInstance.defaultNewPlugin = plugin
     }
     
     override func tearDown() {
         plugin = nil
         PluginsManager.setOverrideSharedInstance(nil)
+        // TODO: This should probably be changed once a fallback exists for when no default new plugin is set
+        PluginsManager.sharedInstance.defaultNewPlugin = nil
         super.tearDown()
     }
  

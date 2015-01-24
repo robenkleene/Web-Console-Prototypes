@@ -10,8 +10,8 @@
 
 @class WCLFileExtension;
 
-@interface WCLFileExtensionController : NSObject
-+ (instancetype)sharedFileExtensionController;
+@interface WCLFileExtensionsController : NSObject
++ (instancetype)sharedFileExtensionsController;
 - (NSArray *)extensions;
 - (WCLFileExtension *)fileExtensionForExtension:(NSString *)extension;
 

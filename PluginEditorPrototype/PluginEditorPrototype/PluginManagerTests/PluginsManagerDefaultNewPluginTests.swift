@@ -11,14 +11,15 @@ import XCTest
 
 class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
 
-    override func setUp() {
-        super.setUp()
-        PluginsManager.sharedInstance.defaultNewPlugin = plugin
-    }
-    override func tearDown() {
-        PluginsManager.sharedInstance.defaultNewPlugin = nil
-        super.tearDown()
-    }
+// TODO: This should probably be put back once a fallback exists for when no default new plugin is set
+//    override func setUp() {
+//        super.setUp()
+//        PluginsManager.sharedInstance.defaultNewPlugin = plugin
+//    }
+//    override func tearDown() {
+//        PluginsManager.sharedInstance.defaultNewPlugin = nil
+//        super.tearDown()
+//    }
     
     func testSettingAndDeletingDefaultNewPlugin() {
         var createdPlugin: Plugin!

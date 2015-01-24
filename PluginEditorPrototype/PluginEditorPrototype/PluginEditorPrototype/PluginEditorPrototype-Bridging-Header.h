@@ -10,3 +10,4 @@
 #import "WCLPlugin.h"
 #import "WCLDirectoryWatcher.h"
 #import "WCLPluginsManager.h"
+#import "WCLFileExtensionsController.h"

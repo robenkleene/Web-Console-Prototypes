@@ -78,7 +78,7 @@ class PluginTests: PluginsManagerTestCase {
         let contentsFour = infoDictionaryContentsForPluginWithConfirmation(plugin)
         XCTAssertNotEqual(contentsThree, contentsFour, "The contents should not be equal")
 
-        plugin.extensions = testPluginFileExtensionsTwo
+        plugin.extensions = testPluginExtensionsTwo
         let contentsFive = infoDictionaryContentsForPluginWithConfirmation(plugin)
         XCTAssertNotEqual(contentsFour, contentsFive, "The contents should not be equal")
         let newPlugin: Plugin! = Plugin.pluginWithURL(pluginURL)

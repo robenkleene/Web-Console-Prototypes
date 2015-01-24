@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
 //
 
-#import "WCLFileExtensionController.h"
+#import "WCLFileExtensionsController.h"
 
 #import "WCLFileExtension.h"
 #import "PluginEditorPrototype-Swift.h"
@@ -108,12 +108,12 @@
 
 #pragma mark - WCLFileExtensionController
 
-@interface WCLFileExtensionController () <WCLExtensionToFileExtensionDictionaryManagerDelegate>
+@interface WCLFileExtensionsController () <WCLExtensionToFileExtensionDictionaryManagerDelegate>
 @property (nonatomic, strong) WCLExtensionToFileExtensionDictionaryManager *fileExtensionsDictionaryManager;
 @property (nonatomic, strong) NSMutableArray *mutableFileExtensions;
 @end
 
-@implementation WCLFileExtensionController
+@implementation WCLFileExtensionsController
 
 static void *WCLFileExtensionControllerContext;
 
@@ -121,10 +121,10 @@ static void *WCLFileExtensionControllerContext;
 
 #pragma mark Interface Builder Compatible Singleton
 
-+ (instancetype)sharedFileExtensionController
++ (instancetype)sharedFileExtensionsController
 {
     static dispatch_once_t pred;
-    static WCLFileExtensionController *fileExtensionController = nil;
+    static WCLFileExtensionsController *fileExtensionController = nil;
     
     dispatch_once(&pred, ^{
         fileExtensionController = [[self hiddenAlloc] hiddenInit];
@@ -135,12 +135,12 @@ static void *WCLFileExtensionControllerContext;
 
 + (id)allocWithZone:(NSZone *)zone
 {
-    return [self sharedFileExtensionController];
+    return [self sharedFileExtensionsController];
 }
 
 + (id)alloc
 {
-    return [self sharedFileExtensionController];
+    return [self sharedFileExtensionsController];
 }
 
 - (id)init
