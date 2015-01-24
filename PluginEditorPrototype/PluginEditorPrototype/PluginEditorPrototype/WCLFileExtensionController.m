@@ -8,11 +8,11 @@
 
 #import "WCLFileExtensionController.h"
 
-#import "WCLPluginManager_old.h"
-#import "WCLPlugin_old.h"
 #import "WCLFileExtension.h"
+#import "PluginEditorPrototype-Swift.h"
 
 #define kPluginManagerControllerPluginsKeyPath @"plugins"
+#define kPluginExtensionsKey @"extensions"
 
 #pragma mark - WCLFileExtensionsDictionaryManagerDelegate
 
@@ -39,7 +39,7 @@
 
 @synthesize extensionToFileExtensionDictionary = _extensionToFileExtensionDictionary;
 
-- (void)addPlugin:(WCLPlugin_old *)plugin forExtension:(NSString *)extension
+- (void)addPlugin:(Plugin *)plugin forExtension:(NSString *)extension
 {    
     WCLFileExtension *fileExtension = self.extensionToFileExtensionDictionary[extension];
 
@@ -55,7 +55,7 @@
     [fileExtension insertObject:plugin inPluginsAtIndex:0];
 }
 
-- (void)removePlugin:(WCLPlugin_old *)plugin forExtension:(NSString *)extension
+- (void)removePlugin:(Plugin *)plugin forExtension:(NSString *)extension
 {
     WCLFileExtension *fileExtension = self.extensionToFileExtensionDictionary[extension];
 
@@ -161,11 +161,11 @@ static void *WCLFileExtensionControllerContext;
 - (void)dealloc
 {
     if (_fileExtensionsDictionaryManager) {
-        NSArray *plugins = [[WCLPluginManager_old sharedPluginManager] plugins];
-        [[WCLPluginManager_old sharedPluginManager] removeObserver:self
-                                                        forKeyPath:kPluginManagerControllerPluginsKeyPath
-                                                           context:&WCLFileExtensionControllerContext];
-        for (WCLPlugin_old *plugin in plugins) {
+        NSArray *plugins = [[PluginsManager sharedInstance] plugins];
+        [[PluginsManager sharedInstance] removeObserver:self
+                                                 forKeyPath:kPluginManagerControllerPluginsKeyPath
+                                                    context:&WCLFileExtensionControllerContext];
+        for (Plugin *plugin in plugins) {
             [self processRemovedPlugin:plugin];
         }
     }
@@ -207,13 +207,13 @@ static void *WCLFileExtensionControllerContext;
     
     _fileExtensionsDictionaryManager = [[WCLExtensionToFileExtensionDictionaryManager alloc] init];
     
-    NSArray *plugins = [[WCLPluginManager_old sharedPluginManager] plugins];
+    NSArray *plugins = [[PluginsManager sharedInstance] plugins];
     
-    for (WCLPlugin_old *plugin in plugins) {
+    for (Plugin *plugin in plugins) {
         [self processAddedPlugin:plugin];
     }
     
-    [[WCLPluginManager_old sharedPluginManager] addObserver:self
+    [[PluginsManager sharedInstance] addObserver:self
                                                  forKeyPath:kPluginManagerControllerPluginsKeyPath
                                                     options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                                                     context:&WCLFileExtensionControllerContext];
@@ -286,21 +286,21 @@ static void *WCLFileExtensionControllerContext;
         return;
     }
 
-    if ([object isKindOfClass:[[WCLPluginManager_old sharedPluginManager] class]] &&
+    if ([object isKindOfClass:[[PluginsManager sharedInstance] class]] &&
         [keyPath isEqualToString:kPluginManagerControllerPluginsKeyPath]) {
         
         NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
         switch (keyValueChange) {
             case NSKeyValueChangeInsertion: {
                 NSArray *plugins = change[NSKeyValueChangeNewKey];
-                for (WCLPlugin_old *plugin in plugins) {
+                for (Plugin *plugin in plugins) {
                     [self processAddedPlugin:plugin];
                 }
                 break;
             }
             case NSKeyValueChangeRemoval: {
                 NSArray *plugins = change[NSKeyValueChangeOldKey];
-                for (WCLPlugin_old *plugin in plugins) {
+                for (Plugin *plugin in plugins) {
                     [self processRemovedPlugin:plugin];
                 }
                 break;
@@ -313,10 +313,10 @@ static void *WCLFileExtensionControllerContext;
         return;
     }
 
-    if ([object isKindOfClass:[WCLPlugin_old class]] &&
-        [keyPath isEqualToString:WCLPluginExtensionsKey]) {
+    if ([object isKindOfClass:[Plugin class]] &&
+        [keyPath isEqualToString:kPluginExtensionsKey]) {
 
-        WCLPlugin_old *plugin = (WCLPlugin_old *)object;
+        Plugin *plugin = (Plugin *)object;
 
         NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
         if (keyValueChange != NSKeyValueChangeSetting) {
@@ -333,14 +333,14 @@ static void *WCLFileExtensionControllerContext;
             newExtensions = change[NSKeyValueChangeNewKey];
         }
         
-        [self processExtensionChangesForPlugin:(WCLPlugin_old *)plugin
+        [self processExtensionChangesForPlugin:(Plugin *)plugin
                                 fromExtensions:oldExtensions
                                   toExtensions:newExtensions];
         return;
     }
 }
 
-- (void)processExtensionChangesForPlugin:(WCLPlugin_old *)plugin
+- (void)processExtensionChangesForPlugin:(Plugin *)plugin
                           fromExtensions:(NSArray *)oldExtensions
                             toExtensions:(NSArray *)newExtensions
 {
@@ -362,7 +362,7 @@ static void *WCLFileExtensionControllerContext;
     }
 }
 
-- (void)processAddedPlugin:(WCLPlugin_old *)plugin
+- (void)processAddedPlugin:(Plugin *)plugin
 {
     NSArray *extensions = plugin.extensions;
 
@@ -371,12 +371,12 @@ static void *WCLFileExtensionControllerContext;
     }
 
     [plugin addObserver:self
-             forKeyPath:WCLPluginExtensionsKey
+             forKeyPath:kPluginExtensionsKey
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                 context:&WCLFileExtensionControllerContext];
 }
 
-- (void)processRemovedPlugin:(WCLPlugin_old *)plugin
+- (void)processRemovedPlugin:(Plugin *)plugin
 {
     NSArray *extensions = plugin.extensions;
     
@@ -385,7 +385,7 @@ static void *WCLFileExtensionControllerContext;
     }
     
     [plugin removeObserver:self
-                forKeyPath:WCLPluginExtensionsKey
+                forKeyPath:kPluginExtensionsKey
                    context:&WCLFileExtensionControllerContext];
 }
 

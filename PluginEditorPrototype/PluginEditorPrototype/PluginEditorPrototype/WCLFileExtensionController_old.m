@@ -12,7 +12,7 @@
 #import "WCLPlugin_old.h"
 #import "WCLFileExtension_old.h"
 
-#define kPluginManagerControllerPluginsKeyPath @"plugins"
+#define kPluginManagerControllerPluginsKeyPath_old @"plugins"
 
 #pragma mark - WCLFileExtensionsDictionaryManagerDelegate
 
@@ -163,7 +163,7 @@ static void *WCLFileExtensionControllerContext_old;
     if (_fileExtensionsDictionaryManager) {
         NSArray *plugins = [[WCLPluginManager_old sharedPluginManager] plugins];
         [[WCLPluginManager_old sharedPluginManager] removeObserver:self
-                                                        forKeyPath:kPluginManagerControllerPluginsKeyPath
+                                                        forKeyPath:kPluginManagerControllerPluginsKeyPath_old
                                                            context:&WCLFileExtensionControllerContext_old];
         for (WCLPlugin_old *plugin in plugins) {
             [self processRemovedPlugin:plugin];
@@ -214,7 +214,7 @@ static void *WCLFileExtensionControllerContext_old;
     }
     
     [[WCLPluginManager_old sharedPluginManager] addObserver:self
-                                                 forKeyPath:kPluginManagerControllerPluginsKeyPath
+                                                 forKeyPath:kPluginManagerControllerPluginsKeyPath_old
                                                     options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                                                     context:&WCLFileExtensionControllerContext_old];
     
@@ -287,7 +287,7 @@ static void *WCLFileExtensionControllerContext_old;
     }
 
     if ([object isKindOfClass:[[WCLPluginManager_old sharedPluginManager] class]] &&
-        [keyPath isEqualToString:kPluginManagerControllerPluginsKeyPath]) {
+        [keyPath isEqualToString:kPluginManagerControllerPluginsKeyPath_old]) {
         
         NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
         switch (keyValueChange) {

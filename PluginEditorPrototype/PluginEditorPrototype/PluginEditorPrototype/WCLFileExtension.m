@@ -8,12 +8,12 @@
 
 #import "WCLFileExtension.h"
 
-#import "WCLPlugin_old.h"
-#import "WCLPluginManager_old.h"
+#import "PluginEditorPrototype-Swift.h"
 
 NSString * const WCLFileExtensionPluginsKey = @"plugins";
 NSString * const WCLFileExtensionExtensionKey = @"extension";
 
+#define kPluginNameKey @"name"
 #define kFileExtensionPluginDictionaryObservedKeyPaths [NSArray arrayWithObjects:kFileExtensionEnabledKey, kFileExtensionPluginIdentifierKey, nil]
 
 @interface WCLFileExtension ()
@@ -65,7 +65,7 @@ static void *WCLFileExtensionContext;
                                           forKey:kFileExtensionEnabledKey];
 }
 
-- (WCLPlugin_old *)selectedPlugin
+- (Plugin *)selectedPlugin
 {
     if (_selectedPlugin) {
         return _selectedPlugin;
@@ -74,7 +74,7 @@ static void *WCLFileExtensionContext;
     NSString *identifier = [self.fileExtensionPluginDictionary objectForKey:kFileExtensionPluginIdentifierKey];
 
     if (identifier) {
-        _selectedPlugin = [[WCLPluginManager_old sharedPluginManager] pluginWithIdentifier:identifier];
+        _selectedPlugin = [[PluginsManager sharedInstance] pluginWithIdentifier:identifier];
     }
     
     if (!_selectedPlugin) {
@@ -86,7 +86,7 @@ static void *WCLFileExtensionContext;
     return _selectedPlugin;
 }
 
-- (void)setSelectedPlugin:(WCLPlugin_old *)selectedPlugin
+- (void)setSelectedPlugin:(Plugin *)selectedPlugin
 {
     if (_selectedPlugin == selectedPlugin) {
         return;
@@ -117,7 +117,7 @@ static void *WCLFileExtensionContext;
 
     [_pluginsArrayController bind:@"contentArray" toObject:self withKeyPath:WCLFileExtensionPluginsKey options:nil];
     
-    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:WCLPluginNameKey
+    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:kPluginNameKey
                                                                        ascending:YES
                                                                         selector:@selector(localizedCaseInsensitiveCompare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:nameSortDescriptor, nil];
@@ -133,7 +133,7 @@ static void *WCLFileExtensionContext;
     return [NSArray arrayWithArray:self.mutablePlugins];
 }
 
-- (void)insertObject:(WCLPlugin_old *)plugin inPluginsAtIndex:(NSUInteger)index
+- (void)insertObject:(Plugin *)plugin inPluginsAtIndex:(NSUInteger)index
 {
     [self.mutablePlugins insertObject:plugin atIndex:index];
 }

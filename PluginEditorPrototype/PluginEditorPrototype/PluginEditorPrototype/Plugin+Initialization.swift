@@ -24,14 +24,14 @@ extension Plugin {
                         // Optional Values
                         let command = validCommand(infoDictionary, error: &error)
                         if (error == nil) {
-                            let fileExtensions = validFileExtensions(infoDictionary, error: &error)
+                            let extensions = validExtensions(infoDictionary, error: &error)
                             if (error == nil) {
                                 return Plugin(bundle: bundle,
                                     infoDictionary: infoDictionary,
                                     identifier: identifier,
                                     name: name,
                                     command: command,
-                                    fileExtensions: fileExtensions)
+                                    extensions: extensions)
                             }
                         }
 
@@ -74,12 +74,12 @@ extension Plugin {
         return nil
     }
 
-    class func validFileExtensions(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> [String]? {
-        if let fileExtensions = infoDictionary[ClassConstants.pluginFileExtensionsKey] as? [String] {
-            return fileExtensions
+    class func validExtensions(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> [String]? {
+        if let extensions = infoDictionary[ClassConstants.pluginExtensionsKey] as? [String] {
+            return extensions
         }
 
-        if let fileExtensions: AnyObject = infoDictionary[ClassConstants.pluginFileExtensionsKey] {
+        if let extensions: AnyObject = infoDictionary[ClassConstants.pluginExtensionsKey] {
             if error != nil {
                 let errorString = NSLocalizedString("Plugin file extensions is invalid \(infoDictionary).", comment: "Invalid plugin file extensions error")
                 error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
