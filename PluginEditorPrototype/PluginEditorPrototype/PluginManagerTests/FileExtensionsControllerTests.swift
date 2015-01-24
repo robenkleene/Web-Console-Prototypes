@@ -9,7 +9,7 @@
 import Cocoa
 import XCTest
 
-class WCLFileExtensionsControllerTests: PluginsManagerTestCase {
+class FileExtensionsControllerTests: PluginsManagerTestCase {
 
     func testExtensions(extensions1: [String], matchExtensions extensions2: [String]) -> Bool {
         let sortedExtensions1: NSArray = extensions1.sorted { $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending }
@@ -26,12 +26,14 @@ class WCLFileExtensionsControllerTests: PluginsManagerTestCase {
             aPlugin.extensions = testPluginExtensionsEmpty
         }
 
-        XCTAssertFalse(WCLFileExtensionsController.sharedFileExtensionsController().extensions().count > 0, "The file extensions count should be zero");
+        XCTAssertFalse(FileExtensionsController.sharedInstance.extensions().count > 0, "The file extensions count should be zero");
     }
     
     override func tearDown() {
         super.tearDown()
     }
+
+    // TODO: After starting plugins have their extensions setup, test starting `WCLFileExtensionsController` has the right count of extensions at init (sum the count of plugin extensions, remove duplicates)
     
     func testAddingPluginAndChangingFileExtensions() {
         var createdPlugin: Plugin!
@@ -41,15 +43,13 @@ class WCLFileExtensionsControllerTests: PluginsManagerTestCase {
             createdPluginExpectation.fulfill()
         }
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
-        XCTAssertFalse(WCLFileExtensionsController.sharedFileExtensionsController().extensions().count > 0, "The file extensions count should be zero");
+        XCTAssertFalse(FileExtensionsController.sharedInstance.extensions().count > 0, "The file extensions count should be zero");
         
-//        createdPlugin.extensions = testPluginExtensions
-//        let extensions: [String] = WCLFileExtensionsController.sharedFileExtensionsController().extensions() as [String]
-//        let extensionsMatch = testExtensions(extensions, matchExtensions: testPluginExtensions)
-//        XCTAssertTrue(extensionsMatch, "The file extensions should match the test file extensions.")
+        createdPlugin.extensions = testPluginExtensionsTwo
+        let extensions: [String] = FileExtensionsController.sharedInstance.extensions() as [String]
+        let extensionsMatch = testExtensions(extensions, matchExtensions: testPluginExtensionsTwo)
+        XCTAssertTrue(extensionsMatch, "The file extensions should match the test file extensions.")
     }
-    
-    // TODO: Test starting `WCLFileExtensionsController` has the right count of extensions
     
 //    - (void)testAddingPluginAndChangingFileExtensions
 //    {

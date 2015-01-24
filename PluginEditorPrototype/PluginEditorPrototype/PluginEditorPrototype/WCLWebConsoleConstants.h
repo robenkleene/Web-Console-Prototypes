@@ -13,6 +13,10 @@
 
 #define kErrorCodeInvalidPlugin -42
 
+#pragma mark - Plugin Keys
+
+#define kPluginNameKey @"name"
+
 #pragma mark - NSUserDefaults
 
 #define kDefaultNewPluginIdentifierKey @"WCLDefaultNewPluginIdentifier"

@@ -9,8 +9,6 @@
 import Cocoa
 
 class PluginsManager: WCLPluginsManager, PluginsDataControllerDelegate {
-
-    private let pluginsController: MultiCollectionController
     
     let pluginsDataController: PluginsDataController
     
@@ -39,8 +37,7 @@ class PluginsManager: WCLPluginsManager, PluginsDataControllerDelegate {
     
     init(_ paths: [String], duplicatePluginDestinationDirectoryURL: NSURL) {
         self.pluginsDataController = PluginsDataController(paths, duplicatePluginDestinationDirectoryURL: duplicatePluginDestinationDirectoryURL)
-        self.pluginsController = MultiCollectionController(pluginsDataController.plugins(), key:pluginNameKey)
-        super.init()
+        super.init(plugins: pluginsDataController.plugins())
         pluginsDataController.delegate = self
     }
     
@@ -68,16 +65,20 @@ class PluginsManager: WCLPluginsManager, PluginsDataControllerDelegate {
     }
 
 
-    // MARK: Required Key-Value Coding To-Many Relationship Compliance
+    // MARK: Convenience
     
-    // TODO: This should return an NSArray
-    func plugins() -> NSArray {
-        return pluginsController.objects()
+    private func addPlugin(plugin: Plugin) {
+        insertObject(plugin, inPluginsAtIndex: 0)
     }
     
-    // TODO: Implement rest of KVC To-Many Relationship methods
+    private func removePlugin(plugin: Plugin) {
+        let index = pluginsController.indexOfObject(plugin)
+        if index != NSNotFound {
+            removeObjectFromPluginsAtIndex(UInt(index))
+        }
+    }
     
-    
+
     // MARK: Adding and Removing Plugins
     
     func movePluginToTrash(plugin: Plugin) {
@@ -99,7 +100,7 @@ class PluginsManager: WCLPluginsManager, PluginsDataControllerDelegate {
     // MARK: PluginsDataControllerDelegate
 
     func pluginsDataController(pluginsDataController: PluginsDataController, didAddPlugin plugin: Plugin) {
-        pluginsController.addObject(plugin)
+        addPlugin(plugin)
     }
 
     func pluginsDataController(pluginsDataController: PluginsDataController, didRemovePlugin plugin: Plugin) {
@@ -107,6 +108,6 @@ class PluginsManager: WCLPluginsManager, PluginsDataControllerDelegate {
             defaultNewPlugin = nil
         }
         
-        pluginsController.removeObject(plugin)
+        removePlugin(plugin)
     }
 }

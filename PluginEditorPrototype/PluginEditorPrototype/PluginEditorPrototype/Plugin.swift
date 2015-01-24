@@ -93,7 +93,7 @@ class Plugin: WCLPlugin {
             return nil
         }
     }
-    var extensions: [String] {
+    dynamic var extensions: [String] {
         didSet {
             infoDictionary[ClassConstants.pluginExtensionsKey] = extensions
             save()

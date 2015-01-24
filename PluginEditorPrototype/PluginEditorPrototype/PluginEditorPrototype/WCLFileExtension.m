@@ -13,7 +13,6 @@
 NSString * const WCLFileExtensionPluginsKey = @"plugins";
 NSString * const WCLFileExtensionExtensionKey = @"extension";
 
-#define kPluginNameKey @"name"
 #define kFileExtensionPluginDictionaryObservedKeyPaths [NSArray arrayWithObjects:kFileExtensionEnabledKey, kFileExtensionPluginIdentifierKey, nil]
 
 @interface WCLFileExtension ()

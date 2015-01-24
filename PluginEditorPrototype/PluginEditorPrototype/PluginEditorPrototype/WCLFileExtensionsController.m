@@ -119,52 +119,13 @@ static void *WCLFileExtensionControllerContext;
 
 @synthesize fileExtensionsDictionaryManager = _fileExtensionsDictionaryManager;
 
-#pragma mark Interface Builder Compatible Singleton
-
-+ (instancetype)sharedFileExtensionsController
-{
-    static dispatch_once_t pred;
-    static WCLFileExtensionsController *fileExtensionController = nil;
-    
-    dispatch_once(&pred, ^{
-        fileExtensionController = [[self hiddenAlloc] hiddenInit];
-    });
-
-    return fileExtensionController;
-}
-
-+ (id)allocWithZone:(NSZone *)zone
-{
-    return [self sharedFileExtensionsController];
-}
-
-+ (id)alloc
-{
-    return [self sharedFileExtensionsController];
-}
-
-- (id)init
-{
-    return self;
-}
-
-+ (id)hiddenAlloc
-{
-    return [super allocWithZone:NULL];
-}
-
-- (id)hiddenInit
-{
-    return [super init];
-}
-
 - (void)dealloc
 {
     if (_fileExtensionsDictionaryManager) {
-        NSArray *plugins = [[PluginsManager sharedInstance] plugins];
-        [[PluginsManager sharedInstance] removeObserver:self
-                                                 forKeyPath:kPluginManagerControllerPluginsKeyPath
-                                                    context:&WCLFileExtensionControllerContext];
+        NSArray *plugins = [[self pluginsManager] plugins];
+        [[self pluginsManager] removeObserver:self
+                                   forKeyPath:kPluginManagerControllerPluginsKeyPath
+                                      context:&WCLFileExtensionControllerContext];
         for (Plugin *plugin in plugins) {
             [self processRemovedPlugin:plugin];
         }
@@ -199,6 +160,11 @@ static void *WCLFileExtensionControllerContext;
 
 #pragma mark Properties
 
+- (PluginsManager *)pluginsManager {
+    NSAssert(NO, @"Subclass must override");
+    return nil;
+}
+
 - (WCLExtensionToFileExtensionDictionaryManager *)fileExtensionsDictionaryManager
 {
     if (_fileExtensionsDictionaryManager) {
@@ -207,16 +173,16 @@ static void *WCLFileExtensionControllerContext;
     
     _fileExtensionsDictionaryManager = [[WCLExtensionToFileExtensionDictionaryManager alloc] init];
     
-    NSArray *plugins = [[PluginsManager sharedInstance] plugins];
+    NSArray *plugins = [[self pluginsManager] plugins];
     
     for (Plugin *plugin in plugins) {
         [self processAddedPlugin:plugin];
     }
-    
-    [[PluginsManager sharedInstance] addObserver:self
-                                                 forKeyPath:kPluginManagerControllerPluginsKeyPath
-                                                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                                                    context:&WCLFileExtensionControllerContext];
+
+    [[self pluginsManager] addObserver:self
+                            forKeyPath:kPluginManagerControllerPluginsKeyPath
+                               options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                               context:&WCLFileExtensionControllerContext];
     
     return _fileExtensionsDictionaryManager;
 }
@@ -285,8 +251,8 @@ static void *WCLFileExtensionControllerContext;
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
-
-    if ([object isKindOfClass:[[PluginsManager sharedInstance] class]] &&
+    
+    if ([object isKindOfClass:[[self pluginsManager] class]] &&
         [keyPath isEqualToString:kPluginManagerControllerPluginsKeyPath]) {
         
         NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
@@ -313,9 +279,13 @@ static void *WCLFileExtensionControllerContext;
         return;
     }
 
-    if ([object isKindOfClass:[Plugin class]] &&
-        [keyPath isEqualToString:kPluginExtensionsKey]) {
+    // TODO: Removing the `isKindOfClass` test because of the conflict created between the swift `Plugin` class being added to test targets
+    // This means the `isKindOfClass` test fails because there are really two compiled `Plugin` classes one for each target
+//    if ([object isKindOfClass:[Plugin class]] &&
+//        [keyPath isEqualToString:kPluginExtensionsKey]) {
+    if ([keyPath isEqualToString:kPluginExtensionsKey]) {
 
+    
         Plugin *plugin = (Plugin *)object;
 
         NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
@@ -346,7 +316,7 @@ static void *WCLFileExtensionControllerContext;
 {
     NSSet *oldExtensionsSet = [NSSet setWithArray:oldExtensions];
     NSSet *newExtensionsSet = [NSSet setWithArray:newExtensions];
-    
+
     // New file extensions minus old file extensions are added file extensions.
     NSMutableSet *addedExtensionsSet = [newExtensionsSet mutableCopy];
     [addedExtensionsSet minusSet:oldExtensionsSet];

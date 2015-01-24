@@ -13,6 +13,15 @@
 
 @synthesize defaultNewPlugin = _defaultNewPlugin;
 
+- (instancetype)initWithPlugins:(NSArray *)plugins
+{
+    self = [super init];
+    if (self) {
+        _pluginsController = [[MultiCollectionController alloc] init:plugins key:kPluginNameKey];
+    }
+    return self;
+}
+
 - (Plugin *)defaultNewPlugin
 {
     if (_defaultNewPlugin) {
@@ -61,5 +70,33 @@
     NSAssert(NO, @"Implemented in superclass");
     return nil;
 }
+
+#pragma mark Required Key-Value Coding To-Many Relationship Compliance
+
+- (NSArray *)plugins
+{
+    return [self.pluginsController objects];
+}
+
+- (void)insertObject:(Plugin *)plugin inPluginsAtIndex:(NSUInteger)index
+{
+    [self.pluginsController insertObject:plugin inObjectsAtIndex:index];
+}
+
+- (void)insertPlugins:(NSArray *)pluginsArray atIndexes:(NSIndexSet *)indexes
+{
+    [self.pluginsController insertObjects:pluginsArray atIndexes:indexes];
+}
+
+- (void)removeObjectFromPluginsAtIndex:(NSUInteger)index
+{
+    [self.pluginsController removeObjectFromObjectsAtIndex:index];
+}
+
+- (void)removePluginsAtIndexes:(NSIndexSet *)indexes
+{
+    [self.pluginsController removeObjectsAtIndexes:indexes];
+}
+
 
 @end

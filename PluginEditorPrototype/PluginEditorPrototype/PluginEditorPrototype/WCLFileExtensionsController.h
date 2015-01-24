@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @class WCLFileExtension;
+@class PluginsManager;
 
 @interface WCLFileExtensionsController : NSObject
-+ (instancetype)sharedFileExtensionsController;
+- (PluginsManager *)pluginsManager;
 - (NSArray *)extensions;
 - (WCLFileExtension *)fileExtensionForExtension:(NSString *)extension;
 
