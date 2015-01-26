@@ -13,6 +13,20 @@ let fileExtensionToPluginKey = "WCLFileExtensionToPlugin"
 
 class WCLFileExtensionTests: FileExtensionsTestCase {
 
+    // MARK: Helper
+    
+    func matchesPlugin(plugin: Plugin, forFileExtension fileExtension: WCLFileExtension) -> Bool {
+        let suffix = fileExtension.suffix
+        
+        let plugins = fileExtension.plugins() as NSArray
+        let containsPlugin = plugins.containsObject(plugin)
+        
+        let suffixes = plugin.fileSuffixes as NSArray
+        let containsSuffix = suffixes.containsObject(suffix)
+        
+        return containsPlugin == containsSuffix
+    }
+    
     override func setUp() {
         super.setUp()
 
@@ -34,24 +48,14 @@ class WCLFileExtensionTests: FileExtensionsTestCase {
         XCTAssertEqual(fileExtension.suffix, testPluginFileSuffix, "The WCLFileExtension's extension should equal the test extension.")
         XCTAssertEqual(fileExtension.enabled, defaultFileExtensionEnabled, "The WCLFileExtension's enabled should equal the default enabled.")
         XCTAssertEqual(fileExtension.selectedPlugin, fileExtension.plugins()[0] as Plugin, "The WCLFileExtension's selected WCLPlugin should be the first WCLPlugin.")
+
+        let plugins = PluginsManager.sharedInstance.plugins() as [Plugin]
+        for plugin in plugins {
+            let matches = matchesPlugin(plugin, forFileExtension: fileExtension)
+            XCTAssertTrue(matches, "The WCLPlugin should match the WCLFileExtension.")
+        }
     }
 
-// - (void)testNewFileExtensionProperties
-// {
-//     WCLFileExtension_old *fileExtension = [[WCLFileExtensionController_old sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
-//
-//     XCTAssertTrue([fileExtension.extension isEqualToString:kTestExtension] , @"The WCLFileExtension's extension should equal the test extension.");
-//     XCTAssertTrue(fileExtension.isEnabled == kFileExtensionDefaultEnabled, @"The WCLFileExtension's enabled should equal the default enabled.");
-//     XCTAssertEqual(fileExtension.selectedPlugin, [fileExtension.plugins firstObject], @"The WCLFileExtension's selected WCLPlugin should be the first WCLPlugin.");
-//
-//     NSArray *plugins = [[WCLPluginManager_old sharedPluginManager] plugins];
-//
-//     for (WCLPlugin_old *plugin in plugins) {
-//         BOOL matches = [[self class] plugin:plugin matchesForFileExtension:fileExtension];
-//         XCTAssertTrue(matches, @"The WCLPlugin should match the WCLFileExtension.");
-//     }
-// }
-//
 // - (void)testSettingEnabled
 // {
 //     WCLFileExtension_old *fileExtension = [[WCLFileExtensionController_old sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
