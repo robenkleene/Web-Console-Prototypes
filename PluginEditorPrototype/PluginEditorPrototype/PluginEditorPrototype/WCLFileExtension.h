@@ -7,15 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 extern NSString * const WCLFileExtensionPluginsKey;
-extern NSString * const WCLFileExtensionExtensionKey;
+extern NSString * const WCLFileExtensionSuffixKey;
 
 @class Plugin;
 
 @interface WCLFileExtension : NSObject
 - (id)initWithExtension:(NSString *)extension;
-@property (nonatomic, strong, readonly) NSString *extension;
+@property (nonatomic, strong, readonly) NSString *suffix;
 @property (nonatomic, assign, getter = isEnabled) BOOL enabled;
 @property (nonatomic, strong) Plugin *selectedPlugin;
 @property (nonatomic, strong) NSArrayController *pluginsArrayController;

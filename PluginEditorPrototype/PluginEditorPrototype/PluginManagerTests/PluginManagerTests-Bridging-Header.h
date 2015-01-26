@@ -8,3 +8,4 @@
 
 #import "PluginEditorPrototype-Bridging-Header.h"
 #import "WCLKeyValueObservingTestsHelper.h"
+#import "WCLFileExtension.h"

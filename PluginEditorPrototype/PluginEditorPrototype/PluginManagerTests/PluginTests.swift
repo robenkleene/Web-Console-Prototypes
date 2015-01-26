@@ -78,7 +78,7 @@ class PluginTests: PluginsManagerTestCase {
         let contentsFour = infoDictionaryContentsForPluginWithConfirmation(plugin)
         XCTAssertNotEqual(contentsThree, contentsFour, "The contents should not be equal")
 
-        plugin.extensions = testPluginExtensionsTwo
+        plugin.fileSuffixes = testPluginExtensionsTwo
         let contentsFive = infoDictionaryContentsForPluginWithConfirmation(plugin)
         XCTAssertNotEqual(contentsFour, contentsFive, "The contents should not be equal")
         let newPlugin: Plugin! = Plugin.pluginWithURL(pluginURL)
@@ -86,7 +86,7 @@ class PluginTests: PluginsManagerTestCase {
         XCTAssertEqual(plugin.name, newPlugin.name, "The names should be equal")
         XCTAssertEqual(plugin.command!, newPlugin.command!, "The commands should be equal")
         XCTAssertEqual(plugin.identifier, newPlugin.identifier, "The identifiers should be equal")
-        XCTAssertEqual(plugin.extensions, newPlugin.extensions, "The file extensions should be equal")
+        XCTAssertEqual(plugin.fileSuffixes, newPlugin.fileSuffixes, "The file extensions should be equal")
     }
     // TODO: Test KVO fires when modifying plugin properties. Only `dynamic` properties work with KVO?
 

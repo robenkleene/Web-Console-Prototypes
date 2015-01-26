@@ -23,15 +23,12 @@ class FileExtensionsControllerTests: PluginsManagerTestCase {
         // Remove all starting file extensions
         let plugins: [Plugin]! = PluginsManager.sharedInstance.plugins() as? [Plugin]
         for aPlugin in plugins {
-            aPlugin.extensions = testPluginExtensionsEmpty
+            aPlugin.fileSuffixes = testPluginExtensionsEmpty
         }
 
-        XCTAssertFalse(FileExtensionsController.sharedInstance.extensions().count > 0, "The file extensions count should be zero");
+        XCTAssertFalse(FileExtensionsController.sharedInstance.extensions().count > 0, "The file extensions count should be zero")
     }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
+
 
     // TODO: After starting plugins have their extensions setup, test starting `WCLFileExtensionsController` has the right count of extensions at init (sum the count of plugin extensions, remove duplicates)
     
@@ -43,15 +40,15 @@ class FileExtensionsControllerTests: PluginsManagerTestCase {
             createdPluginExpectation.fulfill()
         }
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
-        XCTAssertFalse(FileExtensionsController.sharedInstance.extensions().count > 0, "The file extensions count should be zero");
+        XCTAssertFalse(FileExtensionsController.sharedInstance.extensions().count > 0, "The file extensions count should be zero")
         
-        createdPlugin.extensions = testPluginExtensionsTwo
+        createdPlugin.fileSuffixes = testPluginExtensionsTwo
         let extensions: [String] = FileExtensionsController.sharedInstance.extensions() as [String]
         let extensionsMatch = extensionsTest(extensions, matchExtensions: testPluginExtensionsTwo)
         XCTAssertTrue(extensionsMatch, "The file extensions should match the test file extensions.")
 
         // Set file extensions to empty array
-        plugin.extensions = testPluginExtensionsEmpty
+        plugin.fileSuffixes = testPluginExtensionsEmpty
  
         let extensionsTwo: [String] = FileExtensionsController.sharedInstance.extensions() as [String]
         let extensionsTwoMatch = extensionsTest(extensionsTwo, matchExtensions: testPluginExtensionsEmpty)

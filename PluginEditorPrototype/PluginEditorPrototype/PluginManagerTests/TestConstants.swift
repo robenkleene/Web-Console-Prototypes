@@ -17,6 +17,9 @@ let testPluginNameTwo = "IRB"
 let testPluginCommand = "html.rb"
 let testPluginCommandTwo = "irb.rb"
 let testPluginPathComponent = "\(testPluginName).\(pluginFileExtension)"
+
+// MARK: Extensions
+
 let testPluginExtension = "html"
 let testPluginExtensions: [String] = [testPluginExtension]
 let testPluginExtensionsTwo: [String] = ["html", "md", "js"]

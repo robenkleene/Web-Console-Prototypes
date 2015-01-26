@@ -109,7 +109,7 @@
         return;
     }
     
-    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:WCLFileExtensionExtensionKey
+    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:WCLFileExtensionSuffixKey
                                                                        ascending:YES
                                                                         selector:@selector(localizedCaseInsensitiveCompare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:nameSortDescriptor, nil];

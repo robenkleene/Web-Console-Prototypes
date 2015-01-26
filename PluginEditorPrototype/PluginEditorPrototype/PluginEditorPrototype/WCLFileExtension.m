@@ -11,7 +11,7 @@
 #import "PluginEditorPrototype-Swift.h"
 
 NSString * const WCLFileExtensionPluginsKey = @"plugins";
-NSString * const WCLFileExtensionExtensionKey = @"extension";
+NSString * const WCLFileExtensionSuffixKey = @"suffix";
 
 #define kFileExtensionPluginDictionaryObservedKeyPaths [NSArray arrayWithObjects:kFileExtensionEnabledKey, kFileExtensionPluginIdentifierKey, nil]
 
@@ -30,7 +30,7 @@ static void *WCLFileExtensionContext;
 - (id)initWithExtension:(NSString *)extension {
     self = [super init];
     if (self) {
-		_extension = extension;
+		_suffix = extension;
         _mutablePlugins = [NSMutableArray array];
         [self addObserver:self
                forKeyPath:WCLFileExtensionPluginsKey
@@ -163,7 +163,7 @@ static void *WCLFileExtensionContext;
     
     NSDictionary *fileExtensionToPluginDictionary = [[self class] fileExtensionToPluginDictionary];
     
-    NSMutableDictionary *fileExtensionPluginDictionary = [[fileExtensionToPluginDictionary valueForKey:self.extension] mutableCopy];
+    NSMutableDictionary *fileExtensionPluginDictionary = [[fileExtensionToPluginDictionary valueForKey:self.suffix] mutableCopy];
 
     if (!fileExtensionPluginDictionary) {
         fileExtensionPluginDictionary = [NSMutableDictionary dictionary];
@@ -226,7 +226,7 @@ static void *WCLFileExtensionContext;
             fileExtensionToPluginDictionary = [NSMutableDictionary dictionary];
         }
         
-        [fileExtensionToPluginDictionary setValue:self.fileExtensionPluginDictionary forKey:self.extension];
+        [fileExtensionToPluginDictionary setValue:self.fileExtensionPluginDictionary forKey:self.suffix];
         
         [[self class] setfileExtensionToPluginDictionary:fileExtensionToPluginDictionary];
 

@@ -12,7 +12,7 @@
 #import "PluginEditorPrototype-Swift.h"
 
 #define kPluginManagerControllerPluginsKeyPath @"plugins"
-#define kPluginExtensionsKey @"extensions"
+#define kPluginFileSuffixesKey @"fileSuffixes"
 
 #pragma mark - WCLFileExtensionsDictionaryManagerDelegate
 
@@ -282,8 +282,8 @@ static void *WCLFileExtensionControllerContext;
     // TODO: Removing the `isKindOfClass` test because of the conflict created between the swift `Plugin` class being added to test targets
     // This means the `isKindOfClass` test fails because there are really two compiled `Plugin` classes one for each target
 //    if ([object isKindOfClass:[Plugin class]] &&
-//        [keyPath isEqualToString:kPluginExtensionsKey]) {
-    if ([keyPath isEqualToString:kPluginExtensionsKey]) {
+//        [keyPath isEqualToString:kPluginFileSuffixesKey]) {
+    if ([keyPath isEqualToString:kPluginFileSuffixesKey]) {
 
     
         Plugin *plugin = (Plugin *)object;
@@ -334,28 +334,28 @@ static void *WCLFileExtensionControllerContext;
 
 - (void)processAddedPlugin:(Plugin *)plugin
 {
-    NSArray *extensions = plugin.extensions;
+    NSArray *fileSuffixes = plugin.fileSuffixes;
 
-    for (NSString *extension in extensions) {
-        [self.fileExtensionsDictionaryManager addPlugin:plugin forExtension:extension];
+    for (NSString *fileSuffix in fileSuffixes) {
+        [self.fileExtensionsDictionaryManager addPlugin:plugin forExtension:fileSuffix];
     }
 
     [plugin addObserver:self
-             forKeyPath:kPluginExtensionsKey
+             forKeyPath:kPluginFileSuffixesKey
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                 context:&WCLFileExtensionControllerContext];
 }
 
 - (void)processRemovedPlugin:(Plugin *)plugin
 {
-    NSArray *extensions = plugin.extensions;
+    NSArray *fileSuffixes = plugin.fileSuffixes;
     
-    for (NSString *extension in extensions) {
-        [self.fileExtensionsDictionaryManager removePlugin:plugin forExtension:extension];
+    for (NSString *fileSuffix in fileSuffixes) {
+        [self.fileExtensionsDictionaryManager removePlugin:plugin forExtension:fileSuffix];
     }
     
     [plugin removeObserver:self
-                forKeyPath:kPluginExtensionsKey
+                forKeyPath:kPluginFileSuffixesKey
                    context:&WCLFileExtensionControllerContext];
 }
 
