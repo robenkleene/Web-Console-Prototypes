@@ -12,6 +12,7 @@ let applicationName = NSBundle.mainBundle().infoDictionary![kCFBundleNameKey as 
 let errorDomain = NSBundle.mainBundle().bundleIdentifier! as NSString
 let pluginsDirectoryPathComponent = "PlugIns"
 let defaultNewPluginIdentifierKey = "WCLDefaultNewPluginIdentifier"
+let defaultFileExtensionEnabled = false
 
 enum Directory {
     case Caches

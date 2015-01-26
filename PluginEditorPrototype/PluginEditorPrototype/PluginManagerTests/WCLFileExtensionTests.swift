@@ -28,13 +28,12 @@ class WCLFileExtensionTests: FileExtensionsTestCase {
     }
     
     func testNewFileExtensionProperties() {
-        let fileSuffixes = FileExtensionsController.sharedInstance.fileExtensionForSuffix(testPluginFileSuffix)
+        let fileExtension = FileExtensionsController.sharedInstance.fileExtensionForSuffix(testPluginFileSuffix)
         
-//        let extension = fileExtension.extension
-//        XCTAssertEqual(fileExtension.extension, testPluginExtension, "The WCLFileExtension's extension should equal the test extension.")
-//        XCTAssertTrue(fileExtension.isEnabled == kFileExtensionDefaultEnabled, @"The WCLFileExtension's enabled should equal the default enabled.");
-//        XCTAssertEqual(fileExtension.selectedPlugin, [fileExtension.plugins firstObject], @"The WCLFileExtension's selected WCLPlugin should be the first WCLPlugin.");
-
+        let suffix = fileExtension.suffix
+        XCTAssertEqual(fileExtension.suffix, testPluginFileSuffix, "The WCLFileExtension's extension should equal the test extension.")
+        XCTAssertEqual(fileExtension.enabled, defaultFileExtensionEnabled, "The WCLFileExtension's enabled should equal the default enabled.")
+        XCTAssertEqual(fileExtension.selectedPlugin, fileExtension.plugins()[0] as Plugin, "The WCLFileExtension's selected WCLPlugin should be the first WCLPlugin.")
     }
 
 // - (void)testNewFileExtensionProperties
