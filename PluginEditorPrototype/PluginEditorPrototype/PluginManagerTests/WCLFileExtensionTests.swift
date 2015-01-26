@@ -11,38 +11,31 @@ import XCTest
 
 let fileExtensionToPluginKey = "WCLFileExtensionToPlugin"
 
-class WCLFileExtensionTests: PluginsManagerTestCase {
+class WCLFileExtensionTests: FileExtensionsTestCase {
 
-//    override func setUp() {
-//        super.setUp()
-//
-//        // TODO: Assert existing plugin settings in userDefaults are nil? I.e., [WCLFileExtension fileExtensionToPluginDictionary]
-//        
-//        // Remove all starting file extensions
-//        let plugins: [Plugin]! = PluginsManager.sharedInstance.plugins() as? [Plugin]
-//        for aPlugin in plugins {
-//            aPlugin.fileSuffixes = testPluginExtensionsEmpty
-//        }
-//        
-//        XCTAssertFalse(FileExtensionsController.sharedInstance.extensions().count > 0, "The file extensions count should be zero")
-//        plugin.fileSuffixes = testPluginExtensions
-//        XCTAssertEqual(FileExtensionsController.sharedInstance.extensions().count, 1, "The file extensions count should equal one.")
-//    }
-//
-//    override func tearDown() {
-//        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: fileExtensionToPluginKey)
-//        super.tearDown()
-//    }
+    override func setUp() {
+        super.setUp()
+
+        // TODO: Assert existing plugin settings in userDefaults are nil? I.e., [WCLFileExtension fileExtensionToPluginDictionary]
+
+        plugin.fileSuffixes = testPluginFileSuffixes
+        XCTAssertEqual(FileExtensionsController.sharedInstance.suffixes().count, 1, "The file extensions count should equal one.")
+    }
+
+    override func tearDown() {
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: fileExtensionToPluginKey)
+        super.tearDown()
+    }
     
-//    func testNewFileExtensionProperties() {
-//        let fileExtension = FileExtensionsController.sharedInstance.fileExtensionForExtension(testPluginExtension)
-//        
+    func testNewFileExtensionProperties() {
+        let fileSuffixes = FileExtensionsController.sharedInstance.fileExtensionForSuffix(testPluginFileSuffix)
+        
 //        let extension = fileExtension.extension
 //        XCTAssertEqual(fileExtension.extension, testPluginExtension, "The WCLFileExtension's extension should equal the test extension.")
 //        XCTAssertTrue(fileExtension.isEnabled == kFileExtensionDefaultEnabled, @"The WCLFileExtension's enabled should equal the default enabled.");
 //        XCTAssertEqual(fileExtension.selectedPlugin, [fileExtension.plugins firstObject], @"The WCLFileExtension's selected WCLPlugin should be the first WCLPlugin.");
 
-//    }
+    }
 
 // - (void)testNewFileExtensionProperties
 // {

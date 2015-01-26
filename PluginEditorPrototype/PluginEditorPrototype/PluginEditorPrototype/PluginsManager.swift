@@ -29,11 +29,11 @@ class PluginsManager: WCLPluginsManager, PluginsDataControllerDelegate {
         return Singleton.instance
     }
 
-    // MARK: Init
-    
     class func setOverrideSharedInstance(pluginsManager: PluginsManager?) {
         Singleton.overrideSharedInstance = pluginsManager
     }
+
+    // MARK: Init
     
     init(_ paths: [String], duplicatePluginDestinationDirectoryURL: NSURL) {
         self.pluginsDataController = PluginsDataController(paths, duplicatePluginDestinationDirectoryURL: duplicatePluginDestinationDirectoryURL)

@@ -39,13 +39,13 @@
 
 @synthesize suffixToFileExtensionDictionary = _suffixToFileExtensionDictionary;
 
-- (void)addPlugin:(Plugin *)plugin forSuffix:(NSString *)extension
+- (void)addPlugin:(Plugin *)plugin forSuffix:(NSString *)suffix
 {    
-    WCLFileExtension *fileExtension = self.suffixToFileExtensionDictionary[extension];
+    WCLFileExtension *fileExtension = self.suffixToFileExtensionDictionary[suffix];
 
     if (!fileExtension) {
-        fileExtension = [[WCLFileExtension alloc] initWithSuffix:extension];
-        self.suffixToFileExtensionDictionary[extension] = fileExtension;
+        fileExtension = [[WCLFileExtension alloc] initWithSuffix:suffix];
+        self.suffixToFileExtensionDictionary[suffix] = fileExtension;
 
         if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didAddFileExtension:)]) {
             [self.delegate fileExtensionsDictionaryManager:self didAddFileExtension:fileExtension];
@@ -119,11 +119,20 @@ static void *WCLFileExtensionControllerContext;
 
 @synthesize fileExtensionsDictionaryManager = _fileExtensionsDictionaryManager;
 
+- (instancetype)initWithPluginsManager:(PluginsManager *)pluginsManager
+{
+    self = [super init];
+    if (self) {
+        _pluginsManager = pluginsManager;
+    }
+    return self;
+}
+
 - (void)dealloc
 {
     if (_fileExtensionsDictionaryManager) {
-        NSArray *plugins = [[self pluginsManager] plugins];
-        [[self pluginsManager] removeObserver:self
+        NSArray *plugins = [self.pluginsManager plugins];
+        [self.pluginsManager removeObserver:self
                                    forKeyPath:kPluginManagerControllerPluginsKeyPath
                                       context:&WCLFileExtensionControllerContext];
         for (Plugin *plugin in plugins) {
@@ -137,9 +146,9 @@ static void *WCLFileExtensionControllerContext;
     return [self.fileExtensionsDictionaryManager suffixes];
 }
 
-- (WCLFileExtension *)fileExtensionForSuffix:(NSString *)extension
+- (WCLFileExtension *)fileExtensionForSuffix:(NSString *)suffix
 {
-    return [self.fileExtensionsDictionaryManager fileExtensionForSuffix:extension];
+    return [self.fileExtensionsDictionaryManager fileExtensionForSuffix:suffix];
 }
 
 #pragma mark WCLFileExtensionsDictionaryManagerDelegate
@@ -160,11 +169,6 @@ static void *WCLFileExtensionControllerContext;
 
 #pragma mark Properties
 
-- (PluginsManager *)pluginsManager {
-    NSAssert(NO, @"Subclass must override");
-    return nil;
-}
-
 - (WCLExtensionToFileExtensionDictionaryManager *)fileExtensionsDictionaryManager
 {
     if (_fileExtensionsDictionaryManager) {
@@ -173,13 +177,13 @@ static void *WCLFileExtensionControllerContext;
     
     _fileExtensionsDictionaryManager = [[WCLExtensionToFileExtensionDictionaryManager alloc] init];
     
-    NSArray *plugins = [[self pluginsManager] plugins];
+    NSArray *plugins = [self.pluginsManager plugins];
     
     for (Plugin *plugin in plugins) {
         [self processAddedPlugin:plugin];
     }
 
-    [[self pluginsManager] addObserver:self
+    [self.pluginsManager addObserver:self
                             forKeyPath:kPluginManagerControllerPluginsKeyPath
                                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                                context:&WCLFileExtensionControllerContext];
@@ -252,7 +256,7 @@ static void *WCLFileExtensionControllerContext;
         return;
     }
     
-    if ([object isKindOfClass:[[self pluginsManager] class]] &&
+    if ([object isKindOfClass:[self.pluginsManager class]] &&
         [keyPath isEqualToString:kPluginManagerControllerPluginsKeyPath]) {
         
         NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
@@ -304,15 +308,15 @@ static void *WCLFileExtensionControllerContext;
         }
         
         [self processExtensionChangesForPlugin:(Plugin *)plugin
-                                fromSuffixes:oldExtensions
-                                  toSuffixes:newExtensions];
+                                fromExtensions:oldExtensions
+                                  toExtensions:newExtensions];
         return;
     }
 }
 
 - (void)processExtensionChangesForPlugin:(Plugin *)plugin
-                          fromSuffixes:(NSArray *)oldExtensions
-                            toSuffixes:(NSArray *)newExtensions
+                          fromExtensions:(NSArray *)oldExtensions
+                            toExtensions:(NSArray *)newExtensions
 {
     NSSet *oldExtensionsSet = [NSSet setWithArray:oldExtensions];
     NSSet *newExtensionsSet = [NSSet setWithArray:newExtensions];

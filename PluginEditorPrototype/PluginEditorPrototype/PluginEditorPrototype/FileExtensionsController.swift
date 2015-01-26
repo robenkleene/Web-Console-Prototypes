@@ -12,16 +12,34 @@ class FileExtensionsController: WCLFileExtensionsController {
 
     // MARK: Singleton
     
+    struct Singleton {
+        static let instance: FileExtensionsController = FileExtensionsController()
+        static var overrideSharedInstance: FileExtensionsController?
+    }
+    
     class var sharedInstance: FileExtensionsController {
-        struct Singleton {
-            static let instance: FileExtensionsController = FileExtensionsController()
+        if let overrideSharedInstance = Singleton.overrideSharedInstance {
+            return overrideSharedInstance
         }
+        
+        // TODO: Assert that the non-overridden instance is never returned when running tests
+        
         return Singleton.instance
     }
-
-    // MARK: Plugins Manager
-
-    override func pluginsManager() -> PluginsManager {
-        return PluginsManager.sharedInstance
+    
+    class func setOverrideSharedInstance(fileExtensionsController: FileExtensionsController?) {
+        Singleton.overrideSharedInstance = fileExtensionsController
     }
+
+    // MARK: Init
+
+    override init(pluginsManager: PluginsManager) {
+        super.init(pluginsManager: pluginsManager)
+    }
+
+    // TODO: Untested convenience init
+    convenience override init() {
+        self.init(pluginsManager: PluginsManager.sharedInstance)
+    }
+    
 }

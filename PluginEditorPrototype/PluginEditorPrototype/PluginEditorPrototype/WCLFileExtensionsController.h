@@ -12,7 +12,8 @@
 @class PluginsManager;
 
 @interface WCLFileExtensionsController : NSObject
-- (PluginsManager *)pluginsManager;
+@property (nonatomic, strong, readonly) PluginsManager *pluginsManager;
+- (instancetype)initWithPluginsManager:(PluginsManager *)pluginsManager;
 - (NSArray *)suffixes;
 - (WCLFileExtension *)fileExtensionForSuffix:(NSString *)extension;
 
