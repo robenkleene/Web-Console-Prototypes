@@ -26,7 +26,7 @@ class FileExtensionsControllerTests: PluginsManagerTestCase {
             aPlugin.fileSuffixes = testPluginExtensionsEmpty
         }
 
-        XCTAssertFalse(FileExtensionsController.sharedInstance.extensions().count > 0, "The file extensions count should be zero")
+        XCTAssertFalse(FileExtensionsController.sharedInstance.suffixes().count > 0, "The file extensions count should be zero")
     }
 
 
@@ -40,17 +40,17 @@ class FileExtensionsControllerTests: PluginsManagerTestCase {
             createdPluginExpectation.fulfill()
         }
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
-        XCTAssertFalse(FileExtensionsController.sharedInstance.extensions().count > 0, "The file extensions count should be zero")
+        XCTAssertFalse(FileExtensionsController.sharedInstance.suffixes().count > 0, "The file extensions count should be zero")
         
         createdPlugin.fileSuffixes = testPluginExtensionsTwo
-        let extensions: [String] = FileExtensionsController.sharedInstance.extensions() as [String]
+        let extensions: [String] = FileExtensionsController.sharedInstance.suffixes() as [String]
         let extensionsMatch = extensionsTest(extensions, matchExtensions: testPluginExtensionsTwo)
         XCTAssertTrue(extensionsMatch, "The file extensions should match the test file extensions.")
 
         // Set file extensions to empty array
         plugin.fileSuffixes = testPluginExtensionsEmpty
  
-        let extensionsTwo: [String] = FileExtensionsController.sharedInstance.extensions() as [String]
+        let extensionsTwo: [String] = FileExtensionsController.sharedInstance.suffixes() as [String]
         let extensionsTwoMatch = extensionsTest(extensionsTwo, matchExtensions: testPluginExtensionsEmpty)
         XCTAssertTrue(extensionsMatch, "The file extensions should match the empty test file extensions.")
     }

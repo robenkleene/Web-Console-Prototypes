@@ -13,8 +13,8 @@
 
 @interface WCLFileExtensionsController : NSObject
 - (PluginsManager *)pluginsManager;
-- (NSArray *)extensions;
-- (WCLFileExtension *)fileExtensionForExtension:(NSString *)extension;
+- (NSArray *)suffixes;
+- (WCLFileExtension *)fileExtensionForSuffix:(NSString *)extension;
 
 #pragma mark Required Key-Value Coding To-Many Relationship Compliance
 - (NSArray *)fileExtensions;

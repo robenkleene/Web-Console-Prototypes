@@ -27,7 +27,7 @@ static void *WCLFileExtensionContext;
 @synthesize selectedPlugin = _selectedPlugin;
 @synthesize fileExtensionPluginDictionary = _fileExtensionPluginDictionary;
 
-- (id)initWithExtension:(NSString *)extension {
+- (id)initWithSuffix:(NSString *)extension {
     self = [super init];
     if (self) {
 		_suffix = extension;

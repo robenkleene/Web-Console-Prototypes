@@ -29,23 +29,23 @@
 
 @interface WCLExtensionToFileExtensionDictionaryManager : NSObject
 @property (nonatomic, weak) id <WCLExtensionToFileExtensionDictionaryManagerDelegate> delegate;
-@property (nonatomic, strong, readonly) NSMutableDictionary *extensionToFileExtensionDictionary;
-- (NSArray *)extensions;
+@property (nonatomic, strong, readonly) NSMutableDictionary *suffixToFileExtensionDictionary;
+- (NSArray *)suffixes;
 - (NSArray *)fileExtensions;
-- (WCLFileExtension *)fileExtensionForExtension:(NSString *)extension;
+- (WCLFileExtension *)fileExtensionForSuffix:(NSString *)extension;
 @end
 
 @implementation WCLExtensionToFileExtensionDictionaryManager
 
-@synthesize extensionToFileExtensionDictionary = _extensionToFileExtensionDictionary;
+@synthesize suffixToFileExtensionDictionary = _suffixToFileExtensionDictionary;
 
-- (void)addPlugin:(Plugin *)plugin forExtension:(NSString *)extension
+- (void)addPlugin:(Plugin *)plugin forSuffix:(NSString *)extension
 {    
-    WCLFileExtension *fileExtension = self.extensionToFileExtensionDictionary[extension];
+    WCLFileExtension *fileExtension = self.suffixToFileExtensionDictionary[extension];
 
     if (!fileExtension) {
-        fileExtension = [[WCLFileExtension alloc] initWithExtension:extension];
-        self.extensionToFileExtensionDictionary[extension] = fileExtension;
+        fileExtension = [[WCLFileExtension alloc] initWithSuffix:extension];
+        self.suffixToFileExtensionDictionary[extension] = fileExtension;
 
         if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didAddFileExtension:)]) {
             [self.delegate fileExtensionsDictionaryManager:self didAddFileExtension:fileExtension];
@@ -55,9 +55,9 @@
     [fileExtension insertObject:plugin inPluginsAtIndex:0];
 }
 
-- (void)removePlugin:(Plugin *)plugin forExtension:(NSString *)extension
+- (void)removePlugin:(Plugin *)plugin forSuffix:(NSString *)extension
 {
-    WCLFileExtension *fileExtension = self.extensionToFileExtensionDictionary[extension];
+    WCLFileExtension *fileExtension = self.suffixToFileExtensionDictionary[extension];
 
     NSAssert(fileExtension, @"Attempted to remove a plugin for a file extension that does not exist.");
     
@@ -67,7 +67,7 @@
     [fileExtension removeObjectFromPluginsAtIndex:index];
 
     if (![fileExtension.plugins count]) {
-        [self.extensionToFileExtensionDictionary removeObjectForKey:extension];
+        [self.suffixToFileExtensionDictionary removeObjectForKey:extension];
         
         if ([self.delegate respondsToSelector:@selector(fileExtensionsDictionaryManager:didRemoveFileExtension:)]) {
             [self.delegate fileExtensionsDictionaryManager:self didRemoveFileExtension:fileExtension];
@@ -75,32 +75,32 @@
     }
 }
 
-- (WCLFileExtension *)fileExtensionForExtension:(NSString *)extension
+- (WCLFileExtension *)fileExtensionForSuffix:(NSString *)extension
 {
-    return self.extensionToFileExtensionDictionary[extension];
+    return self.suffixToFileExtensionDictionary[extension];
 }
 
-- (NSArray *)extensions
+- (NSArray *)suffixes
 {
-    return [self.extensionToFileExtensionDictionary allKeys];
+    return [self.suffixToFileExtensionDictionary allKeys];
 }
 
 - (NSArray *)fileExtensions
 {
-    return [self.extensionToFileExtensionDictionary allValues];
+    return [self.suffixToFileExtensionDictionary allValues];
 }
 
 #pragma mark Properties
 
-- (NSMutableDictionary *)extensionToFileExtensionDictionary
+- (NSMutableDictionary *)suffixToFileExtensionDictionary
 {
-    if (_extensionToFileExtensionDictionary) {
-        return _extensionToFileExtensionDictionary;
+    if (_suffixToFileExtensionDictionary) {
+        return _suffixToFileExtensionDictionary;
     }
 
-    _extensionToFileExtensionDictionary = [NSMutableDictionary dictionary];
+    _suffixToFileExtensionDictionary = [NSMutableDictionary dictionary];
     
-    return _extensionToFileExtensionDictionary;
+    return _suffixToFileExtensionDictionary;
 }
 
 @end
@@ -132,14 +132,14 @@ static void *WCLFileExtensionControllerContext;
     }
 }
 
-- (NSArray *)extensions
+- (NSArray *)suffixes
 {
-    return [self.fileExtensionsDictionaryManager extensions];
+    return [self.fileExtensionsDictionaryManager suffixes];
 }
 
-- (WCLFileExtension *)fileExtensionForExtension:(NSString *)extension
+- (WCLFileExtension *)fileExtensionForSuffix:(NSString *)extension
 {
-    return [self.fileExtensionsDictionaryManager fileExtensionForExtension:extension];
+    return [self.fileExtensionsDictionaryManager fileExtensionForSuffix:extension];
 }
 
 #pragma mark WCLFileExtensionsDictionaryManagerDelegate
@@ -304,15 +304,15 @@ static void *WCLFileExtensionControllerContext;
         }
         
         [self processExtensionChangesForPlugin:(Plugin *)plugin
-                                fromExtensions:oldExtensions
-                                  toExtensions:newExtensions];
+                                fromSuffixes:oldExtensions
+                                  toSuffixes:newExtensions];
         return;
     }
 }
 
 - (void)processExtensionChangesForPlugin:(Plugin *)plugin
-                          fromExtensions:(NSArray *)oldExtensions
-                            toExtensions:(NSArray *)newExtensions
+                          fromSuffixes:(NSArray *)oldExtensions
+                            toSuffixes:(NSArray *)newExtensions
 {
     NSSet *oldExtensionsSet = [NSSet setWithArray:oldExtensions];
     NSSet *newExtensionsSet = [NSSet setWithArray:newExtensions];
@@ -321,14 +321,14 @@ static void *WCLFileExtensionControllerContext;
     NSMutableSet *addedExtensionsSet = [newExtensionsSet mutableCopy];
     [addedExtensionsSet minusSet:oldExtensionsSet];
     for (NSString *extension in addedExtensionsSet) {
-        [self.fileExtensionsDictionaryManager addPlugin:plugin forExtension:extension];
+        [self.fileExtensionsDictionaryManager addPlugin:plugin forSuffix:extension];
     }
 
     // Old file extensions minus new file extensions are removed file extensions.
     NSMutableSet *removedExtensionsSet = [oldExtensionsSet mutableCopy];
     [removedExtensionsSet minusSet:newExtensionsSet];
     for (NSString *extension in removedExtensionsSet) {
-        [self.fileExtensionsDictionaryManager removePlugin:plugin forExtension:extension];
+        [self.fileExtensionsDictionaryManager removePlugin:plugin forSuffix:extension];
     }
 }
 
@@ -337,7 +337,7 @@ static void *WCLFileExtensionControllerContext;
     NSArray *fileSuffixes = plugin.fileSuffixes;
 
     for (NSString *fileSuffix in fileSuffixes) {
-        [self.fileExtensionsDictionaryManager addPlugin:plugin forExtension:fileSuffix];
+        [self.fileExtensionsDictionaryManager addPlugin:plugin forSuffix:fileSuffix];
     }
 
     [plugin addObserver:self
@@ -351,7 +351,7 @@ static void *WCLFileExtensionControllerContext;
     NSArray *fileSuffixes = plugin.fileSuffixes;
     
     for (NSString *fileSuffix in fileSuffixes) {
-        [self.fileExtensionsDictionaryManager removePlugin:plugin forExtension:fileSuffix];
+        [self.fileExtensionsDictionaryManager removePlugin:plugin forSuffix:fileSuffix];
     }
     
     [plugin removeObserver:self

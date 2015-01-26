@@ -15,7 +15,7 @@ extern NSString * const WCLFileExtensionSuffixKey;
 @class Plugin;
 
 @interface WCLFileExtension : NSObject
-- (id)initWithExtension:(NSString *)extension;
+- (id)initWithSuffix:(NSString *)extension;
 @property (nonatomic, strong, readonly) NSString *suffix;
 @property (nonatomic, assign, getter = isEnabled) BOOL enabled;
 @property (nonatomic, strong) Plugin *selectedPlugin;
