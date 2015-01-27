@@ -15,7 +15,7 @@ class Plugin: WCLPlugin {
         static let pluginNameKey = "WCName"
         static let pluginIdentifierKey = "WCUUID"
         static let pluginCommandKey = "WCCommand"
-        static let pluginFileSuffixesKey = "WCFileExtensions"
+        static let pluginSuffixesKey = "WCFileExtensions"
         static let infoDictionaryPathComponent = "Contents".stringByAppendingPathComponent("Info.plist")
     }
     internal let bundle: NSBundle
@@ -25,7 +25,7 @@ class Plugin: WCLPlugin {
         identifier: String,
         name: String,
         command: String?,
-        fileSuffixes: [String]?)
+        suffixes: [String]?)
     {
         self.infoDictionary = infoDictionary
         self.bundle = bundle
@@ -34,9 +34,9 @@ class Plugin: WCLPlugin {
 
         // Optional
         self.command = command
-        self.fileSuffixes = [String]()
-        if let fileSuffixes = fileSuffixes {
-            self.fileSuffixes += fileSuffixes
+        self.suffixes = [String]()
+        if let suffixes = suffixes {
+            self.suffixes += suffixes
         }
     }
     
@@ -93,9 +93,9 @@ class Plugin: WCLPlugin {
             return nil
         }
     }
-    dynamic var fileSuffixes: [String] {
+    dynamic var suffixes: [String] {
         didSet {
-            infoDictionary[ClassConstants.pluginFileSuffixesKey] = fileSuffixes
+            infoDictionary[ClassConstants.pluginSuffixesKey] = suffixes
             save()
         }
     }

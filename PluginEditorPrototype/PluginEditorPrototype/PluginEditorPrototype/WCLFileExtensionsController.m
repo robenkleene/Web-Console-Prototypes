@@ -12,7 +12,7 @@
 #import "PluginEditorPrototype-Swift.h"
 
 #define kPluginManagerControllerPluginsKeyPath @"plugins"
-#define kPluginFileSuffixesKey @"fileSuffixes"
+#define kPluginSuffixesKey @"suffixes"
 
 #pragma mark - WCLFileExtensionsDictionaryManagerDelegate
 
@@ -286,8 +286,8 @@ static void *WCLFileExtensionControllerContext;
     // TODO: Removing the `isKindOfClass` test because of the conflict created between the swift `Plugin` class being added to test targets
     // This means the `isKindOfClass` test fails because there are really two compiled `Plugin` classes one for each target
 //    if ([object isKindOfClass:[Plugin class]] &&
-//        [keyPath isEqualToString:kPluginFileSuffixesKey]) {
-    if ([keyPath isEqualToString:kPluginFileSuffixesKey]) {
+//        [keyPath isEqualToString:kPluginSuffixesKey]) {
+    if ([keyPath isEqualToString:kPluginSuffixesKey]) {
 
     
         Plugin *plugin = (Plugin *)object;
@@ -338,28 +338,28 @@ static void *WCLFileExtensionControllerContext;
 
 - (void)processAddedPlugin:(Plugin *)plugin
 {
-    NSArray *fileSuffixes = plugin.fileSuffixes;
+    NSArray *suffixes = plugin.suffixes;
 
-    for (NSString *fileSuffix in fileSuffixes) {
+    for (NSString *fileSuffix in suffixes) {
         [self.fileExtensionsDictionaryManager addPlugin:plugin forSuffix:fileSuffix];
     }
 
     [plugin addObserver:self
-             forKeyPath:kPluginFileSuffixesKey
+             forKeyPath:kPluginSuffixesKey
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                 context:&WCLFileExtensionControllerContext];
 }
 
 - (void)processRemovedPlugin:(Plugin *)plugin
 {
-    NSArray *fileSuffixes = plugin.fileSuffixes;
+    NSArray *suffixes = plugin.suffixes;
     
-    for (NSString *fileSuffix in fileSuffixes) {
+    for (NSString *fileSuffix in suffixes) {
         [self.fileExtensionsDictionaryManager removePlugin:plugin forSuffix:fileSuffix];
     }
     
     [plugin removeObserver:self
-                forKeyPath:kPluginFileSuffixesKey
+                forKeyPath:kPluginSuffixesKey
                    context:&WCLFileExtensionControllerContext];
 }
 

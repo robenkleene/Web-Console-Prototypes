@@ -21,9 +21,9 @@ let testPluginPathComponent = "\(testPluginName).\(pluginFileExtension)"
 // MARK: Extensions
 
 let testPluginFileSuffix = "html"
-let testPluginFileSuffixes: [String] = [testPluginFileSuffix]
-let testPluginFileSuffixesTwo: [String] = ["html", "md", "js"]
-let testPluginFileSuffixesEmpty = [String]()
+let testPluginSuffixes: [String] = [testPluginFileSuffix]
+let testPluginSuffixesTwo: [String] = ["html", "md", "js"]
+let testPluginSuffixesEmpty = [String]()
 
 
 

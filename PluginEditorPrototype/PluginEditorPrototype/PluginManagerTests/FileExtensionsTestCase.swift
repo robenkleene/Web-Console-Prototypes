@@ -15,7 +15,7 @@ class FileExtensionsTestCase: PluginsManagerTestCase {
         // Remove all starting file extensions
         let plugins: [Plugin]! = PluginsManager.sharedInstance.plugins() as? [Plugin]
         for aPlugin in plugins {
-            aPlugin.fileSuffixes = testPluginFileSuffixesEmpty
+            aPlugin.suffixes = testPluginSuffixesEmpty
         }
         
         XCTAssertFalse(FileExtensionsController.sharedInstance.suffixes().count > 0, "The file extensions count should be zero")

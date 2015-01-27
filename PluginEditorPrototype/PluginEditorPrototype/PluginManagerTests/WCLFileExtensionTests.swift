@@ -21,7 +21,7 @@ class WCLFileExtensionTests: FileExtensionsTestCase {
         let plugins = fileExtension.plugins() as NSArray
         let containsPlugin = plugins.containsObject(plugin)
         
-        let suffixes = plugin.fileSuffixes as NSArray
+        let suffixes = plugin.suffixes as NSArray
         let containsSuffix = suffixes.containsObject(suffix)
         
         return containsPlugin == containsSuffix
@@ -32,7 +32,7 @@ class WCLFileExtensionTests: FileExtensionsTestCase {
 
         // TODO: Assert existing plugin settings in userDefaults are nil? I.e., [WCLFileExtension fileExtensionToPluginDictionary]
 
-        plugin.fileSuffixes = testPluginFileSuffixes
+        plugin.suffixes = testPluginSuffixes
         XCTAssertEqual(FileExtensionsController.sharedInstance.suffixes().count, 1, "The file extensions count should equal one.")
     }
 
@@ -134,7 +134,7 @@ class WCLFileExtensionTests: FileExtensionsTestCase {
         }
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
-        createdPlugin.fileSuffixes = testPluginFileSuffixes
+        createdPlugin.suffixes = testPluginSuffixes
 
         observedChange = false
         WCLKeyValueObservingTestsHelper.observeObject(fileExtension,
