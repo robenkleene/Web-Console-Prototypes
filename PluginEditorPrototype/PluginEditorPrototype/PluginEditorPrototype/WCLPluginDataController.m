@@ -7,7 +7,7 @@
 //
 
 #import "WCLPluginDataController.h"
-#import "WCLPlugin+Validation.h"
+#import "WCLPlugin+Validation_old.h"
 #import "WCLPlugin_old.h"
 
 @interface WCLPluginDataController ()

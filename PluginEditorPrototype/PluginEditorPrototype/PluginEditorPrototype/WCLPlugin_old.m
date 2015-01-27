@@ -7,7 +7,7 @@
 //
 
 #import "WCLPlugin_old.h"
-#import "WCLPlugin+Validation.h"
+#import "WCLPlugin+Validation_old.h"
 #import "WCLPluginManager_old.h"
 
 NSString * const WCLPluginNameKey = @"name";

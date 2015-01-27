@@ -10,7 +10,7 @@
 #import "WCLPluginViewController.h"
 #import "WCLPluginManager_old.h"
 
-#import "WCLPlugin+Validation.h"
+#import "WCLPlugin+Validation_old.h"
 #import "WCLPlugin_old.h"
 
 #import "WCLFileExtensionController_old.h"
