@@ -20,8 +20,8 @@ let testPluginPathComponent = "\(testPluginName).\(pluginFileExtension)"
 
 // MARK: Extensions
 
-let testPluginFileSuffix = "html"
-let testPluginSuffixes: [String] = [testPluginFileSuffix]
+let testPluginSuffix = "html"
+let testPluginSuffixes: [String] = [testPluginSuffix]
 let testPluginSuffixesTwo: [String] = ["html", "md", "js"]
 let testPluginSuffixesEmpty = [String]()
 
@@ -33,6 +33,7 @@ let testPluginDefaultNewPluginKeyPath = "defaultNewPlugin"
 let testFileExtensionEnabledKeyPath = "enabled"
 let testFileExtensionSelectedPluginKeyPath = "selectedPlugin"
 let testFileExtensionPluginIdentifierKey = "pluginIdentifier"
+let testFileExtensionPluginsKey = "plugins"
 
 // MARK: Plugin Paths
 
