@@ -27,10 +27,10 @@ let testPluginFileSuffixesEmpty = [String]()
 
 
 
-// MARK: Plugin KVO
+// MARK: KVO Keys
 
 let testPluginDefaultNewPluginKeyPath = "defaultNewPlugin"
-
+let testFileExtensionEnabledKeyPath = "enabled"
 
 
 // MARK: Plugin Paths

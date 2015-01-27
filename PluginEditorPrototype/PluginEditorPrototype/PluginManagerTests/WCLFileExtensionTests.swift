@@ -55,54 +55,50 @@ class WCLFileExtensionTests: FileExtensionsTestCase {
             XCTAssertTrue(matches, "The WCLPlugin should match the WCLFileExtension.")
         }
     }
+    
+    func testSettingEnabled() {
+        let fileExtension = FileExtensionsController.sharedInstance.fileExtensionForSuffix(testPluginFileSuffix)
 
-// - (void)testSettingEnabled
-// {
-//     WCLFileExtension_old *fileExtension = [[WCLFileExtensionController_old sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
-//
-//     // Test setting the enabled property
-//
-//     // Test key-value observing for the enabled property
-//     __block BOOL isEnabled = fileExtension.isEnabled;
-//     [WCLKeyValueObservingTestsHelper observeObject:fileExtension
-//                                         forKeyPath:kTestFileExtensionEnabledKeyPath
-//                                            options:NSKeyValueObservingOptionNew
-//                                    completionBlock:^(NSDictionary *change) {
-//                                                isEnabled = fileExtension.isEnabled;
-//                                            }];
-//     BOOL inverseEnabled = !fileExtension.isEnabled;
-//     fileExtension.enabled = inverseEnabled;
-//     XCTAssertEqual(isEnabled, inverseEnabled, @"The key-value observing change notification for the WCLFileExtensions's enabled property should have occurred.");
-//     XCTAssertEqual(fileExtension.isEnabled, inverseEnabled, @"The WCLFileExtension's isEnabled should equal the inverse enabled.");
-//
-//     // Test NSUserDefaults is set
-//     NSDictionary *fileExtensionToPluginDictionary = [WCLFileExtension_old fileExtensionToPluginDictionary];
-//     NSDictionary *fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
-//     BOOL enabledInDictionary = [[fileExtensionPluginDictionary valueForKey:kFileExtensionEnabledKey] boolValue];
-//     XCTAssertEqual(enabledInDictionary, fileExtension.isEnabled, @"The enabled value in the dictionary should match the WCLFileExtension's enabled property");
-//
-//     // Test inverting the enabled property
-//
-//     // Test key-value observing for the enabled property
-//     isEnabled = fileExtension.isEnabled;
-//     [WCLKeyValueObservingTestsHelper observeObject:fileExtension
-//                                         forKeyPath:kTestFileExtensionEnabledKeyPath
-//                                            options:NSKeyValueObservingOptionNew
-//                                    completionBlock:^(NSDictionary *change) {
-//                                                isEnabled = fileExtension.isEnabled;
-//                                            }];
-//     inverseEnabled = !fileExtension.isEnabled;
-//     fileExtension.enabled = inverseEnabled;
-//     XCTAssertEqual(isEnabled, inverseEnabled, @"The key-value observing change notification for the WCLFileExtensions's enabled property should have occurred.");
-//     XCTAssertEqual(fileExtension.isEnabled, inverseEnabled, @"The WCLFileExtension's isEnabled should equal the inverse enabled.");
-//
-//     // Test NSUserDefaults is set
-//     fileExtensionToPluginDictionary = [WCLFileExtension_old fileExtensionToPluginDictionary];
-//     fileExtensionPluginDictionary = [fileExtensionToPluginDictionary valueForKey:fileExtension.extension];
-//     enabledInDictionary = [[fileExtensionPluginDictionary valueForKey:kFileExtensionEnabledKey] boolValue];
-//     XCTAssertEqual(enabledInDictionary, fileExtension.isEnabled, @"The enabled value in the dictionary should match the WCLFileExtension's enabled property");
-// }
-//
+        var isEnabled = fileExtension.enabled
+        WCLKeyValueObservingTestsHelper.observeObject(fileExtension,
+            forKeyPath: testFileExtensionEnabledKeyPath,
+            options: NSKeyValueObservingOptions.New)
+        {
+            ([NSObject : AnyObject]!) -> Void in
+            isEnabled = fileExtension.enabled
+        }
+
+        var inverseEnabled = !fileExtension.enabled
+        fileExtension.enabled = inverseEnabled
+        XCTAssertEqual(isEnabled, inverseEnabled, "The key-value observing change notification for the WCLFileExtensions's enabled property should have occurred.")
+        XCTAssertEqual(fileExtension.enabled, inverseEnabled, "The WCLFileExtension's isEnabled should equal the inverse enabled.")
+
+        var fileExtensionToPluginDictionary = WCLFileExtension.fileExtensionToPluginDictionary()
+        var fileExtensionPluginDictionary = fileExtensionToPluginDictionary[fileExtension.suffix] as NSDictionary
+        var enabledInDictionary = fileExtensionPluginDictionary.valueForKey(testFileExtensionEnabledKeyPath) as Bool
+        XCTAssertEqual(enabledInDictionary, fileExtension.enabled, "The enabled value in the dictionary should match the WCLFileExtension's enabled property")
+
+        // Test key-value observing for the enabled property
+        isEnabled = fileExtension.enabled
+        WCLKeyValueObservingTestsHelper.observeObject(fileExtension,
+            forKeyPath: testFileExtensionEnabledKeyPath,
+            options: NSKeyValueObservingOptions.New)
+            {
+                ([NSObject : AnyObject]!) -> Void in
+                isEnabled = fileExtension.enabled
+        }
+
+        inverseEnabled = !fileExtension.enabled
+        fileExtension.enabled = inverseEnabled
+        XCTAssertEqual(isEnabled, inverseEnabled, "The key-value observing change notification for the WCLFileExtensions's enabled property should have occurred.")
+        XCTAssertEqual(fileExtension.enabled, inverseEnabled, "The WCLFileExtension's isEnabled should equal the inverse enabled.")
+
+        fileExtensionToPluginDictionary = WCLFileExtension.fileExtensionToPluginDictionary()
+        fileExtensionPluginDictionary = fileExtensionToPluginDictionary[fileExtension.suffix] as NSDictionary
+        enabledInDictionary = fileExtensionPluginDictionary.valueForKey(testFileExtensionEnabledKeyPath) as Bool
+        XCTAssertEqual(enabledInDictionary, fileExtension.enabled, "The enabled value in the dictionary should match the WCLFileExtension's enabled property")
+    }
+
 // - (void)testSettingSelectedPlugin
 // {
 //     WCLFileExtension_old *fileExtension = [[WCLFileExtensionController_old sharedFileExtensionController] fileExtensionForExtension:kTestExtension];
