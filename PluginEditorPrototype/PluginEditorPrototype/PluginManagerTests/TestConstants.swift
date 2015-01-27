@@ -31,7 +31,8 @@ let testPluginFileSuffixesEmpty = [String]()
 
 let testPluginDefaultNewPluginKeyPath = "defaultNewPlugin"
 let testFileExtensionEnabledKeyPath = "enabled"
-
+let testFileExtensionSelectedPluginKeyPath = "selectedPlugin"
+let testFileExtensionPluginIdentifierKey = "pluginIdentifier"
 
 // MARK: Plugin Paths
 
