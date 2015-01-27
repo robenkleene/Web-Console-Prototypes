@@ -120,14 +120,17 @@ class Plugin: WCLPlugin {
     
     // MARK: Plugin Manager Singleton
 
-    override func isPluginManagerDefaultNewPlugin() -> Bool {
-        return PluginsManager.sharedInstance.defaultNewPlugin? == self
+    override var pluginsManager: PluginsManager {
+        get {
+            return PluginsManager.sharedInstance
+        }
     }
 
     // MARK: Description
     
     override var description : String {
-        return "Plugin name = \(name),  identifier = \(identifier), defaultNewPlugin = \(defaultNewPlugin)"
+        let description = super.description
+        return "\(description), Plugin name = \(name),  identifier = \(identifier), defaultNewPlugin = \(defaultNewPlugin)"
     }
 
 }

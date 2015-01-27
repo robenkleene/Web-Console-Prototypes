@@ -67,7 +67,7 @@
 
 - (BOOL)isUniqueName:(NSString *)name
 {
-    Plugin *existingPlugin = [[PluginsManager sharedInstance] pluginWithName:name];
+    Plugin *existingPlugin = [self.pluginsManager pluginWithName:name];
 
     if (!existingPlugin) {
         return YES;
