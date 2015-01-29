@@ -95,72 +95,68 @@ class PluginTests: PluginsManagerTestCase {
         // Test that the name is valid for this plugin
         var error: NSError?
         var name: AnyObject? = testPluginName
-        let valid = plugin.validateName(&name, error: &error)
+        var valid = plugin.validateName(&name, error: &error)
         XCTAssertTrue(valid, "The name should be valid")
         XCTAssertNil(error, "The error should be nil")
 
+        // Create a new plugin
+        var createdPlugin: Plugin!
+        let createdPluginExpectation = expectationWithDescription("Create new plugin")
+        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
+            createdPlugin = newPlugin
+            createdPluginExpectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+
+        // Test that the name is not valid for another plugin
+        error = nil
+        name = testPluginName
+        valid = createdPlugin.validateName(&name, error: &error)
+        XCTAssertFalse(valid, "The name should not be valid")
+        XCTAssertNotNil(error, "The error should not be nil.")
+
+        // Test that the new plugins name is invalid
+        error = nil
+        name = createdPlugin.name
+        valid = plugin.validateName(&name, error: &error)
+        XCTAssertFalse(valid, "The name should not be valid")
+        XCTAssertNotNil(error, "The error should not be nil.")
+        // Inverse
+        error = nil
+        name = plugin.name
+        valid = createdPlugin.validateName(&name, error: &error)
+        XCTAssertFalse(valid, "The name should not be valid")
+        XCTAssertNotNil(error, "The error should not be nil.")
+        
+        // Test that the name is now valid for the second plugin
+        name = plugin.name
+        plugin.name = testPluginNameNoPlugin
+        error = nil
+        valid = createdPlugin.validateName(&name, error:&error)
+        XCTAssertTrue(valid, "The name should be valid")
+        XCTAssertNil(error, "The error should be nil.")
+
+        // Test that the new name is now invalid
+        error = nil
+        name = plugin.name
+        valid = createdPlugin.validateName(&name, error:&error)
+        XCTAssertFalse(valid, "The name should not be valid")
+        XCTAssertNotNil(error, "The error should not be nil.")
+
+        // Test that the created plugins name is valid after deleting
+        error = nil
+        name = createdPlugin.name
+        valid = plugin.validateName(&name, error: &error)
+        XCTAssertFalse(valid, "The name should not be valid")
+        XCTAssertNotNil(error, "The error should not be nil.")
+        // Delete
+        movePluginToTrashAndCleanUpWithConfirmation(createdPlugin)
+        // Test that the new name is now valid
+        error = nil;
+        valid = plugin.validateName(&name, error:&error)
+        XCTAssertTrue(valid, "The name should be valid")
+        XCTAssertNil(error, "The error should be nil.")
     }
-    
-    // - (void)testNameValidation
-    // {
-    //     WCLPlugin_old *plugin = [self addedPlugin];
-    //     plugin.name = kTestPluginName;
-    //
-    //     // Test that the name is valid for this plugin
-    //     NSError *error;
-    //     id name = kTestPluginName;
-    //     BOOL valid = [plugin validateName:&name error:&error];
-    //     XCTAssertTrue(valid, @"The name should be valid");
-    //     XCTAssertNil(error, @"The error should be nil");
-    //
-    //     // Make a new plugin
-    //     WCLPlugin_old *pluginTwo = [self addedPlugin];
-    //
-    //     // Test that the name is not valid for another plugin
-    //     error = nil;
-    //     name = kTestPluginName;
-    //     valid = [pluginTwo validateName:&name error:&error];
-    //     XCTAssertFalse(valid, @"The name should not be valid");
-    //     XCTAssertNotNil(error, @"The error should not be nil.");
-    //
-    //     // Test that the new plugins name is invalid
-    //     error = nil;
-    //     name = kTestDefaultNewPluginName;
-    //     valid = [plugin validateName:&name error:&error];
-    //     XCTAssertFalse(valid, @"The name should not be valid");
-    //     XCTAssertNotNil(error, @"The error should not be nil.");
-    //
-    //     // Change the first plugins name
-    //     plugin.name = kTestPluginNameTwo;
-    //
-    //     // Test that the name is now valid for the second plugin
-    //     error = nil;
-    //     name = kTestPluginName;
-    //     valid = [pluginTwo validateName:&name error:&error];
-    //     XCTAssertTrue(valid, @"The name should be valid");
-    //     XCTAssertNil(error, @"The error should be nil.");
-    //
-    //
-    //     // Test that the new name is now invalid
-    //     error = nil;
-    //     name = kTestPluginNameTwo;
-    //     valid = [pluginTwo validateName:&name error:&error];
-    //     XCTAssertFalse(valid, @"The name should not be valid");
-    //     XCTAssertNotNil(error, @"The error should not be nil.");
-    //
-    //     // Delete the plugin
-    //     [self deletePlugin:plugin];
-    //
-    //     // Test that the new name is now valid
-    //     error = nil;
-    //     name = kTestPluginNameTwo;
-    //     valid = [pluginTwo validateName:&name error:&error];
-    //     XCTAssertTrue(valid, @"The name should be valid");
-    //     XCTAssertNil(error, @"The error should be nil.");
-    //
-    //     [self deletePlugin:pluginTwo];
-    // }
-    //
 
     // WARNING Don't copy this as is, figure out a way to do this with mocks!
     // - (void)testPluginNames
