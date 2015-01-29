@@ -77,17 +77,16 @@ class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
         // TODO: After starting plugins have their extensions setup, test file extensions
         // XCTAssertTrue([newPlugin.extensions isEqualToArray:plugin.extensions], @"The new WCLPlugin's file extensions should equal the WCLPlugin's file extensions.");
 
+        let pluginFolderName = createdPluginTwo.bundle.bundlePath.lastPathComponent
+        XCTAssertEqual(createdPluginTwo.name, pluginFolderName, "The folder name should equal the plugin's name")
+        
         let longName: NSString = createdPlugin.name
         XCTAssertTrue(longName.hasPrefix(createdPlugin.name), "The new WCLPlugin's name should start with the WCLPlugin's name.")
         XCTAssertNotEqual(createdPlugin.name, createdPluginTwo.name, "The new WCLPlugin's name should not equal the WCLPlugin's name.")
 
         XCTAssertEqual(createdPlugin.command!, createdPluginTwo.command!, "The new WCLPlugin's command should equal the WCLPlugin's command.")
         XCTAssertNotEqual(createdPlugin.identifier, createdPluginTwo.identifier, "The identifiers should not be equal")
-
-        // TODO: Test the plugins path uses the plugins name
     }
-
-    // TODO: Test if a folder already exists with the plugins name, that the identifier is used instead
     
     func testSettingDefaultNewPluginToNil() {
         let defaultNewPluginIdentifier: String? = NSUserDefaults.standardUserDefaults().stringForKey(defaultNewPluginIdentifierKey)
