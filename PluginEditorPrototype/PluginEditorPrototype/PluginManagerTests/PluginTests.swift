@@ -267,7 +267,6 @@ class DuplicatePluginNameValidationTests: XCTestCase {
     }
 }
 
-// TODO: Test KVO fires when modifying plugin properties. Only `dynamic` properties work with KVO? Probably not, these are tested by the tests of the classes that depend on the KVO
 // TODO: Test trying to run a plugin that has been unloaded? After deleting it's resources
 // TODO: Add tests for invalid plugin info dictionaries, e.g., file extensions and commands can be nil
 

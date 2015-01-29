@@ -35,8 +35,6 @@
 {
     [super setUp];
     
-    // TODO: Assert existing plugin settings in userDefaults are nil? I.e., [WCLFileExtension fileExtensionToPluginDictionary]
-
     WCLPlugin_old *plugin = [self addedPlugin];
     
     // Set file extensions to an array of file extensions
@@ -291,8 +289,6 @@
     NSString *pluginIdentifierInDictionary = [fileExtensionPluginDictionary valueForKey:kFileExtensionPluginIdentifierKey];
     XCTAssertEqual(pluginIdentifierInDictionary, fileExtension.selectedPlugin.identifier, @"The WCLPlugin identifier value in the dictionary should equal the select WCLPlugin's identifier.");
 }
-
-// TODO: Test selectedPlugin validation
 
 #pragma mark Helpers
 

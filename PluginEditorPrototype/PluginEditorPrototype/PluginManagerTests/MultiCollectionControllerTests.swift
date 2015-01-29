@@ -150,6 +150,4 @@ class MultiCollectionControllerTests: PluginsManagerTestCase {
             XCTAssertNil(removeError, "The error should be nil")
         }
     }
-    
-    // TODO: KVO tests? Assert that KVO events fire when the KVC relationship compliance mathods are used?
 }

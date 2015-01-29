@@ -78,6 +78,8 @@
 		457F7B6018D4F6CD0034F6D5 /* WCLTestPluginPrototype.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 457F7B5E18D4F6CD0034F6D5 /* WCLTestPluginPrototype.xcdatamodeld */; };
 		457F7B6318D5286E0034F6D5 /* WCLPlugin+Validation_old.m in Sources */ = {isa = PBXBuildFile; fileRef = 457F7B6218D5286E0034F6D5 /* WCLPlugin+Validation_old.m */; };
 		4589996918D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests_old.m in Sources */ = {isa = PBXBuildFile; fileRef = 4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests_old.m */; };
+		458BDBB31A79D2A9008D59B0 /* Plugin+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456229FB1A78490C00E94307 /* Plugin+Validation.swift */; };
+		458BDBB41A79D2C8008D59B0 /* Plugin+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456229FB1A78490C00E94307 /* Plugin+Validation.swift */; };
 		458FD69419D8A1D100D4898A /* NSError+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458FD69319D8A1D100D4898A /* NSError+Helper.swift */; };
 		458FD69519D8A45B00D4898A /* NSError+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458FD69319D8A1D100D4898A /* NSError+Helper.swift */; };
 		4590E5391A0EAC58000C9890 /* TemporaryPluginsTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4590E5381A0EAC58000C9890 /* TemporaryPluginsTestCase.swift */; };
@@ -863,6 +865,7 @@
 				45CC8E151A73330500596670 /* FileExtensionsControllerTests.swift in Sources */,
 				45B0113F1A6C642E001B0F30 /* Plugin+Initialization.swift in Sources */,
 				456E9A4D1A6C772E00DC898C /* PluginsManagerTestCase.swift in Sources */,
+				458BDBB31A79D2A9008D59B0 /* Plugin+Validation.swift in Sources */,
 				456C54A51A75DE0D005A680E /* WCLFileExtensionTests.swift in Sources */,
 				455CFAD41A709A9200E27FB8 /* WCLKeyValueObservingTestsHelper.m in Sources */,
 				452D273519C7AB190085CDAF /* PluginsDataControllerTests.swift in Sources */,
@@ -889,6 +892,7 @@
 				4534134E1A636BAD0047C820 /* FilesAndPluginsDirectoryManagerTests.swift in Sources */,
 				4599CA361A636C720015DA99 /* PluginsDirectoryManager.swift in Sources */,
 				454363141A6D906600B283AF /* PluginsDataControllerEventTestCase+FileSystemHelpers.swift in Sources */,
+				458BDBB41A79D2C8008D59B0 /* Plugin+Validation.swift in Sources */,
 				454363171A6D90ED00B283AF /* PluginsDataControllerEventTestCase.swift in Sources */,
 				453413411A6369550047C820 /* PluginsDataControllerFileSystemTests.swift in Sources */,
 				453413331A6366DC0047C820 /* SubprocessFileSystemModifier.swift in Sources */,

@@ -74,7 +74,7 @@ class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
         }
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         
-        // TODO: Test file extensions
+        // TODO: After starting plugins have their extensions setup, test file extensions
         // XCTAssertTrue([newPlugin.extensions isEqualToArray:plugin.extensions], @"The new WCLPlugin's file extensions should equal the WCLPlugin's file extensions.");
 
         // TODO: The name tests won't be valid until name validation and the "best name" algorithm are working

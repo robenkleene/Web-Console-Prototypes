@@ -43,9 +43,6 @@ class WCLFileExtensionTests: FileExtensionsTestCase {
     
     override func setUp() {
         super.setUp()
-
-        // TODO: Assert existing plugin settings in userDefaults are nil? I.e., [WCLFileExtension fileExtensionToPluginDictionary]
-
         plugin.suffixes = testPluginSuffixes
         XCTAssertEqual(FileExtensionsController.sharedInstance.suffixes().count, 1, "The file extensions count should equal one.")
         fileExtension = FileExtensionsController.sharedInstance.fileExtensionForSuffix(testPluginSuffix)

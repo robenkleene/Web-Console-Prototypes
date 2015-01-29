@@ -32,15 +32,8 @@
         return NO;
     }
 
-#warning Need to check that a name can be written to disk here too to make sure it is valid.
-
     return YES;
 }
-
-//- (void)renameWithUniqueName
-//{
-//    self.name = [self uniquePluginNameFromName:self.name];
-//}
 
 - (NSString *)uniquePluginNameFromName:(NSString *)name
 {
