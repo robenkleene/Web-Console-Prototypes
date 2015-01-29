@@ -158,7 +158,7 @@
 
 + (NSCharacterSet *)fileExtensionAllowedCharacterSet
 {
-    return [NSCharacterSet alphanumericCharacterSet];
+    return [NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"];
 }
 
 #pragma mark Helpers

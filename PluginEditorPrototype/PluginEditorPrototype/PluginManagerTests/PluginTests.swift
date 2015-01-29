@@ -91,7 +91,7 @@ class PluginTests: PluginsManagerTestCase {
 
     func testNameValidation() {
         plugin.name = testPluginName
-
+        
         // Test that the name is valid for this plugin
         var error: NSError?
         var name: AnyObject? = testPluginName
@@ -99,6 +99,14 @@ class PluginTests: PluginsManagerTestCase {
         XCTAssertTrue(valid, "The name should be valid")
         XCTAssertNil(error, "The error should be nil")
 
+        // Test an invalid object
+        error = nil
+        name = []
+        valid = plugin.validateName(&name, error: &error)
+        XCTAssertFalse(valid, "The name should not be valid")
+        XCTAssertNotNil(error, "The error should not be nil.")
+
+        
         // Create a new plugin
         var createdPlugin: Plugin!
         let createdPluginExpectation = expectationWithDescription("Create new plugin")
@@ -158,13 +166,45 @@ class PluginTests: PluginsManagerTestCase {
         XCTAssertNil(error, "The error should be nil.")
     }
 
+    func testSuffixValidation() {
+        // Test Valid Extensions
+        var error: NSError?
+        var suffixes: AnyObject? = testPluginSuffixesTwo
+        var valid = plugin.validateExtensions(&suffixes, error: &error)
+        XCTAssertTrue(valid, "The name should be valid")
+        XCTAssertNil(error, "The error should be nil.")
 
+        // Test Invalid Duplicate Extensions
+        error = nil
+        suffixes = [testPluginSuffix, testPluginSuffix]
+        valid = plugin.validateExtensions(&suffixes, error: &error)
+        XCTAssertFalse(valid, "The name should not be valid")
+        XCTAssertNotNil(error, "The error should not be nil.")
 
+        // Test Invalid Length Extensions
+        error = nil
+        suffixes = [testPluginSuffix, ""]
+        valid = plugin.validateExtensions(&suffixes, error: &error)
+        XCTAssertFalse(valid, "The name should not be valid")
+        XCTAssertNotNil(error, "The error should not be nil.")
+
+        // Test Invalid Object Extensions
+        error = nil
+        suffixes = [testPluginSuffix, []]
+        valid = plugin.validateExtensions(&suffixes, error: &error)
+        XCTAssertFalse(valid, "The name should not be valid")
+        XCTAssertNotNil(error, "The error should not be nil.")
+
+        // Test Invalid Character Extensions
+        error = nil
+        suffixes = [testPluginSuffix, "jkl;"]
+        valid = plugin.validateExtensions(&suffixes, error: &error)
+        XCTAssertFalse(valid, "The name should not be valid")
+        XCTAssertNotNil(error, "The error should not be nil.")
+    }
 }
 
-
-
-class PluginNameValidationTests: XCTestCase {
+class DuplicatePluginNameValidationTests: XCTestCase {
     var mockPluginsManager: PluginNameMockPluginsManager!
     var plugin: Plugin!
     
@@ -227,8 +267,7 @@ class PluginNameValidationTests: XCTestCase {
     }
 }
 
-// TODO: Test extension validation
-// TODO: Test KVO fires when modifying plugin properties. Only `dynamic` properties work with KVO?
+// TODO: Test KVO fires when modifying plugin properties. Only `dynamic` properties work with KVO? Probably not, these are tested by the tests of the classes that depend on the KVO
 // TODO: Test trying to run a plugin that has been unloaded? After deleting it's resources
 // TODO: Add tests for invalid plugin info dictionaries, e.g., file extensions and commands can be nil
 
