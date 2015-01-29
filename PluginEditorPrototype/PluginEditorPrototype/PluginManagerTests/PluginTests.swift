@@ -158,30 +158,73 @@ class PluginTests: PluginsManagerTestCase {
         XCTAssertNil(error, "The error should be nil.")
     }
 
-    // WARNING Don't copy this as is, figure out a way to do this with mocks!
-    // - (void)testPluginNames
-    // {
-    //     for (NSUInteger i = 0; i < 105; i++) {
-    //         WCLPlugin_old *plugin = [self addedPlugin];
-    //
-    //         if (i == 0) {
-    //             XCTAssertTrue([plugin.name isEqualToString:kTestDefaultNewPluginName], @"The WCLPlugin's name equal the default new plugin name.");
-    //             continue;
-    //         }
-    //
-    //         NSUInteger suffixCount = i + 1;
-    //         if (suffixCount > 99) {
-    //             XCTAssertTrue([plugin.name isEqualToString:plugin.identifier], @"The WCLPlugin's name should equal its identifier.");
-    //             continue;
-    //         }
-    //
-    //
-    //         XCTAssertTrue([plugin.name hasPrefix:kTestDefaultNewPluginName], @"The WCLPlugin's name should start with the default new plugin name.");
-    //         NSString *suffix = [NSString stringWithFormat:@"%lu", (unsigned long)suffixCount];
-    //         XCTAssertTrue([plugin.name hasSuffix:suffix], @"The WCLPlugin's name should end with the suffix.");
-    //     }
-    // }
 
+
+}
+
+
+
+class PluginNameValidationTests: XCTestCase {
+    var mockPluginsManager: PluginNameMockPluginsManager!
+    var plugin: Plugin!
+    
+    class PluginNameMockPluginsManager: PluginsManager {
+        var pluginNames = [testPluginName]
+        
+        override func pluginWithName(name: String) -> Plugin? {
+            if contains(pluginNames, name) {
+                let plugin = super.pluginWithName(testPluginName)
+                assert(plugin != nil, "The plugin should not be nil")
+                return plugin
+            }
+            return nil
+        }
+
+        func pluginWithTestPluginNameTwo() -> Plugin {
+            return super.pluginWithName(testPluginNameTwo)!
+        }
+    }
+    
+    override func setUp() {
+        super.setUp()
+        mockPluginsManager = PluginNameMockPluginsManager()
+        plugin = mockPluginsManager.pluginWithTestPluginNameTwo()
+        PluginsManager.setOverrideSharedInstance(mockPluginsManager)
+    }
+
+    override func tearDown() {
+        mockPluginsManager = nil
+        plugin = nil
+        PluginsManager.setOverrideSharedInstance(nil)
+        super.tearDown()
+    }
+
+    func testPluginNames() {
+        let fromName = testPluginNameTwo
+        
+        for pluginNamesCount in 0...105 {
+            let name = plugin.uniquePluginNameFromName(fromName)
+            let suffix = pluginNamesCount + 1
+            
+            var testName: String!
+            switch pluginNamesCount {
+            case 0:
+                testName = name
+            case let x where x > 98:
+                testName = plugin.identifier
+            default:
+                testName = "\(fromName) \(suffix)"
+            }
+            XCTAssertEqual(name, testName, "The name should equal the identifier")
+            
+            var nameToAdd = "\(fromName) \(suffix)"
+            if pluginNamesCount == 0 {
+                nameToAdd = fromName
+            }
+            mockPluginsManager.pluginNames.append(nameToAdd)
+        }
+
+    }
 }
 
 // TODO: Test extension validation
