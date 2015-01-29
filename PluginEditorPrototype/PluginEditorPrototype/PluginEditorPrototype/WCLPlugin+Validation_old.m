@@ -32,7 +32,7 @@
         return NO;
     }
 
-#warning Need to check that a name can be written to disk here too to make sure it is valid.
+#warning Need to check that a name can be written to disk here too to make sure it is valid?
     
     return YES;
 }
