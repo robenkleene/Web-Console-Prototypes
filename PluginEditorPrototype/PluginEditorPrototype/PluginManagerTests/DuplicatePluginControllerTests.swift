@@ -33,7 +33,7 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
         }
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
 
-        // Test the plugins directory exists
+        // Test the plugin's directory exists
         let duplicatePluginURL = duplicatePlugin.bundle.bundleURL
         var isDir: ObjCBool = false
         let exists = NSFileManager.defaultManager().fileExistsAtPath(duplicatePluginURL.path!,
@@ -59,4 +59,48 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
     }
     
     // TODO: Test if a folder already exists with the plugins name, that the identifier is used instead
+    func testDuplicatePluginWithFolderNameBlocked() {
+        // Get the destination plugin name
+        let destinationName = plugin.uniquePluginNameFromName(plugin.name)
+
+        // Create a folder at the destination URL
+        let destinationFolderURL = pluginsDirectoryURL.URLByAppendingPathComponent(destinationName)
+        var createDirectoryError: NSError?
+        let createSuccess = NSFileManager
+            .defaultManager()
+            .createDirectoryAtURL(destinationFolderURL,
+                withIntermediateDirectories: false,
+                attributes: nil,
+                error: &createDirectoryError)
+        XCTAssertTrue(createSuccess, "The create should succeed")
+        XCTAssertNil(createDirectoryError, "The error should be nil")
+
+        // Test that the folder exists
+        var isDir: ObjCBool = false
+        var exists = NSFileManager.defaultManager().fileExistsAtPath(destinationFolderURL.path!, isDirectory: &isDir)
+        XCTAssertTrue(exists, "The file should exist")
+        XCTAssertTrue(isDir, "The file should be a directory")
+    
+        // Duplicate the plugin
+        var duplicatePlugin: Plugin!
+        let duplicateExpectation = expectationWithDescription("Duplicate")
+        duplicatePluginController.duplicatePlugin(plugin, toDirectoryAtURL: temporaryDirectoryURL) { (plugin, error) -> Void in
+            XCTAssertNil(error, "The error should be nil")
+            XCTAssertNotNil(plugin, "The plugin should not be nil")
+            duplicatePlugin = plugin
+            duplicateExpectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+
+        // Assert the folder name equals the plugin's identifier
+        let duplicatePluginFolderName = duplicatePlugin.bundle.bundlePath.lastPathComponent
+        XCTAssertEqual(duplicatePluginFolderName, duplicatePlugin.identifier, "The folder name should equal the identifier")
+
+        // Test that the folder exists
+        isDir = false
+        exists = NSFileManager.defaultManager().fileExistsAtPath(destinationFolderURL.path!, isDirectory: &isDir)
+        XCTAssertTrue(exists, "The file should exist")
+        XCTAssertTrue(isDir, "The file should be a directory")
+    }
+
 }
