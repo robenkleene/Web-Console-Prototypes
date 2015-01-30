@@ -25,7 +25,7 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
     func testDuplicatePlugin() {
         var duplicatePlugin: Plugin!
         let duplicateExpectation = expectationWithDescription("Duplicate")
-        duplicatePluginController.duplicatePlugin(plugin, toDirectoryAtURL: temporaryDirectoryURL) { (plugin, error) -> Void in
+        duplicatePluginController.duplicatePlugin(plugin, toDirectoryAtURL: pluginsDirectoryURL) { (plugin, error) -> Void in
             XCTAssertNil(error, "The error should be nil")
             XCTAssertNotNil(plugin, "The plugin should not be nil")
             duplicatePlugin = plugin
@@ -61,7 +61,7 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
     // TODO: Test if a folder already exists with the plugins name, that the identifier is used instead
     func testDuplicatePluginWithFolderNameBlocked() {
         // Get the destination plugin name
-        let destinationName = plugin.uniquePluginNameFromName(plugin.name)
+        let destinationName = WCLPlugin.uniquePluginNameFromName(plugin.name)
 
         // Create a folder at the destination URL
         let destinationFolderURL = pluginsDirectoryURL.URLByAppendingPathComponent(destinationName)
@@ -84,7 +84,7 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
         // Duplicate the plugin
         var duplicatePlugin: Plugin!
         let duplicateExpectation = expectationWithDescription("Duplicate")
-        duplicatePluginController.duplicatePlugin(plugin, toDirectoryAtURL: temporaryDirectoryURL) { (plugin, error) -> Void in
+        duplicatePluginController.duplicatePlugin(plugin, toDirectoryAtURL: pluginsDirectoryURL) { (plugin, error) -> Void in
             XCTAssertNil(error, "The error should be nil")
             XCTAssertNotNil(plugin, "The plugin should not be nil")
             duplicatePlugin = plugin

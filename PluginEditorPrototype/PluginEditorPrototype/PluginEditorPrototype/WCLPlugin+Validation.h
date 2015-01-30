@@ -12,7 +12,8 @@
 #pragma mark Name
 + (BOOL)nameContainsOnlyValidCharacters:(NSString *)name;
 - (BOOL)nameIsValid:(NSString *)name;
-- (NSString *)uniquePluginNameFromName:(NSString *)name;
++ (NSString *)uniquePluginNameFromName:(NSString *)name;
++ (NSString *)uniquePluginNameFromName:(NSString *)name forPlugin:(WCLPlugin *)plugin;
 #pragma mark File Extensions
 - (BOOL)extensionsAreValid:(NSArray *)extensions;
 + (NSArray *)validExtensionsFromExtensions:(NSArray *)extensions;

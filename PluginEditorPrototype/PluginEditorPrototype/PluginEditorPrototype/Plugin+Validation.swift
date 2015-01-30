@@ -10,6 +10,7 @@ import Foundation
 
 extension Plugin {
     func renameWithUniqueName() {
-        name = uniquePluginNameFromName(name)
+        let newName = self.dynamicType.uniquePluginNameFromName(name, forPlugin: self)
+        name = newName
     }
 }
