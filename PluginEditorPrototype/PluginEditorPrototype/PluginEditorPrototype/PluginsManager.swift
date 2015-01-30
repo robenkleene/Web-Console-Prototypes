@@ -24,7 +24,7 @@ class PluginsManager: WCLPluginsManager, PluginsDataControllerDelegate {
             return overrideSharedInstance
         }
         
-        // TODO: Assert that the non-overridden instance is never returned when running tests
+        // TODO: Assert that the non-overridden instance is never returned when running tests?
         
         return Singleton.instance
     }
@@ -90,7 +90,7 @@ class PluginsManager: WCLPluginsManager, PluginsDataControllerDelegate {
     }
 
     func newPlugin(handler: ((newPlugin: Plugin?) -> Void)?) {
-        // TODO: Need an error handler for no default new plugin, it should just use a hardcoded backup if no default is set, probably HTML? What if the HTML plugin is missing too?
+        // TODO: If no `defaultNewPlugin` is set it should have a (probably hardcoded) fallback, maybe HTML? And what if the HTML plugin is missing?
         if let plugin = defaultNewPlugin {
             duplicatePlugin(plugin, handler: handler)
         }

@@ -58,7 +58,6 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
         XCTAssertTrue(success, "The remove should succeed")
     }
     
-    // TODO: Test if a folder already exists with the plugins name, that the identifier is used instead
     func testDuplicatePluginWithFolderNameBlocked() {
         // Get the destination plugin name
         let destinationName = WCLPlugin.uniquePluginNameFromName(plugin.name)
