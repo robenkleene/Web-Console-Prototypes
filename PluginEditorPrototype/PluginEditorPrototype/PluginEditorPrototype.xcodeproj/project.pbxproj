@@ -80,6 +80,8 @@
 		4589996918D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests_old.m in Sources */ = {isa = PBXBuildFile; fileRef = 4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests_old.m */; };
 		458BDBB31A79D2A9008D59B0 /* Plugin+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456229FB1A78490C00E94307 /* Plugin+Validation.swift */; };
 		458BDBB41A79D2C8008D59B0 /* Plugin+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456229FB1A78490C00E94307 /* Plugin+Validation.swift */; };
+		458BDBB61A7B05B0008D59B0 /* WCLPlugin+PluginsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458BDBB51A7B05B0008D59B0 /* WCLPlugin+PluginsManager.swift */; };
+		458BDBB71A7B0665008D59B0 /* WCLPlugin+PluginsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458BDBB51A7B05B0008D59B0 /* WCLPlugin+PluginsManager.swift */; };
 		458FD69419D8A1D100D4898A /* NSError+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458FD69319D8A1D100D4898A /* NSError+Helper.swift */; };
 		458FD69519D8A45B00D4898A /* NSError+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458FD69319D8A1D100D4898A /* NSError+Helper.swift */; };
 		4590E5391A0EAC58000C9890 /* TemporaryPluginsTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4590E5381A0EAC58000C9890 /* TemporaryPluginsTestCase.swift */; };
@@ -292,6 +294,7 @@
 		457F7B6118D5286E0034F6D5 /* WCLPlugin+Validation_old.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WCLPlugin+Validation_old.h"; sourceTree = "<group>"; };
 		457F7B6218D5286E0034F6D5 /* WCLPlugin+Validation_old.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WCLPlugin+Validation_old.m"; sourceTree = "<group>"; };
 		4589996818D7CCEF0056DCFC /* WCLPluginManagerDefaultNewPluginTests_old.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginManagerDefaultNewPluginTests_old.m; sourceTree = "<group>"; };
+		458BDBB51A7B05B0008D59B0 /* WCLPlugin+PluginsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WCLPlugin+PluginsManager.swift"; sourceTree = "<group>"; };
 		458FD69319D8A1D100D4898A /* NSError+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Helper.swift"; sourceTree = "<group>"; };
 		4590E5381A0EAC58000C9890 /* TemporaryPluginsTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryPluginsTestCase.swift; sourceTree = "<group>"; };
 		4590E53A1A0EAF7E000C9890 /* PluginsDirectoryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PluginsDirectoryManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -533,6 +536,7 @@
 				456229FB1A78490C00E94307 /* Plugin+Validation.swift */,
 				4534131C1A635A940047C820 /* WCLPlugin.h */,
 				4534131D1A635A940047C820 /* WCLPlugin.m */,
+				458BDBB51A7B05B0008D59B0 /* WCLPlugin+PluginsManager.swift */,
 				456229F81A78489600E94307 /* WCLPlugin+Validation.h */,
 				456229F91A78489600E94307 /* WCLPlugin+Validation.m */,
 				4567DB7918B044B700CBBD29 /* WCLPreferencesWindowController.h */,
@@ -861,6 +865,7 @@
 				45CFF0491A5CCEE400C16F16 /* PluginsManagerTests.swift in Sources */,
 				45FDD13B1A393B4F00746003 /* PluginsDirectoryEventHandler.swift in Sources */,
 				458FD69519D8A45B00D4898A /* NSError+Helper.swift in Sources */,
+				458BDBB71A7B0665008D59B0 /* WCLPlugin+PluginsManager.swift in Sources */,
 				45CC8E181A74316A00596670 /* FileExtensionsController.swift in Sources */,
 				45CC8E151A73330500596670 /* FileExtensionsControllerTests.swift in Sources */,
 				45B0113F1A6C642E001B0F30 /* Plugin+Initialization.swift in Sources */,
@@ -949,6 +954,7 @@
 				4563DE181A59BF8C00CCBE45 /* CopyDirectoryController.swift in Sources */,
 				4567DB4F18B03A7A00CBBD29 /* main.m in Sources */,
 				45CC8E131A731FC600596670 /* WCLFileExtensionsController.m in Sources */,
+				458BDBB61A7B05B0008D59B0 /* WCLPlugin+PluginsManager.swift in Sources */,
 				4563D55C1A143679000B5F4C /* WCLDirectoryWatcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

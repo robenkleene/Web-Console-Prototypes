@@ -117,14 +117,6 @@ class Plugin: WCLPlugin {
             }
         }
     }
-    
-    // MARK: Plugin Manager Singleton
-
-    override var pluginsManager: PluginsManager {
-        get {
-            return PluginsManager.sharedInstance
-        }
-    }
 
     // MARK: Description
     

@@ -11,7 +11,6 @@
 @class PluginsManager;
 
 @interface WCLPlugin : NSObject
-@property (nonatomic, strong, readonly) PluginsManager *pluginsManager;
 @property (nonatomic, assign, getter = isDefaultNewPlugin) BOOL defaultNewPlugin;
 #pragma mark Validation
 - (BOOL)validateExtensions:(id *)ioValue error:(NSError * __autoreleasing *)outError;
