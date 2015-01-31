@@ -5,9 +5,9 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="WCLPluginViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="WCLPluginsViewController">
             <connections>
-                <outlet property="pluginArrayController" destination="wNa-Wq-zbh" id="LX3-m4-dpg"/>
+                <outlet property="pluginsArrayController" destination="wNa-Wq-zbh" id="KFn-a9-gMx"/>
                 <outlet property="tableView" destination="lLh-WI-Io6" id="nNC-9n-4hn"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
@@ -275,7 +275,7 @@
                 <constraint firstItem="Oa6-vp-8OW" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="yZF-8A-0Iu"/>
             </constraints>
         </customView>
-        <arrayController objectClassName="WCLPlugin" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="wNa-Wq-zbh" customClass="WCLPluginArrayController"/>
+        <arrayController objectClassName="Plugin" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="wNa-Wq-zbh" customClass="WCLPluginsArrayController"/>
     </objects>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>

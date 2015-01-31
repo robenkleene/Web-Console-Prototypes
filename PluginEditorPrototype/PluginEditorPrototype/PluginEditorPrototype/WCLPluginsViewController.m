@@ -7,7 +7,7 @@
 //  Copyright (c) 2014 Roben Kleene. All rights reserved.
 //
 
-#import "WCLPluginViewController.h"
+#import "WCLPluginsViewController.h"
 #import "PluginEditorPrototype-Swift.h"
 
 
@@ -60,13 +60,13 @@
 @end
 
 
-#pragma mark - WCLPluginArrayController
+#pragma mark - WCLPluginsArrayController
 
-@interface WCLPluginArrayController : NSArrayController
+@interface WCLPluginsArrayController : NSArrayController
 @property (nonatomic, weak) id delegate;
 @end
 
-@implementation WCLPluginArrayController
+@implementation WCLPluginsArrayController
 
 - (void)rearrangeObjects
 {
@@ -80,16 +80,16 @@
 
 #pragma mark - WCLPluginViewController
 
-@interface WCLPluginViewController () <NSTableViewDelegate, NSTokenFieldDelegate>
-@property (weak) IBOutlet WCLPluginArrayController *pluginArrayController;
+@interface WCLPluginsViewController () <NSTableViewDelegate, NSTokenFieldDelegate>
+@property (weak) IBOutlet WCLPluginsArrayController *pluginsArrayController;
 @property (weak) IBOutlet NSTableView *tableView;
 - (IBAction)addPlugin:(id)sender;
 - (IBAction)removePlugin:(id)sender;
 @end
 
-@implementation WCLPluginViewController
+@implementation WCLPluginsViewController
 
-@synthesize pluginArrayController = _pluginArrayController;
+@synthesize pluginsArrayController = _pluginsArrayController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -119,7 +119,7 @@
 
 - (IBAction)duplicatePlugin:(id)sender
 {
-    NSArray *plugins = [self.pluginArrayController selectedObjects];
+    NSArray *plugins = [self.pluginsArrayController selectedObjects];
 
     for (Plugin *plugin in plugins) {
         [[PluginsManager sharedInstance] newPluginFromPlugin:plugin handler:nil];
@@ -130,7 +130,7 @@
 
 - (IBAction)makeDefaultPlugin:(id)sender
 {
-    NSArray *plugins = [self.pluginArrayController selectedObjects];
+    NSArray *plugins = [self.pluginsArrayController selectedObjects];
     for (Plugin *plugin in plugins) {
         [[PluginsManager sharedInstance] setDefaultNewPlugin:plugin];
     }
@@ -138,7 +138,7 @@
 
 - (IBAction)removePlugin:(id)sender
 {
-    NSString *pluginName = [[self.pluginArrayController selection] valueForKey:kPluginNameKey];
+    NSString *pluginName = [[self.pluginsArrayController selection] valueForKey:kPluginNameKey];
     
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Move to Trash"];
@@ -157,7 +157,7 @@
 {
     if (returnCode != NSAlertFirstButtonReturn) return;
 
-    NSArray *plugins = [self.pluginArrayController selectedObjects];
+    NSArray *plugins = [self.pluginsArrayController selectedObjects];
 
     for (Plugin *plugin in plugins) {
         [[PluginsManager sharedInstance] movePluginToTrash:plugin];
@@ -188,20 +188,20 @@ completionsForSubstring:(NSString *)substring
 
 #pragma mark Properties
 
-- (WCLPluginArrayController *)pluginArrayController
+- (WCLPluginsArrayController *)pluginsArrayController
 {
-    return _pluginArrayController;
+    return _pluginsArrayController;
 }
 
-- (void)setPluginArrayController:(WCLPluginArrayController *)pluginArrayController
+- (void)setPluginsArrayController:(WCLPluginsArrayController *)pluginsArrayController
 {
-    if (_pluginArrayController == pluginArrayController) {
+    if (_pluginsArrayController == pluginsArrayController) {
         return;
     }
 
     NSDictionary *options = @{NSConditionallySetsEditableBindingOption : @YES,
                               NSRaisesForNotApplicableKeysBindingOption : @YES};
-    [pluginArrayController bind:@"contentArray"
+    [pluginsArrayController bind:@"contentArray"
                        toObject:[PluginsManager sharedInstance]
                     withKeyPath:kPluginsManagerPluginsKeyPath
                         options:options];
@@ -210,8 +210,8 @@ completionsForSubstring:(NSString *)substring
                                                                        ascending:YES
                                                                         selector:@selector(localizedCaseInsensitiveCompare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:nameSortDescriptor, nil];
-    [pluginArrayController setSortDescriptors:sortDescriptors];
-    _pluginArrayController = pluginArrayController;
+    [pluginsArrayController setSortDescriptors:sortDescriptors];
+    _pluginsArrayController = pluginsArrayController;
 }
 
 @end

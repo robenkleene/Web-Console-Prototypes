@@ -58,8 +58,8 @@
 		4567DB5E18B03A7A00CBBD29 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB5D18B03A7A00CBBD29 /* Images.xcassets */; };
 		4567DB7C18B044B700CBBD29 /* WCLPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB7A18B044B700CBBD29 /* WCLPreferencesWindowController.m */; };
 		4567DB7D18B044B700CBBD29 /* WCLPreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB7B18B044B700CBBD29 /* WCLPreferencesWindowController.xib */; };
-		4567DB9018B26DD000CBBD29 /* WCLPluginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB8E18B26DD000CBBD29 /* WCLPluginViewController.m */; };
-		4567DB9118B26DD000CBBD29 /* WCLPluginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB8F18B26DD000CBBD29 /* WCLPluginViewController.xib */; };
+		4567DB9018B26DD000CBBD29 /* WCLPluginsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB8E18B26DD000CBBD29 /* WCLPluginsViewController.m */; };
+		4567DB9118B26DD000CBBD29 /* WCLPluginsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB8F18B26DD000CBBD29 /* WCLPluginsViewController.xib */; };
 		4567DB9518B26E5800CBBD29 /* WCLEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567DB9318B26E5800CBBD29 /* WCLEnvironmentViewController.m */; };
 		4567DB9618B26E5800CBBD29 /* WCLEnvironmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4567DB9418B26E5800CBBD29 /* WCLEnvironmentViewController.xib */; };
 		456C54A51A75DE0D005A680E /* WCLFileExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456C54A41A75DE0D005A680E /* WCLFileExtensionTests.swift */; };
@@ -231,9 +231,9 @@
 		4567DB7918B044B700CBBD29 /* WCLPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPreferencesWindowController.h; sourceTree = "<group>"; };
 		4567DB7A18B044B700CBBD29 /* WCLPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPreferencesWindowController.m; sourceTree = "<group>"; };
 		4567DB7B18B044B700CBBD29 /* WCLPreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WCLPreferencesWindowController.xib; sourceTree = "<group>"; };
-		4567DB8D18B26DD000CBBD29 /* WCLPluginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPluginViewController.h; sourceTree = "<group>"; };
-		4567DB8E18B26DD000CBBD29 /* WCLPluginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginViewController.m; sourceTree = "<group>"; };
-		4567DB8F18B26DD000CBBD29 /* WCLPluginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WCLPluginViewController.xib; sourceTree = "<group>"; };
+		4567DB8D18B26DD000CBBD29 /* WCLPluginsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLPluginsViewController.h; sourceTree = "<group>"; };
+		4567DB8E18B26DD000CBBD29 /* WCLPluginsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLPluginsViewController.m; sourceTree = "<group>"; };
+		4567DB8F18B26DD000CBBD29 /* WCLPluginsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WCLPluginsViewController.xib; sourceTree = "<group>"; };
 		4567DB9218B26E5800CBBD29 /* WCLEnvironmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCLEnvironmentViewController.h; sourceTree = "<group>"; };
 		4567DB9318B26E5800CBBD29 /* WCLEnvironmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCLEnvironmentViewController.m; sourceTree = "<group>"; };
 		4567DB9418B26E5800CBBD29 /* WCLEnvironmentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WCLEnvironmentViewController.xib; sourceTree = "<group>"; };
@@ -474,9 +474,9 @@
 				4567DB7918B044B700CBBD29 /* WCLPreferencesWindowController.h */,
 				4567DB7A18B044B700CBBD29 /* WCLPreferencesWindowController.m */,
 				4567DB7B18B044B700CBBD29 /* WCLPreferencesWindowController.xib */,
-				4567DB8D18B26DD000CBBD29 /* WCLPluginViewController.h */,
-				4567DB8E18B26DD000CBBD29 /* WCLPluginViewController.m */,
-				4567DB8F18B26DD000CBBD29 /* WCLPluginViewController.xib */,
+				4567DB8D18B26DD000CBBD29 /* WCLPluginsViewController.h */,
+				4567DB8E18B26DD000CBBD29 /* WCLPluginsViewController.m */,
+				4567DB8F18B26DD000CBBD29 /* WCLPluginsViewController.xib */,
 				4567DB9218B26E5800CBBD29 /* WCLEnvironmentViewController.h */,
 				4567DB9318B26E5800CBBD29 /* WCLEnvironmentViewController.m */,
 				4567DB9418B26E5800CBBD29 /* WCLEnvironmentViewController.xib */,
@@ -685,7 +685,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4567DB9118B26DD000CBBD29 /* WCLPluginViewController.xib in Resources */,
+				4567DB9118B26DD000CBBD29 /* WCLPluginsViewController.xib in Resources */,
 				4567DB9618B26E5800CBBD29 /* WCLEnvironmentViewController.xib in Resources */,
 				4567DB7D18B044B700CBBD29 /* WCLPreferencesWindowController.xib in Resources */,
 				45A5EEEA18DA7231002657DF /* WCLFilesViewController.xib in Resources */,
@@ -802,7 +802,7 @@
 				4508DAC71A575FC900A6E71F /* Plugin+Initialization.swift in Sources */,
 				452D272819C66EE40085CDAF /* Plugin.swift in Sources */,
 				4567DB7C18B044B700CBBD29 /* WCLPreferencesWindowController.m in Sources */,
-				4567DB9018B26DD000CBBD29 /* WCLPluginViewController.m in Sources */,
+				4567DB9018B26DD000CBBD29 /* WCLPluginsViewController.m in Sources */,
 				452D272719C66EE40085CDAF /* PluginsDataController.swift in Sources */,
 				4590E53B1A0EAF7E000C9890 /* PluginsDirectoryManager.swift in Sources */,
 				458FD69419D8A1D100D4898A /* NSError+Helper.swift in Sources */,

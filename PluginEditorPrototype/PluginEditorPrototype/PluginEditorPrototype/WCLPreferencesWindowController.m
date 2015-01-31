@@ -9,12 +9,8 @@
 #import "WCLPreferencesWindowController.h"
 
 #import "WCLEnvironmentViewController.h"
-#import "WCLPluginViewController.h"
+#import "WCLPluginsViewController.h"
 #import "WCLFilesViewController.h"
-
-#define kEnvironmentViewControllerNibName @"WCLEnvironmentViewController"
-#define kPluginViewControllerNibName @"WCLPluginViewController"
-#define kFilesViewControllerNibName @"WCLFilesViewController"
 
 NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
 
@@ -32,7 +28,7 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
 - (NSViewController *)viewControllerForPreferencePane:(WCLPreferencePane)prefencePane;
 + (NSInteger)preferencePaneForViewController:(NSViewController *)viewController;
 @property (nonatomic, strong) WCLEnvironmentViewController *environmentViewController;
-@property (nonatomic, strong) WCLPluginViewController *pluginViewController;
+@property (nonatomic, strong) WCLPluginsViewController *pluginsViewController;
 @property (nonatomic, strong) WCLFilesViewController *filesViewController;
 @end
 
@@ -250,7 +246,7 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
         return WCLPreferencePaneEnvironment;
     }
 
-    if ([viewController isKindOfClass:[WCLPluginViewController class]]) {
+    if ([viewController isKindOfClass:[WCLPluginsViewController class]]) {
         return WCLPreferencePanePlugins;
     }
 
@@ -271,7 +267,7 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
             viewController = self.environmentViewController;
             break;
         case WCLPreferencePanePlugins:
-            viewController = self.pluginViewController;
+            viewController = self.pluginsViewController;
             break;
         case WCLPreferencePaneFiles:
             viewController = self.filesViewController;
@@ -287,8 +283,8 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
 - (WCLFilesViewController *)filesViewController
 {
     if (_filesViewController) return _filesViewController;
-    
-    _filesViewController = [[WCLFilesViewController alloc] initWithNibName:kFilesViewControllerNibName bundle:nil];
+
+    _filesViewController = [[WCLFilesViewController alloc] init];
     
     return _filesViewController;
 }
@@ -296,19 +292,19 @@ NSString * const WCLPreferencesWindowFrameName = @"WCLPreferences";
 - (WCLEnvironmentViewController *)environmentViewController
 {
     if (_environmentViewController) return _environmentViewController;
-    
-    _environmentViewController = [[WCLEnvironmentViewController alloc] initWithNibName:kEnvironmentViewControllerNibName bundle:nil];
+
+    _environmentViewController = [[WCLEnvironmentViewController alloc] init];
     
     return _environmentViewController;
 }
 
-- (WCLPluginViewController *)pluginViewController
+- (WCLPluginsViewController *)pluginsViewController
 {
-    if (_pluginViewController) return _pluginViewController;
+    if (_pluginsViewController) return _pluginsViewController;
+
+    _pluginsViewController = [[WCLPluginsViewController alloc] init];
     
-    _pluginViewController = [[WCLPluginViewController alloc] initWithNibName:kPluginViewControllerNibName bundle:nil];
-    
-    return _pluginViewController;
+    return _pluginsViewController;
 }
 
 @end

@@ -106,7 +106,7 @@
 @end
 
 
-#pragma mark - WCLFileExtensionController
+#pragma mark - WCLFileExtensionsController
 
 @interface WCLFileExtensionsController () <WCLExtensionToFileExtensionDictionaryManagerDelegate>
 @property (nonatomic, strong) WCLExtensionToFileExtensionDictionaryManager *fileExtensionsDictionaryManager;

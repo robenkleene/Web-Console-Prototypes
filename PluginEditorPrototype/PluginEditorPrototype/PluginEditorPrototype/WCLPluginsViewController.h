@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface WCLPluginViewController : NSViewController
+@interface WCLPluginsViewController : NSViewController
 
 @end

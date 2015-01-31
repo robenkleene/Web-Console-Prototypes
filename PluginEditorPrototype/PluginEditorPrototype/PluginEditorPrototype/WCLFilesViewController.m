@@ -116,7 +116,6 @@
                                toObject:[FileExtensionsController sharedInstance]
                             withKeyPath:kFileExtensionsControllerFileExtensionsKeyPath
                                 options:options];
-    
     NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:WCLFileExtensionSuffixKey
                                                                        ascending:YES
                                                                         selector:@selector(localizedCaseInsensitiveCompare:)];
