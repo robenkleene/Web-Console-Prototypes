@@ -199,6 +199,7 @@ completionsForSubstring:(NSString *)substring
         return;
     }
 
+    // Binding
     NSDictionary *options = @{NSConditionallySetsEditableBindingOption : @YES,
                               NSRaisesForNotApplicableKeysBindingOption : @YES};
     [pluginsArrayController bind:@"contentArray"
@@ -206,11 +207,18 @@ completionsForSubstring:(NSString *)substring
                     withKeyPath:kPluginsManagerPluginsKeyPath
                         options:options];
     
+    // Sorting
     NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:kPluginNameKey
                                                                        ascending:YES
                                                                         selector:@selector(localizedCaseInsensitiveCompare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:nameSortDescriptor, nil];
     [pluginsArrayController setSortDescriptors:sortDescriptors];
+
+    // Filtering
+    NSPredicate *notHiddenPredicate = [NSPredicate predicateWithFormat:@"hidden == NO"];
+    pluginsArrayController.filterPredicate = notHiddenPredicate;
+    
+    // Set
     _pluginsArrayController = pluginsArrayController;
 }
 
