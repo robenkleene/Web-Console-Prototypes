@@ -7,9 +7,8 @@
 //
 
 #import "WCLFilesViewController.h"
-#import "WCLPlugin_old.h"
-#import "WCLPluginManager_old.h"
-#import "WCLFileExtension_old.h"
+#import "PluginEditorPrototype-Swift.h"
+#import "WCLFileExtension.h"
 
 @interface WCLPluginsToPluginNamesValueTransformer : NSValueTransformer
 @end
@@ -37,8 +36,8 @@
         return [self transformedArray:value];
     }
     
-    if ([value isKindOfClass:[WCLPlugin_old class]]) {
-        WCLPlugin_old *plugin = (WCLPlugin_old *)value;
+    if ([value isKindOfClass:[Plugin class]]) {
+        Plugin *plugin = (Plugin *)value;
         return plugin.name;
     }
     
@@ -64,7 +63,7 @@
     
     if ([value isKindOfClass:[NSString class]]) {
         NSString *pluginName = (NSString *)value;
-        return [[WCLPluginManager_old sharedPluginManager] pluginWithName:pluginName];
+        return [[PluginsManager sharedInstance] pluginWithName:pluginName];
     }
 
     return nil;
@@ -108,6 +107,8 @@
     if (_fileExtensionsArrayController == fileExtensionsArrayController) {
         return;
     }
+    
+    [fileExtensionsArrayController bind:@"contentArray" toObject:[FileExtensionsController sharedInstance] withKeyPath:@"fileExtensions" options:nil];
     
     NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:WCLFileExtensionSuffixKey
                                                                        ascending:YES

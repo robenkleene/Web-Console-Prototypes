@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
@@ -239,7 +239,7 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </tokenFieldCell>
                             <connections>
-                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.extensions" id="1rf-TJ-oR4">
+                                <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.suffixes" id="6bx-oB-U96">
                                     <dictionary key="options">
                                         <string key="NSMultipleValuesPlaceholder">html, md, rb</string>
                                         <string key="NSNoSelectionPlaceholder">html, md, rb</string>
@@ -275,12 +275,7 @@
                 <constraint firstItem="Oa6-vp-8OW" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="yZF-8A-0Iu"/>
             </constraints>
         </customView>
-        <arrayController objectClassName="WCLPlugin" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="wNa-Wq-zbh" customClass="WCLPluginArrayController">
-            <connections>
-                <binding destination="bad-zK-ts1" name="contentArray" keyPath="plugins" id="MYr-Be-RA7"/>
-            </connections>
-        </arrayController>
-        <customObject id="bad-zK-ts1" customClass="WCLPluginManager_old"/>
+        <arrayController objectClassName="WCLPlugin" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="wNa-Wq-zbh" customClass="WCLPluginArrayController"/>
     </objects>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>

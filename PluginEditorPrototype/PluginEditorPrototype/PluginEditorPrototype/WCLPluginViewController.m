@@ -8,12 +8,8 @@
 //
 
 #import "WCLPluginViewController.h"
-#import "WCLPluginManager_old.h"
+#import "PluginEditorPrototype-Swift.h"
 
-#import "WCLPlugin+Validation_old.h"
-#import "WCLPlugin_old.h"
-
-#import "WCLFileExtensionController_old.h"
 
 #pragma mark - WCLPluginNameTextField
 
@@ -58,7 +54,7 @@
             newEditingString:(NSString *__autoreleasing *)newString
             errorDescription:(NSString *__autoreleasing *)error
 {
-    return [WCLPlugin_old nameContainsOnlyValidCharacters:partialString];
+    return [Plugin nameContainsOnlyValidCharacters:partialString];
 }
 
 @end
@@ -71,11 +67,6 @@
 @end
 
 @implementation WCLPluginArrayController
-
-- (id)newObject
-{
-    return [[WCLPluginManager_old sharedPluginManager] newPlugin];
-}
 
 - (void)rearrangeObjects
 {
@@ -119,7 +110,7 @@
 
 - (IBAction)addPlugin:(id)sender
 {
-    [self.pluginArrayController newObject];
+    [[PluginsManager sharedInstance] newPlugin:nil];
     
     // TODO: Select the added plugin?
     // Simple re-implement of NSDictionaryController add because using the add: method waits for the next run loop before updating the table view.
@@ -130,8 +121,8 @@
 {
     NSArray *plugins = [self.pluginArrayController selectedObjects];
 
-    for (WCLPlugin_old *plugin in plugins) {
-        [[WCLPluginManager_old sharedPluginManager] newPluginFromPlugin:plugin];
+    for (Plugin *plugin in plugins) {
+        [[PluginsManager sharedInstance] newPluginFromPlugin:plugin handler:nil];
     }
 
     [self.tableView editColumn:0 row:[self.tableView selectedRow] withEvent:nil select:YES];
@@ -140,14 +131,14 @@
 - (IBAction)makeDefaultPlugin:(id)sender
 {
     NSArray *plugins = [self.pluginArrayController selectedObjects];
-    for (WCLPlugin_old *plugin in plugins) {
-        [[WCLPluginManager_old sharedPluginManager] setDefaultNewPlugin:plugin];
+    for (Plugin *plugin in plugins) {
+        [[PluginsManager sharedInstance] setDefaultNewPlugin:plugin];
     }
 }
 
 - (IBAction)removePlugin:(id)sender
 {
-    NSString *pluginName = [[self.pluginArrayController selection] valueForKey:WCLPluginNameKey];
+    NSString *pluginName = [[self.pluginArrayController selection] valueForKey:kPluginNameKey];
     
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Move to Trash"];
@@ -168,8 +159,8 @@
 
     NSArray *plugins = [self.pluginArrayController selectedObjects];
 
-    for (WCLPlugin_old *plugin in plugins) {
-        [[WCLPluginManager_old sharedPluginManager] deletePlugin:plugin];
+    for (Plugin *plugin in plugins) {
+        [[PluginsManager sharedInstance] movePluginToTrash:plugin];
     }
 }
 
@@ -180,9 +171,9 @@ completionsForSubstring:(NSString *)substring
            indexOfToken:(NSInteger)tokenIndex
     indexOfSelectedItem:(NSInteger *)selectedIndex
 {
-    NSArray *extensions = [[WCLFileExtensionController_old sharedFileExtensionController] extensions];
-    NSArray *matchingExtensions = [extensions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[cd] %@", substring]];
-    return matchingExtensions;
+    NSArray *suffixes = [[FileExtensionsController sharedInstance] suffixes];
+    NSArray *matchingSuffixes = [suffixes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[cd] %@", substring]];
+    return matchingSuffixes;
 }
 
 
@@ -190,7 +181,7 @@ completionsForSubstring:(NSString *)substring
        shouldAddObjects:(NSArray *)tokens
                 atIndex:(NSUInteger)index
 {
-    NSArray *validExtensions = [WCLPlugin_old validExtensionsFromExtensions:tokens];
+    NSArray *validExtensions = [Plugin validExtensionsFromExtensions:tokens];
     
     return validExtensions;
 }
@@ -204,9 +195,17 @@ completionsForSubstring:(NSString *)substring
 
 - (void)setPluginArrayController:(WCLPluginArrayController *)pluginArrayController
 {
-    if (_pluginArrayController == pluginArrayController) return;
+    if (_pluginArrayController == pluginArrayController) {
+        return;
+    }
 
-    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:WCLPluginNameKey
+// TODO: Set these keys
+//  NSConditionallySetsEditableBindingOption: yes
+//  NSRaisesForNotApplicableKeysBindingOption : @YES
+    
+    [pluginArrayController bind:@"contentArray" toObject:[PluginsManager sharedInstance] withKeyPath:@"plugins" options:nil];
+    
+    NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:kPluginNameKey
                                                                        ascending:YES
                                                                         selector:@selector(localizedCaseInsensitiveCompare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:nameSortDescriptor, nil];

@@ -77,7 +77,7 @@ class Plugin: WCLPlugin {
             save()
         }
     }
-    var command: String? {
+    dynamic var command: String? {
         didSet {
             infoDictionary[ClassConstants.pluginCommandKey] = command
             save()
@@ -98,6 +98,10 @@ class Plugin: WCLPlugin {
             infoDictionary[ClassConstants.pluginSuffixesKey] = suffixes
             save()
         }
+    }
+    dynamic var type: String {
+        // TODO: Implement
+        return "Built-In"
     }
     
     // MARK: Save
