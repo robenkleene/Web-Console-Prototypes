@@ -11,7 +11,7 @@
 #import "WCLFileExtension.h"
 #import "PluginEditorPrototype-Swift.h"
 
-#define kPluginManagerControllerPluginsKeyPath @"plugins"
+
 #define kPluginSuffixesKey @"suffixes"
 
 #pragma mark - WCLFileExtensionsDictionaryManagerDelegate
@@ -133,7 +133,7 @@ static void *WCLFileExtensionControllerContext;
     if (_fileExtensionsDictionaryManager) {
         NSArray *plugins = [self.pluginsManager plugins];
         [self.pluginsManager removeObserver:self
-                                   forKeyPath:kPluginManagerControllerPluginsKeyPath
+                                   forKeyPath:kPluginsManagerPluginsKeyPath
                                       context:&WCLFileExtensionControllerContext];
         for (Plugin *plugin in plugins) {
             [self processRemovedPlugin:plugin];
@@ -184,7 +184,7 @@ static void *WCLFileExtensionControllerContext;
     }
 
     [self.pluginsManager addObserver:self
-                            forKeyPath:kPluginManagerControllerPluginsKeyPath
+                            forKeyPath:kPluginsManagerPluginsKeyPath
                                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                                context:&WCLFileExtensionControllerContext];
     
@@ -257,7 +257,7 @@ static void *WCLFileExtensionControllerContext;
     }
     
     if ([object isKindOfClass:[self.pluginsManager class]] &&
-        [keyPath isEqualToString:kPluginManagerControllerPluginsKeyPath]) {
+        [keyPath isEqualToString:kPluginsManagerPluginsKeyPath]) {
         
         NSKeyValueChange keyValueChange = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
         switch (keyValueChange) {

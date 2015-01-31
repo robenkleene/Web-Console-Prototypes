@@ -199,11 +199,12 @@ completionsForSubstring:(NSString *)substring
         return;
     }
 
-// TODO: Set these keys
-//  NSConditionallySetsEditableBindingOption: yes
-//  NSRaisesForNotApplicableKeysBindingOption : @YES
-    
-    [pluginArrayController bind:@"contentArray" toObject:[PluginsManager sharedInstance] withKeyPath:@"plugins" options:nil];
+    NSDictionary *options = @{NSConditionallySetsEditableBindingOption : @YES,
+                              NSRaisesForNotApplicableKeysBindingOption : @YES};
+    [pluginArrayController bind:@"contentArray"
+                       toObject:[PluginsManager sharedInstance]
+                    withKeyPath:kPluginsManagerPluginsKeyPath
+                        options:options];
     
     NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:kPluginNameKey
                                                                        ascending:YES

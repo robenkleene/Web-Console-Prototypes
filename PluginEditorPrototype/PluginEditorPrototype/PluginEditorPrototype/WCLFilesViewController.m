@@ -10,6 +10,8 @@
 #import "PluginEditorPrototype-Swift.h"
 #import "WCLFileExtension.h"
 
+#define kFileExtensionsControllerFileExtensionsKeyPath @"fileExtensions"
+
 @interface WCLPluginsToPluginNamesValueTransformer : NSValueTransformer
 @end
 
@@ -108,7 +110,12 @@
         return;
     }
     
-    [fileExtensionsArrayController bind:@"contentArray" toObject:[FileExtensionsController sharedInstance] withKeyPath:@"fileExtensions" options:nil];
+    NSDictionary *options = @{NSConditionallySetsEditableBindingOption : @YES,
+                              NSRaisesForNotApplicableKeysBindingOption : @YES};
+    [fileExtensionsArrayController bind:@"contentArray"
+                               toObject:[FileExtensionsController sharedInstance]
+                            withKeyPath:kFileExtensionsControllerFileExtensionsKeyPath
+                                options:options];
     
     NSSortDescriptor *nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:WCLFileExtensionSuffixKey
                                                                        ascending:YES

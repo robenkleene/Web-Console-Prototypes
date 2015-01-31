@@ -13,6 +13,10 @@
 
 #define kErrorCodeInvalidPlugin -42
 
+#pragma mark - PluginsManager Keys
+
+#define kPluginsManagerPluginsKeyPath @"plugins"
+
 #pragma mark - Plugin Keys
 
 #define kPluginNameKey @"name"
