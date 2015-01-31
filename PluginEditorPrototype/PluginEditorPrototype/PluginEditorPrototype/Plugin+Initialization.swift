@@ -7,6 +7,14 @@
 //
 
 extension Plugin {
+    struct PluginInfoDictionaryKeys {
+        static let Name = "WCName"
+        static let Identifier = "WCUUID"
+        static let Command = "WCCommand"
+        static let Suffixes = "WCFileExtensions"
+        static let Hidden = "WCHidden"
+    }
+    
     class func pluginWithURL(url: NSURL) -> Plugin? {
         if let path = url.path {
             return self.pluginWithPath(path)
@@ -21,17 +29,21 @@ extension Plugin {
                 if let identifier = validIdentifier(infoDictionary, error: &error) {
                     if let name = validName(infoDictionary, error: &error) {
     
-                        // Optional Values
-                        let command = validCommand(infoDictionary, error: &error)
-                        if (error == nil) {
-                            let suffixes = validSuffixes(infoDictionary, error: &error)
-                            if (error == nil) {
-                                return Plugin(bundle: bundle,
-                                    infoDictionary: infoDictionary,
-                                    identifier: identifier,
-                                    name: name,
-                                    command: command,
-                                    suffixes: suffixes)
+                        // Optional Keys
+                        let command = validCommand(infoDictionary, error: &error) // Can be nil
+                        if error == nil {
+                            let suffixes = validSuffixes(infoDictionary, error: &error) // Can be nil
+                            if error == nil {
+                                let hidden = validHidden(infoDictionary, error: &error)
+                                if error == nil {
+                                    return Plugin(bundle: bundle,
+                                        infoDictionary: infoDictionary,
+                                        identifier: identifier,
+                                        name: name,
+                                        command: command,
+                                        suffixes: suffixes,
+                                        hidden: hidden)
+                                }
                             }
                         }
 
@@ -75,11 +87,11 @@ extension Plugin {
     }
 
     class func validSuffixes(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> [String]? {
-        if let suffixes = infoDictionary[ClassConstants.pluginSuffixesKey] as? [String] {
+        if let suffixes = infoDictionary[PluginInfoDictionaryKeys.Suffixes] as? [String] {
             return suffixes
         }
 
-        if let suffixes: AnyObject = infoDictionary[ClassConstants.pluginSuffixesKey] {
+        if let suffixes: AnyObject = infoDictionary[PluginInfoDictionaryKeys.Suffixes] {
             if error != nil {
                 let errorString = NSLocalizedString("Plugin file extensions is invalid \(infoDictionary).", comment: "Invalid plugin file extensions error")
                 error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
@@ -90,13 +102,13 @@ extension Plugin {
     }
 
     class func validCommand(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
-        if let command = infoDictionary[ClassConstants.pluginCommandKey] as NSString? {
+        if let command = infoDictionary[PluginInfoDictionaryKeys.Command] as NSString? {
             if command.length > 0 {
                 return command
             }
         }
 
-        if let commnd: AnyObject = infoDictionary[ClassConstants.pluginCommandKey] {
+        if let commnd: AnyObject = infoDictionary[PluginInfoDictionaryKeys.Command] {
             if error != nil {
                 let errorString = NSLocalizedString("Plugin command is invalid \(infoDictionary).", comment: "Invalid plugin command error")
                 error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
@@ -107,7 +119,7 @@ extension Plugin {
     }
     
     class func validName(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
-        if let name = infoDictionary[ClassConstants.pluginNameKey] as NSString? {
+        if let name = infoDictionary[PluginInfoDictionaryKeys.Name] as NSString? {
             if name.length > 0 {
                 return name
             }
@@ -122,7 +134,7 @@ extension Plugin {
     }
     
     class func validIdentifier(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
-        if let uuidString = infoDictionary[ClassConstants.pluginIdentifierKey] as NSString? {
+        if let uuidString = infoDictionary[PluginInfoDictionaryKeys.Identifier] as NSString? {
             var uuid: NSUUID? = NSUUID(UUIDString: uuidString)
             if uuid != nil {
                 return uuidString
@@ -135,5 +147,20 @@ extension Plugin {
         }
         
         return nil
+    }
+
+    class func validHidden(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> Bool {
+        if let hidden = infoDictionary[PluginInfoDictionaryKeys.Hidden] as Int? {
+            return NSNumber(integer: hidden).boolValue
+        }
+        
+        if let hidden: AnyObject = infoDictionary[PluginInfoDictionaryKeys.Hidden] {
+            if error != nil {
+                let errorString = NSLocalizedString("Plugin hidden is invalid \(infoDictionary).", comment: "Invalid plugin name error")
+                error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
+            }
+        }
+
+        return false
     }
 }

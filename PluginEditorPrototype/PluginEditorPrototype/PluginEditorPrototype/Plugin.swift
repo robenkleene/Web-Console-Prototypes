@@ -12,26 +12,25 @@ import Cocoa
 class Plugin: WCLPlugin {
     struct ClassConstants {
         static let errorCode = -43
-        static let pluginNameKey = "WCName"
-        static let pluginIdentifierKey = "WCUUID"
-        static let pluginCommandKey = "WCCommand"
-        static let pluginSuffixesKey = "WCFileExtensions"
         static let infoDictionaryPathComponent = "Contents".stringByAppendingPathComponent("Info.plist")
     }
     internal let bundle: NSBundle
-
+    let hidden: Bool
+    
     init(bundle: NSBundle,
         infoDictionary: [NSObject : AnyObject],
         identifier: String,
         name: String,
         command: String?,
-        suffixes: [String]?)
+        suffixes: [String]?,
+        hidden: Bool)
     {
         self.infoDictionary = infoDictionary
         self.bundle = bundle
         self.name = name
         self.identifier = identifier
-
+        self.hidden = hidden
+        
         // Optional
         self.command = command
         self.suffixes = [String]()
@@ -67,19 +66,19 @@ class Plugin: WCLPlugin {
     
     dynamic var name: String {
         didSet {
-            infoDictionary[ClassConstants.pluginNameKey] = name
+            infoDictionary[PluginInfoDictionaryKeys.Name] = name
             save()
         }
     }
     var identifier: String {
         didSet {
-            infoDictionary[ClassConstants.pluginIdentifierKey] = identifier
+            infoDictionary[PluginInfoDictionaryKeys.Identifier] = identifier
             save()
         }
     }
     dynamic var command: String? {
         didSet {
-            infoDictionary[ClassConstants.pluginCommandKey] = command
+            infoDictionary[PluginInfoDictionaryKeys.Command] = command
             save()
         }
     }
@@ -95,7 +94,7 @@ class Plugin: WCLPlugin {
     }
     dynamic var suffixes: [String] {
         didSet {
-            infoDictionary[ClassConstants.pluginSuffixesKey] = suffixes
+            infoDictionary[PluginInfoDictionaryKeys.Suffixes] = suffixes
             save()
         }
     }
