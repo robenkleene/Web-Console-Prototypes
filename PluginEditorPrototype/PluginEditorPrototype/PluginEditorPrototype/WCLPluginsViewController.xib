@@ -143,11 +143,19 @@
                             <connections>
                                 <action selector="removePlugin:" target="-2" id="IQC-lP-Kde"/>
                                 <binding destination="wNa-Wq-zbh" name="enabled" keyPath="canRemove" id="ntm-i7-Fz1"/>
+                                <binding destination="wNa-Wq-zbh" name="enabled2" keyPath="selection.editable" previousBinding="ntm-i7-Fz1" id="JhN-ie-udJ">
+                                    <dictionary key="options">
+                                        <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                        <integer key="NSNullPlaceholder" value="-1"/>
+                                    </dictionary>
+                                </binding>
                             </connections>
                         </button>
                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QEz-D8-aze">
                             <rect key="frame" x="62" y="0.0" width="32" height="23"/>
-                            <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" id="ij3-I5-x1j">
+                            <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="SNT-hB-0Hf" id="ij3-I5-x1j">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="menu"/>
                                 <menu key="menu" title="OtherViews" id="Paj-8i-a7d">
@@ -204,6 +212,7 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
+                                <binding destination="wNa-Wq-zbh" name="enabled" keyPath="selection.editable" id="LMb-5E-wSk"/>
                                 <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.command" id="sDT-QB-0Gl">
                                     <dictionary key="options">
                                         <string key="NSMultipleValuesPlaceholder">script.sh</string>
@@ -222,6 +231,9 @@
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
+                            <connections>
+                                <binding destination="wNa-Wq-zbh" name="enabled" keyPath="selection.editable" id="cHi-36-ASj"/>
+                            </connections>
                         </button>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4xx-KV-zBm">
                             <rect key="frame" x="0.0" y="171" width="103" height="17"/>
@@ -239,6 +251,7 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </tokenFieldCell>
                             <connections>
+                                <binding destination="wNa-Wq-zbh" name="editable" keyPath="selection.editable" id="onY-dh-Hrg"/>
                                 <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.suffixes" id="6bx-oB-U96">
                                     <dictionary key="options">
                                         <string key="NSMultipleValuesPlaceholder">html, md, rb</string>
