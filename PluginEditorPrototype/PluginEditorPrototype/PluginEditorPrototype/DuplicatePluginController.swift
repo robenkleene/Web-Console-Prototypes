@@ -33,6 +33,9 @@ class DuplicatePluginController {
                     error: &moveError)
                 assert(moveSuccess, "The move should succeed")
                 assert(moveError == nil, "The error should be nil")
+                if !moveSuccess || moveError != nil {
+                    println("Failed to move a plugin directory to \(movedDestinationURL) \(moveError)")
+                }
                 if let movedPlugin = Plugin.pluginWithURL(movedDestinationURL) {
                     movedPlugin.editable = true
                     movedPlugin.renameWithUniqueName()
