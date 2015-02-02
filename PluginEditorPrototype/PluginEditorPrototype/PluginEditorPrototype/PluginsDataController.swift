@@ -13,6 +13,7 @@ protocol PluginsDataControllerDelegate {
     func pluginsDataController(pluginsDataController: PluginsDataController, didRemovePlugin plugin: Plugin)
 }
 
+
 class PluginsDataController: PluginsDirectoryManagerDelegate {
     var delegate: PluginsDataControllerDelegate?
     var pluginDirectoryManagers: [PluginsDirectoryManager]!
@@ -26,7 +27,7 @@ class PluginsDataController: PluginsDirectoryManagerDelegate {
         self.duplicatePluginDestinationDirectoryURL = duplicatePluginDestinationDirectoryURL
         
         for path in paths {
-            let plugins = self.dynamicType.pluginsAtPluginsPath(path)
+            let plugins = self.pluginsAtPluginsPath(path)
             for plugin in plugins {
                 pluginPathToPluginDictionary[plugin.bundle.bundlePath] = plugin
             }

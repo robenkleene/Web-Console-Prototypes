@@ -23,13 +23,15 @@ class Plugin: WCLPlugin {
         name: String,
         command: String?,
         suffixes: [String]?,
-        hidden: Bool)
+        hidden: Bool,
+        editable: Bool)
     {
         self.infoDictionary = infoDictionary
         self.bundle = bundle
         self.name = name
         self.identifier = identifier
         self.hidden = hidden
+        self.editable = editable
         
         // Optional
         self.command = command
@@ -65,18 +67,27 @@ class Plugin: WCLPlugin {
     // MARK: Properties
     
     dynamic var name: String {
+        willSet {
+            assert(editable, "The plugin should be editable")
+        }
         didSet {
             infoDictionary[PluginInfoDictionaryKeys.Name] = name
             save()
         }
     }
     var identifier: String {
+        willSet {
+            assert(editable, "The plugin should be editable")
+        }
         didSet {
             infoDictionary[PluginInfoDictionaryKeys.Identifier] = identifier
             save()
         }
     }
     dynamic var command: String? {
+        willSet {
+            assert(editable, "The plugin should be editable")
+        }
         didSet {
             infoDictionary[PluginInfoDictionaryKeys.Command] = command
             save()
@@ -93,14 +104,27 @@ class Plugin: WCLPlugin {
         }
     }
     dynamic var suffixes: [String] {
+        willSet {
+            assert(editable, "The plugin should be editable")
+        }
         didSet {
             infoDictionary[PluginInfoDictionaryKeys.Suffixes] = suffixes
             save()
         }
     }
-    dynamic var type: String {
-        // TODO: Implement
+    var type: String {
+        // TODO: Implement, should be a `let` not `var`
         return "Built-In"
+    }
+    dynamic var editable: Bool {
+        didSet {
+            if (!editable) {
+                infoDictionary[PluginInfoDictionaryKeys.Editable] = editable
+            } else {
+                infoDictionary[PluginInfoDictionaryKeys.Editable] = nil
+            }
+            save()
+        }
     }
     
     // MARK: Save
@@ -125,7 +149,7 @@ class Plugin: WCLPlugin {
     
     override var description : String {
         let description = super.description
-        return "\(description), Plugin name = \(name),  identifier = \(identifier), defaultNewPlugin = \(defaultNewPlugin)"
+        return "\(description), Plugin name = \(name),  identifier = \(identifier), defaultNewPlugin = \(defaultNewPlugin), hidden = \(hidden), editable = \(editable)"
     }
 
 }

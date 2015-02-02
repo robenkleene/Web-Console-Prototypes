@@ -44,7 +44,6 @@ class PluginDataEventManager: PluginsDataControllerDelegate {
         }
     }
     
-    
     // MARK: Handlers
     
     func addPluginWasAddedHandler(handler: (plugin: Plugin) -> Void) {

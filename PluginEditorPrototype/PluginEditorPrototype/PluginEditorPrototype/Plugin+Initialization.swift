@@ -13,6 +13,7 @@ extension Plugin {
         static let Command = "WCCommand"
         static let Suffixes = "WCFileExtensions"
         static let Hidden = "WCHidden"
+        static let Editable = "WCEditable"
     }
     
     class func pluginWithURL(url: NSURL) -> Plugin? {
@@ -21,7 +22,7 @@ extension Plugin {
         }
         return nil
     }
-    
+
     class func pluginWithPath(path: String) -> Plugin? {
         var error: NSError?
         if let bundle = validBundle(path, error: &error) {
@@ -36,13 +37,17 @@ extension Plugin {
                             if error == nil {
                                 let hidden = validHidden(infoDictionary, error: &error)
                                 if error == nil {
-                                    return Plugin(bundle: bundle,
-                                        infoDictionary: infoDictionary,
-                                        identifier: identifier,
-                                        name: name,
-                                        command: command,
-                                        suffixes: suffixes,
-                                        hidden: hidden)
+                                    let editable = validEditable(infoDictionary, error: &error)
+                                    if error == nil {
+                                        return Plugin(bundle: bundle,
+                                            infoDictionary: infoDictionary,
+                                            identifier: identifier,
+                                            name: name,
+                                            command: command,
+                                            suffixes: suffixes,
+                                            hidden: hidden,
+                                            editable: editable)
+                                    }
                                 }
                             }
                         }
@@ -55,6 +60,8 @@ extension Plugin {
         println("Failed to load a plugin at path \(path) \(error)")
         return nil
     }
+    
+    // MARK: Info Dictionary
     
     class func validBundle(path: String, error: NSErrorPointer) -> NSBundle? {
         if let bundle = NSBundle(path: path) as NSBundle? {
@@ -162,5 +169,20 @@ extension Plugin {
         }
 
         return false
+    }
+
+    class func validEditable(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> Bool {
+        if let editable = infoDictionary[PluginInfoDictionaryKeys.Editable] as Int? {
+            return NSNumber(integer: editable).boolValue
+        }
+        
+        if let editable: AnyObject = infoDictionary[PluginInfoDictionaryKeys.Editable] {
+            if error != nil {
+                let errorString = NSLocalizedString("Plugin editable is invalid \(infoDictionary).", comment: "Invalid plugin name error")
+                error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
+            }
+        }
+        
+        return true
     }
 }

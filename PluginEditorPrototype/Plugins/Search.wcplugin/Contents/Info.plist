@@ -8,5 +8,7 @@
 	<string>wcsearch.rb</string>
 	<key>WCUUID</key>
 	<string>29625142-B35E-4B83-B078-589D1554DF1D</string>
+	<key>WCEditable</key>
+	<integer>0</integer>
 </dict>
 </plist>

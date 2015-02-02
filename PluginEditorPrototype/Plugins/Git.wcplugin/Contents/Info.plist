@@ -8,5 +8,7 @@
 	<string>wcgit.rb</string>
 	<key>WCUUID</key>
 	<string>175BE461-C8A5-445B-ADF6-B2CDDBB196EE</string>
+	<key>WCEditable</key>
+	<integer>0</integer>
 </dict>
 </plist>

@@ -34,6 +34,7 @@ class DuplicatePluginController {
                 assert(moveSuccess, "The move should succeed")
                 assert(moveError == nil, "The error should be nil")
                 if let movedPlugin = Plugin.pluginWithURL(movedDestinationURL) {
+                    movedPlugin.editable = true
                     movedPlugin.renameWithUniqueName()
                     movedPlugin.identifier = UUID.UUIDString
                     plugin = movedPlugin

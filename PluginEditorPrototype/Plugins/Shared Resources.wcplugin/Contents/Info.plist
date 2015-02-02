@@ -8,5 +8,7 @@
 	<string>4A1B0121-87C0-45ED-BEF7-ECAC87DCF8BF</string>
 	<key>WCHidden</key>
 	<integer>1</integer>
+	<key>WCEditable</key>
+	<integer>0</integer>
 </dict>
 </plist>

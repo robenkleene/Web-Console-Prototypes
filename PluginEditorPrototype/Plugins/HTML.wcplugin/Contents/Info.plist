@@ -8,5 +8,7 @@
 	<string>wchtml.rb</string>
 	<key>WCUUID</key>
 	<string>7CD5AF0C-7C9F-43C6-A6F2-E542C729205D</string>
+	<key>WCEditable</key>
+	<integer>0</integer>
 </dict>
 </plist>

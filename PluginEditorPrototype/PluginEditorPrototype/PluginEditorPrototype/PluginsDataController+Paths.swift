@@ -38,9 +38,9 @@ extension PluginsDataController {
         return plugins
     }
     
-    class func pluginsAtPluginsPath(path: NSString) -> [Plugin] {
-        let pluginPaths = self.pathsForPluginsAtPath(path)
-        let plugins = self.pluginsAtPluginPaths(pluginPaths)
+    func pluginsAtPluginsPath(path: NSString) -> [Plugin] {
+        let pluginPaths = self.dynamicType.pathsForPluginsAtPath(path)
+        let plugins = self.dynamicType.pluginsAtPluginPaths(pluginPaths)
         return plugins
     }
 

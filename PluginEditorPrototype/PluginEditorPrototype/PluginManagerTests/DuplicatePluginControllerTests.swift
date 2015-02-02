@@ -15,6 +15,7 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
     override func setUp() {
         super.setUp()
         duplicatePluginController = DuplicatePluginController()
+        plugin.editable = false
     }
 
     override func tearDown() {
@@ -23,6 +24,16 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
     }
     
     func testDuplicatePlugin() {
+        // Test that the plugin starts not editable
+        XCTAssertFalse(plugin.editable, "The plugin should not be editable")
+        var error: NSError?
+        var pluginInfoDictionaryURL = Plugin.infoDictionaryURLForPluginURL(pluginURL)
+        var pluginInfoDictionaryContents: NSString! = NSString(contentsOfURL: pluginInfoDictionaryURL, encoding: NSUTF8StringEncoding, error: &error)
+        XCTAssertNil(error, "The error should be nil")
+        var range = pluginInfoDictionaryContents.rangeOfString(Plugin.PluginInfoDictionaryKeys.Editable)
+        XCTAssertFalse(range.location == NSNotFound, "The string should have been found")
+
+        // Duplicate the plugin
         var duplicatePlugin: Plugin!
         let duplicateExpectation = expectationWithDescription("Duplicate")
         duplicatePluginController.duplicatePlugin(plugin, toDirectoryAtURL: pluginsDirectoryURL) { (plugin, error) -> Void in
@@ -40,6 +51,15 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
             isDirectory: &isDir)
         XCTAssertTrue(exists, "The item should exist")
         XCTAssertTrue(isDir, "The item should be a directory")
+
+        // Test that the new plugin is editable
+        XCTAssertTrue(duplicatePlugin.editable, "The duplicated plugin should be editable")
+        error = nil
+        pluginInfoDictionaryURL = Plugin.infoDictionaryURLForPluginURL(duplicatePlugin.bundle.bundleURL)
+        pluginInfoDictionaryContents = NSString(contentsOfURL: pluginInfoDictionaryURL, encoding: NSUTF8StringEncoding, error: &error)
+        XCTAssertNil(error, "The error should be nil")
+        range = pluginInfoDictionaryContents.rangeOfString(Plugin.PluginInfoDictionaryKeys.Editable)
+        XCTAssertTrue(range.location == NSNotFound, "The string should not have been found")
 
         // Test the plugins properties are accurate
         XCTAssertNotEqual(plugin.bundle.bundleURL, duplicatePlugin.bundle.bundleURL, "The URLs should not be equal")
