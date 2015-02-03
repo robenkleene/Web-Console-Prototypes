@@ -74,7 +74,8 @@ class PluginsDataControllerTests: PluginsDataControllerEventTestCase {
         })
 
         let duplicateExpectation = expectationWithDescription("Plugin was duplicated")
-        PluginsManager.sharedInstance.pluginsDataController.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
+        PluginsManager.sharedInstance.pluginsDataController.duplicatePlugin(plugin, handler: { (duplicatePlugin, error) -> Void in
+            XCTAssertNil(error, "The error should be nil")
             newPlugin = duplicatePlugin
             duplicateExpectation.fulfill()
         })

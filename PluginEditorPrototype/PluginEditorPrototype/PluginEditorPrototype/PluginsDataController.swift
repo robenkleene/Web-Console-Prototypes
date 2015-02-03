@@ -15,6 +15,9 @@ protocol PluginsDataControllerDelegate {
 
 
 class PluginsDataController: PluginsDirectoryManagerDelegate {
+    struct ClassConstants {
+        static let errorCode = -44
+    }
     var delegate: PluginsDataControllerDelegate?
     var pluginDirectoryManagers: [PluginsDirectoryManager]!
     var pluginPathToPluginDictionary: [NSString : Plugin]!
@@ -105,16 +108,49 @@ class PluginsDataController: PluginsDirectoryManagerDelegate {
         assert(!exists, "The file should not exist")
     }
     
-    func duplicatePlugin(plugin: Plugin, handler: ((plugin: Plugin?) -> Void)?) {
+    func duplicatePlugin(plugin: Plugin, handler: ((plugin: Plugin?, error: NSError?) -> Void)?) {
+
+        var error: NSError?
+        println("duplicatePluginDestinationDirectoryURL = \(duplicatePluginDestinationDirectoryURL)")
+        
+//        let success = self.dynamicType.createDirectoryIfMissing(duplicatePluginDestinationDirectoryURL, error: &error)
+//
+//        if !success || error != nil {
+//            handler?(plugin: nil, error: error)
+//        }
 
         duplicatePluginController.duplicatePlugin(plugin,
             toDirectoryAtURL: duplicatePluginDestinationDirectoryURL)
-        { (plugin, error) -> Void in
-            if let plugin = plugin {
-                self.addPlugin(plugin)
-            }
-            handler?(plugin: plugin)
+            { (plugin, error) -> Void in
+                if let plugin = plugin {
+                    self.addPlugin(plugin)
+                }
+                handler?(plugin: plugin, error: error)
         }
     }
 
+    class func createDirectoryIfMissing(directoryURL: NSURL, error: NSErrorPointer) -> Bool {
+        var isDir: ObjCBool = false
+        let exists = NSFileManager.defaultManager().fileExistsAtPath(directoryURL.path!, isDirectory: &isDir)
+        if (exists && isDir) {
+            return true
+        }
+        
+        if (exists && !isDir) {
+            if error != nil {
+                let errorString = NSLocalizedString("A file exists at the destination directory.", comment: "Invalid destination directory error")
+                error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
+                return false
+            }
+        }
+
+        var error: NSError?
+        let success = NSFileManager.defaultManager().createDirectoryAtURL(directoryURL,
+            withIntermediateDirectories: true,
+            attributes: nil,
+            error: &error)
+
+        return success
+    }
+    
 }

@@ -22,14 +22,7 @@ class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
 //    }
     
     func testSettingAndDeletingDefaultNewPlugin() {
-        var createdPlugin: Plugin!
-        let createdPluginExpectation = expectationWithDescription("Create new plugin")
-        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
-            createdPlugin = newPlugin
-            createdPluginExpectation.fulfill()
-        }
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
-        
+        var createdPlugin = newPluginWithConfirmation()
         PluginsManager.sharedInstance.defaultNewPlugin = createdPlugin
         
         // Assert the WCLPlugin's isDefaultNewPlugin property
@@ -53,26 +46,14 @@ class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
     
 
     func testDefaultNewPlugin() {
-        var createdPlugin: Plugin!
-        let createdPluginExpectation = expectationWithDescription("Create new plugin")
-        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
-            createdPlugin = newPlugin
-            createdPluginExpectation.fulfill()
-        }
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        var createdPlugin = newPluginWithConfirmation()
 
         PluginsManager.sharedInstance.defaultNewPlugin = createdPlugin
         
         createdPlugin.name = testPluginNameTwo
         createdPlugin.command = testPluginCommandTwo
         
-        var createdPluginTwo: Plugin!
-        let createdPluginTwoExpectation = expectationWithDescription("Create new plugin")
-        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
-            createdPluginTwo = newPlugin
-            createdPluginTwoExpectation.fulfill()
-        }
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        var createdPluginTwo = newPluginWithConfirmation()
         
         // TODO: After starting plugins have their extensions setup, test file extensions
         // XCTAssertTrue([newPlugin.extensions isEqualToArray:plugin.extensions], @"The new WCLPlugin's file extensions should equal the WCLPlugin's file extensions.");
@@ -101,13 +82,7 @@ class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
     }
 
     func testDefaultNewPluginKeyValueObserving() {
-        var createdPlugin: Plugin!
-        let createdPluginExpectation = expectationWithDescription("Create new plugin")
-        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
-            createdPlugin = newPlugin
-            createdPluginExpectation.fulfill()
-        }
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        var createdPlugin = newPluginWithConfirmation()
         XCTAssertFalse(createdPlugin.defaultNewPlugin, "The WCLPlugin should not be the default new WCLPlugin.")
 
         var isDefaultNewPlugin = createdPlugin.defaultNewPlugin
@@ -123,13 +98,8 @@ class PluginsManagerDefaultNewPluginTests: PluginsManagerTestCase {
         XCTAssertTrue(createdPlugin.defaultNewPlugin, "The WCLPlugin should be the default new WCLPlugin.")
 
         // Test that key-value observing notifications occur when second new plugin is set as the default new plugin
-        var createdPluginTwo: Plugin!
-        let createdPluginTwoExpectation = expectationWithDescription("Create new plugin")
-        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
-            createdPluginTwo = newPlugin
-            createdPluginTwoExpectation.fulfill()
-        }
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        var createdPluginTwo = newPluginWithConfirmation()
+        
         XCTAssertFalse(createdPluginTwo.defaultNewPlugin, "The WCLPlugin should not be the default new WCLPlugin.")
         
         WCLKeyValueObservingTestsHelper.observeObject(createdPlugin,

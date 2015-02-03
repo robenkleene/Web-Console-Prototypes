@@ -123,14 +123,7 @@ class WCLFileExtensionTests: FileExtensionsTestCase {
 
         // Test changing the selected plugin
         
-        var createdPlugin: Plugin!
-        let createdPluginExpectation = expectationWithDescription("Create new plugin")
-        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
-            createdPlugin = newPlugin
-            createdPluginExpectation.fulfill()
-        }
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
-        
+        var createdPlugin = newPluginWithConfirmation()
         createdPlugin.suffixes = testPluginSuffixes
 
         observedChange = false
@@ -165,14 +158,9 @@ class WCLFileExtensionTests: FileExtensionsTestCase {
     }
 
     func testChangingPluginsFileExtensions() {
-        var createdPlugin: Plugin!
-        let createdPluginExpectation = expectationWithDescription("Create new plugin")
-        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
-            newPlugin?.suffixes = testPluginSuffixesEmpty
-            createdPlugin = newPlugin
-            createdPluginExpectation.fulfill()
-        }
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        var createdPlugin = newPluginWithConfirmation()
+        createdPlugin.suffixes = testPluginSuffixesEmpty
+
         XCTAssertFalse(contains(fileExtension.plugins() as [Plugin], createdPlugin), "The WCLFileExtension's WCLPlugins should not contain the new WCLPlugin.")
 
         var plugins = fileExtension.plugins() as [Plugin]
@@ -227,14 +215,7 @@ class WCLFileExtensionTests: FileExtensionsTestCase {
     }
 
     func testDeletingSelectedPlugin() {
-        var createdPlugin: Plugin!
-        let createdPluginExpectation = expectationWithDescription("Create new plugin")
-        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
-            newPlugin?.suffixes = testPluginSuffixesEmpty
-            createdPlugin = newPlugin
-            createdPluginExpectation.fulfill()
-        }
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        var createdPlugin = newPluginWithConfirmation()
         createdPlugin.suffixes = testPluginSuffixes
         fileExtension.selectedPlugin = createdPlugin
 

@@ -36,6 +36,19 @@ class PluginsManagerTestCase: TemporaryPluginsTestCase {
         PluginsManager.sharedInstance.defaultNewPlugin = nil
         super.tearDown()
     }
+    
+    func newPluginWithConfirmation() -> Plugin {
+        var error: NSError?
+        var createdPlugin: Plugin!
+        let createdPluginExpectation = expectationWithDescription("Create new plugin")
+        PluginsManager.sharedInstance.newPlugin { (newPlugin, error) -> Void in
+            XCTAssertNil(error, "The error should be nil")
+            createdPlugin = newPlugin
+            createdPluginExpectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        return createdPlugin
+    }
  
     func movePluginToTrashAndCleanUpWithConfirmation(plugin: Plugin) {
 

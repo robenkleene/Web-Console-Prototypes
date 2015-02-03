@@ -65,13 +65,7 @@ class PluginTests: PluginsManagerTestCase {
 
         
         // Create a new plugin
-        var createdPlugin: Plugin!
-        let createdPluginExpectation = expectationWithDescription("Create new plugin")
-        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
-            createdPlugin = newPlugin
-            createdPluginExpectation.fulfill()
-        }
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        var createdPlugin = newPluginWithConfirmation()
 
         // Test that the name is not valid for another plugin
         error = nil

@@ -12,22 +12,14 @@ import XCTest
 class PluginsManagerTests: PluginsManagerTestCase {
 
     func testDuplicateAndTrashPlugin() {
-        var newPlugin: Plugin?
-
-        let duplicateExpectation = expectationWithDescription("Plugin was duplicated")
-        PluginsManager.sharedInstance.duplicatePlugin(plugin, handler: { (duplicatePlugin) -> Void in
-            newPlugin = duplicatePlugin
-            duplicateExpectation.fulfill()
-        })
-
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        var newPlugin = newPluginWithConfirmation()
         
         XCTAssertEqual(PluginsManager.sharedInstance.plugins().count, 2, "The plugins count should be two")
         let plugins = PluginsManager.sharedInstance.plugins() as NSArray
-        XCTAssertTrue(plugins.containsObject(newPlugin!), "The plugins should contain the plugin")
+        XCTAssertTrue(plugins.containsObject(newPlugin), "The plugins should contain the plugin")
         
         // Trash the duplicated plugin
-        movePluginToTrashAndCleanUpWithConfirmation(newPlugin!)
+        movePluginToTrashAndCleanUpWithConfirmation(newPlugin)
     }
 
     func testRenamePlugin() {

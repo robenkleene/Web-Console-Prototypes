@@ -20,13 +20,7 @@ class FileExtensionsControllerTests: FileExtensionsTestCase {
     // TODO: After starting plugins have their extensions setup, test starting `WCLFileExtensionsController` has the right count of extensions at init (sum the count of plugin extensions, remove duplicates)
     
     func testAddingPluginAndChangingFileExtensions() {
-        var createdPlugin: Plugin!
-        let createdPluginExpectation = expectationWithDescription("Create new plugin")
-        PluginsManager.sharedInstance.newPlugin { (newPlugin) -> Void in
-            createdPlugin = newPlugin
-            createdPluginExpectation.fulfill()
-        }
-        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        var createdPlugin = newPluginWithConfirmation()
         XCTAssertFalse(FileExtensionsController.sharedInstance.suffixes().count > 0, "The file extensions count should be zero")
         
         createdPlugin.suffixes = testPluginSuffixesTwo
