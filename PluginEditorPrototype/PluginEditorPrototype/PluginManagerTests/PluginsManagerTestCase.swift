@@ -51,7 +51,6 @@ class PluginsManagerTestCase: TemporaryPluginsTestCase {
     }
  
     func movePluginToTrashAndCleanUpWithConfirmation(plugin: Plugin) {
-
         // Confirm that a matching directory does not exist in the trash
         let trashedPluginDirectoryName = plugin.bundle.bundlePath.lastPathComponent
         let trashDirectory = NSSearchPathForDirectoriesInDomains(.TrashDirectory, .UserDomainMask, true)[0] as NSString
@@ -73,8 +72,5 @@ class PluginsManagerTestCase: TemporaryPluginsTestCase {
         let success = NSFileManager.defaultManager().removeItemAtPath(trashedPluginPath, error: &removeError)
         XCTAssertTrue(success, "The remove should succeed")
         XCTAssertNil(removeError, "The error should be nil")
-        
-
     }
-    
 }

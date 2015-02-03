@@ -36,10 +36,6 @@ class PluginsDataControllerClassTests: XCTestCase {
         let testPluginsCount = PluginsDataController.pluginsAtPluginPaths(pluginPaths).count
         XCTAssert(plugins.count == testPluginsCount, "The plugins count should equal the test plugins count")
     }
-    
-}
-
-class PluginsDataControllerBuiltInPluginsTests: XCTestCase {
 
     func testExistingPlugins() {
         let trashDirectoryPath = NSSearchPathForDirectoriesInDomains(.TrashDirectory, .UserDomainMask, true)[0] as NSString
@@ -56,6 +52,141 @@ class PluginsDataControllerBuiltInPluginsTests: XCTestCase {
         XCTAssert(!plugins.isEmpty, "The plugins should not be empty")
         XCTAssert(plugins.count == pluginPaths.count, "The plugins count should match the plugin paths count")
     }
+
+}
+
+class PluginsThingTests: TemporaryDirectoryTestCase {
+    
+    func testCreateDirectoryIfMissing() {
+        let directoryURL = temporaryDirectoryURL
+            .URLByAppendingPathComponent(testDirectoryName)
+            .URLByAppendingPathComponent(testDirectoryNameTwo)
+        var error: NSError?
+        let success = PluginsDataController.createDirectoryIfMissing(directoryURL, error: &error)
+        XCTAssertNil(error, "The error should be nil")
+        XCTAssertTrue(success, "The success should be true")
+        var isDir: ObjCBool = false
+        let exists = NSFileManager.defaultManager().fileExistsAtPath(directoryURL.path!, isDirectory: &isDir)
+        XCTAssertTrue(exists, "The file should exist")
+        XCTAssertTrue(isDir, "The file should be a directory")
+        
+        // Clean Up
+        let rootDirectoryURL: NSURL! = directoryURL.URLByDeletingLastPathComponent
+        removeTemporaryItemAtURL(rootDirectoryURL)
+    }
+
+    // MARK: Helpers
+    
+    func createFileWithConfirmationAtURL(URL: NSURL, contents: String) {
+        let path = URL.path!
+        var error: NSError?
+        let createSuccess = NSFileManager.defaultManager().createFileAtPath(path,
+            contents: testFileContents.dataUsingEncoding(NSUTF8StringEncoding),
+            attributes: nil)
+        XCTAssertTrue(createSuccess, "Creating the file should succeed.")
+        XCTAssertNil(error, "The error should succeed.")
+    }
+    
+    func contentsOfFileAtURLWithConfirmation(URL: NSURL) -> String {
+        var error: NSError?
+        let contents: NSString! = NSString(contentsOfURL: URL,
+            encoding: NSUTF8StringEncoding,
+            error: &error)
+        XCTAssertNil(error, "The error should be nil")
+        return contents
+    }
+    
+    func confirmFileExistsAtURL(URL: NSURL) {
+        var isDir: ObjCBool = false
+        let exists = NSFileManager.defaultManager().fileExistsAtPath(URL.path!, isDirectory: &isDir)
+        XCTAssertTrue(exists, "The file should exist")
+        XCTAssertTrue(!isDir, "The file should not be a directory")
+    }
+    
+    func testCreateDirectoryWithPathBlocked() {
+        let directoryURL = temporaryDirectoryURL
+            .URLByAppendingPathComponent(testDirectoryName)
+
+        // Create the blocking file
+        createFileWithConfirmationAtURL(directoryURL, contents: testFileContents)
+        
+        // Attempt
+        var error: NSError?
+        let success = PluginsDataController.createDirectoryIfMissing(directoryURL, error: &error)
+        XCTAssertNotNil(error, "The error should not be nil")
+        XCTAssertFalse(success, "The success should not be true")
+
+        // Confirm the File Still Exists
+        confirmFileExistsAtURL(directoryURL)
+        
+        // Confirm the Contents
+
+        let contents = contentsOfFileAtURLWithConfirmation(directoryURL)
+        XCTAssertEqual(testFileContents, contents, "The contents should be equal")
+        
+        // Clean Up
+        removeTemporaryItemAtURL(directoryURL)
+    }
+
+    func testCreateDirectoryWithFirstPathComponentBlocked() {
+        let directoryURL = temporaryDirectoryURL
+            .URLByAppendingPathComponent(testDirectoryName)
+            .URLByAppendingPathComponent(testDirectoryNameTwo)
+        let blockingFileURL = directoryURL.URLByDeletingLastPathComponent!
+        
+        // Create the blocking file
+        createFileWithConfirmationAtURL(blockingFileURL, contents: testFileContents)
+        
+        // Attempt
+        var error: NSError?
+        let success = PluginsDataController.createDirectoryIfMissing(directoryURL, error: &error)
+        XCTAssertNotNil(error, "The error should not be nil")
+        XCTAssertFalse(success, "The success should not be true")
+        
+        // Confirm the File Still Exists
+        confirmFileExistsAtURL(blockingFileURL)
+        
+        // Confirm the Contents
+        let contents = contentsOfFileAtURLWithConfirmation(blockingFileURL)
+        XCTAssertEqual(testFileContents, contents, "The contents should be equal")
+        
+        // Clean Up
+        removeTemporaryItemAtURL(blockingFileURL)
+    }
+
+    func testCreateDirectoryWithSecondPathComponentBlocked() {
+        let directoryURL = temporaryDirectoryURL
+            .URLByAppendingPathComponent(testDirectoryName)
+            .URLByAppendingPathComponent(testDirectoryNameTwo)
+        
+        // Create the first path so creating the blocking file doesn't fail
+        let containerDirectoryURL = directoryURL.URLByDeletingLastPathComponent!
+        var error: NSError?
+        let createContainerSuccess = PluginsDataController.createDirectoryIfMissing(containerDirectoryURL,
+            error: &error)
+        XCTAssertNil(error, "The error should be nil")
+        XCTAssertTrue(createContainerSuccess, "The success should be true")
+        
+        // Create the blocking file
+        createFileWithConfirmationAtURL(directoryURL, contents: testFileContents)
+        
+        // Attempt
+        error = nil
+        let success = PluginsDataController.createDirectoryIfMissing(directoryURL, error: &error)
+        XCTAssertNotNil(error, "The error should not be nil")
+        XCTAssertFalse(success, "The success should not be true")
+        
+        // Confirm the File Still Exists
+        confirmFileExistsAtURL(directoryURL)
+        
+        // Confirm the Contents
+        let contents = contentsOfFileAtURLWithConfirmation(directoryURL)
+        XCTAssertEqual(testFileContents, contents, "The contents should be equal")
+        
+        // Clean Up
+        removeTemporaryItemAtURL(containerDirectoryURL)
+    }
+
 }
 
 class PluginsDataControllerTests: PluginsDataControllerEventTestCase {
@@ -95,4 +226,15 @@ class PluginsDataControllerTests: PluginsDataControllerEventTestCase {
         movePluginToTrashAndCleanUpWithConfirmation(newPlugin!)
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
+
+
+//    func testDuplicatePluginWithBlockingFile() {
+//        let duplicatePluginDestinationDirectoryURL = PluginsManager.sharedInstance.pluginsDataController.duplicatePluginDestinationDirectoryURL
+//        println("duplicatePluginDestinationDirectoryURL = \(duplicatePluginDestinationDirectoryURL)")
+//    }
+//
+//    func testDuplicatePluginWithMissingDirectory() {
+//        
+//    }
+
 }

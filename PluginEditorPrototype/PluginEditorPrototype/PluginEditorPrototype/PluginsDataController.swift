@@ -140,16 +140,19 @@ class PluginsDataController: PluginsDirectoryManagerDelegate {
             if error != nil {
                 let errorString = NSLocalizedString("A file exists at the destination directory.", comment: "Invalid destination directory error")
                 error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
-                return false
             }
+            return false
         }
 
-        var error: NSError?
+        var createError: NSError?
         let success = NSFileManager.defaultManager().createDirectoryAtURL(directoryURL,
             withIntermediateDirectories: true,
             attributes: nil,
-            error: &error)
-
+            error: &createError)
+        if error != nil {
+            error.memory = createError
+        }
+        
         return success
     }
     
