@@ -110,22 +110,21 @@ class PluginsDataController: PluginsDirectoryManagerDelegate {
     
     func duplicatePlugin(plugin: Plugin, handler: ((plugin: Plugin?, error: NSError?) -> Void)?) {
 
-        var error: NSError?
-        println("duplicatePluginDestinationDirectoryURL = \(duplicatePluginDestinationDirectoryURL)")
-        
-//        let success = self.dynamicType.createDirectoryIfMissing(duplicatePluginDestinationDirectoryURL, error: &error)
-//
-//        if !success || error != nil {
-//            handler?(plugin: nil, error: error)
-//        }
+        var error: NSError?        
+        let success = self.dynamicType.createDirectoryIfMissing(duplicatePluginDestinationDirectoryURL, error: &error)
+
+        if !success || error != nil {
+            handler?(plugin: nil, error: error)
+            return
+        }
 
         duplicatePluginController.duplicatePlugin(plugin,
             toDirectoryAtURL: duplicatePluginDestinationDirectoryURL)
-            { (plugin, error) -> Void in
-                if let plugin = plugin {
-                    self.addPlugin(plugin)
-                }
-                handler?(plugin: plugin, error: error)
+        { (plugin, error) -> Void in
+            if let plugin = plugin {
+                self.addPlugin(plugin)
+            }
+            handler?(plugin: plugin, error: error)
         }
     }
 

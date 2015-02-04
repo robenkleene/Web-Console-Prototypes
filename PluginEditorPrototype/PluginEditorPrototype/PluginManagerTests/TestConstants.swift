@@ -55,4 +55,4 @@ let testDirectoryNameFour = "test4"
 let testFilename = "test.txt"
 let testFilenameTwo = "test2.txt"
 let testFileContents = "test"
-
+let testApplicationSupportDirectoryName = "Application Support"

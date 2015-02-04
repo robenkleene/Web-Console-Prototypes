@@ -17,7 +17,7 @@ class PluginsManagerTestCase: TemporaryPluginsTestCase {
         
         // Create the plugin manager
         let pluginsManager = PluginsManager([pluginsDirectoryPath],
-            duplicatePluginDestinationDirectoryURL: pluginsDirectoryURL)
+            duplicatePluginDestinationDirectoryURL: duplicatePluginDestinationDirectoryURL)
         PluginsManager.setOverrideSharedInstance(pluginsManager)
 
         // Set the plugin
@@ -35,6 +35,10 @@ class PluginsManagerTestCase: TemporaryPluginsTestCase {
         // TODO: This should probably be changed once a fallback exists for when no default new plugin is set
         PluginsManager.sharedInstance.defaultNewPlugin = nil
         super.tearDown()
+    }
+
+    var duplicatePluginDestinationDirectoryURL: NSURL {
+        return pluginsDirectoryURL
     }
     
     func newPluginWithConfirmation() -> Plugin {
