@@ -70,8 +70,8 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
         XCTAssertTrue(longName.hasPrefix(plugin.name), "The new WCLPlugin's name should start with the WCLPlugin's name.")
         XCTAssertNotEqual(plugin.commandPath!, duplicatePlugin.commandPath!, "The command paths should not be equal")
         XCTAssertEqual(plugin.command!, duplicatePlugin.command!, "The commands should be equal")
-        let duplicatePluginFolderName = duplicatePlugin.bundle.bundlePath.lastPathComponent
-        XCTAssertEqual(duplicatePlugin.name, duplicatePluginFolderName, "The folder name should equal the plugin's name")
+        let duplicatePluginFolderName = duplicatePlugin.bundle.bundlePath.lastPathComponent as NSString
+        XCTAssertEqual(DuplicatePluginController.pluginFilenameFromName(duplicatePlugin.name), duplicatePluginFolderName, "The folder name should equal the plugin's name")
         
         // Clean Up
         let success = removeTemporaryItemAtURL(duplicatePluginURL)
@@ -80,8 +80,9 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
     
     func testDuplicatePluginWithFolderNameBlocked() {
         // Get the destination plugin name
-        let destinationName = WCLPlugin.uniquePluginNameFromName(plugin.name)
-
+        let uniqueName = WCLPlugin.uniquePluginNameFromName(plugin.name)
+        let destinationName = DuplicatePluginController.pluginFilenameFromName(uniqueName)
+        
         // Create a folder at the destination URL
         let destinationFolderURL = pluginsDirectoryURL.URLByAppendingPathComponent(destinationName)
         var createDirectoryError: NSError?
@@ -112,8 +113,8 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
 
         // Assert the folder name equals the plugin's identifier
-        let duplicatePluginFolderName = duplicatePlugin.bundle.bundlePath.lastPathComponent
-        XCTAssertEqual(duplicatePluginFolderName, duplicatePlugin.identifier, "The folder name should equal the identifier")
+        let duplicatePluginFolderName = duplicatePlugin.bundle.bundlePath.lastPathComponent as NSString
+        XCTAssertEqual(duplicatePluginFolderName, DuplicatePluginController.pluginFilenameFromName(duplicatePlugin.identifier), "The folder name should equal the identifier")
 
         // Test that the folder exists
         isDir = false

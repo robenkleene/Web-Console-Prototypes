@@ -14,7 +14,9 @@ extension Plugin {
         if !editable {
             return
         }
-        println("Open!")
+        if let resourcePath = resourcePath {
+            NSWorkspace.sharedWorkspace().openFile(resourcePath)
+        }
     }
 }
 
