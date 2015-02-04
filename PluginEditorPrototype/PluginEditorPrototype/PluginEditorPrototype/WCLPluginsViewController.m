@@ -153,6 +153,14 @@
                         contextInfo:NULL];
 }
 
+- (IBAction)openPlugin:(id)sender
+{
+    NSArray *plugins = [self.pluginsArrayController selectedObjects];
+    for (Plugin *plugin in plugins) {
+        [plugin open];
+    }
+}
+
 - (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
     if (returnCode != NSAlertFirstButtonReturn) return;

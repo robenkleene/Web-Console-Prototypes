@@ -8,6 +8,16 @@
 
 import Cocoa
 
+extension Plugin {
+    func open() {
+        assert(editable, "The plugin should be editable")
+        if !editable {
+            return
+        }
+        println("Open!")
+    }
+}
+
 
 class Plugin: WCLPlugin {
     struct ClassConstants {

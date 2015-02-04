@@ -185,6 +185,10 @@
                             <buttonCell key="cell" type="smallSquare" title="Open" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Yzu-ec-qfg">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
+                                <connections>
+                                    <action selector="openPlugin:" target="-2" id="fXJ-m1-z5I"/>
+                                    <binding destination="wNa-Wq-zbh" name="enabled" keyPath="selection.editable" id="yEl-Un-PKR"/>
+                                </connections>
                             </buttonCell>
                         </button>
                     </subviews>
