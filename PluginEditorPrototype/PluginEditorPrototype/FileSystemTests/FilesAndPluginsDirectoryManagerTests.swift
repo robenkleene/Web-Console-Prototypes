@@ -238,32 +238,70 @@ extension FilesAndPluginsDirectoryManagerTests {
         XCTAssertNil(error, "The error should succeed.")
     }
     
+
     func createValidPluginHierarchyAtPath(path: NSString) {
-        // Create a directory in the plugins directory, this should not cause a callback
-        let testPluginDirectoryPath = path.stringByAppendingPathComponent(testPluginDirectoryName)
-        createDirectoryAtPath(testPluginDirectoryPath)
-        
-        // Create the contents directory, this should not cause a callback
-        let testPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
-        createDirectoryAtPath(testPluginContentsDirectoryPath)
-        
-        // Create the resource directory, this should not cause a callback
-        let testPluginResourcesDirectoryPath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testPluginResourcesDirectoryName)
-        createDirectoryAtPath(testPluginResourcesDirectoryPath)
-        
-        // Create a file in the resource directory, this should not cause a callback
-        let testPluginResourcesFilePath = testPluginResourcesDirectoryPath.stringByAppendingPathComponent(testFilename)
-        createFileAtPath(testPluginResourcesFilePath)
-        
-        // Create an info dictionary in the contents directory, this should cause a callback
-        let testInfoDictionaryFilePath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testPluginInfoDictionaryFilename)
-        createFileAtPath(testInfoDictionaryFilePath)
+        validPluginHierarchyOperation(path, isRemove: false, requireConfirmation: false)
+    }
+
+    func createValidPluginHierarchyAtPathWithConfirmation(path: NSString) {
+        validPluginHierarchyOperation(path, isRemove: false, requireConfirmation: true)
     }
     
     func removeValidPluginHierarchyAtPath(path: NSString) {
+        validPluginHierarchyOperation(path, isRemove: true, requireConfirmation: false)
+    }
+
+    func removeValidPluginHierarchyAtPathWithConfirmation(path: NSString) {
+        validPluginHierarchyOperation(path, isRemove: true, requireConfirmation: true)
+    }
+
+    
+    func validPluginHierarchyOperation(path: NSString, isRemove: Bool, requireConfirmation: Bool) {
         let testPluginDirectoryPath = path.stringByAppendingPathComponent(testPluginDirectoryName)
-        let success = removeTemporaryItemAtPath(testPluginDirectoryPath)
-        XCTAssertTrue(success, "Removing the directory should succeed.")
+        let testPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
+        let testPluginResourcesDirectoryPath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testPluginResourcesDirectoryName)
+        let testPluginResourcesFilePath = testPluginResourcesDirectoryPath.stringByAppendingPathComponent(testFilename)
+        let testPluginContentsFilePath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testFilename)
+        let testInfoDictionaryFilePath = testPluginContentsDirectoryPath.stringByAppendingPathComponent(testPluginInfoDictionaryFilename)
+
+        
+        if !isRemove {
+            if !requireConfirmation {
+                createDirectoryAtPath(testPluginDirectoryPath)
+                createDirectoryAtPath(testPluginContentsDirectoryPath)
+                createDirectoryAtPath(testPluginResourcesDirectoryPath)
+                createFileAtPath(testPluginResourcesFilePath)
+                createFileAtPath(testPluginContentsFilePath)
+                createFileAtPath(testInfoDictionaryFilePath)
+            } else {
+                createDirectoryAtPathWithConfirmation(testPluginDirectoryPath)
+                createDirectoryAtPathWithConfirmation(testPluginContentsDirectoryPath)
+                createDirectoryAtPathWithConfirmation(testPluginResourcesDirectoryPath)
+                createFileAtPathWithConfirmation(testPluginResourcesFilePath)
+                createFileAtPathWithConfirmation(testPluginContentsFilePath)
+                createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(testPluginDirectoryPath)
+                createFileAtPathWithConfirmation(testInfoDictionaryFilePath)
+            }
+        } else {
+            if !requireConfirmation {
+                let testPluginDirectoryPath = path.stringByAppendingPathComponent(testPluginDirectoryName)
+                let success = removeTemporaryItemAtPath(testPluginDirectoryPath)
+                XCTAssertTrue(success, "Removing the directory should succeed.")
+            } else {
+                createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
+                removeFileAtPathWithConfirmation(testInfoDictionaryFilePath)
+
+                removeFileAtPathWithConfirmation(testPluginResourcesFilePath)
+                removeDirectoryAtPathWithConfirmation(testPluginResourcesDirectoryPath)
+                removeFileAtPathWithConfirmation(testPluginContentsFilePath)
+
+                createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
+                removeDirectoryAtPathWithConfirmation(testPluginContentsDirectoryPath)
+                
+                createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
+                removeDirectoryAtPathWithConfirmation(testPluginDirectoryPath)
+            }
+        }
     }
 }
 
@@ -426,7 +464,7 @@ class FilesAndPluginsDirectoryManagerTests: TemporaryPluginsTestCase {
     }
 
     func testMoveResourcesDirectory() {
-        createValidPluginHierarchyAtPath(pluginsDirectoryPath)
+        createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
 
         let testPluginDirectoryPath = pluginsDirectoryPath.stringByAppendingPathComponent(testPluginDirectoryName)
         let testPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
@@ -437,11 +475,11 @@ class FilesAndPluginsDirectoryManagerTests: TemporaryPluginsTestCase {
         // Clean up
         moveDirectoryAtPathWithConfirmation(testRenamedPluginResourcesDirectoryPath, destinationPath: testPluginResourcesDirectoryPath)
 
-        removeValidPluginHierarchyAtPath(pluginsDirectoryPath)
+        removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
     }
 
     func testMoveContentsDirectory() {
-        createValidPluginHierarchyAtPath(pluginsDirectoryPath)
+        createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
 
         let testPluginDirectoryPath = pluginsDirectoryPath.stringByAppendingPathComponent(testPluginDirectoryName)
         let testPluginContentsDirectoryPath = testPluginDirectoryPath.stringByAppendingPathComponent(testPluginContentsDirectoryName)
@@ -453,11 +491,11 @@ class FilesAndPluginsDirectoryManagerTests: TemporaryPluginsTestCase {
         createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(testPluginDirectoryPath)
         moveDirectoryAtPathWithConfirmation(testRenamedPluginContentsDirectoryPath, destinationPath: testPluginContentsDirectoryPath)
 
-        removeValidPluginHierarchyAtPath(pluginsDirectoryPath)
+        removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
     }
 
     func testMovePluginDirectory() {
-        createValidPluginHierarchyAtPath(pluginsDirectoryPath)
+        createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
 
         let testPluginDirectoryPath = pluginsDirectoryPath.stringByAppendingPathComponent(testPluginDirectoryName)
         let testRenamedPluginDirectoryPath = pluginsDirectoryPath.stringByAppendingPathComponent(testPluginDirectoryNameTwo)
@@ -470,7 +508,7 @@ class FilesAndPluginsDirectoryManagerTests: TemporaryPluginsTestCase {
         createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(testPluginDirectoryPath)
         moveDirectoryAtPathWithConfirmation(testRenamedPluginDirectoryPath, destinationPath: testPluginDirectoryPath)
 
-        removeValidPluginHierarchyAtPath(pluginsDirectoryPath)
+        removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
     }
 
     func testMovePluginFromAndToUnwatchedDirectory() {
@@ -490,4 +528,42 @@ class FilesAndPluginsDirectoryManagerTests: TemporaryPluginsTestCase {
         removeValidPluginHierarchyAtPath(temporaryDirectoryPath)
     }
 
+    func testOnlyFileExtension() {
+        createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
+        
+        // Create a file named with just the file extension
+        let testFilePath = pluginsDirectoryPath.stringByAppendingPathComponent(pluginFileExtension)
+        createFileAtPathWithConfirmation(testFilePath)
+        removeFileAtPathWithConfirmation(testFilePath)
+
+        // Clean up
+        removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
+    }
+
+    func testHiddenFile() {
+        createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
+        
+        // Create a hidden file
+        let testFilePath = pluginsDirectoryPath.stringByAppendingPathComponent(testHiddenDirectoryName)
+        createFileAtPathWithConfirmation(testFilePath)
+        removeFileAtPathWithConfirmation(testFilePath)
+
+        // Clean up
+        removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
+    }
+
+    func testHiddenFileInPluginDirectory() {
+        createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
+        // Create a hidden file
+        let testPluginDirectoryPath = pluginsDirectoryPath.stringByAppendingPathComponent(testPluginDirectoryName)
+        let testFilePath = testPluginDirectoryPath.stringByAppendingPathComponent(testHiddenDirectoryName)
+        createFileAtPathWithConfirmation(testFilePath)
+        removeFileAtPathWithConfirmation(testFilePath)
+
+        // Clean up
+        removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
+    }
+
+    // TODO: Test just `.wcplugin`
+    // TODO: Test adding and removing file extension
 }

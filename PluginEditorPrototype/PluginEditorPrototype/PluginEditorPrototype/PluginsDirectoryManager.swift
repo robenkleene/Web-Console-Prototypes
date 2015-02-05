@@ -238,23 +238,27 @@ class PluginsDirectoryManager: NSObject, WCLDirectoryWatcherDelegate, PluginsDir
     
     func pathHasValidInfoDictionarySubpath(path: NSString, requireExactInfoDictionaryMatch: Bool) -> Bool {
         if let pluginPathComponents = pluginPathComponentsFromPath(path) {
-            var pluginSubpathComponents = pluginPathComponents as [String]
-            let firstPathComponent = pluginSubpathComponents.removeAtIndex(0)
-            if firstPathComponent.pathExtension != pluginFileExtension {
-                return false
+            var pluginSubpathComponents = pluginPathComponents as? [String]
+            if let firstPathComponent = pluginSubpathComponents?.removeAtIndex(0) {
+                if firstPathComponent.pathExtension != pluginFileExtension {
+                    return false
+                }
+
+                if let pluginSubpathComponents = pluginSubpathComponents {
+                    let pluginSubpath = NSString.pathWithComponents(pluginSubpathComponents)
+                    
+                    if requireExactInfoDictionaryMatch {
+                        return PluginsPathHelper.pathComponent(ClassConstants.infoDictionaryPathComponent, isPathComponent: pluginSubpath)
+                    } else {
+                        return PluginsPathHelper.pathComponent(ClassConstants.infoDictionaryPathComponent, containsSubpathComponent: pluginSubpath)
+                    }
+                }
             }
             
-            let pluginSubpath = NSString.pathWithComponents(pluginSubpathComponents)
-
-            if requireExactInfoDictionaryMatch {
-                return PluginsPathHelper.pathComponent(ClassConstants.infoDictionaryPathComponent, isPathComponent: pluginSubpath)
-            } else {
-                return PluginsPathHelper.pathComponent(ClassConstants.infoDictionaryPathComponent, containsSubpathComponent: pluginSubpath)
-            }
         }
         return false
     }
-    
+
     func infoDictionaryExistsAtPluginPath(pluginPath: NSString) -> Bool {
         let infoDictionaryPath = pluginPath.stringByAppendingPathComponent(ClassConstants.infoDictionaryPathComponent)
         var isDir: ObjCBool = false
