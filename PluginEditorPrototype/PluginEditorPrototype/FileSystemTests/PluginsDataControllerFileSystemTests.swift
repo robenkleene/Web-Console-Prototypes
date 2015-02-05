@@ -14,7 +14,7 @@ class PluginsDataControllerFileSystemTests: PluginsDataControllerEventTestCase {
     // MARK: File System Tests
 
     func testAddAndDeletePlugin() {
-        let destinationPluginFilename = plugin.identifier
+        let destinationPluginFilename = DuplicatePluginController.pluginFilenameFromName(plugin.identifier)
         let destinationPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(destinationPluginFilename)
 
         var newPlugin: Plugin!
@@ -28,7 +28,7 @@ class PluginsDataControllerFileSystemTests: PluginsDataControllerEventTestCase {
     }
     
     func testMovePlugin() {
-        let destinationPluginFilename = plugin.identifier
+        let destinationPluginFilename = DuplicatePluginController.pluginFilenameFromName(plugin.identifier)
         let destinationPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(destinationPluginFilename)
         
         // Move the plugin
@@ -50,10 +50,7 @@ class PluginsDataControllerFileSystemTests: PluginsDataControllerEventTestCase {
         XCTAssertTrue(contains(PluginsManager.sharedInstance.pluginsDataController.plugins(), newPluginTwo), "The plugins should contain the plugin")
     }
     
-    func testEditPlugin() {
-        let destinationPluginFilename = plugin.identifier
-        let destinationPluginPath = pluginPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent(destinationPluginFilename)
-        
+    func testEditPlugin() {        
         // Move the plugin
         var newPlugin: Plugin!
         modifyPluginWithConfirmation(plugin, handler: { (modifiedPlugin) -> Void in
