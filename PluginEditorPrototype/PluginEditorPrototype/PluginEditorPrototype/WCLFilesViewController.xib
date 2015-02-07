@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WCLFilesViewController">
             <connections>
+                <outlet property="fileExtensionsArrayController" destination="8Rg-Xl-Jt6" id="4zC-h3-8ko"/>
                 <outlet property="tableView" destination="Upa-PR-zAD" id="J40-3w-wM7"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>

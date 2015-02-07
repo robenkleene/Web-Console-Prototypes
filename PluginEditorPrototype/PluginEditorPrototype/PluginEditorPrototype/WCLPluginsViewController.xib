@@ -216,7 +216,6 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
-                                <binding destination="wNa-Wq-zbh" name="enabled" keyPath="selection.editable" id="LMb-5E-wSk"/>
                                 <binding destination="wNa-Wq-zbh" name="value" keyPath="selection.command" id="sDT-QB-0Gl">
                                     <dictionary key="options">
                                         <string key="NSMultipleValuesPlaceholder">script.sh</string>
@@ -226,6 +225,7 @@
                                         <bool key="NSValidatesImmediately" value="YES"/>
                                     </dictionary>
                                 </binding>
+                                <binding destination="wNa-Wq-zbh" name="enabled" keyPath="selection.editable" id="LMb-5E-wSk"/>
                                 <outlet property="nextKeyView" destination="eIf-fm-ZJw" id="4gh-Z1-DuR"/>
                             </connections>
                         </textField>
