@@ -81,11 +81,24 @@ extension PluginsDataControllerEventTestCase {
     // MARK: Modify Helpers
     
     func modifyPluginWithConfirmation(plugin: Plugin, handler: (plugin: Plugin?) -> Void) {
+
+        // Get the old identifier
+        let infoDictionary: Dictionary! = NSDictionary(contentsOfURL: plugin.infoDictionaryURL)
+        let identifier: String! = infoDictionary[Plugin.InfoDictionaryKeys.Identifier] as String
+
+        // Make a new identifier
+        let UUID = NSUUID()
+        let newIdentifier = UUID.UUIDString
+
+        // Get the info dictionary contents
         let infoDictionaryPath: NSString! = plugin.infoDictionaryURL.path
         var error: NSError?
         let infoDictionaryContents: NSString! = NSString(contentsOfFile: infoDictionaryPath, encoding: NSUTF8StringEncoding, error: &error)
         XCTAssertNil(error, "The error should be nil.")
         
+        // Replace the old identifier with the new identifier
+        let newInfoDictionaryContents = infoDictionaryContents.stringByReplacingOccurrencesOfString(identifier, withString: newIdentifier)
+
         let removeExpectation = expectationWithDescription("Plugin was removed")
         pluginDataEventManager.addPluginWasRemovedHandler({ (removedPlugin) -> Void in
             if (plugin == removedPlugin) {
@@ -105,8 +118,7 @@ extension PluginsDataControllerEventTestCase {
             }
         })
         
-        SubprocessFileSystemModifier.writeToFileAtPath(infoDictionaryPath, contents: infoDictionaryContents)
+        SubprocessFileSystemModifier.writeToFileAtPath(infoDictionaryPath, contents: newInfoDictionaryContents)
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
-    
 }

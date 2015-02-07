@@ -56,11 +56,18 @@ class PluginsDataController: PluginsDirectoryManagerDelegate {
         pluginInfoDictionaryWasCreatedOrModifiedAtPluginPath pluginPath: NSString)
     {
         if let oldPlugin = pluginAtPluginPath(pluginPath) {
-            removePlugin(oldPlugin)
-        }
-        
-        if let newPlugin = Plugin.pluginWithPath(pluginPath) {
-            addPlugin(newPlugin)
+            if let newPlugin = Plugin.pluginWithPath(pluginPath) {
+                // If there is an existing plugin and a new plugin, remove the old plugin and add the new plugin
+                if !oldPlugin.isEqualToPlugin(newPlugin) {
+                    removePlugin(oldPlugin)
+                    addPlugin(newPlugin)
+                }
+            }
+        } else {
+            // If there is only a new plugin, add it
+            if let newPlugin = Plugin.pluginWithPath(pluginPath) {
+                addPlugin(newPlugin)
+            }
         }
     }
     

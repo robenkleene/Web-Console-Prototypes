@@ -7,7 +7,7 @@
 //
 
 extension Plugin {
-    struct PluginInfoDictionaryKeys {
+    struct InfoDictionaryKeys {
         static let Name = "WCName"
         static let Identifier = "WCUUID"
         static let Command = "WCCommand"
@@ -94,11 +94,11 @@ extension Plugin {
     }
 
     class func validSuffixes(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> [String]? {
-        if let suffixes = infoDictionary[PluginInfoDictionaryKeys.Suffixes] as? [String] {
+        if let suffixes = infoDictionary[InfoDictionaryKeys.Suffixes] as? [String] {
             return suffixes
         }
 
-        if let suffixes: AnyObject = infoDictionary[PluginInfoDictionaryKeys.Suffixes] {
+        if let suffixes: AnyObject = infoDictionary[InfoDictionaryKeys.Suffixes] {
             if error != nil {
                 let errorString = NSLocalizedString("Plugin file extensions is invalid \(infoDictionary).", comment: "Invalid plugin file extensions error")
                 error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
@@ -109,13 +109,13 @@ extension Plugin {
     }
 
     class func validCommand(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
-        if let command = infoDictionary[PluginInfoDictionaryKeys.Command] as NSString? {
+        if let command = infoDictionary[InfoDictionaryKeys.Command] as NSString? {
             if command.length > 0 {
                 return command
             }
         }
 
-        if let commnd: AnyObject = infoDictionary[PluginInfoDictionaryKeys.Command] {
+        if let commnd: AnyObject = infoDictionary[InfoDictionaryKeys.Command] {
             if error != nil {
                 let errorString = NSLocalizedString("Plugin command is invalid \(infoDictionary).", comment: "Invalid plugin command error")
                 error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
@@ -126,7 +126,7 @@ extension Plugin {
     }
     
     class func validName(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
-        if let name = infoDictionary[PluginInfoDictionaryKeys.Name] as NSString? {
+        if let name = infoDictionary[InfoDictionaryKeys.Name] as NSString? {
             if name.length > 0 {
                 return name
             }
@@ -141,7 +141,7 @@ extension Plugin {
     }
     
     class func validIdentifier(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> String? {
-        if let uuidString = infoDictionary[PluginInfoDictionaryKeys.Identifier] as NSString? {
+        if let uuidString = infoDictionary[InfoDictionaryKeys.Identifier] as NSString? {
             var uuid: NSUUID? = NSUUID(UUIDString: uuidString)
             if uuid != nil {
                 return uuidString
@@ -157,11 +157,11 @@ extension Plugin {
     }
 
     class func validHidden(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> Bool {
-        if let hidden = infoDictionary[PluginInfoDictionaryKeys.Hidden] as Int? {
+        if let hidden = infoDictionary[InfoDictionaryKeys.Hidden] as Int? {
             return NSNumber(integer: hidden).boolValue
         }
         
-        if let hidden: AnyObject = infoDictionary[PluginInfoDictionaryKeys.Hidden] {
+        if let hidden: AnyObject = infoDictionary[InfoDictionaryKeys.Hidden] {
             if error != nil {
                 let errorString = NSLocalizedString("Plugin hidden is invalid \(infoDictionary).", comment: "Invalid plugin name error")
                 error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)
@@ -172,11 +172,11 @@ extension Plugin {
     }
 
     class func validEditable(infoDictionary: [NSObject : AnyObject], error: NSErrorPointer) -> Bool {
-        if let editable = infoDictionary[PluginInfoDictionaryKeys.Editable] as Int? {
+        if let editable = infoDictionary[InfoDictionaryKeys.Editable] as Int? {
             return NSNumber(integer: editable).boolValue
         }
         
-        if let editable: AnyObject = infoDictionary[PluginInfoDictionaryKeys.Editable] {
+        if let editable: AnyObject = infoDictionary[InfoDictionaryKeys.Editable] {
             if error != nil {
                 let errorString = NSLocalizedString("Plugin editable is invalid \(infoDictionary).", comment: "Invalid plugin name error")
                 error.memory = NSError.errorWithDescription(errorString, code: ClassConstants.errorCode)

@@ -30,7 +30,7 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
         var pluginInfoDictionaryURL = Plugin.infoDictionaryURLForPluginURL(pluginURL)
         var pluginInfoDictionaryContents: NSString! = NSString(contentsOfURL: pluginInfoDictionaryURL, encoding: NSUTF8StringEncoding, error: &error)
         XCTAssertNil(error, "The error should be nil")
-        var range = pluginInfoDictionaryContents.rangeOfString(Plugin.PluginInfoDictionaryKeys.Editable)
+        var range = pluginInfoDictionaryContents.rangeOfString(Plugin.InfoDictionaryKeys.Editable)
         XCTAssertFalse(range.location == NSNotFound, "The string should have been found")
 
         // Duplicate the plugin
@@ -58,7 +58,7 @@ class DuplicatePluginControllerTests: PluginsManagerTestCase {
         pluginInfoDictionaryURL = Plugin.infoDictionaryURLForPluginURL(duplicatePlugin.bundle.bundleURL)
         pluginInfoDictionaryContents = NSString(contentsOfURL: pluginInfoDictionaryURL, encoding: NSUTF8StringEncoding, error: &error)
         XCTAssertNil(error, "The error should be nil")
-        range = pluginInfoDictionaryContents.rangeOfString(Plugin.PluginInfoDictionaryKeys.Editable)
+        range = pluginInfoDictionaryContents.rangeOfString(Plugin.InfoDictionaryKeys.Editable)
         XCTAssertTrue(range.location == NSNotFound, "The string should not have been found")
 
         // Test the plugins properties are accurate
