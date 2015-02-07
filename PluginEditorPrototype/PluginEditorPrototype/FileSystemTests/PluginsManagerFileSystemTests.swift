@@ -91,4 +91,6 @@ class PluginsManagerFileSystemTests: PluginsDataControllerEventTestCase {
         XCTAssertTrue(plugins().containsObject(newPlugin), "The plugins should contain the plugin")
     }
 
+    // TODO: Test making the plugin info dictionary invalid removes it
+    // TODO: Test that touching the plugin info dictionary does not cause it to reload (because the resulting plugin will still be equal) No way to test this now since there aren't any callbacks to wait for here
 }
