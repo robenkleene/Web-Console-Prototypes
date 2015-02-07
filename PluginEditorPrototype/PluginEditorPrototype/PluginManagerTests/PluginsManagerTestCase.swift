@@ -54,6 +54,19 @@ class PluginsManagerTestCase: TemporaryPluginsTestCase {
         return createdPlugin
     }
  
+    func newPluginFromPluginWithConfirmation(plugin: Plugin) -> Plugin {
+        var error: NSError?
+        var createdPlugin: Plugin!
+        let createdPluginExpectation = expectationWithDescription("Create new plugin")
+        PluginsManager.sharedInstance.newPluginFromPlugin(plugin) { (newPlugin, error) -> Void in
+            XCTAssertNil(error, "The error should be nil")
+            createdPlugin = newPlugin
+            createdPluginExpectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+        return createdPlugin
+    }
+    
     func movePluginToTrashAndCleanUpWithConfirmation(plugin: Plugin) {
         // Confirm that a matching directory does not exist in the trash
         let trashedPluginDirectoryName = plugin.bundle.bundlePath.lastPathComponent

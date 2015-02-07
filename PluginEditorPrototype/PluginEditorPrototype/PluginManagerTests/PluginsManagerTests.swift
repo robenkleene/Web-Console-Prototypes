@@ -12,14 +12,26 @@ import XCTest
 class PluginsManagerTests: PluginsManagerTestCase {
 
     func testDuplicateAndTrashPlugin() {
-        var newPlugin = newPluginWithConfirmation()
+        let newPlugin = newPluginWithConfirmation()
         
         XCTAssertEqual(PluginsManager.sharedInstance.plugins().count, 2, "The plugins count should be two")
         let plugins = PluginsManager.sharedInstance.plugins() as NSArray
         XCTAssertTrue(plugins.containsObject(newPlugin), "The plugins should contain the plugin")
+
+        // Edit the new plugin
+        newPlugin.command = testPluginCommandTwo
+
+        // Create another plugin from this plugin
+        let newPluginTwo = newPluginFromPluginWithConfirmation(newPlugin)
+        
+        // Test Properties
+
+        XCTAssertEqual(newPluginTwo.command!, newPlugin.command!, "The commands should be equal")
+        XCTAssertNotEqual(plugin.command!, newPlugin.command!, "The names should not be equal")
         
         // Trash the duplicated plugin
         movePluginToTrashAndCleanUpWithConfirmation(newPlugin)
+        movePluginToTrashAndCleanUpWithConfirmation(newPluginTwo)
     }
 
     func testRenamePlugin() {
