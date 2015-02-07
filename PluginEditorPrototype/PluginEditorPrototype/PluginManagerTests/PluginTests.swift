@@ -153,6 +153,27 @@ class PluginTests: PluginsManagerTestCase {
         XCTAssertFalse(valid, "The name should not be valid")
         XCTAssertNotNil(error, "The error should not be nil.")
     }
+
+    func testEquality() {
+        let samePlugin: Plugin! = Plugin.pluginWithURL(pluginURL)
+        XCTAssertNotEqual(plugin, samePlugin, "The plugins should not be equal")
+        XCTAssertTrue(plugin.isEqualToPlugin(samePlugin), "The plugins should be equal")
+        
+        // Duplicate the plugins folder, this should not cause a second plugin to be added to the plugin manager since the copy originated from the same process
+        let destinationPluginFilename = DuplicatePluginController.pluginFilenameFromName(plugin.identifier)
+        let destinationPluginURL: NSURL! = pluginURL.URLByDeletingLastPathComponent?.URLByAppendingPathComponent(destinationPluginFilename)
+        var error: NSError?
+        let success = NSFileManager.defaultManager().copyItemAtURL(pluginURL, toURL: destinationPluginURL, error: &error)
+        XCTAssert(success, "The copy should succeed")
+        XCTAssertNil(error, "The error should be nil")
+
+        let newPlugin: Plugin! = Plugin.pluginWithURL(destinationPluginURL)
+        XCTAssertNotEqual(plugin, newPlugin, "The plugins should not be equal")
+        // This fails because the bundle URL and commandPath are different
+        XCTAssertFalse(plugin.isEqualToPlugin(newPlugin), "The plugins should be equal")
+
+        // TODO: It would be nice to test modifying properties
+    }
 }
 
 class DuplicatePluginNameValidationTests: XCTestCase {
