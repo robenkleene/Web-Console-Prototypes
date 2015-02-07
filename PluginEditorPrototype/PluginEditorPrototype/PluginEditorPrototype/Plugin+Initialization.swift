@@ -15,6 +15,20 @@ extension Plugin {
         static let Hidden = "WCHidden"
         static let Editable = "WCEditable"
     }
+
+    enum PluginType {
+        case BuiltIn, User, Other
+        func name() -> String {
+            switch self {
+            case .BuiltIn:
+                return "Built-In"
+            case .User:
+                return "User"
+            case .Other:
+                return "Other"
+            }
+        }
+    }
     
     class func pluginWithURL(url: NSURL) -> Plugin? {
         if let path = url.path {
@@ -39,8 +53,10 @@ extension Plugin {
                                 if error == nil {
                                     let editable = validEditable(infoDictionary, error: &error)
                                     if error == nil {
+                                        let pluginType = validPluginTypeFromPath(path)
                                         return Plugin(bundle: bundle,
                                             infoDictionary: infoDictionary,
+                                            pluginType: pluginType,
                                             identifier: identifier,
                                             name: name,
                                             command: command,
@@ -184,5 +200,17 @@ extension Plugin {
         }
         
         return true
+    }
+
+    class func validPluginTypeFromPath(path: NSString) -> PluginType {
+        let pluginContainerDirectory = path.stringByDeletingLastPathComponent
+        switch pluginContainerDirectory {
+        case Directory.ApplicationSupportPlugins.path():
+            return PluginType.User
+        case Directory.BuiltInPlugins.path():
+            return PluginType.BuiltIn
+        default:
+            return PluginType.Other
+        }
     }
 }

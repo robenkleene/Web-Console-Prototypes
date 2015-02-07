@@ -71,7 +71,7 @@
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <connections>
-                                                            <binding destination="L66-AX-u2D" name="value" keyPath="objectValue.type" id="GD8-sP-LmP"/>
+                                                            <binding destination="L66-AX-u2D" name="value" keyPath="objectValue.type" id="5IT-ZI-GGz"/>
                                                         </connections>
                                                     </textField>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LGI-sA-Bqs">

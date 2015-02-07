@@ -28,9 +28,11 @@ class Plugin: WCLPlugin {
     }
     internal let bundle: NSBundle
     let hidden: Bool
+    let pluginType: PluginType
     
     init(bundle: NSBundle,
         infoDictionary: [NSObject : AnyObject],
+        pluginType: PluginType,
         identifier: String,
         name: String,
         command: String?,
@@ -44,6 +46,7 @@ class Plugin: WCLPlugin {
         self.identifier = identifier
         self.hidden = hidden
         self.editable = editable
+        self.pluginType = pluginType
         
         // Optional
         self.command = command
@@ -124,9 +127,8 @@ class Plugin: WCLPlugin {
             save()
         }
     }
-    var type: String {
-        // TODO: Implement, should be a `let` not `var`
-        return "Built-In"
+    dynamic var type: NSString {
+        return pluginType.name()
     }
     dynamic var editable: Bool {
         didSet {
