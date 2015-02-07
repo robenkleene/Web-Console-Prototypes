@@ -577,13 +577,21 @@ class FilesAndPluginsDirectoryManagerTests: TemporaryPluginsTestCase {
         removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
     }
 
-//    func testRemoveAndAddPluginFileExtension() {
-//        createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
-//
-//        
-//        // Clean up
-//        removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
-//    }
+    func testRemoveAndAddPluginFileExtension() {
+        createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
 
-    // TODO: Test adding and removing file extension
+        // Move the directory, removing the plugin extension, this should cause a callback
+        let testPluginDirectoryPath = pluginsDirectoryPath.stringByAppendingPathComponent(testPluginDirectoryName)
+        let movedPluginDirectoryFilename = testPluginDirectoryName.stringByDeletingPathExtension
+        let movedPluginDirectoryPath = pluginsDirectoryPath.stringByAppendingPathComponent(movedPluginDirectoryFilename)
+        createExpectationForPluginInfoDictionaryWasRemovedAtPluginPath(testPluginDirectoryPath)
+        moveDirectoryAtPathWithConfirmation(testPluginDirectoryPath, destinationPath: movedPluginDirectoryPath)
+
+        // Move the directory back, re-adding the file extension, this should cause a callback
+        createExpectationForPluginInfoDictionaryWasCreatedOrModifiedAtPluginPath(testPluginDirectoryPath)
+        moveDirectoryAtPathWithConfirmation(movedPluginDirectoryPath, destinationPath: testPluginDirectoryPath)
+
+        // Clean up
+        removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
+    }
 }
