@@ -528,7 +528,7 @@ class FilesAndPluginsDirectoryManagerTests: TemporaryPluginsTestCase {
         removeValidPluginHierarchyAtPath(temporaryDirectoryPath)
     }
 
-    func testOnlyFileExtension() {
+    func testFileExtensionAsName() {
         createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
         
         // Create a file named with just the file extension
@@ -540,6 +540,19 @@ class FilesAndPluginsDirectoryManagerTests: TemporaryPluginsTestCase {
         removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
     }
 
+    func testOnlyFileExtension() {
+        createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
+        
+        // Create a file named with just the file extension
+        let testFilePath = pluginsDirectoryPath.stringByAppendingPathComponent(".\(pluginFileExtension)")
+        createFileAtPathWithConfirmation(testFilePath)
+        removeFileAtPathWithConfirmation(testFilePath)
+        
+        // Clean up
+        removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
+    }
+
+    
     func testHiddenFile() {
         createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
         
@@ -564,6 +577,13 @@ class FilesAndPluginsDirectoryManagerTests: TemporaryPluginsTestCase {
         removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
     }
 
-    // TODO: Test just `.wcplugin`
+//    func testRemoveAndAddPluginFileExtension() {
+//        createValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
+//
+//        
+//        // Clean up
+//        removeValidPluginHierarchyAtPathWithConfirmation(pluginsDirectoryPath)
+//    }
+
     // TODO: Test adding and removing file extension
 }
