@@ -37,7 +37,6 @@ class FileExtensionsController: WCLFileExtensionsController {
         super.init(pluginsManager: pluginsManager)
     }
 
-    // TODO: Untested convenience init
     convenience override init() {
         self.init(pluginsManager: PluginsManager.sharedInstance)
     }

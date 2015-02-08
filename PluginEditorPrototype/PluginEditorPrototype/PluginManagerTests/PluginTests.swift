@@ -172,7 +172,7 @@ class PluginTests: PluginsManagerTestCase {
         // This fails because the bundle URL and commandPath are different
         XCTAssertFalse(plugin.isEqualToPlugin(newPlugin), "The plugins should be equal")
 
-        // TODO: It would be nice to test modifying properties
+        // TODO: It would be nice to test modifying properties, but I can't think of a way to do that because with two separate plugin directories the command paths and info dictionary URLs will be different
     }
 }
 

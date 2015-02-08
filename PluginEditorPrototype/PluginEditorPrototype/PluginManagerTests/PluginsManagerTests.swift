@@ -48,8 +48,6 @@ class PluginsManagerTests: PluginsManagerTestCase {
         XCTAssertNotNil(PluginsManager.sharedInstance.pluginWithName(newPluginName), "The plugin should not be nil")
         XCTAssertNil(PluginsManager.sharedInstance.pluginWithName(testPluginName), "The plugin should be nil")
     }
-
-    // TODO: Waiting for default new plugin API, do tests with `PluginManager` `duplicatePlugin` API, using `PluginManager` `newPlugin`
 }
 
 class PluginsManagerBuiltInPluginsTests: XCTestCase {
