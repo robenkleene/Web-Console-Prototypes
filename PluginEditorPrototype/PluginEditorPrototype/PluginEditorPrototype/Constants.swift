@@ -19,6 +19,7 @@ enum Directory {
     case ApplicationSupport
     case ApplicationSupportPlugins
     case BuiltInPlugins
+    case Trash
     func path() -> String {
         switch self {
         case .Caches:
@@ -31,6 +32,8 @@ enum Directory {
             return Directory.ApplicationSupport.path().stringByAppendingPathComponent(pluginsDirectoryPathComponent)
         case .BuiltInPlugins:
             return NSBundle.mainBundle().builtInPlugInsPath!
+        case .Trash:
+            return NSSearchPathForDirectoriesInDomains(.TrashDirectory, .UserDomainMask, true)[0] as String
         }
     }
     func URL() -> NSURL {

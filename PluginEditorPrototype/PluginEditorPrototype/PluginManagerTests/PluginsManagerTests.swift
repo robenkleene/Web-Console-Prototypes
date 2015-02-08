@@ -11,6 +11,14 @@ import XCTest
 
 class PluginsManagerTests: PluginsManagerTestCase {
 
+    func testTestPlugins() {
+        let plugins = PluginsManager.sharedInstance.plugins() as [Plugin]
+        for plugin in plugins {
+            XCTAssertEqual(plugin.pluginType, Plugin.PluginType.Other, "The plugin type should be built-in")
+            XCTAssertEqual(plugin.type as String, Plugin.PluginType.Other.name(), "The type should equal the name")
+        }
+    }
+    
     func testDuplicateAndTrashPlugin() {
         let newPlugin = newPluginWithConfirmation()
         
@@ -40,7 +48,29 @@ class PluginsManagerTests: PluginsManagerTestCase {
         XCTAssertNotNil(PluginsManager.sharedInstance.pluginWithName(newPluginName), "The plugin should not be nil")
         XCTAssertNil(PluginsManager.sharedInstance.pluginWithName(testPluginName), "The plugin should be nil")
     }
-    
-    // TODO: Waiting for default new plugin API, do tests with `PluginManager` `duplicatePlugin` API, using `PluginManager` `newPlugin`
 
+    // TODO: Waiting for default new plugin API, do tests with `PluginManager` `duplicatePlugin` API, using `PluginManager` `newPlugin`
+}
+
+class PluginsManagerBuiltInPluginsTests: XCTestCase {
+
+    override func setUp() {
+        super.setUp()
+        let pluginsManager = PluginsManager([Directory.BuiltInPlugins.path()],
+            duplicatePluginDestinationDirectoryURL: Directory.Trash.URL())
+        PluginsManager.setOverrideSharedInstance(pluginsManager)
+    }
+    
+    override func tearDown() {
+        PluginsManager.setOverrideSharedInstance(nil)
+        super.tearDown()
+    }
+    
+    func testBuiltInPlugins() {
+        let plugins = PluginsManager.sharedInstance.plugins() as [Plugin]
+        for plugin in plugins {
+            XCTAssertEqual(plugin.pluginType, Plugin.PluginType.BuiltIn, "The plugin type should be built-in")
+            XCTAssertEqual(plugin.type as String, Plugin.PluginType.BuiltIn.name(), "The type should equal the name")
+        }
+    }
 }

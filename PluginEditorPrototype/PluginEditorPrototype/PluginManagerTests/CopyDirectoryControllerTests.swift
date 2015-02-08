@@ -115,8 +115,7 @@ class CopyDirectoryControllerTests: TemporaryPluginsTestCase {
         XCTAssertTrue(contentsTwo!.isEmpty, "The contents should be empty")
 
         // Clean Up
-        let trashDirectory = NSSearchPathForDirectoriesInDomains(.TrashDirectory, .UserDomainMask, true)[0] as NSString
-        let recoveredFilesPath = trashDirectory.stringByAppendingPathComponent(copyDirectoryControllerTwo.trashDirectoryName)
+        let recoveredFilesPath = Directory.Trash.path().stringByAppendingPathComponent(copyDirectoryControllerTwo.trashDirectoryName)
         var isDir: ObjCBool = false
         let exists = NSFileManager.defaultManager().fileExistsAtPath(recoveredFilesPath, isDirectory: &isDir)
         XCTAssertTrue(exists, "The item should exist")

@@ -38,9 +38,7 @@ class PluginsDataControllerClassTests: XCTestCase {
     }
 
     func testExistingPlugins() {
-        let trashDirectoryPath = NSSearchPathForDirectoriesInDomains(.TrashDirectory, .UserDomainMask, true)[0] as NSString
-        let trashDirectoryURL = NSURL(fileURLWithPath: trashDirectoryPath)
-        let pluginsDataController = PluginsDataController(testPluginsPaths, duplicatePluginDestinationDirectoryURL: trashDirectoryURL!)
+        let pluginsDataController = PluginsDataController(testPluginsPaths, duplicatePluginDestinationDirectoryURL: Directory.Trash.URL())
         let plugins = pluginsDataController.plugins()
         
         var pluginPaths = [NSString]()
