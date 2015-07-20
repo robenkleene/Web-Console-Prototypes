@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="6198" systemVersion="14A297b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6198"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -641,12 +641,12 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="SplitViewPrototype" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
         </scene>
-        <!--Window Controller - Window-->
+        <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
@@ -657,25 +657,87 @@
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                     </window>
                     <connections>
-                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
+                        <segue destination="Liy-Az-G0f" kind="relationship" relationship="window.shadowedContentViewController" id="Zn5-5P-bWG"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="250"/>
+            <point key="canvasLocation" x="60" y="242"/>
+        </scene>
+        <!--Split View Controller-->
+        <scene sceneID="11g-gw-cdL">
+            <objects>
+                <splitViewController id="Liy-Az-G0f" sceneMemberID="viewController">
+                    <splitViewItems>
+                        <splitViewItem id="mgP-uL-P1B"/>
+                        <splitViewItem id="kMR-wq-kbt"/>
+                    </splitViewItems>
+                    <splitView key="splitView" dividerStyle="thin" id="68S-pd-iBO">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </splitView>
+                    <connections>
+                        <segue destination="vBq-W7-bS8" kind="relationship" relationship="splitItems" id="KsK-vd-OLE"/>
+                        <segue destination="y4s-Hp-oHQ" kind="relationship" relationship="splitItems" id="bKr-1I-uXo"/>
+                    </connections>
+                </splitViewController>
+                <customObject id="9Tv-Na-TZ6" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="60" y="639"/>
         </scene>
         <!--View Controller-->
-        <scene sceneID="hIz-AP-VOD">
+        <scene sceneID="vn5-Sm-4z5">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <viewController id="vBq-W7-bS8" customClass="ViewController" customModule="SplitViewPrototype" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="Gbl-dl-fKk">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bMC-Dn-PrE">
+                                <rect key="frame" x="196" y="67" width="59" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Top Split" id="NoX-gU-BGj">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="bMC-Dn-PrE" secondAttribute="centerY" id="qaT-f4-roK"/>
+                            <constraint firstAttribute="centerX" secondItem="bMC-Dn-PrE" secondAttribute="centerX" id="rYI-hu-8OE"/>
+                        </constraints>
                     </view>
                 </viewController>
-                <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customObject id="Pjr-Az-jh7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="629" y="503"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="cJY-Mo-VmT">
+            <objects>
+                <viewController id="y4s-Hp-oHQ" customClass="ViewController" customModule="SplitViewPrototype" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="tTG-4o-K6k">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8US-Ap-6mv">
+                                <rect key="frame" x="184" y="67" width="82" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bottom Split" id="Mv8-eo-mC0">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="8US-Ap-6mv" secondAttribute="centerX" id="c0p-ev-bsi"/>
+                            <constraint firstAttribute="centerY" secondItem="8US-Ap-6mv" secondAttribute="centerY" id="sDD-dR-ZfS"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="16w-I6-Afv" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="629" y="987"/>
         </scene>
     </scenes>
 </document>

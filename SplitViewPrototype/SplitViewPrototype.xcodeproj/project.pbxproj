@@ -12,6 +12,7 @@
 		457F4FE21B5C36A0007645C4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 457F4FE11B5C36A0007645C4 /* Images.xcassets */; };
 		457F4FE51B5C36A0007645C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 457F4FE31B5C36A0007645C4 /* Main.storyboard */; };
 		457F4FF11B5C36A0007645C4 /* SplitViewPrototypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FF01B5C36A0007645C4 /* SplitViewPrototypeTests.swift */; };
+		457F4FFB1B5C3C64007645C4 /* WebSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FFA1B5C3C64007645C4 /* WebSplitViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,7 @@
 		457F4FEA1B5C36A0007645C4 /* SplitViewPrototypeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SplitViewPrototypeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		457F4FEF1B5C36A0007645C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		457F4FF01B5C36A0007645C4 /* SplitViewPrototypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewPrototypeTests.swift; sourceTree = "<group>"; };
+		457F4FFA1B5C3C64007645C4 /* WebSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSplitViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				457F4FE11B5C36A0007645C4 /* Images.xcassets */,
 				457F4FE31B5C36A0007645C4 /* Main.storyboard */,
 				457F4FDB1B5C36A0007645C4 /* Supporting Files */,
+				457F4FFA1B5C3C64007645C4 /* WebSplitViewController.swift */,
 			);
 			path = SplitViewPrototype;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				457F4FFB1B5C3C64007645C4 /* WebSplitViewController.swift in Sources */,
 				457F4FE01B5C36A0007645C4 /* ViewController.swift in Sources */,
 				457F4FDE1B5C36A0007645C4 /* AppDelegate.swift in Sources */,
 			);
