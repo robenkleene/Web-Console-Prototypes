@@ -156,6 +156,7 @@
 		457F4FD01B5C36A0007645C4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Roben Kleene";
 				TargetAttributes = {
@@ -404,6 +405,7 @@
 				457F4FF61B5C36A0007645C4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		457F4FF71B5C36A0007645C4 /* Build configuration list for PBXNativeTarget "SplitViewPrototypeTests" */ = {
 			isa = XCConfigurationList;
@@ -412,6 +414,7 @@
 				457F4FF91B5C36A0007645C4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
