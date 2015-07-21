@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="7706"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -693,6 +694,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
+                            <webView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ayC-xT-sRH">
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
+                                <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12"/>
+                            </webView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bMC-Dn-PrE">
                                 <rect key="frame" x="196" y="67" width="59" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Top Split" id="NoX-gU-BGj">
@@ -720,7 +725,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8US-Ap-6mv">
+                            <webView translatesAutoresizingMaskIntoConstraints="NO" id="vWf-8z-ixU">
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="D6H-tC-7j7"/>
+                                </constraints>
+                                <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12"/>
+                            </webView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8US-Ap-6mv">
                                 <rect key="frame" x="184" y="67" width="82" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bottom Split" id="Mv8-eo-mC0">
                                     <font key="font" metaFont="system"/>
@@ -730,8 +742,10 @@
                             </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="8US-Ap-6mv" secondAttribute="centerX" id="c0p-ev-bsi"/>
-                            <constraint firstAttribute="centerY" secondItem="8US-Ap-6mv" secondAttribute="centerY" id="sDD-dR-ZfS"/>
+                            <constraint firstItem="vWf-8z-ixU" firstAttribute="leading" secondItem="tTG-4o-K6k" secondAttribute="leading" id="5b8-8d-0gy"/>
+                            <constraint firstAttribute="bottom" secondItem="vWf-8z-ixU" secondAttribute="bottom" id="HWN-8A-UQu"/>
+                            <constraint firstItem="vWf-8z-ixU" firstAttribute="top" secondItem="tTG-4o-K6k" secondAttribute="top" id="Vcz-gH-SB7"/>
+                            <constraint firstAttribute="trailing" secondItem="vWf-8z-ixU" secondAttribute="trailing" id="hql-qh-5DX"/>
                         </constraints>
                     </view>
                 </viewController>

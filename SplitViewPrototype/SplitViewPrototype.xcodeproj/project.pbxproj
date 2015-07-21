@@ -13,6 +13,7 @@
 		457F4FE51B5C36A0007645C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 457F4FE31B5C36A0007645C4 /* Main.storyboard */; };
 		457F4FF11B5C36A0007645C4 /* SplitViewPrototypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FF01B5C36A0007645C4 /* SplitViewPrototypeTests.swift */; };
 		457F4FFB1B5C3C64007645C4 /* WebSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FFA1B5C3C64007645C4 /* WebSplitViewController.swift */; };
+		45A6A2E31B5DDDF000601E6F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45A6A2E21B5DDDF000601E6F /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		457F4FEF1B5C36A0007645C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		457F4FF01B5C36A0007645C4 /* SplitViewPrototypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewPrototypeTests.swift; sourceTree = "<group>"; };
 		457F4FFA1B5C3C64007645C4 /* WebSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSplitViewController.swift; sourceTree = "<group>"; };
+		45A6A2E21B5DDDF000601E6F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45A6A2E31B5DDDF000601E6F /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +62,7 @@
 		457F4FCF1B5C36A0007645C4 = {
 			isa = PBXGroup;
 			children = (
+				45A6A2E21B5DDDF000601E6F /* WebKit.framework */,
 				457F4FDA1B5C36A0007645C4 /* SplitViewPrototype */,
 				457F4FED1B5C36A0007645C4 /* SplitViewPrototypeTests */,
 				457F4FD91B5C36A0007645C4 /* Products */,
