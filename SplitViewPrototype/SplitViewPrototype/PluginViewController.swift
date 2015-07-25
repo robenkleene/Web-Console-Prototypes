@@ -11,16 +11,13 @@ import WebKit
 
 class PluginViewController: NSSplitViewController {
 
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         NSLog("viewDidLoad")
         NSLog("splitView = \(splitView)")
         NSLog("splitView.delegate = \(splitView.delegate)")
     }
-
+    
     override func splitViewDidResizeSubviews(notification: NSNotification) {
         super.splitViewDidResizeSubviews(notification)
         NSLog("splitViewDidResizeSubviews")
