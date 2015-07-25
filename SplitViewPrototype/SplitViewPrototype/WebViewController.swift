@@ -22,13 +22,15 @@ class WebViewController: NSViewController {
 
     override func viewDidAppear() {
         super.viewDidAppear()
-
-        let heightConstraint = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view(>=150)]|",
-            options:NSLayoutFormatOptions(0),
-            metrics:nil,
-            views:["view": view])
-        self.view.superview!.addConstraints(heightConstraint)
         
+        let heightConstraint =  NSLayoutConstraint(item: view,
+            attribute: .Height,
+            relatedBy: .GreaterThanOrEqual,
+            toItem: nil,
+            attribute: .NotAnAttribute,
+            multiplier: 1,
+            constant: 150)
+        self.view.superview!.addConstraint(heightConstraint)
         let constraints = view.constraints
     }
     

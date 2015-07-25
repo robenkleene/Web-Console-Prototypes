@@ -29,5 +29,9 @@ class PluginViewController: NSSplitViewController {
             return super.validateMenuItem(menuItem)
         }
     }
+    
+    override func splitView(splitView: NSSplitView, shouldHideDividerAtIndex dividerIndex: Int) -> Bool {
+        return logSplitViewItem.collapsed
+    }
 
 }

@@ -681,6 +681,9 @@
                     <splitView key="splitView" dividerStyle="paneSplitter" id="68S-pd-iBO">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <outlet property="delegate" destination="Liy-Az-G0f" id="e7o-OV-DsQ"/>
+                        </connections>
                     </splitView>
                     <connections>
                         <segue destination="vBq-W7-bS8" kind="relationship" relationship="splitItems" id="KsK-vd-OLE"/>
