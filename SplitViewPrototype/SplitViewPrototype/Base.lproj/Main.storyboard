@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="7706"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -665,15 +664,15 @@
             </objects>
             <point key="canvasLocation" x="60" y="242"/>
         </scene>
-        <!--Split View Controller-->
+        <!--Plugin View Controller-->
         <scene sceneID="11g-gw-cdL">
             <objects>
-                <splitViewController id="Liy-Az-G0f" sceneMemberID="viewController">
+                <splitViewController id="Liy-Az-G0f" customClass="PluginViewController" customModule="SplitViewPrototype" customModuleProvider="target" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem id="mgP-uL-P1B"/>
                         <splitViewItem id="kMR-wq-kbt"/>
                     </splitViewItems>
-                    <splitView key="splitView" dividerStyle="thin" id="68S-pd-iBO">
+                    <splitView key="splitView" dividerStyle="paneSplitter" id="68S-pd-iBO">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </splitView>
@@ -686,67 +685,26 @@
             </objects>
             <point key="canvasLocation" x="60" y="639"/>
         </scene>
-        <!--View Controller-->
+        <!--Web View Controller-->
         <scene sceneID="vn5-Sm-4z5">
             <objects>
-                <viewController id="vBq-W7-bS8" customClass="ViewController" customModule="SplitViewPrototype" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="vBq-W7-bS8" customClass="WebViewController" customModule="SplitViewPrototype" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="Gbl-dl-fKk">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <webView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ayC-xT-sRH">
-                                <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
-                                <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12"/>
-                            </webView>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bMC-Dn-PrE">
-                                <rect key="frame" x="196" y="67" width="59" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Top Split" id="NoX-gU-BGj">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="centerY" secondItem="bMC-Dn-PrE" secondAttribute="centerY" id="qaT-f4-roK"/>
-                            <constraint firstAttribute="centerX" secondItem="bMC-Dn-PrE" secondAttribute="centerX" id="rYI-hu-8OE"/>
-                        </constraints>
                     </view>
                 </viewController>
                 <customObject id="Pjr-Az-jh7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="629" y="503"/>
         </scene>
-        <!--View Controller-->
+        <!--Web View Controller-->
         <scene sceneID="cJY-Mo-VmT">
             <objects>
-                <viewController id="y4s-Hp-oHQ" customClass="ViewController" customModule="SplitViewPrototype" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="y4s-Hp-oHQ" customClass="WebViewController" customModule="SplitViewPrototype" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="tTG-4o-K6k">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <webView translatesAutoresizingMaskIntoConstraints="NO" id="vWf-8z-ixU">
-                                <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="D6H-tC-7j7"/>
-                                </constraints>
-                                <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12"/>
-                            </webView>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8US-Ap-6mv">
-                                <rect key="frame" x="184" y="67" width="82" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bottom Split" id="Mv8-eo-mC0">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="vWf-8z-ixU" firstAttribute="leading" secondItem="tTG-4o-K6k" secondAttribute="leading" id="5b8-8d-0gy"/>
-                            <constraint firstAttribute="bottom" secondItem="vWf-8z-ixU" secondAttribute="bottom" id="HWN-8A-UQu"/>
-                            <constraint firstItem="vWf-8z-ixU" firstAttribute="top" secondItem="tTG-4o-K6k" secondAttribute="top" id="Vcz-gH-SB7"/>
-                            <constraint firstAttribute="trailing" secondItem="vWf-8z-ixU" secondAttribute="trailing" id="hql-qh-5DX"/>
-                        </constraints>
                     </view>
                 </viewController>
                 <customObject id="16w-I6-Afv" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

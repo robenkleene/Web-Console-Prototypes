@@ -8,12 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		457F4FDE1B5C36A0007645C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FDD1B5C36A0007645C4 /* AppDelegate.swift */; };
-		457F4FE01B5C36A0007645C4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FDF1B5C36A0007645C4 /* ViewController.swift */; };
+		457F4FE01B5C36A0007645C4 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FDF1B5C36A0007645C4 /* WebViewController.swift */; };
 		457F4FE21B5C36A0007645C4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 457F4FE11B5C36A0007645C4 /* Images.xcassets */; };
 		457F4FE51B5C36A0007645C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 457F4FE31B5C36A0007645C4 /* Main.storyboard */; };
 		457F4FF11B5C36A0007645C4 /* SplitViewPrototypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FF01B5C36A0007645C4 /* SplitViewPrototypeTests.swift */; };
-		457F4FFB1B5C3C64007645C4 /* WebSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FFA1B5C3C64007645C4 /* WebSplitViewController.swift */; };
-		45A6A2E31B5DDDF000601E6F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45A6A2E21B5DDDF000601E6F /* WebKit.framework */; };
+		457F4FFB1B5C3C64007645C4 /* PluginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FFA1B5C3C64007645C4 /* PluginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,14 +29,13 @@
 		457F4FD81B5C36A0007645C4 /* SplitViewPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SplitViewPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		457F4FDC1B5C36A0007645C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		457F4FDD1B5C36A0007645C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		457F4FDF1B5C36A0007645C4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		457F4FDF1B5C36A0007645C4 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		457F4FE11B5C36A0007645C4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		457F4FE41B5C36A0007645C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		457F4FEA1B5C36A0007645C4 /* SplitViewPrototypeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SplitViewPrototypeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		457F4FEF1B5C36A0007645C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		457F4FF01B5C36A0007645C4 /* SplitViewPrototypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewPrototypeTests.swift; sourceTree = "<group>"; };
-		457F4FFA1B5C3C64007645C4 /* WebSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSplitViewController.swift; sourceTree = "<group>"; };
-		45A6A2E21B5DDDF000601E6F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		457F4FFA1B5C3C64007645C4 /* PluginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,7 +43,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45A6A2E31B5DDDF000601E6F /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,7 +59,6 @@
 		457F4FCF1B5C36A0007645C4 = {
 			isa = PBXGroup;
 			children = (
-				45A6A2E21B5DDDF000601E6F /* WebKit.framework */,
 				457F4FDA1B5C36A0007645C4 /* SplitViewPrototype */,
 				457F4FED1B5C36A0007645C4 /* SplitViewPrototypeTests */,
 				457F4FD91B5C36A0007645C4 /* Products */,
@@ -82,11 +78,11 @@
 			isa = PBXGroup;
 			children = (
 				457F4FDD1B5C36A0007645C4 /* AppDelegate.swift */,
-				457F4FDF1B5C36A0007645C4 /* ViewController.swift */,
+				457F4FDF1B5C36A0007645C4 /* WebViewController.swift */,
 				457F4FE11B5C36A0007645C4 /* Images.xcassets */,
 				457F4FE31B5C36A0007645C4 /* Main.storyboard */,
 				457F4FDB1B5C36A0007645C4 /* Supporting Files */,
-				457F4FFA1B5C3C64007645C4 /* WebSplitViewController.swift */,
+				457F4FFA1B5C3C64007645C4 /* PluginViewController.swift */,
 			);
 			path = SplitViewPrototype;
 			sourceTree = "<group>";
@@ -216,8 +212,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				457F4FFB1B5C3C64007645C4 /* WebSplitViewController.swift in Sources */,
-				457F4FE01B5C36A0007645C4 /* ViewController.swift in Sources */,
+				457F4FFB1B5C3C64007645C4 /* PluginViewController.swift in Sources */,
+				457F4FE01B5C36A0007645C4 /* WebViewController.swift in Sources */,
 				457F4FDE1B5C36A0007645C4 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
