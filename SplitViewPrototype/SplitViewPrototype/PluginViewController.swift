@@ -23,7 +23,7 @@ class PluginViewController: NSSplitViewController {
     override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
         switch menuItem.action {
         case Selector("toggleConsoleShown:"):
-            NSLog("toggleConsoleShown validated")
+            menuItem.title = consoleSplitViewItem.collapsed ? "Show Console" : "Close Console"
             return true
         default:
             return super.validateMenuItem(menuItem)
