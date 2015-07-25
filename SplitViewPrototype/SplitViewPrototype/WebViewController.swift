@@ -29,7 +29,7 @@ class WebViewController: NSViewController {
             options:NSLayoutFormatOptions(0),
             metrics:nil,
             views:["view": view])
-        self.view.addConstraints(heightConstraint)
+        self.view.superview!.addConstraints(heightConstraint)
         
         let constraints = view.constraints
         NSLog("BEGIN")
