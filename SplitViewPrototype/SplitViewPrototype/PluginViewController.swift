@@ -8,7 +8,21 @@
 
 import Cocoa
 import WebKit
+import AppKit
 
 class PluginViewController: NSSplitViewController {
-    
+
+    @IBAction func toggleConsoleShown(sender: AnyObject?) {
+        NSLog("toggleConsoleShown called")
+    }
+
+    override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
+        switch menuItem.action {
+        case Selector("toggleConsoleShown:"):
+            NSLog("toggleConsoleShown validated")
+            return true
+        default:
+            return super.validateMenuItem(menuItem)
+        }
+    }
 }

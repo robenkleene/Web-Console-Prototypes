@@ -15,7 +15,6 @@ class WebViewController: NSViewController {
         return view as! WKWebView
     }
     
-    
     override func loadView() {
         let webView = WKWebView()
         view = webView
@@ -24,7 +23,7 @@ class WebViewController: NSViewController {
     override func viewDidAppear() {
         super.viewDidAppear()
 
-        let heightConstraint = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[view(>=150)]-|",
+        let heightConstraint = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view(>=150)]|",
             options:NSLayoutFormatOptions(0),
             metrics:nil,
             views:["view": view])
@@ -37,7 +36,6 @@ class WebViewController: NSViewController {
         let request = NSURLRequest(URL: url)
         webView.loadRequest(request)
     }
-
 
 }
 
