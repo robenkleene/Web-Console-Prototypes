@@ -21,7 +21,6 @@ class WebViewController: NSViewController {
         view = webView
     }
 
-    
     override func viewDidAppear() {
         super.viewDidAppear()
 
@@ -32,11 +31,6 @@ class WebViewController: NSViewController {
         self.view.superview!.addConstraints(heightConstraint)
         
         let constraints = view.constraints
-        NSLog("BEGIN")
-        for constraint in constraints {
-            NSLog("constraint = \(constraint)")
-        }
-        NSLog("END")
     }
     
     func loadURL(url: NSURL) {
