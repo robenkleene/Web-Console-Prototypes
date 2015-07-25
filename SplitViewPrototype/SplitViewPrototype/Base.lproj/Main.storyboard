@@ -595,10 +595,10 @@
                                                 <action selector="runToolbarCustomizationPalette:" target="Ady-hI-5gd" id="pQI-g3-MTW"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Show Console" keyEquivalent="l" id="eDN-Pk-AGZ">
+                                        <menuItem title="Show Log" keyEquivalent="l" id="eDN-Pk-AGZ">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                             <connections>
-                                                <action selector="toggleConsoleShown:" target="Ady-hI-5gd" id="50a-ad-WcG"/>
+                                                <action selector="toggleLogShown:" target="Ady-hI-5gd" id="50a-ad-WcG"/>
                                             </connections>
                                         </menuItem>
                                     </items>

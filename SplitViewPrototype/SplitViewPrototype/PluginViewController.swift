@@ -12,18 +12,18 @@ import AppKit
 
 class PluginViewController: NSSplitViewController {
 
-    lazy var consoleSplitViewItem: NSSplitViewItem = {
+    lazy var logSplitViewItem: NSSplitViewItem = {
         return self.splitViewItems.last as! NSSplitViewItem
     }()
     
-    @IBAction func toggleConsoleShown(sender: AnyObject?) {
-        consoleSplitViewItem.animator().collapsed = consoleSplitViewItem.collapsed ? false : true
+    @IBAction func toggleLogShown(sender: AnyObject?) {
+        logSplitViewItem.animator().collapsed = logSplitViewItem.collapsed ? false : true
     }
 
     override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
         switch menuItem.action {
-        case Selector("toggleConsoleShown:"):
-            menuItem.title = consoleSplitViewItem.collapsed ? "Show Console" : "Close Console"
+        case Selector("toggleLogShown:"):
+            menuItem.title = logSplitViewItem.collapsed ? "Show Log" : "Close Log"
             return true
         default:
             return super.validateMenuItem(menuItem)
