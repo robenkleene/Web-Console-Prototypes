@@ -12,8 +12,12 @@ import AppKit
 
 class PluginViewController: NSSplitViewController {
 
+    lazy var consoleSplitViewItem: NSSplitViewItem = {
+        return self.splitViewItems.last as! NSSplitViewItem
+    }()
+    
     @IBAction func toggleConsoleShown(sender: AnyObject?) {
-        NSLog("toggleConsoleShown called")
+        consoleSplitViewItem.animator().collapsed = consoleSplitViewItem.collapsed ? false : true
     }
 
     override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
@@ -25,4 +29,5 @@ class PluginViewController: NSSplitViewController {
             return super.validateMenuItem(menuItem)
         }
     }
+
 }
