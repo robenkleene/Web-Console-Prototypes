@@ -71,7 +71,6 @@ class PluginViewController: NSSplitViewController {
         return splitView == self.splitView && subview == logSplitViewSubView
     }
     
-    
     override func splitView(splitView: NSSplitView, shouldHideDividerAtIndex dividerIndex: Int) -> Bool {
         return logSplitViewItem.collapsed
     }
