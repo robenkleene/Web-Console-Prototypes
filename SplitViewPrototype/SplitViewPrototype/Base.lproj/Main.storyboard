@@ -678,7 +678,7 @@
                         <splitViewItem id="mgP-uL-P1B"/>
                         <splitViewItem id="kMR-wq-kbt"/>
                     </splitViewItems>
-                    <splitView key="splitView" dividerStyle="paneSplitter" id="68S-pd-iBO">
+                    <splitView key="splitView" id="68S-pd-iBO">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
