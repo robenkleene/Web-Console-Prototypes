@@ -22,25 +22,6 @@ class PluginViewController: NSSplitViewController {
         return self.splitViewItems.last as! NSSplitViewItem
     }()
 
-    // MARK: Life Cycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        for splitViewItem in splitViewItems {
-            let splitViewItemView = splitViewItem.viewController.view
-            
-            let heightConstraint =  NSLayoutConstraint(item: splitViewItemView,
-                attribute: .Height,
-                relatedBy: .GreaterThanOrEqual,
-                toItem: nil,
-                attribute: .NotAnAttribute,
-                multiplier: 1,
-                constant: 150)
-            view.addConstraint(heightConstraint)
-        }
-    }
-
     // MARK: Actions
     
     @IBAction func toggleLogShown(sender: AnyObject?) {
