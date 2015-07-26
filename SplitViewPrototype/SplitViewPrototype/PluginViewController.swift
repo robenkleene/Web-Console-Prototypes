@@ -10,7 +10,7 @@ import Cocoa
 import WebKit
 import AppKit
 
-class PluginViewController: NSSplitViewController {
+class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
 
     // MARK: Properties
     
@@ -22,6 +22,25 @@ class PluginViewController: NSSplitViewController {
         return self.splitViewItems.last as! NSSplitViewItem
     }()
 
+    // MARK: Life Cycle
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        for splitViewItem in splitViewItems {
+            if let webViewController = splitViewItem.viewController as? WebViewController {
+                webViewController.delegate = self
+            }
+        }
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+
+        // The log starts hidden
+        logSplitViewItem.collapsed = true
+    }
+    
     // MARK: Actions
     
     @IBAction func toggleLogShown(sender: AnyObject?) {
@@ -54,6 +73,21 @@ class PluginViewController: NSSplitViewController {
     
     override func splitView(splitView: NSSplitView, shouldHideDividerAtIndex dividerIndex: Int) -> Bool {
         return logSplitViewItem.collapsed
+    }
+
+    // MARK: WebViewControllerDelegate
+    
+    func webViewControllerWillAppear(webViewController: WebViewController) {
+        if let superview = webViewController.view.superview {
+            let heightConstraint =  NSLayoutConstraint(item: webViewController.view,
+                attribute: .Height,
+                relatedBy: .GreaterThanOrEqual,
+                toItem: nil,
+                attribute: .NotAnAttribute,
+                multiplier: 1,
+                constant: 150)
+            superview.addConstraint(heightConstraint)
+        }
     }
 
 }

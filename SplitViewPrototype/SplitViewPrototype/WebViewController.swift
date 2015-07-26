@@ -9,29 +9,29 @@
 import Cocoa
 import WebKit
 
-class SplitWebView: WKWebView {
-    override func viewDidMoveToSuperview() {
-        if let superview = superview {
-            let heightConstraint =  NSLayoutConstraint(item: self,
-                attribute: .Height,
-                relatedBy: .GreaterThanOrEqual,
-                toItem: nil,
-                attribute: .NotAnAttribute,
-                multiplier: 1,
-                constant: 150)
-            superview.addConstraint(heightConstraint)
-        }
-    }
+@objc protocol WebViewControllerDelegate: class {
+    func webViewControllerWillAppear(webViewController: WebViewController)
 }
 
 class WebViewController: NSViewController {
 
-    var webView: SplitWebView {
-        return view as! SplitWebView
+    @IBOutlet weak var delegate: WebViewControllerDelegate?
+    
+    // MARK: Life Cycle
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        delegate?.webViewControllerWillAppear(self)
+    }
+    
+    // MARK: Web View
+    
+    var webView: WKWebView {
+        return view as! WKWebView
     }
     
     override func loadView() {
-        let webView = SplitWebView()
+        let webView = WKWebView()
         view = webView
     }
 
