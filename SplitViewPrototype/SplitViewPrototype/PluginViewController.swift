@@ -30,6 +30,8 @@ class PluginViewController: NSSplitViewController {
         }
     }
     
+    // MARK: NSSplitViewDelegate
+    
     override func splitView(splitView: NSSplitView, shouldHideDividerAtIndex dividerIndex: Int) -> Bool {
         return logSplitViewItem.collapsed
     }
