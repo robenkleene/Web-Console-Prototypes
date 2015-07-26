@@ -13,14 +13,28 @@ import AppKit
 class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
 
     // MARK: Properties
+
+    lazy var logSplitViewSubviewSavedFrameName: String = {
+        // TODO: Replace this with a real name
+        return "TestAutosaveName"
+    }()
+
+    var logSplitViewView: NSView {
+        return self.logSplitViewViewController.view
+    }
+    
+    var logSplitViewViewController: NSViewController {
+        let splitViewItem = self.splitViewItems.last as! NSSplitViewItem
+        return splitViewItem.viewController
+    }
     
     var logSplitViewSubView: NSView {
         return self.splitView.subviews.last as! NSView
     }
     
-    lazy var logSplitViewItem: NSSplitViewItem = {
+    var logSplitViewItem: NSSplitViewItem {
         return self.splitViewItems.last as! NSSplitViewItem
-    }()
+    }
 
     // MARK: Life Cycle
     
@@ -32,6 +46,8 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
                 webViewController.delegate = self
             }
         }
+
+        
     }
     
     override func viewWillAppear() {
@@ -39,6 +55,19 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
 
         // The log starts hidden
         logSplitViewItem.collapsed = true
+    }
+
+    // MARK: Saving & Restoring Frame
+
+    func saveLogSplitViewFrame() {
+        let frame = logSplitViewView.frame
+        let frameString = NSStringFromRect(frame)
+        let key = logSplitViewSubviewSavedFrameName
+//        NSUserDefaults.standardUserDefaults().setObject(frameString, forKey:key)
+    }
+
+    func savedLogSplitViewFrame() -> NSRect {
+        return NSZeroRect
     }
     
     // MARK: Actions
@@ -75,18 +104,44 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
         return logSplitViewItem.collapsed
     }
 
+    override func splitViewDidResizeSubviews(notification: NSNotification) {
+        saveLogSplitViewFrame()
+    }
+
     // MARK: WebViewControllerDelegate
     
     func webViewControllerWillAppear(webViewController: WebViewController) {
         if let superview = webViewController.view.superview {
-            let heightConstraint =  NSLayoutConstraint(item: webViewController.view,
+            let view = webViewController.view
+            
+            let minimumHeightConstraint =  NSLayoutConstraint(item: view,
                 attribute: .Height,
                 relatedBy: .GreaterThanOrEqual,
                 toItem: nil,
                 attribute: .NotAnAttribute,
                 multiplier: 1,
                 constant: 150)
-            superview.addConstraint(heightConstraint)
+            // Constraint method breaks resizing
+//            let defaultHeightConstraint =  NSLayoutConstraint(item: view,
+//                attribute: .Height,
+//                relatedBy: .Equal,
+//                toItem: nil,
+//                attribute: .NotAnAttribute,
+//                multiplier: 1,
+//                constant: 300)
+//            view.setContentCompressionResistancePriority(250, forOrientation: .Vertical)
+//            view.setContentHuggingPriority(250, forOrientation: .Vertical)
+//            superview.addConstraints([minimumHeightConstraint, defaultHeightConstraint])
+            
+            superview.addConstraint(minimumHeightConstraint)
+
+//            // Frame method doesn't work
+//            if view == logSplitViewView {
+//                NSLog("Setting the frame")
+//                var frame = view.frame
+//                frame.size.height = 300
+//                view.frame = frame
+//            }
         }
     }
 
