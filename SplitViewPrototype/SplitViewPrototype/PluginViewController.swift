@@ -14,6 +14,8 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
 
     // MARK: Properties
 
+    var logSplitViewViewStartingHeightConstraint: NSLayoutConstraint?
+    
     lazy var logSplitViewSubviewSavedFrameName: String = {
         // TODO: Replace this with a real name
         return "TestAutosaveName"
@@ -46,8 +48,6 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
                 webViewController.delegate = self
             }
         }
-
-        
     }
     
     override func viewWillAppear() {
@@ -68,6 +68,31 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
 
     func savedLogSplitViewFrame() -> NSRect {
         return NSZeroRect
+    }
+
+    func configureLogViewHeight(height: CGFloat) {
+
+        if let superview = logSplitViewView.superview {
+            NSLog("Setting up constraint")
+            
+            let logView = logSplitViewView
+            if let logSplitViewViewStartingHeightConstraint = logSplitViewViewStartingHeightConstraint {
+                superview.removeConstraint(logSplitViewViewStartingHeightConstraint)
+            }
+
+            let defaultHeightConstraint =  NSLayoutConstraint(item: logView,
+                attribute: NSLayoutAttribute.Height,
+                relatedBy: NSLayoutRelation.Equal,
+                toItem: nil,
+                attribute: NSLayoutAttribute.NotAnAttribute,
+                multiplier: 1,
+                constant: height)
+            // Getting closer, this works for subsequent displays but not the first
+            defaultHeightConstraint.priority = 300
+            superview.addConstraint(defaultHeightConstraint)
+            logSplitViewViewStartingHeightConstraint = defaultHeightConstraint
+        }
+        
     }
     
     // MARK: Actions
@@ -106,6 +131,9 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
 
     override func splitViewDidResizeSubviews(notification: NSNotification) {
         saveLogSplitViewFrame()
+        if !logSplitViewItem.collapsed {
+            configureLogViewHeight(logSplitViewView.frame.size.height)
+        }
     }
 
     // MARK: WebViewControllerDelegate
@@ -121,27 +149,11 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
                 attribute: .NotAnAttribute,
                 multiplier: 1,
                 constant: 150)
-            // Constraint method breaks resizing
-//            let defaultHeightConstraint =  NSLayoutConstraint(item: view,
-//                attribute: .Height,
-//                relatedBy: .Equal,
-//                toItem: nil,
-//                attribute: .NotAnAttribute,
-//                multiplier: 1,
-//                constant: 300)
-//            view.setContentCompressionResistancePriority(250, forOrientation: .Vertical)
-//            view.setContentHuggingPriority(250, forOrientation: .Vertical)
-//            superview.addConstraints([minimumHeightConstraint, defaultHeightConstraint])
-            
             superview.addConstraint(minimumHeightConstraint)
 
-//            // Frame method doesn't work
-//            if view == logSplitViewView {
-//                NSLog("Setting the frame")
-//                var frame = view.frame
-//                frame.size.height = 300
-//                view.frame = frame
-//            }
+            if view == logSplitViewView {
+                configureLogViewHeight(300)
+            }
         }
     }
 
