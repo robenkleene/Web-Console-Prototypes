@@ -20,19 +20,19 @@ class WebViewController: NSViewController {
         view = webView
     }
 
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        
-        let heightConstraint =  NSLayoutConstraint(item: view,
-            attribute: .Height,
-            relatedBy: .GreaterThanOrEqual,
-            toItem: nil,
-            attribute: .NotAnAttribute,
-            multiplier: 1,
-            constant: 150)
-        self.view.superview!.addConstraint(heightConstraint)
-        let constraints = view.constraints
-    }
+//    override func viewDidAppear() {
+//        super.viewDidAppear()
+//        
+//        let heightConstraint =  NSLayoutConstraint(item: view,
+//            attribute: .Height,
+//            relatedBy: .GreaterThanOrEqual,
+//            toItem: nil,
+//            attribute: .NotAnAttribute,
+//            multiplier: 1,
+//            constant: 150)
+//        self.view.superview!.addConstraint(heightConstraint)
+//        let constraints = view.constraints
+//    }
     
     func loadURL(url: NSURL) {
         let request = NSURLRequest(URL: url)
