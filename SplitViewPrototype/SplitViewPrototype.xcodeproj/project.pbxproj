@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4527478C1B65BDC8006D2242 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527478B1B65BDC8006D2242 /* Constants.swift */; };
 		457F4FDE1B5C36A0007645C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FDD1B5C36A0007645C4 /* AppDelegate.swift */; };
 		457F4FE01B5C36A0007645C4 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FDF1B5C36A0007645C4 /* WebViewController.swift */; };
 		457F4FE21B5C36A0007645C4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 457F4FE11B5C36A0007645C4 /* Images.xcassets */; };
@@ -26,6 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4527478B1B65BDC8006D2242 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		457F4FD81B5C36A0007645C4 /* SplitViewPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SplitViewPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		457F4FDC1B5C36A0007645C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		457F4FDD1B5C36A0007645C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				457F4FE31B5C36A0007645C4 /* Main.storyboard */,
 				457F4FDB1B5C36A0007645C4 /* Supporting Files */,
 				457F4FFA1B5C3C64007645C4 /* PluginViewController.swift */,
+				4527478B1B65BDC8006D2242 /* Constants.swift */,
 			);
 			path = SplitViewPrototype;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				457F4FFB1B5C3C64007645C4 /* PluginViewController.swift in Sources */,
 				457F4FE01B5C36A0007645C4 /* WebViewController.swift in Sources */,
 				457F4FDE1B5C36A0007645C4 /* AppDelegate.swift in Sources */,
+				4527478C1B65BDC8006D2242 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
