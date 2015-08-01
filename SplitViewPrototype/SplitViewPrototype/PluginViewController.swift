@@ -10,7 +10,9 @@ import Cocoa
 import WebKit
 import AppKit
 
-class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
+// TODO: When migrating to Swift 2, Replace all instances of `public` with `@testable`
+
+public class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
 
     // MARK: Properties
 
@@ -34,13 +36,13 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
         return self.splitView.subviews.last as! NSView
     }
     
-    var logSplitViewItem: NSSplitViewItem {
+    public var logSplitViewItem: NSSplitViewItem {
         return self.splitViewItems.last as! NSSplitViewItem
     }
 
     // MARK: Life Cycle
     
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
 
         for splitViewItem in splitViewItems {
@@ -50,7 +52,7 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
         }
     }
     
-    override func viewWillAppear() {
+    public override func viewWillAppear() {
         super.viewWillAppear()
 
         // The log starts hidden
@@ -104,7 +106,7 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
 
     // MARK: Validation
     
-    override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
+    public override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
         switch menuItem.action {
         case Selector("toggleLogShown:"):
             menuItem.title = logSplitViewItem.collapsed ? "Show Log" : "Close Log"
@@ -116,21 +118,21 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
     
     // MARK: NSSplitViewDelegate
     
-    override func splitView(splitView: NSSplitView, canCollapseSubview subview: NSView) -> Bool {
+    public override func splitView(splitView: NSSplitView, canCollapseSubview subview: NSView) -> Bool {
         return splitView == self.splitView && subview == logSplitViewSubView
     }
 
-    override func splitView(splitView: NSSplitView,
+    public override func splitView(splitView: NSSplitView,
         shouldCollapseSubview subview: NSView,
         forDoubleClickOnDividerAtIndex dividerIndex: Int) -> Bool {
         return splitView == self.splitView && subview == logSplitViewSubView
     }
     
-    override func splitView(splitView: NSSplitView, shouldHideDividerAtIndex dividerIndex: Int) -> Bool {
+    public override func splitView(splitView: NSSplitView, shouldHideDividerAtIndex dividerIndex: Int) -> Bool {
         return logSplitViewItem.collapsed
     }
 
-    override func splitViewDidResizeSubviews(notification: NSNotification) {
+    public override func splitViewDidResizeSubviews(notification: NSNotification) {
         if !logSplitViewItem.collapsed {
             saveLogSplitViewFrame()
             configureLogViewHeight(logSplitViewView.frame.size.height)
