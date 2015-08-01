@@ -28,6 +28,8 @@ class PluginViewControllerTests: XCTestCase {
         XCTAssertTrue(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should be collapsed")
         pluginViewController.toggleLogShown(nil)
         XCTAssertFalse(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should not be collapsed")
+
+        // TODO: Test the starting height
     }
 
 }
