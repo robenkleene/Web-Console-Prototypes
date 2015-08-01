@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4527478C1B65BDC8006D2242 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527478B1B65BDC8006D2242 /* Constants.swift */; };
 		4557E2831B6D6F6C00A48E46 /* PluginWindowsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557E2821B6D6F6C00A48E46 /* PluginWindowsController.swift */; };
+		4557E2851B6D7AB500A48E46 /* PluginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557E2841B6D7AB500A48E46 /* PluginWindowController.swift */; };
 		457F4FDE1B5C36A0007645C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FDD1B5C36A0007645C4 /* AppDelegate.swift */; };
 		457F4FE01B5C36A0007645C4 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FDF1B5C36A0007645C4 /* WebViewController.swift */; };
 		457F4FE21B5C36A0007645C4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 457F4FE11B5C36A0007645C4 /* Images.xcassets */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		4527478B1B65BDC8006D2242 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4557E2821B6D6F6C00A48E46 /* PluginWindowsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginWindowsController.swift; sourceTree = "<group>"; };
+		4557E2841B6D7AB500A48E46 /* PluginWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginWindowController.swift; sourceTree = "<group>"; };
 		457F4FD81B5C36A0007645C4 /* SplitViewPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SplitViewPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		457F4FDC1B5C36A0007645C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		457F4FDD1B5C36A0007645C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				457F4FFA1B5C3C64007645C4 /* PluginViewController.swift */,
 				4527478B1B65BDC8006D2242 /* Constants.swift */,
 				4557E2821B6D6F6C00A48E46 /* PluginWindowsController.swift */,
+				4557E2841B6D7AB500A48E46 /* PluginWindowController.swift */,
 			);
 			path = SplitViewPrototype;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 				457F4FE01B5C36A0007645C4 /* WebViewController.swift in Sources */,
 				457F4FDE1B5C36A0007645C4 /* AppDelegate.swift in Sources */,
 				4557E2831B6D6F6C00A48E46 /* PluginWindowsController.swift in Sources */,
+				4557E2851B6D7AB500A48E46 /* PluginWindowController.swift in Sources */,
 				4527478C1B65BDC8006D2242 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

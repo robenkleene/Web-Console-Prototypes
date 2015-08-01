@@ -9,21 +9,36 @@
 import Foundation
 import AppKit
 
-class PluginsWindowController {
-    var windowControllers: [NSWindowController] = [NSWindowController]()
+class PluginsWindowController: PluginWindowControllerDelegate {
+    var pluginWindowControllers: [PluginWindowController] = [PluginWindowController]()
     
     @IBAction func makePluginWindow(sender: AnyObject?) {
-        
+        let windowController = addedPluginWindowController()
+        windowController.showWindow(nil)
     }
     
-    func addWindowController(windowController: NSWindowController) {
-        windowControllers.append(windowController)
+    private func addedPluginWindowController() -> PluginWindowController {
+        let storyboard = NSStoryboard(name: "Main", bundle: nil)!
+        let pluginWindowController = storyboard.instantiateControllerWithIdentifier("PluginWindow") as! PluginWindowController
+        
+        addPluginWindowController(pluginWindowController)
+        return pluginWindowController
+    }
+    
+    private func addPluginWindowController(pluginWindowController: PluginWindowController) {
+        pluginWindowControllers.append(pluginWindowController)
     }
 
-    func removeWindowController(windowController: NSWindowController) {
-        var index = find(windowControllers, windowController)
+    private func removePluginWindowController(pluginWindowController: PluginWindowController) {
+        var index = find(pluginWindowControllers, pluginWindowController)
         if let index = index {
-            windowControllers.removeAtIndex(index)
+            pluginWindowControllers.removeAtIndex(index)
         }
+    }
+
+    // MARK: PluginWindowControllerDelegate
+    
+    func pluginWindowControllerWindowDidClose(pluginWindowController: PluginWindowController) {
+        removePluginWindowController(pluginWindowController)
     }
 }
