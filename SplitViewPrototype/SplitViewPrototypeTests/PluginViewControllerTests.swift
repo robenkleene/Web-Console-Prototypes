@@ -24,9 +24,10 @@ class PluginViewControllerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        let collapsed = pluginViewController.logSplitViewItem.collapsed
-        XCTAssertTrue(collapsed, "The  NSSplitViewItem should be collapsed")
+    func testPluginViewController() {
+        XCTAssertTrue(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should be collapsed")
+        pluginViewController.toggleLogShown(nil)
+        XCTAssertFalse(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should not be collapsed")
     }
 
 }

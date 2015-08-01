@@ -100,7 +100,7 @@ public class PluginViewController: NSSplitViewController, WebViewControllerDeleg
     
     // MARK: Actions
     
-    @IBAction func toggleLogShown(sender: AnyObject?) {
+    @IBAction public func toggleLogShown(sender: AnyObject?) {
         logSplitViewItem.animator().collapsed = logSplitViewItem.collapsed ? false : true
     }
 
