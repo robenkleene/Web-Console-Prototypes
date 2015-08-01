@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>BDAAF1B4-8DFA-4037-9C9F-9B7FD765332E</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>SplitViewPrototype</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>40B3CFF2E4C91C7CC4185F96563A9C3C2691F76C</key>
 		<string>github.com:robenkleene/Web-Console-Prototypes.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>SplitViewPrototype/SplitViewPrototype.xcodeproj/project.xcworkspace</string>
+	<string>SplitViewPrototype/SplitViewPrototype.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>40B3CFF2E4C91C7CC4185F96563A9C3C2691F76C</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>40B3CFF2E4C91C7CC4185F96563A9C3C2691F76C</string>
 			<key>IDESourceControlWCCName</key>
-			<string>Web%20Console%20Prototypes</string>
+			<string>Web-Console-Prototypes</string>
 		</dict>
 	</array>
 </dict>
