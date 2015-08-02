@@ -17,9 +17,7 @@ class PluginViewControllerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        PluginWindowsController.sharedInstance.openNewPluginWindow()
-        let window = NSApplication.sharedApplication().windows.last as! NSWindow
-        pluginViewController = window.contentViewController as! PluginViewController
+        pluginViewController = makeNewPluginViewController()
         NSUserDefaults.standardUserDefaults().removeObjectForKey(pluginViewController.logSplitViewSubviewSavedFrameName)
     }
     
@@ -38,6 +36,7 @@ class PluginViewControllerTests: XCTestCase {
         XCTAssertFalse(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should not be collapsed")
         XCTAssertEqual(logViewHeight, splitWebViewHeight, "The heights should be equal")
 
+        // Wait for the new frame to be saved
         let expectation = expectationWithDescription("NSUserDefaults did change")
         var observer: NSObjectProtocol?
         observer = NSNotificationCenter.defaultCenter().addObserverForName(NSUserDefaultsDidChangeNotification, object: nil, queue: nil) {
@@ -49,19 +48,40 @@ class PluginViewControllerTests: XCTestCase {
             observer = nil
         }
 
+        // Resize the log
         resizeLogViewHeight(testLogViewHeight)
         waitForExpectationsWithTimeout(testTimeout, handler: nil)
         XCTAssertEqual(logViewHeight, testLogViewHeight, "The heights should be equal")
+
+        // Test that the frame has been saved
+        let frame = pluginViewController.savedLogSplitViewFrame()
+        XCTAssertEqual(frame.size.height, testLogViewHeight, "The heights should be equal")
+
+        // Close and re-show the log
+        pluginViewController.toggleLogShown(nil)
+        XCTAssertTrue(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should be collapsed")
+        pluginViewController.toggleLogShown(nil)
+        XCTAssertFalse(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should not be collapsed")
+
+        // TODO: Make helper method that makes it easy to make a new window
+        // TODO: Make a helper method that makes it easy to wait for a save
         
-        // TODO: Wait for expectation with time out that the change gets saved?
-        // TODO: Figure out how to resize the divider
-        // TODO: Figure out whether the changed height is being saved to `NSUserDefaults`
-        
-        NSLog("logViewHeight = \(logViewHeight)")
+        // TODO: Confirm the saved frame is accurate
+        // TODO: Open and close the log, confirm it has the correct height
+        // TODO: Open a new window and confirm it uses the correct height
+        // TODO: Change the height in the second window then close it
+        // TODO: Re-open the log in the first window, confirm it uses the new height
     }
 
+    // MARK: Helpers
     
     func resizeLogViewHeight(height: CGFloat) {
         pluginViewController.configureLogViewHeight(height)
+    }
+
+    func makeNewPluginViewController() -> PluginViewController {
+        PluginWindowsController.sharedInstance.openNewPluginWindow()
+        let window = NSApplication.sharedApplication().windows.last as! NSWindow
+        return window.contentViewController as! PluginViewController
     }
 }
