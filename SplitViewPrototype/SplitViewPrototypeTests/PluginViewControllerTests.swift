@@ -35,6 +35,8 @@ class PluginViewControllerTests: XCTestCase {
 
         XCTAssertEqual(logViewHeight, splitWebViewHeight, "The heights should be equal")
 
+        
+        pluginViewController.configureLogViewHeight(testLogViewHeight)
         // TODO: Figure out how to resize the divider
         // TODO: Figure out whether the changed height is being saved to `NSUserDefaults`
         

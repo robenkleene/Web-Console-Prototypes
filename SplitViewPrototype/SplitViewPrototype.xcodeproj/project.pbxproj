@@ -12,6 +12,7 @@
 		451411E71B6DC74800EC47FD /* PluginWindowsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557E2821B6D6F6C00A48E46 /* PluginWindowsController.swift */; };
 		451411E81B6DC74C00EC47FD /* PluginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557E2841B6D7AB500A48E46 /* PluginWindowController.swift */; };
 		451411E91B6DC8CE00EC47FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 457F4FE31B5C36A0007645C4 /* Main.storyboard */; };
+		451411EB1B6DCF2200EC47FD /* TestConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451411EA1B6DCF2200EC47FD /* TestConstants.swift */; };
 		4527478C1B65BDC8006D2242 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527478B1B65BDC8006D2242 /* Constants.swift */; };
 		4557E2831B6D6F6C00A48E46 /* PluginWindowsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557E2821B6D6F6C00A48E46 /* PluginWindowsController.swift */; };
 		4557E2851B6D7AB500A48E46 /* PluginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557E2841B6D7AB500A48E46 /* PluginWindowController.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		451411EA1B6DCF2200EC47FD /* TestConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestConstants.swift; sourceTree = "<group>"; };
 		4527478B1B65BDC8006D2242 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4557E2821B6D6F6C00A48E46 /* PluginWindowsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginWindowsController.swift; sourceTree = "<group>"; };
 		4557E2841B6D7AB500A48E46 /* PluginWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginWindowController.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 		457F4FED1B5C36A0007645C4 /* SplitViewPrototypeTests */ = {
 			isa = PBXGroup;
 			children = (
+				451411EA1B6DCF2200EC47FD /* TestConstants.swift */,
 				457F4FF01B5C36A0007645C4 /* PluginViewControllerTests.swift */,
 				457F4FEE1B5C36A0007645C4 /* Supporting Files */,
 			);
@@ -230,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				457F4FF11B5C36A0007645C4 /* PluginViewControllerTests.swift in Sources */,
+				451411EB1B6DCF2200EC47FD /* TestConstants.swift in Sources */,
 				451411E51B6DC73F00EC47FD /* WebViewController.swift in Sources */,
 				4557E2B31B6DBE7800A48E46 /* Constants.swift in Sources */,
 				451411E71B6DC74800EC47FD /* PluginWindowsController.swift in Sources */,
