@@ -9,10 +9,10 @@
 import Foundation
 import AppKit
 
-class PluginsWindowController: PluginWindowControllerDelegate {
+class PluginWindowsController: PluginWindowControllerDelegate {
     var pluginWindowControllers: [PluginWindowController] = [PluginWindowController]()
 
-    static let sharedInstance = PluginsWindowController()
+    static let sharedInstance = PluginWindowsController()
 
     // `private` forces use of the singleton
     private init() {
@@ -25,7 +25,8 @@ class PluginsWindowController: PluginWindowControllerDelegate {
     }
     
     private func addedPluginWindowController() -> PluginWindowController {
-        let storyboard = NSStoryboard(name: "Main", bundle: nil)!
+        let bundle = NSBundle(forClass: self.dynamicType)
+        let storyboard = NSStoryboard(name: "Main", bundle: bundle)!
         let pluginWindowController = storyboard.instantiateControllerWithIdentifier("PluginWindow") as! PluginWindowController
         pluginWindowController.delegate = self
         addPluginWindowController(pluginWindowController)

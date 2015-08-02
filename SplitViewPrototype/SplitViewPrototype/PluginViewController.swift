@@ -10,9 +10,7 @@ import Cocoa
 import WebKit
 import AppKit
 
-// TODO: When migrating to Swift 2, Replace all instances of `public` with `@testable`
-
-public class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
+class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
 
     // MARK: Properties
 
@@ -23,7 +21,7 @@ public class PluginViewController: NSSplitViewController, WebViewControllerDeleg
         return "TestAutosaveName"
     }()
 
-    public var logSplitViewView: NSView {
+    var logSplitViewView: NSView {
         return self.logSplitViewViewController.view
     }
     
@@ -36,13 +34,13 @@ public class PluginViewController: NSSplitViewController, WebViewControllerDeleg
         return self.splitView.subviews.last as! NSView
     }
     
-    public var logSplitViewItem: NSSplitViewItem {
+    var logSplitViewItem: NSSplitViewItem {
         return self.splitViewItems.last as! NSSplitViewItem
     }
 
     // MARK: Life Cycle
     
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
 
         for splitViewItem in splitViewItems {
@@ -52,7 +50,7 @@ public class PluginViewController: NSSplitViewController, WebViewControllerDeleg
         }
     }
     
-    public override func viewWillAppear() {
+    override func viewWillAppear() {
         super.viewWillAppear()
 
         // The log starts hidden
@@ -100,13 +98,13 @@ public class PluginViewController: NSSplitViewController, WebViewControllerDeleg
     
     // MARK: Actions
     
-    @IBAction public func toggleLogShown(sender: AnyObject?) {
+    @IBAction func toggleLogShown(sender: AnyObject?) {
         logSplitViewItem.animator().collapsed = logSplitViewItem.collapsed ? false : true
     }
 
     // MARK: Validation
     
-    public override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
+    override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
         switch menuItem.action {
         case Selector("toggleLogShown:"):
             menuItem.title = logSplitViewItem.collapsed ? "Show Log" : "Close Log"
@@ -118,21 +116,21 @@ public class PluginViewController: NSSplitViewController, WebViewControllerDeleg
     
     // MARK: NSSplitViewDelegate
     
-    public override func splitView(splitView: NSSplitView, canCollapseSubview subview: NSView) -> Bool {
+    override func splitView(splitView: NSSplitView, canCollapseSubview subview: NSView) -> Bool {
         return splitView == self.splitView && subview == logSplitViewSubview
     }
 
-    public override func splitView(splitView: NSSplitView,
+    override func splitView(splitView: NSSplitView,
         shouldCollapseSubview subview: NSView,
         forDoubleClickOnDividerAtIndex dividerIndex: Int) -> Bool {
         return splitView == self.splitView && subview == logSplitViewSubview
     }
     
-    public override func splitView(splitView: NSSplitView, shouldHideDividerAtIndex dividerIndex: Int) -> Bool {
+    override func splitView(splitView: NSSplitView, shouldHideDividerAtIndex dividerIndex: Int) -> Bool {
         return logSplitViewItem.collapsed
     }
 
-    public override func splitViewDidResizeSubviews(notification: NSNotification) {
+    override func splitViewDidResizeSubviews(notification: NSNotification) {
         if !logSplitViewItem.collapsed {
             saveLogSplitViewFrame()
             configureLogViewHeight(logSplitViewView.frame.size.height)

@@ -8,7 +8,6 @@
 
 import Cocoa
 import XCTest
-import SplitViewPrototype
 
 class PluginViewControllerTests: XCTestCase {
     var pluginViewController: PluginViewController!
@@ -18,8 +17,10 @@ class PluginViewControllerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        PluginWindowsController.sharedInstance.openNewPluginWindow()
         let window = NSApplication.sharedApplication().windows.last as! NSWindow
         pluginViewController = window.contentViewController as! PluginViewController
+
     }
     
     override func tearDown() {

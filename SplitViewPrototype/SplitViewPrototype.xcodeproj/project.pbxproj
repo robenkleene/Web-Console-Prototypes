@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		451411E51B6DC73F00EC47FD /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FDF1B5C36A0007645C4 /* WebViewController.swift */; };
+		451411E61B6DC74300EC47FD /* PluginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FFA1B5C3C64007645C4 /* PluginViewController.swift */; };
+		451411E71B6DC74800EC47FD /* PluginWindowsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557E2821B6D6F6C00A48E46 /* PluginWindowsController.swift */; };
+		451411E81B6DC74C00EC47FD /* PluginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557E2841B6D7AB500A48E46 /* PluginWindowController.swift */; };
+		451411E91B6DC8CE00EC47FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 457F4FE31B5C36A0007645C4 /* Main.storyboard */; };
 		4527478C1B65BDC8006D2242 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527478B1B65BDC8006D2242 /* Constants.swift */; };
 		4557E2831B6D6F6C00A48E46 /* PluginWindowsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557E2821B6D6F6C00A48E46 /* PluginWindowsController.swift */; };
 		4557E2851B6D7AB500A48E46 /* PluginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557E2841B6D7AB500A48E46 /* PluginWindowController.swift */; };
@@ -18,16 +23,6 @@
 		457F4FF11B5C36A0007645C4 /* PluginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FF01B5C36A0007645C4 /* PluginViewControllerTests.swift */; };
 		457F4FFB1B5C3C64007645C4 /* PluginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FFA1B5C3C64007645C4 /* PluginViewController.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		457F4FEB1B5C36A0007645C4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 457F4FD01B5C36A0007645C4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 457F4FD71B5C36A0007645C4;
-			remoteInfo = SplitViewPrototype;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4527478B1B65BDC8006D2242 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -153,7 +148,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				457F4FEC1B5C36A0007645C4 /* PBXTargetDependency */,
 			);
 			name = SplitViewPrototypeTests;
 			productName = SplitViewPrototypeTests;
@@ -175,7 +169,6 @@
 					};
 					457F4FE91B5C36A0007645C4 = {
 						CreatedOnToolsVersion = 6.4;
-						TestTargetID = 457F4FD71B5C36A0007645C4;
 					};
 				};
 			};
@@ -212,6 +205,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				451411E91B6DC8CE00EC47FD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,19 +230,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				457F4FF11B5C36A0007645C4 /* PluginViewControllerTests.swift in Sources */,
+				451411E51B6DC73F00EC47FD /* WebViewController.swift in Sources */,
 				4557E2B31B6DBE7800A48E46 /* Constants.swift in Sources */,
+				451411E71B6DC74800EC47FD /* PluginWindowsController.swift in Sources */,
+				451411E81B6DC74C00EC47FD /* PluginWindowController.swift in Sources */,
+				451411E61B6DC74300EC47FD /* PluginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		457F4FEC1B5C36A0007645C4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 457F4FD71B5C36A0007645C4 /* SplitViewPrototype */;
-			targetProxy = 457F4FEB1B5C36A0007645C4 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		457F4FE31B5C36A0007645C4 /* Main.storyboard */ = {
@@ -367,7 +357,6 @@
 		457F4FF81B5C36A0007645C4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -380,14 +369,12 @@
 				INFOPLIST_FILE = SplitViewPrototypeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SplitViewPrototype.app/Contents/MacOS/SplitViewPrototype";
 			};
 			name = Debug;
 		};
 		457F4FF91B5C36A0007645C4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -396,7 +383,6 @@
 				INFOPLIST_FILE = SplitViewPrototypeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SplitViewPrototype.app/Contents/MacOS/SplitViewPrototype";
 			};
 			name = Release;
 		};
