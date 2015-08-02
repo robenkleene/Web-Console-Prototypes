@@ -11,8 +11,10 @@ import AppKit
 
 class PluginsWindowController: PluginWindowControllerDelegate {
     var pluginWindowControllers: [PluginWindowController] = [PluginWindowController]()
+
+    static let sharedInstance = PluginsWindowController()
     
-    @IBAction func makePluginWindow(sender: AnyObject?) {
+    func openNewPluginWindow() {
         let windowController = addedPluginWindowController()
         windowController.showWindow(nil)
     }

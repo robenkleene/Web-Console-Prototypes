@@ -20,5 +20,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
 
+    @IBAction func newPluginWindow(sender: AnyObject?) {
+        PluginsWindowController.sharedInstance.openNewPluginWindow()
+    }
 }
 
