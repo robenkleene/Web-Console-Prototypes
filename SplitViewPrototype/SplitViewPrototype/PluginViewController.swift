@@ -23,7 +23,7 @@ public class PluginViewController: NSSplitViewController, WebViewControllerDeleg
         return "TestAutosaveName"
     }()
 
-    var logSplitViewView: NSView {
+    public var logSplitViewView: NSView {
         return self.logSplitViewViewController.view
     }
     
@@ -32,7 +32,7 @@ public class PluginViewController: NSSplitViewController, WebViewControllerDeleg
         return splitViewItem.viewController
     }
     
-    var logSplitViewSubView: NSView {
+    var logSplitViewSubview: NSView {
         return self.splitView.subviews.last as! NSView
     }
     
@@ -119,13 +119,13 @@ public class PluginViewController: NSSplitViewController, WebViewControllerDeleg
     // MARK: NSSplitViewDelegate
     
     public override func splitView(splitView: NSSplitView, canCollapseSubview subview: NSView) -> Bool {
-        return splitView == self.splitView && subview == logSplitViewSubView
+        return splitView == self.splitView && subview == logSplitViewSubview
     }
 
     public override func splitView(splitView: NSSplitView,
         shouldCollapseSubview subview: NSView,
         forDoubleClickOnDividerAtIndex dividerIndex: Int) -> Bool {
-        return splitView == self.splitView && subview == logSplitViewSubView
+        return splitView == self.splitView && subview == logSplitViewSubview
     }
     
     public override func splitView(splitView: NSSplitView, shouldHideDividerAtIndex dividerIndex: Int) -> Bool {

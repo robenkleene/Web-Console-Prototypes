@@ -12,6 +12,9 @@ import SplitViewPrototype
 
 class PluginViewControllerTests: XCTestCase {
     var pluginViewController: PluginViewController!
+    var logViewHeight: CGFloat {
+        return pluginViewController.logSplitViewView.frame.size.height
+    }
     
     override func setUp() {
         super.setUp()
@@ -30,6 +33,8 @@ class PluginViewControllerTests: XCTestCase {
         XCTAssertFalse(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should not be collapsed")
 
         // TODO: Test the starting height
+        NSLog("logViewHeight = \(logViewHeight)")
+        NSLog("splitWebViewHeight = \(splitWebViewHeight)")
     }
 
 }
