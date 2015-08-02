@@ -35,13 +35,25 @@ class PluginViewControllerTests: XCTestCase {
 
         XCTAssertEqual(logViewHeight, splitWebViewHeight, "The heights should be equal")
 
-        
-        pluginViewController.configureLogViewHeight(testLogViewHeight)
+        let expectation = expectationWithDescription("NSUserDefaults did change")
+        NSNotificationCenter.defaultCenter().addObserverForName(NSUserDefaultsDidChangeNotification, object: nil, queue: nil, usingBlock: {
+            [unowned self] _ in
+            expectation.fulfill()
+            NSLog("NSUserDefaultsDidChangeNotification")
+            })
+
+        resizeLogViewHeight(testLogViewHeight)
+        waitForExpectationsWithTimeout(testTimeout, handler: nil)
+                
+        // TODO: Wait for expectation with time out that the change gets saved?
         // TODO: Figure out how to resize the divider
         // TODO: Figure out whether the changed height is being saved to `NSUserDefaults`
         
         NSLog("logViewHeight = \(logViewHeight)")
-        NSLog("splitWebViewHeight = \(splitWebViewHeight)")
     }
 
+    
+    func resizeLogViewHeight(height: CGFloat) {
+        pluginViewController.configureLogViewHeight(height)
+    }
 }

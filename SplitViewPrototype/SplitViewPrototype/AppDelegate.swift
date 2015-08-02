@@ -25,5 +25,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func newPluginWindow(sender: AnyObject?) {
         PluginWindowsController.sharedInstance.openNewPluginWindow()
     }
-}
 
+}

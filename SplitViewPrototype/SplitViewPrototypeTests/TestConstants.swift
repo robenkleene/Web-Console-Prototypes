@@ -9,3 +9,4 @@
 import Foundation
 
 let testLogViewHeight = CGFloat(300)
+let testTimeout = 2.0
