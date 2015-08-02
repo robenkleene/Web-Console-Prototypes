@@ -13,16 +13,21 @@ class PluginsWindowController: PluginWindowControllerDelegate {
     var pluginWindowControllers: [PluginWindowController] = [PluginWindowController]()
 
     static let sharedInstance = PluginsWindowController()
+
+    // `private` forces use of the singleton
+    private init() {
+        
+    }
     
     func openNewPluginWindow() {
-        let windowController = addedPluginWindowController()
-        windowController.showWindow(nil)
+        let pluginWindowController = addedPluginWindowController()
+        pluginWindowController.showWindow(nil)
     }
     
     private func addedPluginWindowController() -> PluginWindowController {
         let storyboard = NSStoryboard(name: "Main", bundle: nil)!
         let pluginWindowController = storyboard.instantiateControllerWithIdentifier("PluginWindow") as! PluginWindowController
-        
+        pluginWindowController.delegate = self
         addPluginWindowController(pluginWindowController)
         return pluginWindowController
     }
