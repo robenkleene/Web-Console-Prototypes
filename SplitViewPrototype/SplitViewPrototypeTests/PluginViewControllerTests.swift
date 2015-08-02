@@ -33,7 +33,11 @@ class PluginViewControllerTests: XCTestCase {
         pluginViewController.toggleLogShown(nil)
         XCTAssertFalse(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should not be collapsed")
 
-        // TODO: Test the starting height
+        XCTAssertEqual(logViewHeight, splitWebViewHeight, "The heights should be equal")
+
+        // TODO: Figure out how to resize the divider
+        // TODO: Figure out whether the changed height is being saved to `NSUserDefaults`
+        
         NSLog("logViewHeight = \(logViewHeight)")
         NSLog("splitWebViewHeight = \(splitWebViewHeight)")
     }
