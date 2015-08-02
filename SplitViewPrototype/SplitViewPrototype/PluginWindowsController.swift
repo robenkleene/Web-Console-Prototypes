@@ -22,6 +22,7 @@ class PluginWindowsController: PluginWindowControllerDelegate {
     func openNewPluginWindow() {
         let pluginWindowController = addedPluginWindowController()
         pluginWindowController.showWindow(nil)
+        pluginWindowController.window?.makeKeyAndOrderFront(nil)
     }
     
     private func addedPluginWindowController() -> PluginWindowController {
