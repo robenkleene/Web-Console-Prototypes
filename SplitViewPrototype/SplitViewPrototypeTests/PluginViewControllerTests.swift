@@ -37,16 +37,7 @@ class PluginViewControllerTests: XCTestCase {
         XCTAssertEqual(logViewHeight, splitWebViewHeight, "The heights should be equal")
 
         // Wait for the new frame to be saved
-        let expectation = expectationWithDescription("NSUserDefaults did change")
-        var observer: NSObjectProtocol?
-        observer = NSNotificationCenter.defaultCenter().addObserverForName(NSUserDefaultsDidChangeNotification, object: nil, queue: nil) {
-            [unowned self] _ in
-            expectation.fulfill()
-            if let observer = observer {
-                NSNotificationCenter.defaultCenter().removeObserver(observer)
-            }
-            observer = nil
-        }
+        makeFrameSaveExpectation()
 
         // Resize the log
         resizeLogViewHeight(testLogViewHeight)
@@ -83,5 +74,18 @@ class PluginViewControllerTests: XCTestCase {
         PluginWindowsController.sharedInstance.openNewPluginWindow()
         let window = NSApplication.sharedApplication().windows.last as! NSWindow
         return window.contentViewController as! PluginViewController
+    }
+
+    func makeFrameSaveExpectation() {
+        let expectation = expectationWithDescription("NSUserDefaults did change")
+        var observer: NSObjectProtocol?
+        observer = NSNotificationCenter.defaultCenter().addObserverForName(NSUserDefaultsDidChangeNotification, object: nil, queue: nil) {
+            [unowned self] _ in
+            expectation.fulfill()
+            if let observer = observer {
+                NSNotificationCenter.defaultCenter().removeObserver(observer)
+            }
+            observer = nil
+        }
     }
 }
