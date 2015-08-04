@@ -18,7 +18,7 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
     
     lazy var logSplitViewSubviewSavedFrameName: String = {
         // TODO: Replace this with a real name, different for each plugin
-        return "TestAutosaveName"
+        return logSavedFrameName
     }()
 
     var logSplitViewView: NSView {
@@ -63,14 +63,17 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
         let frame = logSplitViewView.frame
         let frameString = NSStringFromRect(frame)
         let key = logSplitViewSubviewSavedFrameName
-
         NSUserDefaults.standardUserDefaults().setObject(frameString, forKey:key)
     }
 
-    func savedLogSplitViewFrame() -> NSRect {
-        let frameString = NSUserDefaults.standardUserDefaults().stringForKey(logSplitViewSubviewSavedFrameName)
+    class func savedLogSplitViewFrameForName(name: String) -> NSRect {
+        let frameString = NSUserDefaults.standardUserDefaults().stringForKey(name)
         let frame = NSRectFromString(frameString)
         return frame
+    }
+    
+    func savedLogSplitViewFrame() -> NSRect {
+        return self.dynamicType.savedLogSplitViewFrameForName(logSplitViewSubviewSavedFrameName)
     }
 
     func configureLogViewHeight(height: CGFloat) {
@@ -138,8 +141,12 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
     }
 
     // MARK: WebViewControllerDelegate
+
+    func webViewControllerViewWillDisappear(webViewController: WebViewController) {
+        // No-op only tests use this now
+    }
     
-    func webViewControllerWillAppear(webViewController: WebViewController) {
+    func webViewControllerViewWillAppear(webViewController: WebViewController) {
         if let superview = webViewController.view.superview {
             let view = webViewController.view
             

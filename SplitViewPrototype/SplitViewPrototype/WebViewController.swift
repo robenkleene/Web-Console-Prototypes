@@ -10,7 +10,8 @@ import Cocoa
 import WebKit
 
 @objc protocol WebViewControllerDelegate: class {
-    func webViewControllerWillAppear(webViewController: WebViewController)
+    func webViewControllerViewWillAppear(webViewController: WebViewController)
+    func webViewControllerViewWillDisappear(webViewController: WebViewController)
 }
 
 class WebViewController: NSViewController {
@@ -21,7 +22,12 @@ class WebViewController: NSViewController {
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        delegate?.webViewControllerWillAppear(self)
+        delegate?.webViewControllerViewWillAppear(self)
+    }
+
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        delegate?.webViewControllerViewWillDisappear(self)
     }
     
     // MARK: Web View
