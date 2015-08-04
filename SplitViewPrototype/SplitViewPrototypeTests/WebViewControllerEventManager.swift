@@ -52,12 +52,16 @@ class WebViewControllerEventManager: WebViewControllerDelegate {
     @objc func webViewControllerViewWillAppear(webViewController: WebViewController) {
         if let viewWillAppearBlock = viewWillAppearBlock {
             viewWillAppearBlock(webViewController)
+        } else {
+            self.storedDelegate?.webViewControllerViewWillAppear(webViewController)
         }
     }
 
     @objc func webViewControllerViewWillDisappear(webViewController: WebViewController) {
         if let viewWillDisappearBlock = viewWillDisappearBlock {
             viewWillDisappearBlock(webViewController)
+        } else {
+            self.storedDelegate?.webViewControllerViewWillDisappear(webViewController)
         }
     }
     
