@@ -37,7 +37,15 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
     var logSplitViewItem: NSSplitViewItem {
         return self.splitViewItems.last as! NSSplitViewItem
     }
+    
+    var logSplitViewItemIndex: Int {
+        return find(self.splitViewItems as! [NSSplitViewItem], logSplitViewItem)!
+    }
 
+    var logSplitViewItemDividerIndex: Int {
+        return logSplitViewItemIndex - 1
+    }
+    
     // MARK: Life Cycle
     
     override func awakeFromNib() {
@@ -130,7 +138,7 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
     }
     
     override func splitView(splitView: NSSplitView, shouldHideDividerAtIndex dividerIndex: Int) -> Bool {
-        return logSplitViewItem.collapsed
+        return logSplitViewItemDividerIndex == dividerIndex && logSplitViewItem.collapsed
     }
 
     override func splitViewDidResizeSubviews(notification: NSNotification) {

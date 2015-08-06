@@ -81,6 +81,7 @@ class PluginViewControllerTests: XCTestCase {
         pluginViewController.toggleLogShown(nil)
         waitForExpectationsWithTimeout(testTimeout, handler: nil)
         XCTAssertFalse(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should not be collapsed")
+        confirmValuesForPluginViewController(pluginViewController, collapsed: false)
     }
     
     func makeLogDisappearForPluginViewController(pluginViewController: PluginViewController) {
@@ -88,6 +89,25 @@ class PluginViewControllerTests: XCTestCase {
         pluginViewController.toggleLogShown(nil)
         waitForExpectationsWithTimeout(testTimeout, handler: nil)
         XCTAssertTrue(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should be collapsed")
+        confirmValuesForPluginViewController(pluginViewController, collapsed: true)
+    }
+
+    func confirmValuesForPluginViewController(pluginViewController: PluginViewController, collapsed: Bool) {
+        let logIndex: Int! = find(pluginViewController.splitViewItems as! [NSSplitViewItem], pluginViewController.logSplitViewItem)
+        XCTAssertNotNil(logIndex, "The index should not be nil")
+        
+        var result = pluginViewController.splitView(pluginViewController.splitView, canCollapseSubview: pluginViewController.logSplitViewSubview)
+        XCTAssertTrue(result, "The log NSView should be collapsable")
+        result = pluginViewController.splitView(pluginViewController.splitView, canCollapseSubview: NSView())
+        XCTAssertFalse(result , "The NSView should not be collapsable")
+        result = pluginViewController.splitView(pluginViewController.splitView, shouldCollapseSubview: pluginViewController.logSplitViewSubview, forDoubleClickOnDividerAtIndex: logIndex)
+        XCTAssertTrue(result, "The log NSView should be collapsable")
+        result = pluginViewController.splitView(pluginViewController.splitView, shouldCollapseSubview: NSView(), forDoubleClickOnDividerAtIndex: logIndex + 1)
+        XCTAssertFalse(result , "The NSView should not be collapsable")
+        result = pluginViewController.splitView(pluginViewController.splitView, shouldHideDividerAtIndex: logIndex - 1)
+        XCTAssertTrue(result == collapsed, "The divider should be hidden if the log view is hidden")
+        result = pluginViewController.splitView(pluginViewController.splitView, shouldHideDividerAtIndex: logIndex)
+        XCTAssertFalse(result, "The divider should never be hidden for the NSView")
     }
     
     func heightForPluginViewController(pluginViewController: PluginViewController) -> CGFloat {
@@ -133,4 +153,5 @@ class PluginViewControllerTests: XCTestCase {
             }
         }
     }
+
 }
