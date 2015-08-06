@@ -26,7 +26,7 @@ class PluginViewControllerTests: XCTestCase {
         let pluginViewController = makeNewPluginViewController()
         
         // The log starts collapsed
-        XCTAssertTrue(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should be collapsed")
+        XCTAssertTrue(pluginViewController.logController.logSplitViewItem.collapsed, "The  NSSplitViewItem should be collapsed")
         
         // Show the log
         makeLogAppearForPluginViewController(pluginViewController)
@@ -47,7 +47,7 @@ class PluginViewControllerTests: XCTestCase {
 
         // Make a second window and confirm it uses the saved height
         let secondPluginViewController = makeNewPluginViewController()
-        XCTAssertTrue(secondPluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should be collapsed")
+        XCTAssertTrue(secondPluginViewController.logController.logSplitViewItem.collapsed, "The  NSSplitViewItem should be collapsed")
         makeLogAppearForPluginViewController(secondPluginViewController)
         XCTAssertEqual(heightForPluginViewController(secondPluginViewController), testLogViewHeight, "The heights should be equal")
 
@@ -66,13 +66,15 @@ class PluginViewControllerTests: XCTestCase {
     
     func resizeLogForPluginViewController(pluginViewController: PluginViewController, logHeight: CGFloat) {
         // Resize & Wait for Save
-        makeFrameSaveExpectationForHeight(logHeight, name: pluginViewController.logSplitViewSubviewSavedFrameName)
-        pluginViewController.configureLogViewHeight(logHeight)
+
+        let name = pluginViewController.savedFrameNameForLogController(pluginViewController.logController)
+        makeFrameSaveExpectationForHeight(logHeight, name: name)
+        pluginViewController.logController.configureHeight(logHeight)
         waitForExpectationsWithTimeout(testTimeout, handler: nil)
 
         // Test the height & saved frame
         XCTAssertEqual(heightForPluginViewController(pluginViewController), logHeight, "The heights should be equal")
-        var frame = pluginViewController.savedLogSplitViewFrame()
+        var frame: NSRect! = pluginViewController.logController.savedLogSplitViewFrame()
         XCTAssertEqual(frame.size.height, logHeight, "The heights should be equal")
     }
     
@@ -80,7 +82,7 @@ class PluginViewControllerTests: XCTestCase {
         makeLogViewWillAppearExpectationForPluginViewController(pluginViewController)
         pluginViewController.toggleLogShown(nil)
         waitForExpectationsWithTimeout(testTimeout, handler: nil)
-        XCTAssertFalse(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should not be collapsed")
+        XCTAssertFalse(pluginViewController.logController.logSplitViewItem.collapsed, "The  NSSplitViewItem should not be collapsed")
         confirmValuesForPluginViewController(pluginViewController, collapsed: false)
     }
     
@@ -88,19 +90,19 @@ class PluginViewControllerTests: XCTestCase {
         makeLogViewWillDisappearExpectationForPluginViewController(pluginViewController)
         pluginViewController.toggleLogShown(nil)
         waitForExpectationsWithTimeout(testTimeout, handler: nil)
-        XCTAssertTrue(pluginViewController.logSplitViewItem.collapsed, "The  NSSplitViewItem should be collapsed")
+        XCTAssertTrue(pluginViewController.logController.logSplitViewItem.collapsed, "The  NSSplitViewItem should be collapsed")
         confirmValuesForPluginViewController(pluginViewController, collapsed: true)
     }
 
     func confirmValuesForPluginViewController(pluginViewController: PluginViewController, collapsed: Bool) {
-        let logIndex: Int! = find(pluginViewController.splitViewItems as! [NSSplitViewItem], pluginViewController.logSplitViewItem)
+        let logIndex: Int! = find(pluginViewController.splitViewItems as! [NSSplitViewItem], pluginViewController.logController.logSplitViewItem)
         XCTAssertNotNil(logIndex, "The index should not be nil")
         
-        var result = pluginViewController.splitView(pluginViewController.splitView, canCollapseSubview: pluginViewController.logSplitViewSubview)
+        var result = pluginViewController.splitView(pluginViewController.splitView, canCollapseSubview: pluginViewController.logController.logSplitViewSubview!)
         XCTAssertTrue(result, "The log NSView should be collapsable")
         result = pluginViewController.splitView(pluginViewController.splitView, canCollapseSubview: NSView())
         XCTAssertFalse(result , "The NSView should not be collapsable")
-        result = pluginViewController.splitView(pluginViewController.splitView, shouldCollapseSubview: pluginViewController.logSplitViewSubview, forDoubleClickOnDividerAtIndex: logIndex)
+        result = pluginViewController.splitView(pluginViewController.splitView, shouldCollapseSubview: pluginViewController.logController.logSplitViewSubview!, forDoubleClickOnDividerAtIndex: logIndex)
         XCTAssertTrue(result, "The log NSView should be collapsable")
         result = pluginViewController.splitView(pluginViewController.splitView, shouldCollapseSubview: NSView(), forDoubleClickOnDividerAtIndex: logIndex + 1)
         XCTAssertFalse(result , "The NSView should not be collapsable")
@@ -111,7 +113,7 @@ class PluginViewControllerTests: XCTestCase {
     }
     
     func heightForPluginViewController(pluginViewController: PluginViewController) -> CGFloat {
-        return pluginViewController.logSplitViewView.frame.size.height
+        return pluginViewController.logController.logView!.frame.size.height
     }
     
     func makeNewPluginViewController() -> PluginViewController {
@@ -121,7 +123,7 @@ class PluginViewControllerTests: XCTestCase {
     }
     
     func makeLogViewWillAppearExpectationForPluginViewController(pluginViewController: PluginViewController) {
-        let webViewController = pluginViewController.logSplitViewItem.viewController as! WebViewController
+        let webViewController = pluginViewController.logController.logSplitViewItem.viewController as! WebViewController
         let viewWillAppearExpectation = expectationWithDescription("WebViewController will appear")
         let webViewControllerEventManager = WebViewControllerEventManager(webViewController: webViewController, viewWillAppearBlock: { _ in
             viewWillAppearExpectation.fulfill()
@@ -129,7 +131,7 @@ class PluginViewControllerTests: XCTestCase {
     }
     
     func makeLogViewWillDisappearExpectationForPluginViewController(pluginViewController: PluginViewController) {
-        let webViewController = pluginViewController.logSplitViewItem.viewController as! WebViewController
+        let webViewController = pluginViewController.logController.logSplitViewItem.viewController as! WebViewController
         let viewWillDisappearExpectation = expectationWithDescription("WebViewController will appear")
         let webViewControllerEventManager = WebViewControllerEventManager(webViewController: webViewController, viewWillAppearBlock: nil) { _ in
             viewWillDisappearExpectation.fulfill()
@@ -143,7 +145,7 @@ class PluginViewControllerTests: XCTestCase {
             object: nil,
             queue: nil)
         { [unowned self] _ in
-            let frame = PluginViewController.savedLogSplitViewFrameForName(name)
+            let frame = LogController.savedFrameForName(name)
             if frame.size.height == height {
                 expectation.fulfill()
                 if let observer = observer {

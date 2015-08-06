@@ -17,7 +17,7 @@ import AppKit
 
     // MARK: Properties
     
-    var splitViewItem: NSSplitViewItem
+    var logSplitViewItem: NSSplitViewItem
     private weak var splitViewController: NSSplitViewController?
     weak var delegate: LogControllerDelegate?
 
@@ -28,32 +28,53 @@ import AppKit
     }
     
     private var logViewController: NSViewController? {
-        return splitViewItem.viewController
+        return logSplitViewItem.viewController
     }
     
-    private var logView: NSView? {
+    var logView: NSView? {
         return logViewController?.view
     }
 
     func isLogCollapsed() -> Bool? {
-        return splitViewItem.collapsed
+        return logSplitViewItem.collapsed
+    }
+    
+    var logSplitViewItemIndex: Int? {
+        if let splitViewItems = splitViewController?.splitViewItems as? [NSSplitViewItem] {
+            return find(splitViewItems, logSplitViewItem)!
+        }
+        return nil
+    }
+
+    var logSplitViewSubview: NSView? {
+        if let index = logSplitViewItemIndex, subview = splitViewController?.splitView.subviews[index] as? NSView {
+            return subview
+        }
+        return nil
     }
     
     // MARK: Life Cycle
     
-    
     // TODO: Remove this after setup is done in interface builder
-    init(splitViewController: NSSplitViewController, splitViewItem: NSSplitViewItem) {
+    init(splitViewController: NSSplitViewController, logSplitViewItem: NSSplitViewItem) {
         self.splitViewController = splitViewController
-        self.splitViewItem = splitViewItem
+        self.logSplitViewItem = logSplitViewItem
+    }
+    
+    // MARK: Toggle
+
+    func toggleCollapsed(animated: Bool) {
+        if let collapsed = isLogCollapsed() {
+            setCollapsed(!collapsed, animated: animated)
+        }
     }
     
     func setCollapsed(collapsed: Bool, animated: Bool) {
-        if splitViewItem.collapsed != collapsed {
+        if logSplitViewItem.collapsed != collapsed {
             if animated {
-                splitViewItem.collapsed = collapsed
+                logSplitViewItem.animator().collapsed = collapsed
             } else {
-                splitViewItem.animator().collapsed = collapsed
+                logSplitViewItem.collapsed = collapsed
             }
         }
     }
@@ -88,6 +109,12 @@ import AppKit
     }
 
     // MARK: Constraints
+    
+    func configureHeight() {
+        if let frame = logView?.frame {
+            configureHeight(frame.size.height)
+        }
+    }
     
     func configureHeight(height: CGFloat) {
         if let logView = logView, superview = logView.superview {
