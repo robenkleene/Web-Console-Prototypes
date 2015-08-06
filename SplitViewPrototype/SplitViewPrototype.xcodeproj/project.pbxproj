@@ -24,6 +24,7 @@
 		457F4FE51B5C36A0007645C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 457F4FE31B5C36A0007645C4 /* Main.storyboard */; };
 		457F4FF11B5C36A0007645C4 /* PluginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FF01B5C36A0007645C4 /* PluginViewControllerTests.swift */; };
 		457F4FFB1B5C3C64007645C4 /* PluginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F4FFA1B5C3C64007645C4 /* PluginViewController.swift */; };
+		4585EDEE1B72CE30008279E2 /* LogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4585EDED1B72CE30008279E2 /* LogController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		457F4FEF1B5C36A0007645C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		457F4FF01B5C36A0007645C4 /* PluginViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginViewControllerTests.swift; sourceTree = "<group>"; };
 		457F4FFA1B5C3C64007645C4 /* PluginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginViewController.swift; sourceTree = "<group>"; };
+		4585EDED1B72CE30008279E2 /* LogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 				4527478B1B65BDC8006D2242 /* Constants.swift */,
 				4557E2821B6D6F6C00A48E46 /* PluginWindowsController.swift */,
 				4557E2841B6D7AB500A48E46 /* PluginWindowController.swift */,
+				4585EDED1B72CE30008279E2 /* LogController.swift */,
 			);
 			path = SplitViewPrototype;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 			files = (
 				457F4FFB1B5C3C64007645C4 /* PluginViewController.swift in Sources */,
 				457F4FE01B5C36A0007645C4 /* WebViewController.swift in Sources */,
+				4585EDEE1B72CE30008279E2 /* LogController.swift in Sources */,
 				457F4FDE1B5C36A0007645C4 /* AppDelegate.swift in Sources */,
 				4557E2831B6D6F6C00A48E46 /* PluginWindowsController.swift in Sources */,
 				4557E2851B6D7AB500A48E46 /* PluginWindowController.swift in Sources */,
