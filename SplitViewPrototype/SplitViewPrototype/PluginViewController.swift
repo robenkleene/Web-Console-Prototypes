@@ -10,39 +10,25 @@ import Cocoa
 import WebKit
 import AppKit
 
-class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
+class PluginViewController: NSSplitViewController, WebViewControllerDelegate, LogControllerDelegate {
 
-    // MARK: Properties
+    var logController: LogController!
 
-    var logSplitViewViewStartingHeightConstraint: NSLayoutConstraint?
-    
-    lazy var logSplitViewSubviewSavedFrameName: String = {
-        // TODO: Replace this with a real name, different for each plugin
-        return "TestAutosaveName"
-    }()
-
-    var logSplitViewView: NSView {
-        return self.logSplitViewViewController.view
+    var logSplitViewItemDividerIndex: Int? {
+        if let index = logController.logSplitViewItemIndex {
+            return index - 1
+        }
+        return nil
     }
     
-    var logSplitViewViewController: NSViewController {
-        let splitViewItem = self.splitViewItems.last as! NSSplitViewItem
-        return splitViewItem.viewController
-    }
-    
-    var logSplitViewSubview: NSView {
-        return self.splitView.subviews.last as! NSView
-    }
-    
-    var logSplitViewItem: NSSplitViewItem {
-        return self.splitViewItems.last as! NSSplitViewItem
-    }
-
     // MARK: Life Cycle
     
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        logController = LogController(splitViewController: self, logSplitViewItem: splitViewItems.last as! NSSplitViewItem)
+        logController.delegate = self
+        
         for splitViewItem in splitViewItems {
             if let webViewController = splitViewItem.viewController as? WebViewController {
                 webViewController.delegate = self
@@ -52,54 +38,13 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
     
     override func viewWillAppear() {
         super.viewWillAppear()
-
-        // The log starts hidden
-        logSplitViewItem.collapsed = true
-    }
-
-    // MARK: Saving & Restoring Frame
-
-    func saveLogSplitViewFrame() {
-        let frame = logSplitViewView.frame
-        let frameString = NSStringFromRect(frame)
-        let key = logSplitViewSubviewSavedFrameName
-
-        NSUserDefaults.standardUserDefaults().setObject(frameString, forKey:key)
-    }
-
-    func savedLogSplitViewFrame() -> NSRect {
-        let frameString = NSUserDefaults.standardUserDefaults().stringForKey(logSplitViewSubviewSavedFrameName)
-        let frame = NSRectFromString(frameString)
-        return frame
-    }
-
-    func configureLogViewHeight(height: CGFloat) {
-
-        if let superview = logSplitViewView.superview {
-            let logView = logSplitViewView
-            if let logSplitViewViewStartingHeightConstraint = logSplitViewViewStartingHeightConstraint {
-                superview.removeConstraint(logSplitViewViewStartingHeightConstraint)
-            }
-
-            let defaultHeightConstraint =  NSLayoutConstraint(item: logView,
-                attribute: NSLayoutAttribute.Height,
-                relatedBy: NSLayoutRelation.Equal,
-                toItem: nil,
-                attribute: NSLayoutAttribute.NotAnAttribute,
-                multiplier: 1,
-                constant: height)
-            // Getting closer, this works for subsequent displays but not the first
-            defaultHeightConstraint.priority = 300
-            superview.addConstraint(defaultHeightConstraint)
-            logSplitViewViewStartingHeightConstraint = defaultHeightConstraint
-        }
-        
+        logController.setCollapsed(true, animated: false)
     }
     
     // MARK: Actions
     
     @IBAction func toggleLogShown(sender: AnyObject?) {
-        logSplitViewItem.animator().collapsed = logSplitViewItem.collapsed ? false : true
+        logController.toggleCollapsed(true)
     }
 
     // MARK: Validation
@@ -107,8 +52,12 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
     override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
         switch menuItem.action {
         case Selector("toggleLogShown:"):
-            menuItem.title = logSplitViewItem.collapsed ? "Show Log" : "Close Log"
-            return true
+            if let collapsed = logController.isLogCollapsed() {
+                menuItem.title = collapsed ? "Show Log" : "Close Log"
+                return true
+            } else {
+                return false
+            }
         default:
             return super.validateMenuItem(menuItem)
         }
@@ -117,29 +66,49 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
     // MARK: NSSplitViewDelegate
     
     override func splitView(splitView: NSSplitView, canCollapseSubview subview: NSView) -> Bool {
-        return splitView == self.splitView && subview == logSplitViewSubview
+        if splitView != self.splitView {
+            return false
+        }
+        
+        return subview == logController.logSplitViewSubview
     }
 
     override func splitView(splitView: NSSplitView,
         shouldCollapseSubview subview: NSView,
-        forDoubleClickOnDividerAtIndex dividerIndex: Int) -> Bool {
-        return splitView == self.splitView && subview == logSplitViewSubview
+        forDoubleClickOnDividerAtIndex dividerIndex: Int) -> Bool
+    {
+        if splitView != self.splitView {
+            return false
+        }
+        
+        return subview == logController.logSplitViewSubview
     }
     
     override func splitView(splitView: NSSplitView, shouldHideDividerAtIndex dividerIndex: Int) -> Bool {
-        return logSplitViewItem.collapsed
+        if dividerIndex == logSplitViewItemDividerIndex {
+            if let collapsed = logController.isLogCollapsed() {
+                return collapsed
+            }
+        }
+        return false
     }
 
     override func splitViewDidResizeSubviews(notification: NSNotification) {
-        if !logSplitViewItem.collapsed {
-            saveLogSplitViewFrame()
-            configureLogViewHeight(logSplitViewView.frame.size.height)
+        if let collapsed = logController.isLogCollapsed() {
+            if !collapsed {
+                logController.saveFrame()
+                logController.configureHeight()
+            }
         }
     }
 
     // MARK: WebViewControllerDelegate
+
+    func webViewControllerViewWillDisappear(webViewController: WebViewController) {
+        // No-op only tests use this now
+    }
     
-    func webViewControllerWillAppear(webViewController: WebViewController) {
+    func webViewControllerViewWillAppear(webViewController: WebViewController) {
         if let superview = webViewController.view.superview {
             let view = webViewController.view
             
@@ -152,11 +121,16 @@ class PluginViewController: NSSplitViewController, WebViewControllerDelegate {
                 constant: splitWebViewHeight)
             superview.addConstraint(minimumHeightConstraint)
 
-            if view == logSplitViewView {
-                let frame = savedLogSplitViewFrame()
-                configureLogViewHeight(frame.size.height)
+            if view == logController.logView {
+                logController.restoreFrame()
             }
         }
+    }
+
+    // MARK: LogControllerDelegate
+    
+    func savedFrameNameForLogController(logController: LogController) -> String {
+        return logSavedFrameName
     }
 
 }

@@ -8,3 +8,4 @@
 
 import Foundation
 let splitWebViewHeight = CGFloat(150)
+let logSavedFrameName = "TestAutosaveName"
